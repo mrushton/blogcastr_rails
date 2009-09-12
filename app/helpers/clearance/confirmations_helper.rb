@@ -1,0 +1,2 @@
+module Clearance::ConfirmationsHelper
+end

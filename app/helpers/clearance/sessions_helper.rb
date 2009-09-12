@@ -1,0 +1,2 @@
+module Clearance::SessionsHelper
+end

@@ -1,0 +1,2 @@
+class BlogcastrController < ApplicationController
+end
