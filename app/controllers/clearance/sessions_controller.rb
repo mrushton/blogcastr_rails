@@ -8,7 +8,7 @@ class Clearance::SessionsController < ApplicationController
   end
 
   def create
-    @user = ::User.authenticate(params[:session][:email],
+    @user = ::BlogcastrUser.authenticate(params[:session][:username],
                                 params[:session][:password])
     if @user.nil?
       flash_failure_after_create
