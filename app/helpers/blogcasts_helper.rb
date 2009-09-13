@@ -1,0 +1,2 @@
+module BlogcastsHelper
+end

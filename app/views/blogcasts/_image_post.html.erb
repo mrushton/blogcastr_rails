@@ -1,0 +1,6 @@
+<li id="<%= image_post.id %>">
+  <img class="list_item_image" src="<%= image_post.image.url(:default) %>"/>
+  <div id="clear">
+  </div>
+  <p class="list_item_info">Posted <%= hours_minutes_ago_helper image_post.created_at %> from <%= image_post.from %></p>
+</li>

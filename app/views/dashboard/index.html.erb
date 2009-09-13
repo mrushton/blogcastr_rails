@@ -1,3 +1,72 @@
-<h1>DASHBOARD</h1>
-<%= @user.name -%>
-<%= @user.email -%>
+<div id="wrapper">
+  <div id="header">
+    <h1><%= @user.name %>'s Dashboard</h1>
+    <div id="navigation">
+      <%= link_to "Dashboard", dashboard_path %>
+      <%= link_to "Settings", settings_path %>
+      <%= link_to "Sign out", sign_out_path, :method => :delete %>
+    </div>
+  </div>
+  <div id="content">
+    <div id="main">
+      <h2>Post:</h2>
+      <% remote_form_for :text_post, :url => { :controller => :text_posts, :action => :create }, :html => { :id => "text_post_form"}, :complete => "$('text_post_form').reset();" do |f| %>
+        <%= f.error_messages %>
+        <%= f.hidden_field :from %>
+        <%= f.label :text, "Text" %>
+	<br>
+        <%= f.text_area :text, :size => "50x10" %>
+	<br>
+        <%= f.submit "Submit" %>
+      <% end %>
+      <% form_for :image_post, :url => { :controller => :image_posts, :action => :create }, :html => { :multipart => true } do |f| %>
+        <%= f.error_messages %>
+        <%= f.hidden_field :from %>
+        <%= f.label :image, "Image" %>
+	<br>
+        <%= f.file_field :image %>
+	<br>
+        <%= f.submit "Submit" %>
+      <% end %>
+      <h2>Streams:</h2>
+      <button class="stream_button" id="comment_stream_button" onclick="jQuery('.stream_content').css('display', 'none'); jQuery('#comment_stream_content').css('display', 'block');">
+    comments
+      </button>
+      <button class="stream_button" id="subscription_stream_button" onclick="jQuery('.stream_content').css('display', 'none'); jQuery('#subscription_stream_content').css('display', 'block');">
+   subscriptions 
+      </button>
+      <div class="stream_content" id="comment_stream_content">
+        <ol class="stream_list" id="comment_stream_list">
+<% for comment in @comments -%>
+  <%- if comment.instance_of?(TextComment) -%>
+          <%= render :partial => "text_comment", :object => comment -%>
+  <%- elsif post.instance_of?(ImageComment) -%>
+          <%= render :partial => "image_comment", :object => comment -%>
+  <%- end -%>
+<% end %>
+        </ol>
+      </div>
+      <div class="stream_content" id="subscription_stream_content">
+        <ol class="stream_list" id="subscription_stream_list">
+<% for post in @posts -%>
+  <%- if post.instance_of?(TextPost) -%>
+          <%= render :partial => "text_post", :object => post -%>
+  <%- elsif post.instance_of?(ImagePost) -%>
+          <%= render :partial => "image_post", :object => post -%>
+  <%- elsif post.instance_of?(CommentPost) -%>
+          <%= render :partial => "comment_post", :object => post -%>
+  <%- elsif post.instance_of?(Repost) -%>
+          <%= render :partial => "repost", :object => post -%>
+  <%- end -%>
+<% end %>
+        </ol>
+      </div>
+    </div>
+    <div id="sidebar">
+    </div>
+    <div id="clear"></div>
+  </div>
+  <div id="footer">
+    <p>&copy; 2009 Blogcastr</p>
+  </div>
+</div>

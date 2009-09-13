@@ -1,6 +1,6 @@
 class Clearance::UsersController < ApplicationController
   #MVR - redirect to dashboard
-  before_filter :redirect_to_dashboard, :only => [:new, :create], :if => :signed_in?
+  before_filter :redirect_to_dashboard, :only => [:new, :create], :if => :signed_in_as_blogcastr_user?
   filter_parameter_logging :password
 
   def new

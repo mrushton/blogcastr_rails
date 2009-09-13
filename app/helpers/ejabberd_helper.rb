@@ -1,0 +1,2 @@
+module EjabberdHelper
+end

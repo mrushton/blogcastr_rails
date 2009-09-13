@@ -1,0 +1,2 @@
+class Repost < Post 
+end

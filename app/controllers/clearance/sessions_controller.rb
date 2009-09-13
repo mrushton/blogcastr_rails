@@ -1,5 +1,5 @@
 class Clearance::SessionsController < ApplicationController
-  before_filter :redirect_to_dashboard, :only => [:new, :create], :if => :signed_in?
+  before_filter :redirect_to_dashboard, :only => [:new, :create], :if => :signed_in_as_blogcastr_user?
   protect_from_forgery :except => :create
   filter_parameter_logging :password
 

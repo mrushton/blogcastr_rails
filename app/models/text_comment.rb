@@ -1,0 +1,2 @@
+class TextComment < Comment 
+end

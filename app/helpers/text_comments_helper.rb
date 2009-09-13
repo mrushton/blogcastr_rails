@@ -1,0 +1,2 @@
+module TextCommentsHelper
+end

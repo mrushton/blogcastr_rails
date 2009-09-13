@@ -1,0 +1,1 @@
+<%= link_to_remote "Subscribe", :url => (blogcast_subscriptions_url :blogcast_id => @subscription.blogcast_id), :failure => "alert('Error communicating with server, unable to subscribe to #{@blogcast.user.name}\\'s blogcast');" %>

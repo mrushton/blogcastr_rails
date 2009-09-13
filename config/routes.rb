@@ -31,16 +31,49 @@ ActionController::Routing::Routes.draw do |map|
   #   end
 
   # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
-  #MVR - root of site
+  #MVR - include all Clearance routes first since the Clearance engine avoids doing so with a hack
+  map.resources :passwords, :controller => "clearance/passwords", :only => [:new, :create]
+  map.resource :session, :controller => "clearance/sessions", :only => [:new, :create, :destroy]
+  map.resources :users, :controller => "clearance/users" do |users|
+    users.resource :password, :controller => "clearance/passwords", :only => [:create, :edit, :update]
+    users.resource :confirmation, :controller => "clearance/confirmations", :only => [:new, :create]
+  end
+  map.sign_up  "sign_up", :controller => "clearance/users", :action => "new"
+  map.sign_in  "sign_in", :controller => "clearance/sessions", :action => "new"
+  map.sign_out "sign_out", :controller => "clearance/sessions", :action => "destroy", :method => :delete
+  #MVR - blogcastr 
   map.root :controller => "blogcastr"
   #MVR - dashboard
-  map.connect "/dashboard", :controller => "dashboard"
+  map.dashboard "dashboard", :controller => "dashboard"
+  #MVR - settings 
+  map.resource :settings, :controller => "settings", :only => [:edit, :update]
+  map.settings "settings", :controller => "settings", :action => "edit"
+  #MVR - text posts
+  map.resources "text_posts", :controller => "text_posts", :only => [:create, :destroy]
+  #MVR - image posts
+  map.resources "image_posts", :controller => "image_posts", :only => [:create, :destroy]
+  #MVR - comment posts
+  map.resources "comment_posts", :controller => "comment_posts", :only => [:create, :destroy]
+  #MVR - reposts
+  map.resources "reposts", :controller => "reposts", :only => [:create, :destroy]
+  #MVR - ejabberd
+  map.ejabberd "ejabberd/:action.:format", :controller => "ejabberd"
+  #MVR - blogcasts
+  map.resources :blogcasts, :controller => "blogcasts", :only => [:show] do |blogcasts|
+    #MVR - subscriptions
+    blogcasts.resource :subscriptions, :controller => "subscriptions", :only => [:create, :destroy]
+    #MVR - text comments
+    blogcasts.resource :text_comments, :controller => "text_comments", :only => [:create]
+    #MVR - image comments
+    map.resources :image_comments, :controller => "image_comments", :only => [:create]
+  end
+  map.blogcast ":username", :controller => "blogcasts"
+
   # See how all your routes lay out with "rake routes"
 
   # Install the default routes as the lowest priority.
   # Note: These default routes make all actions in every controller accessible via GET requests. You should
   # consider removing the them or commenting them out if you're using named routes and resources.
-  map.connect ':controller/:action'
-  map.connect ':controller/:action/:id'
-  map.connect ':controller/:action/:id.:format'
+  #map.connect ':controller/:action/:id'
+  #map.connect ':controller/:action/:id.:format'
 end

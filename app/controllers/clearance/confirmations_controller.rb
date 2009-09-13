@@ -1,6 +1,4 @@
 class Clearance::ConfirmationsController < ApplicationController
-  unloadable
-
   before_filter :redirect_signed_in_confirmed_user,  :only => [:new, :create]
   before_filter :redirect_signed_out_confirmed_user, :only => [:new, :create]
   before_filter :forbid_missing_token,               :only => [:new, :create]
@@ -13,11 +11,29 @@ class Clearance::ConfirmationsController < ApplicationController
   end
 
   def create
-    @user = ::BlogcastrUser.find_by_id_and_confirmation_token(
-                   params[:user_id], params[:token])
-    @user.confirm_email!
-
+    @user = ::BlogcastrUser.find_by_id_and_confirmation_token(params[:user_id], params[:token])
     sign_in(@user)
+    #MVR - create setting
+    @setting = Setting.create(:user_id => @user.id)
+    #MVR - create blog
+    @blogcast = Blogcast.create(:user_id => @user.id)
+    #MVR - create ejabberd account
+    begin
+      #thrift_client.create_user(@user.login,params[:user][:password])
+      #AS DESIGNED: one node and muc per user
+      #thrift_client.create_pubsub_node(@user.login, "/home/blogcastr.com/" + @user.login)
+      #thrift_client.create_pubsub_node(@user.login, "/home/blogcastr.com/" + @user.login + "/blog")
+      #thrift_client.create_muc_room(@user.login, @user.login + "." + "blog", @user.login + "'s blogcast", "")
+      #thrift_client_close
+    rescue
+      @setting.destroy
+      @blogcast.destroy
+      flash[:notice] = "Error: Unable to create ejabberd account"
+      #TODO: how to handle this?
+      render :action => :new
+      return
+    end
+    @user.confirm_email!
     flash_success_after_create
     redirect_to(url_after_create)
   end
@@ -34,7 +50,8 @@ class Clearance::ConfirmationsController < ApplicationController
 
   def redirect_signed_out_confirmed_user
     user = ::BlogcastrUser.find_by_id(params[:user_id])
-    if user && user.email_confirmed? && signed_out?
+    #MVR - you may not be signed as a blogcastr user
+    if user && user.email_confirmed? && !signed_in_as_blogcastr_user?
       flash_already_confirmed
       redirect_to(url_already_confirmed)
     end
