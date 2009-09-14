@@ -14,7 +14,7 @@ function blogcastrOnLoad()
 
 function blogcastrPostComment(id)
 {
-  jQuery.post("/comment_posts/create?comment_id=" + id + "&from=Web" + "&authenticity_token=" + encodeURIComponent(authenticity_token));
+  jQuery.post("/comment_posts?comment_id=" + id + "&from=Web" + "&authenticity_token=" + encodeURIComponent(authenticity_token));
 }
 
 function blogcastrSendMucPresence()

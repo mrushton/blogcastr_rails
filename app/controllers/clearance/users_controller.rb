@@ -11,6 +11,26 @@ class Clearance::UsersController < ApplicationController
   def create
     @user = ::BlogcastrUser.new params[:blogcastr_user]
     if @user.save
+      #MVR - create setting
+      @setting = Setting.create(:user_id => @user.id)
+      #MVR - create blog
+      @blogcast = Blogcast.create(:user_id => @user.id)
+      begin
+        #AS DESIGNED: create ejabberd account here since password gets encrypted
+        thrift_client.create_user(@user.name, params[:blogcastr_user][:password])
+        #AS DESIGNED: one node and muc per user
+        thrift_client.create_pubsub_node(@user.name, "/home/blogcastr.com/" + @user.name)
+        thrift_client.create_pubsub_node(@user.name, "/home/blogcastr.com/" + @user.name + "/blog")
+        thrift_client.create_muc_room(@user.name, @user.name + "." + "blog", @user.name + "'s blogcast", "")
+        thrift_client_close
+      rescue
+        @user.destroy
+        @setting.destroy
+        @blogcast.destroy
+        flash[:notice] = "Error: Unable to create ejabberd account"
+        render :template => 'users/new'
+        return
+      end
       ::ClearanceMailer.deliver_confirmation @user
       flash_notice_after_create
       redirect_to(url_after_create)
@@ -33,6 +53,6 @@ class Clearance::UsersController < ApplicationController
   end
 
   def redirect_to_dashboard
-    redirect_to :controller => "/dashboard"
+    redirect_to dashboard_url
   end
 end

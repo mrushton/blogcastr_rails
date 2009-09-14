@@ -24,8 +24,8 @@ class TextCommentsController < ApplicationController
     thrift_text_comment.text = @text_comment.text
     resource = params[:jid_resource]
     #MVR - send to ejabberd
-#    err = thrift_client.send_text_comment_to_muc_occupant(@blog.name + ".blog@conference.blogcastr.com/dashboard", @user.name + "@blogcastr.com/" + resource, thrift_user, thrift_text_comment)
- #   thrift_client_close
+    err = thrift_client.send_text_comment_to_muc_occupant(@blogcast.user.name + ".blog@conference.blogcastr.com/dashboard", @user.name + "@blogcastr.com/" + resource, thrift_user, thrift_text_comment)
+    thrift_client_close
     #TODO: gracefully handle errors or no javascript support
     render :nothing => true
   end

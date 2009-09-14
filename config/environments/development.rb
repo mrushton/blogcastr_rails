@@ -27,4 +27,4 @@ config.action_mailer.smtp_settings = {
 }
 
 #MVR - needed for clearance
-HOST = "localhost:3000"
+HOST = "blogcastr.com"
