@@ -11,7 +11,7 @@ class ClearanceCreateUsers < ActiveRecord::Migration
       t.string :remember_token, :limit => 128
       t.boolean :email_confirmed, :default => false, :null => false
       #MVR - Facebook
-      t.integer :facebook_uid
+      t.integer :facebook_id
       #MVR - Twitter
       t.timestamps
     end
@@ -19,7 +19,7 @@ class ClearanceCreateUsers < ActiveRecord::Migration
     add_index :users, :name
     add_index :users, :email
     add_index :users, :remember_token
-    add_index :users, :facebook_uid
+    add_index :users, :facebook_id
   end
 
   def self.down

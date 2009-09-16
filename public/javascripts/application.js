@@ -79,3 +79,37 @@ function blogcastrSetLocaltime()
       jQuery(this).text(date.toDateString());
     });
 }
+
+function blogcastrFacebookSignInCallback()
+{
+  //TODO: error handling
+  //AS DESIGNED: reload page
+  window.location.reload();
+}
+
+function blogcastrFacebookSignOutCallback()
+{
+  //TODO: error handling
+  //AS DESIGNED: reload page
+  window.location.reload();
+}
+
+function blogcastrFacebookSignIn()
+{
+  //MVR - get facebook uid
+  var api = FB.Facebook.apiClient;
+  //jQuery.post("/facebook_session?facebook_id=" + api.get_session().uid + "&authenticity_token=" + encodeURIComponent(authenticity_token));
+  jQuery.post("/facebook_session", {facebook_id: api.get_session().uid, authenticity_token: authenticity_token}, blogcastrFacebookSignInCallback);
+  //AS DESIGNED: reload page
+  //window.location.reload();
+}
+
+function blogcastrFacebookSignOut(err)
+{
+  //MVR - get facebook uid
+  var api = FB.Facebook.apiClient;
+  //jQuery.post("/facebook_session", {facebook_id=" + api.get_session().uid + "authenticity_token=" + encodeURIComponent(authenticity_token) + "&_method=delete");
+  jQuery.post("/facebook_session", {facebook_id: facebook_id, authenticity_token: authenticity_token, _method: "delete"}, blogcastrFacebookSignOutCallback);
+  //AS DESIGNED: reload page
+  //window.location.reload();
+}

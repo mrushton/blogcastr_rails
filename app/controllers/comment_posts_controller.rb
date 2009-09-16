@@ -9,19 +9,19 @@ class CommentPostsController < ApplicationController
     @comment = @comment_post.comment
     @comment_user = @comment.user
     thrift_comment_post_user = Thrift::User.new
-    thrift_comment_post_user.name = @user.name
-    thrift_comment_post_user.account = "Blogcastr"
-    thrift_comment_post_user.url = blogcast_url :username => @user.name 
-    thrift_comment_post_user.avatar_url = @user.setting.avatar.url(:medium)
+    thrift_comment_post_user.name = @user.get_user_name
+    thrift_comment_post_user.account = @user.class.to_s 
+    thrift_comment_post_user.url = @user.get_user_url
+    thrift_comment_post_user.avatar_url = @user.get_user_avatar_url :medium
     thrift_comment_post = Thrift::CommentPost.new
     thrift_comment_post.id = @comment_post.id
     thrift_comment_post.timestamp = @comment_post.created_at.to_i
     thrift_comment_post.medium = @comment_post.from
     thrift_comment_user = Thrift::User.new
-    thrift_comment_user.name = @comment_user.name
-    thrift_comment_user.account = "Blogcastr"
-    thrift_comment_user.url = blogcast_url :username => @user.name
-    thrift_comment_user.avatar_url = @comment_user.setting.avatar.url(:medium)
+    thrift_comment_user.name = @comment_user.get_user_name
+    thrift_comment_user.account = @comment_user.class.to_s 
+    thrift_comment_user.url = @comment_user.get_user_url
+    thrift_comment_user.avatar_url = @comment_user.get_user_avatar_url :medium
     if @comment.instance_of?(TextComment)
       thrift_text_comment = Thrift::TextComment.new
       thrift_text_comment.id = @comment.id

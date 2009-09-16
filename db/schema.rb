@@ -80,13 +80,13 @@ ActiveRecord::Schema.define(:version => 20090913020834) do
     t.string   "confirmation_token", :limit => 128
     t.string   "remember_token",     :limit => 128
     t.boolean  "email_confirmed",                   :default => false, :null => false
-    t.integer  "facebook_uid"
+    t.integer  "facebook_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email"
-  add_index "users", ["facebook_uid"], :name => "index_users_on_facebook_uid"
+  add_index "users", ["facebook_id"], :name => "index_users_on_facebook_id"
   add_index "users", ["id", "confirmation_token"], :name => "index_users_on_id_and_confirmation_token"
   add_index "users", ["name"], :name => "index_users_on_name"
   add_index "users", ["remember_token"], :name => "index_users_on_remember_token"

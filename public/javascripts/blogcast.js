@@ -46,7 +46,7 @@ function onConnect(status, error)
    // console.log('----------> Strophe is connected.' );
     //MVR - set jid resource
     //TODO: hack for now
-    jQuery("input[id='jid_resource']").attr("value", Strophe.getResourceFromJid(connection.jid));
+    jQuery("input[id='jid']").attr("value", connection.jid);
     //MVR - register message handlers 
     connection.addHandler(blogcastrPostCallback, null, 'message', 'groupchat', null, roomname + "/dashboard");
     //MVR - join muc, nickname is resource 
@@ -114,7 +114,10 @@ function blogcastrPostCallback(stanza)
       var comment_user_avatar_url = comment.find("avatar_url:first").text();
       //create new text comment post element
       var avatar_a = jQuery("<a>").attr("href", comment_user_url).attr("target", "_blank");
-      var avatar_div = jQuery("<div>").addClass("avatar-medium-rounded").attr("style", "background-image: url('" + comment_user_avatar_url + "');");
+      if (comment_user_account == "BlogcastrUser")
+        var avatar_div = jQuery("<div>").addClass("avatar-medium-rounded").attr("style", "background-image: url('" + comment_user_avatar_url + "');");
+      else if (comment_user_account == "FacebookUser")
+        var avatar_div = jQuery("<div>").addClass("facebook-avatar-medium-rounded").attr("style", "background-image: url('" + comment_user_avatar_url + "');");
       avatar_a.append(avatar_div);
       var text_p = jQuery("<p>").addClass("list_item_text").text(comment_text);
       var comment_url_a = jQuery("<a>").attr("href", comment_user_url).attr("target", "_blank").text(comment_user_name);

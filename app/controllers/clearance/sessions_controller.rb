@@ -1,4 +1,6 @@
 class Clearance::SessionsController < ApplicationController
+
+#actually do not want to do this
   before_filter :redirect_to_dashboard, :only => [:new, :create], :if => :signed_in_as_blogcastr_user?
   protect_from_forgery :except => :create
   filter_parameter_logging :password
@@ -8,8 +10,12 @@ class Clearance::SessionsController < ApplicationController
   end
 
   def create
-    @user = ::BlogcastrUser.authenticate(params[:session][:username],
-                                params[:session][:password])
+    @session = params[:session]
+    if @session.nil?
+      flash_failure_after_create
+      render :template => 'sessions/new', :status => :unauthorized
+    end
+    @user = ::BlogcastrUser.authenticate(@session[:username], @session[:password])
     if @user.nil?
       flash_failure_after_create
       render :template => 'sessions/new', :status => :unauthorized

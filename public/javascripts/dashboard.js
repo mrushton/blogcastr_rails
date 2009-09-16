@@ -92,7 +92,10 @@ function blogcastrCommentCallback(stanza)
     var medium = body.find("medium:first").text();
     //create new comment element
     var avatar_a = jQuery("<a>").attr("href", url).attr("target", "_blank");
-    var avatar_div = jQuery("<div>").addClass("avatar-medium-rounded").attr("style", "background-image: url('" + avatar_url + "');");
+    if (account == "BlogcastrUser")
+      var avatar_div = jQuery("<div>").addClass("avatar-medium-rounded").attr("style", "background-image: url('" + avatar_url + "');");
+    else if (account == "FacebookUser")
+      var avatar_div = jQuery("<div>").addClass("facebook-avatar-medium-rounded").attr("style", "background-image: url('" + avatar_url + "');");
     avatar_a.append(avatar_div);
     var text_p = jQuery("<p>").addClass("list_item_text").text(text);
     var clear_div = jQuery("<div>").addClass("clear");

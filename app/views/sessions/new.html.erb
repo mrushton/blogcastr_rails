@@ -1,6 +1,7 @@
 <h2>Sign in</h2>
 
 <% form_for :session, :url => session_path do |form| %>
+  <%= form.hidden_field :type, :value => "BlogcastrSession" %>
   <div class="text_field">
     <%= form.label :username %>
     <%= form.text_field :username %>

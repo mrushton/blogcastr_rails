@@ -41,7 +41,7 @@ ActionController::Routing::Routes.draw do |map|
   map.sign_up  "sign_up", :controller => "clearance/users", :action => "new"
   map.sign_in  "sign_in", :controller => "clearance/sessions", :action => "new"
   map.sign_out "sign_out", :controller => "clearance/sessions", :action => "destroy", :method => :delete
-  #MVR - blogcastr 
+  #MVR - Blogcastr 
   map.root :controller => "blogcastr"
   #MVR - dashboard
   map.dashboard "dashboard", :controller => "dashboard"
@@ -67,7 +67,9 @@ ActionController::Routing::Routes.draw do |map|
     #MVR - image comments
     map.resources :image_comments, :controller => "image_comments", :only => [:create]
   end
-  map.blogcast ":username", :controller => "blogcasts"
+  #MVR - Facebook sessions
+  map.resource :facebook_session, :controller => "facebook_sessions", :only => [:create, :destroy]
+  map.blogcast ":username", :controller => "blogcasts", :action => "show"
 
   # See how all your routes lay out with "rake routes"
 

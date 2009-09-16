@@ -1,5 +1,8 @@
 class BlogcastsController < ApplicationController
-  def index
+  before_filter :set_facebook_session
+  helper_method :facebook_session
+
+  def show 
     @blogcast_user = User.find_by_name(params[:username])
     if @blogcast_user.nil?
       #MVR - treat this as a 404 error
@@ -12,14 +15,17 @@ class BlogcastsController < ApplicationController
     @blogcast_setting = @blogcast_user.setting
     @user = current_user
     if !@user.nil?
-      #MVR - is user subscribed to blog or not
-      if @user.name != @blogcast_user.name
-        @subscription = @user.subscriptions.find(:first, :conditions => {:blogcast_id => @blogcast.id })
-        @blogcast_owner = false
-      else
-        @blogcast_owner = true
+      #MVR - is user a Blogcast user
+      if @user.instance_of?(BlogcastrUser)
+        #MVR - is user subscribed to blog or not
+        if @user.name != @blogcast_user.name
+          @subscription = @user.subscriptions.find(:first, :conditions => {:blogcast_id => @blogcast.id })
+          @blogcast_owner = false
+        else
+          @blogcast_owner = true
+        end
+        #MVR - comment objects
       end
-      #MVR - comment objects
       @text_comment = TextComment.new(:from => "Web")
     end
     #MVR - retrieve blog posts in reverse chronological order
