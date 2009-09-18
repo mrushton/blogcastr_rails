@@ -1,3 +1,6 @@
+var twitter_sign_in_window;
+var twitter_sign_in_interval;
+
 function blogcastrHoursMinutesAgo(timestamp)
 {
   var current_client_date = new Date;
@@ -98,18 +101,51 @@ function blogcastrFacebookSignIn()
 {
   //MVR - get facebook uid
   var api = FB.Facebook.apiClient;
-  //jQuery.post("/facebook_session?facebook_id=" + api.get_session().uid + "&authenticity_token=" + encodeURIComponent(authenticity_token));
   jQuery.post("/facebook_session", {facebook_id: api.get_session().uid, authenticity_token: authenticity_token}, blogcastrFacebookSignInCallback);
-  //AS DESIGNED: reload page
-  //window.location.reload();
 }
 
 function blogcastrFacebookSignOut(err)
 {
   //MVR - get facebook uid
   var api = FB.Facebook.apiClient;
-  //jQuery.post("/facebook_session", {facebook_id=" + api.get_session().uid + "authenticity_token=" + encodeURIComponent(authenticity_token) + "&_method=delete");
   jQuery.post("/facebook_session", {facebook_id: facebook_id, authenticity_token: authenticity_token, _method: "delete"}, blogcastrFacebookSignOutCallback);
+}
+
+function blogcastrTwitterSignOutCallback()
+{
+  //TODO: error handling
   //AS DESIGNED: reload page
-  //window.location.reload();
+  window.location.reload();
+}
+
+function blogcastrCheckTwitterSignIn()
+{
+  if (twitter_sign_in_window.closed)
+  {
+    clearInterval(twitter_sign_in_interval);
+  }
+  else
+  {
+    //MVR - check if we are signed in or not
+    var ret = jQuery(twitter_sign_in_window.document.body).find("span[id=twitter_sign_in]").text();
+    if (ret == "success")
+    {
+      twitter_sign_in_window.close();
+      //AS DESIGNED: reload page
+      window.location.reload();
+    }
+  }
+}
+
+function blogcastrTwitterSignIn()
+{
+  //MVR - open window 
+  twitter_sign_in_window = window.open("/twitter_oauth_init", "Twitter Sign In", "location=0, status=0, width=800, height=400");
+  //MVR - check twitter sign in window every 1 second 
+  twitter_sign_in_interval = setInterval(blogcastrCheckTwitterSignIn, 1000);
+}
+
+function blogcastrTwitterSignOut()
+{
+  jQuery.post("/twitter_session", {authenticity_token: authenticity_token, _method: "delete"}, blogcastrTwitterSignOutCallback);
 }

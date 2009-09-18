@@ -118,6 +118,8 @@ function blogcastrPostCallback(stanza)
         var avatar_div = jQuery("<div>").addClass("avatar-medium-rounded").attr("style", "background-image: url('" + comment_user_avatar_url + "');");
       else if (comment_user_account == "FacebookUser")
         var avatar_div = jQuery("<div>").addClass("facebook-avatar-medium-rounded").attr("style", "background-image: url('" + comment_user_avatar_url + "');");
+      else if (comment_user_account == "TwitterUser")
+        var avatar_div = jQuery("<div>").addClass("twitter-avatar-medium-rounded").attr("style", "background-image: url('" + comment_user_avatar_url + "');");
       avatar_a.append(avatar_div);
       var text_p = jQuery("<p>").addClass("list_item_text").text(comment_text);
       var comment_url_a = jQuery("<a>").attr("href", comment_user_url).attr("target", "_blank").text(comment_user_name);

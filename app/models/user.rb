@@ -8,44 +8,73 @@ class User < ActiveRecord::Base
   has_many :subscriptions
   has_many :subscribed_blogcasts, :through => :subscriptions, :source => :blogcasts
 
+  #TODO: refactor this
   def get_user_name
-    return "Matt Rushton"
     if instance_of?(BlogcastrUser)
       name
     elsif instance_of?(FacebookUser)
-      s = Facebooker::Session.create
-      u = Facebooker::User.new(facebook_id, s)
-      u.name
+      name = CACHE.get("SELECTnameFROMuserWHEREuid=" + facebook_id.to_s) 
+      unless name
+        name = Facebooker::Session.create.fql_query("SELECT name FROM user WHERE uid = " + facebook_id.to_s)[0].name
+        CACHE.set("SELECTnameFROMuserWHEREuid=" + facebook_id.to_s, name, 1.day)
+      end
+      name
     elsif instance_of?(TwitterUser)
+      screen_name = CACHE.get(id.to_s + "-screen_name") 
+      unless screen_name 
+        no_auth = Twitter::NoAuth::NoAuth.new()
+        base = Twitter::Base.new(no_auth)
+        screen_name = base.user(twitter_id).screen_name
+        CACHE.set(id.to_s + "-screen_name", screen_name, 1.day)
+      end
+      screen_name
     else
     end
   end
 
   def get_user_url
-    return "/avatar/medium/missing.png"
     if instance_of?(BlogcastrUser)
       #MVR - it looks like objects don't get helpers so can't use blogast_path
       name 
     elsif instance_of?(FacebookUser)
-      s = Facebooker::Session.create
-      u = Facebooker::User.new(facebook_id, s)
-      u.profile_url
+      url = CACHE.get("SELECTprofile_urlFROMuserWHEREuid=" + facebook_id.to_s) 
+      unless url
+        url = Facebooker::Session.create.fql_query("SELECT profile_url FROM user WHERE uid = " + facebook_id.to_s)[0].profile_url
+        CACHE.set("SELECTprofile_urlFROMuserWHEREuid=" + facebook_id.to_s, url, 1.day)
+      end
+      url
     elsif instance_of?(TwitterUser)
+      screen_name = CACHE.get(id.to_s + "-screen_name") 
+      unless screen_name 
+        no_auth = Twitter::NoAuth::NoAuth.new()
+        base = Twitter::Base.new(no_auth)
+        screen_name = base.user(twitter_id).screen_name
+        CACHE.set(id.to_s + "-screen_name", screen_name, 1.day)
+      end
+      "http://twitter.com/" + screen_name
     else
     end
   end
 
   def get_user_avatar_url(size)
-    return "/avatar/medium/missing.png"
     if instance_of?(BlogcastrUser)
       setting.avatar.url(size)
     elsif instance_of?(FacebookUser)
-      if size == :medium
-        s = Facebooker::Session.create
-        u = Facebooker::User.new(facebook_id, s)
-        u.pic_square_with_logo
+      avatar_url = CACHE.get("SELECTpic_square_with_logoFROMuserWHEREuid=" + facebook_id.to_s) 
+      unless avatar_url 
+        avatar_url = Facebooker::Session.create.fql_query("SELECT pic_square_with_logo FROM user WHERE uid = " + facebook_id.to_s)[0].pic_square_with_logo 
+        CACHE.set("SELECTpic_square_with_logoFROMuserWHEREuid=" + facebook_id.to_s, avatar_url, 1.day)
       end
+      avatar_url
     elsif instance_of?(TwitterUser)
+      avatar_url = CACHE.get(id.to_s + "-avatar_url") 
+      unless avatar_url 
+        no_auth = Twitter::NoAuth::NoAuth.new()
+        base = Twitter::Base.new(no_auth)
+        avatar_url = base.user(twitter_id).profile_image_url
+        CACHE.set(id.to_s + "-avatar_url", avatar_url, 1.day)
+      end
+      avatar_url
     else
     end
   end

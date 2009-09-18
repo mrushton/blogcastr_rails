@@ -30,10 +30,12 @@ class FacebookSessionsController < ApplicationController
 
   private
 
-  #MVR - only sign in Facebook users for 1 day
   def sign_in(user)
-    if user
+    if user.instance_of?(BlogcastrUser)
+      super
+    else
       user.remember_me!
+      #MVR - only sign in Facebook users for 1 day
       cookies[:remember_token] = {:value => user.remember_token, :expires => 1.day.from_now.utc}
       current_user = user
     end

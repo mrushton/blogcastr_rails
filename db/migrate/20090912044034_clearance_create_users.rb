@@ -13,7 +13,9 @@ class ClearanceCreateUsers < ActiveRecord::Migration
       #MVR - Facebook
       t.integer :facebook_id
       #MVR - Twitter
-      t.timestamps
+      t.integer :twitter_id
+      t.string :twitter_access_token 
+      t.timestamps :twitter_token_secret
     end
     add_index :users, [:id, :confirmation_token]
     add_index :users, :name

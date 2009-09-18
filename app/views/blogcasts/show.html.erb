@@ -47,7 +47,7 @@
       <%- end -%>
 <% elsif signed_in_as_facebook_user? -%>
       <h3>You are logged in as <%= facebook_session.user.name %> </h3>
-      <a href="#" onclick="FB.Connect.logout(blogcastrFacebookSignOut)">Sign out</a>
+      <a href="#" onclick="FB.Connect.logout(blogcastrFacebookSignOut); return false;">Sign out</a>
       <h3>Comment:</h3>
       <% remote_form_for :text_comment, :url => blogcast_text_comments_path(:blogcast_id => @blogcast.id), :html => { :id => "text_comment_form", :method => "post"}, :complete => "$('text_comment_form').reset();" do |f| -%>
         <%= f.error_messages %>
@@ -60,9 +60,23 @@
         <%= f.submit "Submit" %>
       <%- end -%>
 <% elsif signed_in_as_twitter_user? -%>
+      <h3>You are logged in as <%= @user.get_user_name %> </h3>
+      <a href="#" onclick="blogcastrTwitterSignOut(); return false;">Sign out</a>
+      <h3>Comment:</h3>
+      <% remote_form_for :text_comment, :url => blogcast_text_comments_path(:blogcast_id => @blogcast.id), :html => { :id => "text_comment_form", :method => "post"}, :complete => "$('text_comment_form').reset();" do |f| -%>
+        <%= f.error_messages %>
+        <input id="jid" type="hidden" value="" name="jid"/>
+        <%= f.hidden_field :from %>
+        <%= f.label :text, "Text" %>
+        <br>
+        <%= f.text_area :text, :size => "50x10" %>
+	<br>
+        <%= f.submit "Submit" %>
+      <%- end -%>
 <% else -%>
     <h2>Comment</h2>
-    <a href="#" onclick="FB.Connect.requireSession(blogcastrFacebookSignIn); return false;"><img id="fb_login_image" src="http://static.ak.fbcdn.net/images/fbconnect/login-buttons/connect_light_medium_long.gif" alt="Connect" /></a>
+    <a href="#" onclick="FB.Connect.requireSession(blogcastrFacebookSignIn); return false;"><img id="facebook_connect_image" src="http://static.ak.fbcdn.net/images/fbconnect/login-buttons/connect_light_medium_long.gif" alt="Facebook connect" /></a>
+    <a href="#" onclick="blogcastrTwitterSignIn(); return false;"><img id="twitter_sign_in_image" src="/images/Sign-in-with-Twitter-darker.png" alt="Twitter sign in" /></a>
 <% end -%>
       <ol>
 <%- for post in @posts -%>

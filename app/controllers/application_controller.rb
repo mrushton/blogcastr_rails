@@ -7,11 +7,11 @@ require 'blogcastr'
 class ApplicationController < ActionController::Base
   include Clearance::Authentication
   #MVR - includes thrift definition
-  #include Thrift::Blogcastr 
+  #include Blogcastr 
+  #MVR - Twitter NoAuth include for api requests requiring no authentication
+  include Twitter::NoAuth
   #MVR - Blogcastr includes
   include Authentication
-  #TODO: fix me!
-  #include Blogcastr::Thrift
 
   helper :all # include all helpers, all the time
   protect_from_forgery # See ActionController::RequestForgeryProtection for details

@@ -56,8 +56,6 @@ ActionController::Routing::Routes.draw do |map|
   map.resources "comment_posts", :controller => "comment_posts", :only => [:create, :destroy]
   #MVR - reposts
   map.resources "reposts", :controller => "reposts", :only => [:create, :destroy]
-  #MVR - ejabberd
-  map.ejabberd "ejabberd/:action.:format", :controller => "ejabberd"
   #MVR - blogcasts
   map.resources :blogcasts, :controller => "blogcasts", :only => [:show] do |blogcasts|
     #MVR - subscriptions
@@ -69,6 +67,13 @@ ActionController::Routing::Routes.draw do |map|
   end
   #MVR - Facebook sessions
   map.resource :facebook_session, :controller => "facebook_sessions", :only => [:create, :destroy]
+  #MVR - Twitter sessions
+  map.twitter_oauth_start "twitter_oauth_init", :controller => "twitter_sessions", :action => "init"
+  map.twitter_oauth_callback "twitter_oauth_callback", :controller => "twitter_sessions", :action => "create"
+  map.resource :twitter_session, :controller => "twitter_sessions", :only => [:destroy]
+  #MVR - ejabberd
+  map.ejabberd "ejabberd/:action.:format", :controller => "ejabberd"
+  #MVR - blogcasts
   map.blogcast ":username", :controller => "blogcasts", :action => "show"
 
   # See how all your routes lay out with "rake routes"

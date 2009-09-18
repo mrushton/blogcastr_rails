@@ -9,6 +9,15 @@ require File.join(File.dirname(__FILE__), 'boot')
 #MVR - needed for clearence
 DO_NOT_REPLY = "accounts@blogcastr.com"
 
+#TODO: refactor this
+#MVR - set up a Memcached client
+require 'memcache'
+CACHE = MemCache.new("localhost:11211")
+
+#TODO - move token and secret to a config file
+TWITTER_CONSUMER_KEY = "RyfjiSOXSXxyHkZjv4TsZA"
+TWITTER_CONSUMER_SECRET = "jvTlEHNiyBa3gvWMoIgSWGtpvFY9A0x7G3NeeH5w"
+
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence over those specified here.
   # Application configuration should go into files in config/initializers
@@ -25,6 +34,8 @@ Rails::Initializer.run do |config|
   config.gem "thoughtbot-factory_girl", :lib => "factory_girl", :source => "http://gems.github.com"
   config.gem "thoughtbot-clearance", :lib => "clearance", :source => "http://gems.github.com", :version => "0.8.2"
   config.gem "thoughtbot-paperclip", :lib => "paperclip", :source => "http://gems.github.com"
+  config.gem "thrift"
+  config.gem "twitter"
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
