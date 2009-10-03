@@ -1,0 +1,1 @@
+page.alert "Error: Unable to unsubscribe from #{@profile_user.name}. Please refresh your browser and try again."

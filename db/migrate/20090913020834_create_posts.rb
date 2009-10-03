@@ -2,6 +2,7 @@ class CreatePosts < ActiveRecord::Migration
   def self.up
     create_table :posts do |t|
       t.string :type, :null => false
+      t.integer :user_id, :null => false
       t.integer :blogcast_id, :null => false
       t.integer :category_id
       t.string :from, :null => false

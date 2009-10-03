@@ -4,14 +4,15 @@ class TextPostsController < ApplicationController
   def create
     #MVR - no need to verify user or blog
     @user = current_user
-    @blogcast = @user.blogcast
+    @blogcast = @user.blogcasts.find(params[:blogcast_id]) 
     @text_post = TextPost.new(params[:text_post])
     @text_post.blogcast_id = @blogcast.id
+    @text_post.user_id = @user.id
     @text_post.save
     thrift_user = Thrift::User.new
     thrift_user.name = @user.name
     thrift_user.account = "Blogcastr"
-    thrift_user.url = blogcast_path :username => @user.name 
+    thrift_user.url = profile_path :username => @user.name
     thrift_user.avatar_url = @user.setting.avatar.url(:medium)
     thrift_text_post = Thrift::TextPost.new
     thrift_text_post.id = @text_post.id

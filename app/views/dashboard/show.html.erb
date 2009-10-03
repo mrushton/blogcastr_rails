@@ -1,0 +1,95 @@
+<div id="wrapper">
+  <div id="header">
+    <%= link_to "<div class=\"avatar-large-rounded avatar-large-rounded-background\"></div>", profile_path(:username => @user.name), :target => "_blank" %>
+    <h1><%= @user.name %></h1>
+    <div id="navigation">
+      <%= link_to "Home", home_path %>
+      <%= link_to "Settings", settings_path %>
+      <%= link_to "Sign out", sign_out_path, :method => :delete %>
+    </div>
+    <%= link_to "<div class=\"avatar-small-rounded avatar-small-rounded-background\"></div>", profile_path(:username => @user.name), :target => "_blank" %>
+    <div id="clear">
+    </div>
+  </div>
+  <div id="content">
+    <div id="main">
+      <h2><%= @blogcast.title -%></h2>
+      <div class="background">
+        <h3 class="post-header" onclick="blogcastrToggleBlindEffect('post')">Post</h3>
+        <div id="post">
+          <div class="center">
+            <ul class="menu">
+              <li class="selected text"><%= button_to_function "Text", "blogcastrPostTextMenuSelect()" -%></li>
+              <li class="image"><%= button_to_function "Image", "blogcastrPostImageMenuSelect()" -%></li>
+            </ul>
+          </div>
+          <% remote_form_for :text_post, :url => {:controller => :text_posts, :action => :create}, :html => {:class => "text"}, :complete => "$('text_post_form').reset();" do |f| %>
+            <%= f.hidden_field :from %>
+            <%= f.label :text, "Text" %>
+            <br>
+            <%= f.text_area :text, :size => "50x10" %>
+            <br>
+            <%= f.submit "Submit" %>
+          <% end %>
+          <% form_for :image_post, :url => {:controller => :image_posts, :action => :create}, :html => {:multipart => true, :class => "image hidden"} do |f| %>
+            <%= f.hidden_field :from %>
+            <%= f.label :image, "Image" %>
+            <br>
+            <%= f.file_field :image %>
+            <br>
+            <%= f.submit "Submit" %>
+          <% end %>
+          <div id="clear">
+          </div>
+        </div>
+      </div>
+      <div class="background">
+        <h3>Streams</h3>
+        <div id="streams-menu" class="center">
+          <ul class="menu">
+            <li class="selected comments"><%= button_to_function "Comments", "blogcastrCommentStreamMenuSelect()" -%></li>
+            <li class="subscriptions"><%= button_to_function "Subscriptions", "blogcastrSubscriptionStreamMenuSelect()" -%></li>
+          </ul>
+        </div>
+        <ol class="stream" id="comment-stream">
+<% for comment in @comments -%>
+  <%- if comment.instance_of?(TextComment) -%>
+          <%= render :partial => "text_comment", :object => comment -%>
+  <%- elsif post.instance_of?(ImageComment) -%>
+          <%= render :partial => "image_comment", :object => comment -%>
+  <%- end -%>
+<% end %>
+        </ol>
+        <ol class="stream hidden" id="subscription-stream">
+<% for post in @posts -%>
+  <%- if post.instance_of?(TextPost) -%>
+          <%= render :partial => "text_post", :object => post -%>
+  <%- elsif post.instance_of?(ImagePost) -%>
+          <%= render :partial => "image_post", :object => post -%>
+  <%- elsif post.instance_of?(CommentPost) -%>
+          <%= render :partial => "comment_post", :object => post -%>
+  <%- elsif post.instance_of?(Repost) -%>
+          <%= render :partial => "repost", :object => post -%>
+  <%- end -%>
+<% end %>
+        </ol>
+      </div>
+    </div>
+    <div id="side">
+      <h4>Date</h4>
+      <p class="date"><%= @blogcast.starting_at.strftime("%a %m/%d/%y %I:%M %p").gsub(/ 0/,' ') %></p>
+      <div id="clear">
+      </div>
+<% if !@blogcast.tags.nil? %>
+      <h4>Tags</h4>
+      <p class="tags"><%= @blogcast.tags -%></p>
+      <div id="clear">
+      </div>
+<% end -%>
+    </div>
+    <div id="clear"></div>
+  </div>
+  <div id="footer">
+    <p>&copy; 2009 Blogcastr</p>
+  </div>
+</div>

@@ -2,36 +2,40 @@
   <div id="header">
     <h1><%= @user.name %>'s Settings</h1>
     <div id="navigation">
-      <%= link_to "Dashboard", dashboard_path %>
+      <%= link_to "Home", home_path %>
       <%= link_to "Settings", settings_path %>
       <%= link_to "Sign out", sign_out_path %>
     </div>
   </div>
   <div id="content">
     <div id="main">
-      <% form_for :setting, :url => {:controller => "settings", :action => "update"}, :html => {:multipart => true, :id => "settings_form", :method => "put"} do |f| %>
-        <%= f.error_messages %>
-        <%= f.label :name, "Name" %>
+      <% form_for :setting, :url => {:controller => "settings", :action => "update"}, :html => {:multipart => true, :id => "settings_form", :method => "put"} do |form| %>
+        <%= form.error_messages %>
+        <%= form.label :name, "Name" %>
 	<br>
-        <%= f.text_field :name %>
+        <%= form.text_field :name %>
 	<br>
-        <%= f.label :about, "About" %>
+        <%= form.label :about, "About" %>
 	<br>
-        <%= f.text_area :about, :size => "50x10" %>
+        <%= form.text_area :about, :size => "50x10" %>
 	<br>
-        <%= f.label :web, "Web" %>
+        <%= form.label :web, "Web" %>
 	<br>
-        <%= f.text_field :web %>
+        <%= form.text_field :web %>
 	<br>
-        <%= f.label :avatar, "Avatar" %>
+        <label for="setting_time_zone">Time zone</label>
 	<br>
-        <%= f.file_field :avatar %>
+        <%= time_zone_select "setting", "time_zone", ActiveSupport::TimeZone.us_zones, :default => "Eastern Time (US & Canada)" %>
 	<br>
-        <%= f.label :image, "Background" %>
+        <%= form.label :avatar, "Avatar" %>
 	<br>
-        <%= f.file_field :background %>
+        <%= form.file_field :avatar %>
 	<br>
-        <%= f.submit "Submit" %>
+        <%= form.label :image, "Background" %>
+	<br>
+        <%= form.file_field :background %>
+	<br>
+        <%= form.submit "Submit" %>
       <% end %>
     </div>
     <div id="sidebar">

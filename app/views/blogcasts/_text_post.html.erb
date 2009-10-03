@@ -1,6 +1,8 @@
 <li id="<%= text_post.id %>">
-  <p class=list_item_text><%= text_post.text %></p>
-  <div id="clear">
+  <div class="stream-effect">
+    <p class="text"><%= text_post.text %></p>
+    <div class="clear">
+    </div>
+    <p class="info">Posted <%= hours_minutes_ago_helper text_post.created_at %> from <%= text_post.from %></p>
   </div>
-  <p class="list_item_info">Posted <%= hours_minutes_ago_helper text_post.created_at %> from <%= text_post.from %></p>
 </li>

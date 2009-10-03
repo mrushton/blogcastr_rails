@@ -1,8 +1,8 @@
 <li class="subscription_stream_list_item" id="<%= image_post.id %>">
-  <%= link_to "<div class=\"avatar-medium-rounded\" style=\"background-image: url('#{image_post.blogcast.user.setting.avatar.url(:medium)}');\"></div>", (blogcast_path :username => image_post.blogcast.user.name), :target => "_blank" %>
+  <%= link_to "<div class=\"avatar-medium-rounded\" style=\"background-image: url('#{image_post.blogcast.user.setting.avatar.url(:medium)}');\"></div>", (profile_path :username => image_post.blogcast.user.name), :target => "_blank" %>
   <img class="list_item_image" src="<%= image_post.image.url(:default) %>"/>
   <div id="clear">
   </div>
-  <p class="list_item_info">Posted by <%= link_to image_post.blogcast.user.name, (blogcast_path :username => image_post.blogcast.user.name), :target => "_blank" %> <%= hours_minutes_ago_helper image_post.created_at %> from <%= image_post.from %></p>
+  <p class="list_item_info">Posted by <%= link_to image_post.blogcast.user.name, (profile_path :username => image_post.blogcast.user.name), :target => "_blank" %> <%= hours_minutes_ago_helper image_post.created_at %> from <%= image_post.from %></p>
   <%= link_to_remote "Repost", :url => {:controller => "reposts", :action => "create", "post_id" => image_post.id, :from => "Web"}, :method => "post" %>
 </li>

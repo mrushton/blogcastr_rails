@@ -31,40 +31,56 @@ ActionController::Routing::Routes.draw do |map|
   #   end
 
   # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
+
   #MVR - include all Clearance routes first since the Clearance engine avoids doing so with a hack
   map.resources :passwords, :controller => "clearance/passwords", :only => [:new, :create]
   map.resource :session, :controller => "clearance/sessions", :only => [:new, :create, :destroy]
   map.resources :users, :controller => "clearance/users" do |users|
     users.resource :password, :controller => "clearance/passwords", :only => [:create, :edit, :update]
     users.resource :confirmation, :controller => "clearance/confirmations", :only => [:new, :create]
+    users.resource "blogcasts", :controller => "blogcasts", :only => [:show], :collection => {"recent" => :get, "upcoming" => :get}
   end
   map.sign_up  "sign_up", :controller => "clearance/users", :action => "new"
   map.sign_in  "sign_in", :controller => "clearance/sessions", :action => "new"
   map.sign_out "sign_out", :controller => "clearance/sessions", :action => "destroy", :method => :delete
-  #MVR - Blogcastr 
-  map.root :controller => "blogcastr"
-  #MVR - dashboard
-  map.dashboard "dashboard", :controller => "dashboard"
+  #MVR - site 
+  map.root :controller => "site"
+  #MVR - home
+  map.home "home", :controller => "home"
   #MVR - settings 
   map.resource :settings, :controller => "settings", :only => [:edit, :update]
   map.settings "settings", :controller => "settings", :action => "edit"
-  #MVR - text posts
-  map.resources "text_posts", :controller => "text_posts", :only => [:create, :destroy]
-  #MVR - image posts
-  map.resources "image_posts", :controller => "image_posts", :only => [:create, :destroy]
-  #MVR - comment posts
-  map.resources "comment_posts", :controller => "comment_posts", :only => [:create, :destroy]
-  #MVR - reposts
-  map.resources "reposts", :controller => "reposts", :only => [:create, :destroy]
+  #MVR - subscriptions
+  map.resources :subscriptions, :controller => "subscriptions", :only => [:index, :create, :destroy]
+  #MVR - subscribed
+  map.resources :subscribed, :controller => "subscribed", :only => [:index]
   #MVR - blogcasts
-  map.resources :blogcasts, :controller => "blogcasts", :only => [:show] do |blogcasts|
-    #MVR - subscriptions
-    blogcasts.resource :subscriptions, :controller => "subscriptions", :only => [:create, :destroy]
+  map.resources :blogcasts, :controller => "blogcasts", :only => [:new, :create, :show, :edit, :update, :destroy] do |blogcasts|
+    #MVR - dashboard
+    blogcasts.resource :dashboard, :controller => "dashboard", :only => [:show]
+    #MVR - text posts
+    blogcasts.resources "text_posts", :controller => "text_posts", :only => [:create, :destroy]
+    #MVR - image posts
+    blogcasts.resources "image_posts", :controller => "image_posts", :only => [:create, :destroy]
+    #MVR - comment posts
+    blogcasts.resources "comment_posts", :controller => "comment_posts", :only => [:create, :destroy]
+    #MVR - reposts
+    blogcasts.resources "reposts", :controller => "reposts", :only => [:create, :destroy]
     #MVR - text comments
-    blogcasts.resource :text_comments, :controller => "text_comments", :only => [:create]
+    blogcasts.resources :text_comments, :controller => "text_comments", :only => [:create]
     #MVR - image comments
-    map.resources :image_comments, :controller => "image_comments", :only => [:create]
+    blogcasts.resources :image_comments, :controller => "image_comments", :only => [:create]
+    #MVR - likes 
+    blogcasts.resources :likes, :controller => "likes", :only => [:create, :destroy]
   end
+  #AS DESIGNED: map 
+  #map.edit_blogcast "/blogcasts/:year/:month/:day/:title/edit", :controller => "dashboard", :action => "edit" 
+  #map.blogcast_dashboard "/blogcasts/:year/:month/:day/:title/dashboard", :controller => "dashboard", :action => "show" 
+  #MVR - subscriptions
+  #map.resources :users, :controller => "clearance/users",  :only => [] do |users|
+  #  users.resource :subscription, :controller => "subscriptions", :only => [:index, :create, :destroy]
+  #  users.resources :subscribed, :controller => "subscribed", :only => [:index]
+ # end
   #MVR - Facebook sessions
   map.resource :facebook_session, :controller => "facebook_sessions", :only => [:create, :destroy]
   #MVR - Twitter sessions
@@ -73,8 +89,22 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :twitter_session, :controller => "twitter_sessions", :only => [:destroy]
   #MVR - ejabberd
   map.ejabberd "ejabberd/:action.:format", :controller => "ejabberd"
+  #MVR - profile
+  map.profile ":username", :controller => "profile", :action => "index"
+  #MVR - public blogcasts
+  map.public_blogcasts ":username/blogcasts", :controller => ":blogcasts", :action => "index"
+  #MVR - public subscriptions 
+  map.public_subscriptions ":username/subscriptions", :controller => ":subscriptions", :action => "index"
+  #MVR - public subscribers 
+  map.public_subscribers ":username/subscribers", :controller => ":subscribers", :action => "index"
+  #MVR - public posts 
+  map.public_posts ":username/posts", :controller => ":posts", :action => "index"
   #MVR - blogcasts
-  map.blogcast ":username", :controller => "blogcasts", :action => "show"
+  #TODO: decide if this should include the date
+  #map.blogcast "/:username/:year/:month/:day/:title", :controller => "blogcasts", :action => "show",  map.full_blogcast "/:username/:year/:month/:day/:title", :controller => "blogcasts", :action => "show"
+  map.blogcast_permalink ":username/:year/:month/:day/:title", :controller => "blogcasts", :action => "permalink", :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
+  map.blogcast_comments_permalink ":username/:year/:month/:day/:title/comments", :controller => "blogcasts", :action => "comments_permalink", :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
+  map.blogcast_likes_permalink ":username/:year/:month/:day/:title/likes", :controller => "blogcasts", :action => "likes_permalink", :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
 
   # See how all your routes lay out with "rake routes"
 

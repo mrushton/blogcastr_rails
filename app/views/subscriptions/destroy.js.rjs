@@ -1,1 +1,6 @@
 page.replace_html "subscription", :partial => "subscribe_link"
+page.replace_html "success-notice", :partial => "unsubscribe_success_notice"
+page.visual_effect :slide_down, "success-notice", :duration => 0.5
+page.delay(2) do
+  page.visual_effect :slide_up, "success-notice", :duration => 0.5
+end

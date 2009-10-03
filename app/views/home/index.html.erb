@@ -1,0 +1,157 @@
+<div id="wrapper">
+  <div id="header">
+    <%= link_to "<div class=\"avatar-large-rounded avatar-large-rounded-background\" style=\"background-image: url('#{@user.setting.avatar(:large)}')\"></div>", profile_path(:username => @user.name), :target => "_blank" %>
+    <h1><%= @user.name %>'s Home</h1>
+    <div id="navigation">
+      <%= link_to "Home", home_path %>
+      <%= link_to "Settings", settings_path %>
+      <%= link_to "Sign out", sign_out_path, :method => :delete %>
+    </div>
+    <%= link_to "<div class=\"avatar-small-rounded\" style=\"background-image: url('#{@user.setting.avatar.url(:small)}')\"></div>", profile_path(:username => @user.name), :target => "_blank" %>
+  </div>
+  <div id="content">
+    <div id="main">
+      <h2 style="display: inline">My Blogcasts</h2>
+      <%= link_to "New", new_blogcast_path -%> 
+      <h3><span class="counter-large"><%= @num_upcoming_blogcasts -%></span> <%= link_to "Upcoming Blogcasts", blogcasts_path -%></h3>
+      <ol>
+<% for blogcast in @upcoming_blogcasts -%>
+        <li class="blogcast">
+          <h4 class="blogcast-title"><%= link_to blogcast.title, blogcast_permalink_path(:username => blogcast.user.name, :year => blogcast.starting_at.year, :month => blogcast.starting_at.month, :day => blogcast.starting_at.day, :title => blogcast.link_title) -%></h4>
+          <p class="blogcast-date"><%= blogcast.starting_at.strftime("%a %b %d, %Y %I:%M %p").gsub(/ 0/,' ') %></p>
+          <div class="clear">
+          </div>
+          <p class="blogcast-tags"><%= blogcast.tags %></p>
+  <%- num_likes = blogcast.likes.count -%>
+          <h5 class=""><span class="counter-small"><%= num_likes -%></span><%= link_to num_likes == 1 ? "Recording" : "Recordings", blogcast_likes_permalink_path(:username => blogcast.user.name, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%></h5>
+          <ul>
+  <%- likes = User.find_by_sql(["SELECT users.* FROM likes, users WHERE likes.blogcast_id = ? AND likes.user_id = users.id LIMIT 30", blogcast.id]) -%>
+  <%- for like in likes -%>
+            <li>
+              <%= link_to "<div class=\"avatar-small-rounded\" style=\"background-image: url('#{like.setting.avatar.url(:small)}');\"></div>", profile_path(:username => like.name), :target => "_blank" %>
+            </li>
+  <%- end -%>
+          </ul>
+          <%= link_to "Dashboard", blogcast_dashboard_path(:blogcast_id => blogcast.id) %>
+          <span>-</span>
+          <%= link_to "Edit", edit_blogcast_path(:id => blogcast.id) %>
+          <span>-</span>
+          <%= link_to "Delete", blogcast_path(:id => blogcast.id), :confirm => "Are you sure you want to delete the blogcast \"#{blogcast.title}\"? This can not be undone.", :method => "delete" %>
+        </li>
+<% end -%>
+      </ol>
+      <h3><span class="counter-large"><%= @num_recent_blogcasts -%></span> Recent Blogcasts</h3>
+      <ol>
+<% for blogcast in @recent_blogcasts -%>
+        <li class="blogcast">
+          <h4 class="blogcast-title"><%= link_to blogcast.title, blogcast_permalink_path(:username => blogcast.user.name, :year => blogcast.starting_at.year, :month => blogcast.starting_at.month, :day => blogcast.starting_at.day, :title => blogcast.link_title) -%></h4>
+          <p class="blogcast-date"><%= blogcast.starting_at.strftime("%a %b %d, %Y %I:%M %p").gsub(/ 0/,' ') %></p>
+          <div class="clear">
+          </div>
+          <p class="blogcast-tags"><%= blogcast.tags %></p>
+  <%- num_likes = blogcast.likes.count -%>
+          <h5 class=""><span class="counter-small"><%= num_likes -%></span><%= link_to num_likes == 1 ? "Recording" : "Recordings", blogcast_likes_permalink_path(:username => blogcast.user.name, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%></h5>
+          <ul>
+  <%- likes = User.find_by_sql(["SELECT users.* FROM likes, users WHERE likes.blogcast_id = ? AND likes.user_id = users.id LIMIT 30", blogcast.id]) -%>
+  <%- for like in likes -%>
+            <li>
+              <%= link_to "<div class=\"avatar-small-rounded\" style=\"background-image: url('#{like.setting.avatar.url(:small)}');\"></div>", profile_path(:username => like.name), :target => "_blank" %>
+            </li>
+  <%- end -%>
+          </ul>
+          <%= link_to "Dashboard", blogcast_dashboard_path(:blogcast_id => blogcast.id) %>
+          <span>-</span>
+          <%= link_to "Edit", edit_blogcast_path(:id => blogcast.id) %>
+          <span>-</span>
+          <%= link_to "Delete", blogcast_path(:id => blogcast.id), :confirm => "Are you sure you want to delete the blogcast \"#{blogcast.title}\"? This can not be undone.", :method => "delete" %>
+        </li>
+<% end -%>
+      </ol>
+      <br>
+      <h2>Subscription Blogcasts</h2>
+      <h3><span class="counter-large"><%= @num_upcoming_subscription_blogcasts -%></span> Upcoming Blogcasts</h3>
+      <ol>
+<% for blogcast in @upcoming_subscription_blogcasts -%>
+        <li class="blogcast">
+          <%= link_to "<div class=\"avatar-medium-rounded avatar-medium-rounded-background\" style=\"background-image: url('#{blogcast.user.setting.avatar(:medium)}')\"></div>", profile_path(:username => blogcast.user.name), :target => "_blank" %>
+          <h4 class="blogcast-title"><%= link_to blogcast.title, blogcast_permalink_path(:username => blogcast.user.name, :year => blogcast.starting_at.year, :month => blogcast.starting_at.month, :day => blogcast.starting_at.day, :title => blogcast.link_title) -%></h4>
+          <p class="blogcast-date"><%= blogcast.starting_at.strftime("%a %b %d, %Y %I:%M %p").gsub(/ 0/,' ') %></p>
+          <div class="clear">
+          </div>
+          <p class="blogcast-tags"><%= blogcast.tags %></p>
+        </li>
+<% end -%>
+      </ol>
+      <h3><span class="counter-large"><%= @num_recent_subscription_blogcasts -%></span> Recent Blogcasts</h3>
+      <ol>
+<% for blogcast in @recent_subscription_blogcasts -%>
+        <li class="blogcast">
+          <%= link_to "<div class=\"avatar-medium-rounded avatar-medium-rounded-background\" style=\"background-image: url('#{blogcast.user.setting.avatar(:medium)}')\"></div>", profile_path(:username => blogcast.user.name), :target => "_blank" %>
+          <div class="blogcast-inner">
+            <h4 class="blogcast-title"><%= link_to blogcast.title, blogcast_permalink_path(:username => blogcast.user.name, :year => blogcast.starting_at.year, :month => blogcast.starting_at.month, :day => blogcast.starting_at.day, :title => blogcast.link_title) -%></h4>
+            <p class="blogcast-date"><%= blogcast.starting_at.strftime("%a %b %d, %Y %I:%M %p").gsub(/ 0/,' ') %></p>
+            <div class="clear">
+            </div>
+            <p class="blogcast-tags"><%= blogcast.tags %></p>
+            <%= link_to blogcast.user.name, profile_path(:username => blogcast.user.name) -%>
+          </div>
+          <div class="clear">
+          </div>
+  <%- num_likes = blogcast.likes.count -%>
+          <h5 class=""><span class="counter-small"><%= num_likes -%></span><%= link_to num_likes == 1 ? "Like" : "Likes", blogcast_likes_permalink_path(:username => blogcast.user.name, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%></h5>
+          <ul>
+  <%- likes = User.find_by_sql(["SELECT users.* FROM likes, users WHERE likes.blogcast_id = ? AND likes.user_id = users.id LIMIT 30", blogcast.id]) -%>
+  <%- for like in likes -%>
+            <li>
+              <%= link_to "<div class=\"avatar-small-rounded\" style=\"background-image: url('#{like.setting.avatar.url(:small)}');\"></div>", profile_path(:username => like.name), :target => "_blank" %>
+            </li>
+  <%- end -%>
+          </ul>
+        </li>
+<% end -%>
+      </ol>
+    </div>
+    <div id="side">
+<% if !@user.setting.name.nil? %>
+      <h4>Name</h4>
+      <p><%= @user.setting.name %></p>
+      <div class="clear">
+      </div>
+<% end -%>
+<% if !@user.setting.about.nil? %>
+      <h4>About</h4>
+      <p><%= @user.setting.about %></p>
+      <div class="clear">
+      </div>
+<% end -%>
+<% if !@user.setting.web.nil? %>
+      <h4>Web</h4>
+      <a href="<%= @user.setting.web %>" target="_blank"><%= @user.setting.web.length > 25 ? (@user.setting.web[0,21] + "...") : @user.setting.web -%></a>
+<% end -%>
+      <h3><span class="counter-medium"><%= @num_blogcasts -%></span> <%= @num_blogcasts == 1 ? "Blogcast" : "Blogcasts" -%></h3>
+      <h3><span class="counter-medium"><%= @num_subscriptions -%></span> <%= @num_subscriptions == 1 ? "Subscription" : "Subscriptions" -%></h3>
+      <ul>
+<% for subscription in @subscriptions -%>
+        <li>
+          <%= link_to "<div class=\"avatar-small-rounded\" style=\"background-image: url('#{subscription.setting.avatar.url(:small)}');\"></div>", profile_path(:username => subscription.name), :target => "_blank" %>
+        </li>
+<% end -%>
+      </ul>
+      <h3><span class="counter-medium"><%= @num_subscribers -%></span> <%= @num_subscribers == 1 ? "Subscriber" : "Subscribers" -%></h3>
+      <ul>
+<% for subscriber in @subscribers -%>
+        <li>
+          <%= link_to "<div class=\"avatar-small-rounded\" style=\"background-image: url('#{subscriber.setting.avatar.url(:small)}');\"></div>", profile_path(:username => subscriber.name), :target => "_blank" %>
+        </li>
+<% end -%>
+      </ul>
+      <h3><span class="counter-medium"><%= @num_posts -%></span> <%= @num_posts == 1 ? "Post" : "Posts" -%></h3>
+      <h3><span class="counter-medium"><%= @num_reposts -%></span> <%= @num_reposts == 1 ? "Repost" : "Reposts" -%></h3>
+      <h3><span class="counter-medium"><%= @num_comments -%></span> <%= @num_comments == 1 ? "Comment" : "Comments" -%></h3>
+    </div>
+    <div class="clear"></div>
+  </div>
+  <div id="footer">
+    <p>&copy; 2009 Blogcastr</p>
+  </div>
+</div>

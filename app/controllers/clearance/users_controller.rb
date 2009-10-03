@@ -12,9 +12,24 @@ class Clearance::UsersController < ApplicationController
     @user = ::BlogcastrUser.new params[:blogcastr_user]
     if @user.save
       #MVR - create setting
-      @setting = Setting.create(:user_id => @user.id)
-      #MVR - create blog
-      @blogcast = Blogcast.create(:user_id => @user.id)
+      utc_offset = params[:utc_offset]
+      if !utc_offset.nil?
+        #AS DESIGNED - only try to find US time zones
+        time_zone = nil
+        ActiveSupport::TimeZone.us_zones.each do |zone|
+          #MVR - calling zone.utc_offset ignores daylight savings time
+          if zone.tzinfo.current_period.utc_total_offset == utc_offset.to_i*60
+            time_zone = zone
+            break
+          end
+        end
+        if !time_zone.nil?
+          @setting = Setting.create(:user_id => @user.id, :time_zone => time_zone.name)
+        else
+          #MVR - set time zone to UTC if we can't find it
+          @setting = Setting.create(:user_id => @user.id, :time_zone => "UTC")
+        end
+      end
       begin
         #AS DESIGNED: create ejabberd account here since password gets encrypted
         thrift_client.create_user(@user.name, params[:blogcastr_user][:password])

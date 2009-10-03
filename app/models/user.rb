@@ -1,12 +1,13 @@
 class User < ActiveRecord::Base
   include Clearance::User
 
-  has_one :blogcast
+  has_many :blogcasts
   has_one :setting
   has_many :posts
   has_many :comments
   has_many :subscriptions
-  has_many :subscribed_blogcasts, :through => :subscriptions, :source => :blogcasts
+  has_many :subscribers, :class_name => "Subscription", :foreign_key => "subscribed_to" 
+  has_many :likes
 
   #TODO: refactor this
   def get_user_name
@@ -35,7 +36,7 @@ class User < ActiveRecord::Base
   def get_user_url
     if instance_of?(BlogcastrUser)
       #MVR - it looks like objects don't get helpers so can't use blogast_path
-      name 
+      "/" + name 
     elsif instance_of?(FacebookUser)
       url = CACHE.get("SELECTprofile_urlFROMuserWHEREuid=" + facebook_id.to_s) 
       unless url

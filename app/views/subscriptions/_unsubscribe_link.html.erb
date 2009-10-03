@@ -1,1 +1,1 @@
-<%= link_to_remote "Unsubscribe", :url => (blogcast_subscriptions_url :blogcast_id => @subscription.blogcast_id), :method => "delete", :failure => "alert('Error communicating with server, unable to unsubscribe from #{@blogcast.user.name}\\'s blogcast');" %>
+<%= button_to_remote "Unsubscribe", :url => (subscription_path :id => @subscription.id), :method => "delete", :failure => "alert('Error: Unable to unsubscribe from #{@profile_user.name}. Failed communicating with server.');" %>

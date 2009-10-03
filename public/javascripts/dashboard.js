@@ -10,6 +10,9 @@ function blogcastrOnLoad()
   client_timestamp = Math.floor(client_date.getTime()/1000);
   //MVR - every second update timers
   setInterval(blogcastrUpdateHoursMinutesAgo, 1000);
+  //MVR - event handling for exandable links
+  jQuery("h3.expandable").find("a").click(blogcastrOnExpandableHeaderLinkClick);
+  jQuery("h3.expandable").find("a").hover(blogcastrOnExpandableHeaderLinkHoverOn, blogcastrOnExpandableHeaderLinkHoverOff);
 }
 
 function blogcastrPostComment(id)
@@ -221,6 +224,42 @@ function blogcastrSubscriptionCallback(stanza)
       }
     });
   return true;
+}
+
+function blogcastrPostTextMenuSelect()
+{
+  jQuery("#post").find("li.selected").removeClass("selected");
+  jQuery("#post").find("li.text").addClass("selected");
+  //MVR - hide all forms and then display the text form
+  jQuery("#post").find("form").addClass("hidden");
+  jQuery("#post").find("form.text").removeClass("hidden");
+}
+
+function blogcastrPostImageMenuSelect()
+{
+  jQuery("#post").find("li.selected").removeClass("selected");
+  jQuery("#post").find("li.image").addClass("selected");
+  //MVR - hide all forms and then display the image form
+  jQuery("#post").find("form").addClass("hidden");
+  jQuery("#post").find("form.image").removeClass("hidden");
+}
+
+function blogcastrCommentStreamMenuSelect()
+{
+  jQuery("#streams-menu").find("li.selected").removeClass("selected");
+  jQuery("#streams-menu").find("li.comments").addClass("selected");
+  //MVR - hide all streams and then display the comment stream
+  jQuery(".stream").addClass("hidden");
+  jQuery("#comment-stream").removeClass("hidden");
+}
+
+function blogcastrSubscriptionStreamMenuSelect()
+{
+  jQuery("#streams-menu").find("li.selected").removeClass("selected");
+  jQuery("#streams-menu").find("li.subscriptions").addClass("selected");
+  //MVR - hide all streams and then display the comment stream
+  jQuery(".stream").addClass("hidden");
+  jQuery("#subscription-stream").removeClass("hidden");
 }
 
 Strophe.log = function(log, msg)

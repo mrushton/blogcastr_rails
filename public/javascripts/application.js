@@ -149,3 +149,31 @@ function blogcastrTwitterSignOut()
 {
   jQuery.post("/twitter_session", {authenticity_token: authenticity_token, _method: "delete"}, blogcastrTwitterSignOutCallback);
 }
+
+function blogcastrToggleBlindEffect(id)
+{
+  new Effect.toggle(id, 'blind', {duration: 0.5});
+}
+
+function blogcastrToggleSlideEffect(id)
+{
+  new Effect.toggle(id, 'slide', {duration: 0.5});
+}
+
+function blogcastrOnExpandableHeaderLinkClick(event)
+{
+  //MVR - stop the event from bubbling
+  event.stopPropagation();
+}
+
+function blogcastrOnExpandableHeaderLinkHoverOn()
+{
+  //MVR - override the headers hover styles 
+  jQuery(this.parentNode).addClass("no-hover");
+}
+
+function blogcastrOnExpandableHeaderLinkHoverOff()
+{
+  //MVR - revert the headers hover styles 
+  jQuery(this.parentNode).removeClass("no-hover");
+}

@@ -1,6 +1,29 @@
-<h2>Sign up</h2>
-
-<% form_for @user, :url => {:controller => "clearance/users"} do |form| %>
-  <%= render :partial => '/users/form', :object => form %>
-  <%= form.submit 'Sign up', :disable_with => 'Please wait...' %>
-<% end %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Blogcastr Sign Up</title>
+    <%= javascript_include_tag "jquery.js", :media => "all" %>
+    <%= stylesheet_link_tag "blogcastr.css", :media => "screen" %>
+    <script type="text/javascript">
+      //<![CDATA[
+      function blogcastrOnLoad()
+      {
+        //MVR - determine user's timezone
+        var date = new Date()
+        var utc_offset = -date.getTimezoneOffset();
+        $("input#utc_offset").attr("value", utc_offset);
+      }
+      window.addEventListener("load", blogcastrOnLoad, false);
+      //]]>
+    </script>
+  </head>
+  <body>
+    <h2>Sign up</h2>
+    <% form_for @user, :url => {:controller => "clearance/users"} do |form| %>
+      <input id="utc_offset" type="hidden" name="utc_offset" value="">
+      <%= render :partial => '/users/form', :object => form %>
+      <%= form.submit 'Sign up', :disable_with => 'Please wait...' %>
+    <% end %>
+  </body>
+</html>

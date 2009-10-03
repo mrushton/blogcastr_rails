@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title><%= @profile_user.name %>'s Blogcastr</title>
+    <link rel="stylesheet" href="/stylesheets/blogcastr.css" media="screen"/>
+    <style>
+      body
+      {
+        background: url('<%= @profile_user.setting.background.url %>') fixed no-repeat top left;
+      }
+    </style>
+    <%= javascript_include_tag :defaults, "jquery.js", "strophe/b64.js", "strophe/md5.js", "strophe/sha1.js", "strophe/strophe.js", "strophe/plugins/strophe.pubsub.js", "dashboard.js", :media => "all" %>
+    <%= javascript_tag "var authenticity_token = \"#{form_authenticity_token}\"" %>
+    <script type="text/javascript">
+      jQuery.noConflict();
+      var server_timestamp = <%= Time.now.to_i %>
+    </script>
+    <script type="text/javascript" src="http://blogcastr.com/ejabberd/password.js"></script>
+  </head>
+  <body>
+    <%= yield :layout %>
+  </body>
+</html>

@@ -3,6 +3,7 @@
 
 require 'thrift'
 require 'blogcastr'
+require 'tzinfo'
 
 class ApplicationController < ActionController::Base
   include Clearance::Authentication
@@ -32,5 +33,25 @@ class ApplicationController < ActionController::Base
 
   def thrift_client_close
     @thrift_transport.close if defined?(@thrift_transport)
+  end
+
+  def set_time_zone
+    if signed_in?
+      if !current_user.setting.nil?
+        time_zone = current_user.setting.time_zone
+        if !time_zone.nil?
+          Time.zone = time_zone
+        end
+      end
+    end
+  end
+
+  def set_cache_headers
+    #MVR - turn off browser caching for ajax
+    headers["Pragma"] = "no-cache";
+    headers["Cache-Control"] = "must-revalidate";
+    headers["Cache-Control"] = "no-cache";
+    headers["Cache-Control"] = "no-store";
+    headers["Expires"] = "0";
   end
 end

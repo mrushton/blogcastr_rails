@@ -1,0 +1,29 @@
+<div id="wrapper">
+  <div id="header">
+    <h1>Blogcastr</h1>
+<% if @user.instance_of?(BlogcastrUser) -%>
+    <div id="navigation">
+      <%= link_to "Home", home_path %>
+      <%= link_to "Settings", settings_path %>
+      <%= link_to "Sign out", sign_out_path %>
+    </div>
+    <%= link_to "<div class=\"avatar-small-rounded\" style=\"background-image: url('#{@user.setting.avatar(:small)}')\"></div>", profile_path(:username => @user.name), :target => "_blank" %>
+    <div id="clear">
+    </div>
+<% elsif @user.instance_of?(FacebookUser) -%>
+<% elsif @user.instance_of?(TwitterUser) -%>
+<% else -%>
+    <div id="navigation">
+      <%= link_to "Sign up", sign_up_path %>
+      <%= link_to "Sign in", sign_in_path %>
+    </div>
+<% end -%>
+  </div>
+  <div id="content">
+    <h2>Broadcast your blog live. <%= link_to "Sign up", sign_up_path %> today.<h2>
+    <h3>Launching soon!</h3>
+  </div>
+  <div id="footer">
+    <p>&copy; 2009 Blogcastr</p>
+  </div>
+</div>

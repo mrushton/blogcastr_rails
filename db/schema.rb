@@ -9,12 +9,20 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090913020834) do
+ActiveRecord::Schema.define(:version => 20090929055821) do
 
   create_table "blogcasts", :force => true do |t|
-    t.integer  "user_id",    :null => false
+    t.integer  "user_id",                    :null => false
+    t.string   "title",                      :null => false
+    t.integer  "year",                       :null => false
+    t.integer  "day",                        :null => false
+    t.integer  "month",                      :null => false
+    t.string   "link_title",                 :null => false
+    t.string   "tags"
+    t.datetime "starting_at",                :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "views_count", :default => 0
   end
 
   create_table "comments", :force => true do |t|
@@ -27,6 +35,13 @@ ActiveRecord::Schema.define(:version => 20090913020834) do
     t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "likes", :force => true do |t|
+    t.integer  "user_id",     :null => false
+    t.integer  "blogcast_id", :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -45,6 +60,14 @@ ActiveRecord::Schema.define(:version => 20090913020834) do
     t.integer  "parent_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "user_id"
+  end
+
+  create_table "recordings", :force => true do |t|
+    t.integer  "user_id",     :null => false
+    t.integer  "blogcast_id", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "settings", :force => true do |t|
@@ -52,6 +75,7 @@ ActiveRecord::Schema.define(:version => 20090913020834) do
     t.string   "name"
     t.string   "about"
     t.string   "web"
+    t.string   "time_zone"
     t.string   "avatar_file_name"
     t.string   "avatar_content_type"
     t.integer  "avatar_file_size"
@@ -65,24 +89,27 @@ ActiveRecord::Schema.define(:version => 20090913020834) do
   end
 
   create_table "subscriptions", :force => true do |t|
-    t.integer  "user_id",     :null => false
-    t.integer  "blogcast_id", :null => false
+    t.integer  "user_id",       :null => false
+    t.integer  "subscribed_to", :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "users", :force => true do |t|
-    t.string   "type",                                                 :null => false
+    t.string   "type",                                                   :null => false
     t.string   "name"
     t.string   "email"
-    t.string   "encrypted_password", :limit => 128
-    t.string   "salt",               :limit => 128
-    t.string   "confirmation_token", :limit => 128
-    t.string   "remember_token",     :limit => 128
-    t.boolean  "email_confirmed",                   :default => false, :null => false
+    t.string   "encrypted_password",   :limit => 128
+    t.string   "salt",                 :limit => 128
+    t.string   "confirmation_token",   :limit => 128
+    t.string   "remember_token",       :limit => 128
+    t.boolean  "email_confirmed",                     :default => false, :null => false
     t.integer  "facebook_id"
+    t.integer  "twitter_id"
+    t.string   "twitter_access_token"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "twitter_token_secret", :limit => nil
   end
 
   add_index "users", ["email"], :name => "index_users_on_email"
@@ -90,5 +117,12 @@ ActiveRecord::Schema.define(:version => 20090913020834) do
   add_index "users", ["id", "confirmation_token"], :name => "index_users_on_id_and_confirmation_token"
   add_index "users", ["name"], :name => "index_users_on_name"
   add_index "users", ["remember_token"], :name => "index_users_on_remember_token"
+
+  create_table "views", :force => true do |t|
+    t.integer  "blogcast_id", :null => false
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
 end

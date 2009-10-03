@@ -4,7 +4,14 @@ class FacebookSessionsController < ApplicationController
   def create
     if facebook_session
         #TODO: exception handling
-        @user = User.find_or_create_by_facebook_id(facebook_session.user.id)
+        #MVR - try and find the user otherwise create a new one
+        @user = User.find_by_facebook_id(facebook_session.user.id)
+        if @user.nil?
+          #TODO: calling create does not work?
+          @user = FacebookUser.new
+          @user.facebook_id = facebook_session.user.id
+          @user.save
+        end
         sign_in(@user)
         flash_success_after_create
         #MVR - redirect back or sign up 

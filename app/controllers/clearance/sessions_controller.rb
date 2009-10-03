@@ -1,6 +1,5 @@
 class Clearance::SessionsController < ApplicationController
-
-#actually do not want to do this
+  #actually do not want to do this
   before_filter :redirect_to_dashboard, :only => [:new, :create], :if => :signed_in_as_blogcastr_user?
   protect_from_forgery :except => :create
   filter_parameter_logging :password
@@ -58,8 +57,7 @@ class Clearance::SessionsController < ApplicationController
   end
 
   def url_after_create
-    #MVR - redirect to dashboard
-    url_for :controller => "/dashboard"
+    home_path
   end
 
   def flash_success_after_destroy

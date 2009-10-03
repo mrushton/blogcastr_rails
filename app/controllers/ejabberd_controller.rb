@@ -1,5 +1,6 @@
 class EjabberdController < ApplicationController
   #TODO: don't really want to do this want to return an error
+  #TODO: this is causing that terrible redirect behavior
   before_filter :authenticate
 
   def password

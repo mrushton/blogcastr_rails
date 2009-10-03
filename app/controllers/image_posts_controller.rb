@@ -4,14 +4,14 @@ class ImagePostsController < ApplicationController
   def create
     #MVR - no need to verify user or blog
     @user = current_user
-    @blogcast = @user.blogcast
+    @blogcast = @user.blogcasts.find(params[:blogcast_id]) 
     @image_post = ImagePost.new(params[:image_post])
     @image_post.blogcast_id = @blogcast.id
     @image_post.save
     thrift_user = Thrift::User.new
     thrift_user.name = @user.name
     thrift_user.account = "Blogcastr"
-    thrift_user.url = blogcast_path :username => @user.name
+    thrift_user.url = profile_path :username => @user.name
     thrift_user.avatar_url = @user.setting.avatar.url(:medium)
     thrift_image_post = Thrift::ImagePost.new
     thrift_image_post.id = @image_post.id

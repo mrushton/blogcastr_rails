@@ -1,0 +1,1 @@
+<%= button_to_remote "Unlike", :url => blogcast_like_path(:blogcast_id => @blogcast.id, :id => @like.id), :method => "delete", :failure => "alert('Error: Unable to unlike blogcast #{@blogcast.title}. Failed communicating with server.');" %>

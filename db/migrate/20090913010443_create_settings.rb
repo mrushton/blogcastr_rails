@@ -5,7 +5,7 @@ class CreateSettings < ActiveRecord::Migration
       t.string :name
       t.string :about
       t.string :web
-      #MVR - need to set timezone
+      t.string :time_zone
       t.string :avatar_file_name
       t.string :avatar_content_type
       t.integer :avatar_file_size

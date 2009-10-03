@@ -68,15 +68,20 @@ function blogcastrPostCallback(stanza)
     var text = body.find("text:first").text();
     var medium = body.find("medium:first").text();
     //create new post element
-    var text_p = jQuery("<p>").addClass("list_item_text").text(text);
+    var text_p = jQuery("<p>").addClass("text").text(text);
     var hours_minutes_ago_span = jQuery("<span>").addClass("hours_minutes_ago").attr("timestamp", timestamp).text(blogcastrHoursMinutesAgo(timestamp));
-    var info_p = jQuery("<p>").addClass("list_item_info").text("Posted ");
+    var info_p = jQuery("<p>").addClass("info").text("Posted ");
     info_p.append(hours_minutes_ago_span);
     info_p.append(" from " + medium);
-    var post_li = jQuery("<li>").attr("id",id).append(text_p).append(info_p);
+    var effect_div = jQuery("<div>").addClass("stream-effect").append(text_p).append(info_p);
+    var post_li = jQuery("<li>").attr("id",id).css("display", "none").append(effect_div);
     //add post to document if not present
     if (jQuery("li[id=" + id + "]").length == 0)
+    {
       jQuery("ol:first").prepend(post_li);
+      var element = jQuery("li:first").get(0);
+      new Effect.SlideDown(element, {duration: 0.5, queue: "end"});
+    }
   }
   else if (type == "imagePost")
   {
@@ -85,15 +90,20 @@ function blogcastrPostCallback(stanza)
     var image_url = body.find("image_url:first").text();
     var medium = body.find("medium:first").text();
     //create new post element
-    var image_img = jQuery("<img>").addClass("list_item_image").attr("src", image_url);
+    var image_img = jQuery("<img>").addClass("image").attr("src", image_url);
     var hours_minutes_ago_span = jQuery("<span>").addClass("hours_minutes_ago").attr("timestamp", timestamp).text(blogcastrHoursMinutesAgo(timestamp));
-    var info_p = jQuery("<p>").addClass("list_item_info").text("Posted ");
+    var info_p = jQuery("<p>").addClass("info").text("Posted ");
     info_p.append(hours_minutes_ago_span);
     info_p.append(" from " + medium);
-    var post_li = jQuery("<li>").attr("id",id).append(image_img).append(info_p);
+    var effect_div = jQuery("<div>").addClass("stream-effect").append(image_img).append(info_p);
+    var post_li = jQuery("<li>").attr("id",id).append(effect_div);
     //add post to document if not present
     if (jQuery("li[id=" + id + "]").length == 0)
+    {
       jQuery("ol:first").prepend(post_li);
+      var element = jQuery("li:first").get(0);
+      new Effect.SlideDown(element, {duration: 0.5, queue: "end"});
+    }
   }
   else if (type == "commentPost")
   {
@@ -121,17 +131,17 @@ function blogcastrPostCallback(stanza)
       else if (comment_user_account == "TwitterUser")
         var avatar_div = jQuery("<div>").addClass("twitter-avatar-medium-rounded").attr("style", "background-image: url('" + comment_user_avatar_url + "');");
       avatar_a.append(avatar_div);
-      var text_p = jQuery("<p>").addClass("list_item_text").text(comment_text);
+      var text_p = jQuery("<p>").addClass("text").text(comment_text);
       var comment_url_a = jQuery("<a>").attr("href", comment_user_url).attr("target", "_blank").text(comment_user_name);
       var comment_hours_minutes_ago_span = jQuery("<span>").addClass("hours_minutes_ago").attr("timestamp", comment_timestamp).text(blogcastrHoursMinutesAgo(comment_timestamp));
-      var comment_info_p = jQuery("<p>").addClass("list_item_info").text("Commented by ");
+      var comment_info_p = jQuery("<p>").addClass("info").text("Commented by ");
       comment_info_p.append(comment_url_a);
       comment_info_p.append(" ");
       comment_info_p.append(comment_hours_minutes_ago_span);
       comment_info_p.append(" from " + comment_medium);
       var clear_div = jQuery("<div>").addClass("clear");
       var comment_post_hours_minutes_ago_span = jQuery("<span>").addClass("hours_minutes_ago").attr("timestamp", timestamp).text(blogcastrHoursMinutesAgo(timestamp));
-      var comment_post_info_p = jQuery("<p>").addClass("list_item_info").text("Posted ");
+      var comment_post_info_p = jQuery("<p>").addClass("info").text("Posted ");
       comment_post_info_p.append(comment_post_hours_minutes_ago_span);
       comment_post_info_p.append(" from " + medium);
       var li = jQuery("<li>").attr("id",id).append(avatar_a).append(text_p).append(comment_info_p).append(clear_div).append(comment_post_info_p);
