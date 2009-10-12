@@ -1,0 +1,120 @@
+<div id="wrapper">
+  <div class="notice" id="success-notice" style="display: none;">
+  </div>
+  <div id="header">
+    <%= link_to "<div class=\"avatar-large-rounded avatar-large-rounded-background\"></div>", profile_path(:username => @blogcast_user.name), :target => "_blank" %>
+    <h1><%= @blogcast_user.name %></h1>
+<% if @user.instance_of?(BlogcastrUser) -%>
+    <div id="navigation">
+      <%= link_to "Home", home_path %>
+      <%= link_to "Settings", settings_path %>
+      <%= link_to "Sign out", sign_out_path %>
+    </div>
+    <%= link_to "<div class=\"avatar-small-rounded avatar-small-rounded-background\"></div>", profile_path(:username => @user.name), :target => "_blank" %>
+    <div class="clear">
+    </div>
+    <div id="like">
+  <%- if !(@user == @blogcast.user) -%>
+    <%- if @like.nil? -%>
+      <%= button_to_remote "Like", :url => blogcast_likes_path(:blogcast_id => @blogcast.id), :type => "submit", :failure => "alert('Error communicating with server, unable to like blogcast #{@blogcast.title}');" %>
+    <%- else -%>
+      <%= button_to_remote "Unlike", :url => blogcast_like_path(:blogcast_id => @blogcast.id, :id => @like.id), :method => "delete", :failure => "alert('Error communicating with server, unable to unlike blogcast #{@blogcast.title}');" %>
+    <%- end -%>
+  <%- end -%>
+    </div>
+<% elsif !@user.nil? -%>
+    <div id="navigation">
+      <%= link_to "Sign up", sign_up_path %>
+    </div>
+<% else -%>
+    <div id="navigation">
+      <%= link_to "Sign up", sign_up_path %>
+      <%= link_to "Sign in", sign_in_path %>
+    </div>
+<% end -%>
+  </div>
+  <div id="content">
+    <div id="main">
+      <h2><%= @blogcast.title -%></h2>
+      <h3 class="effect" onclick="blogcastrToggleBlindEffect('comment-effect-outer')">Comment</h3>
+      <div id="comment-effect-outer">
+        <div id="comment-effect-inner">
+          <div id="comment">
+<% if signed_in? -%>
+  <%- if signed_in_as_blogcastr_user? -%>
+            <p>Send <%= @blogcast_user.name -%> a comment.</p>
+  <%- elsif signed_in_as_facebook_user? -%>
+            <p>Send <%= @blogcast_user.name -%> a comment. <a class="sign-out" href="#" onclick="FB.Connect.logout(blogcastrFacebookSignOut); return false;">Sign out</a> of Facebook.</p>
+  <%- elsif signed_in_as_twitter_user? -%>
+            <p>Send <%= @blogcast_user.name -%> a comment. <a class="sign-out" href="#" onclick="blogcastrTwitterSignOut(); return false;">Sign out</a> of Twitter.</p>
+  <%- end -%>
+            <%= link_to "<div class=\"avatar #{@user.get_user_avatar_class :medium}\" style=\"background-image: url('#{@user.get_user_avatar_url :medium}');\"></div>", @user.get_user_url, :target => "_blank", :class => "avatar" %>
+            <% remote_form_for :text_comment, :url => blogcast_text_comments_path(:blogcast_id => @blogcast.id), :html => { :id => "text_comment_form", :method => "post"}, :complete => "$('text_comment_form').reset();" do |f| -%>
+              <input id="jid" type="hidden" value="" name="jid"/>
+              <%= f.hidden_field :from %>
+              <%= f.label :text, "Text" %>
+              <br>
+              <%= f.text_area :text %>
+	      <br>
+              <%= f.submit "Submit" %>
+            <%- end -%>
+            <div class="clear">
+            </div>
+<% else -%>
+            <p>To send <%= @blogcast_user.name -%> a comment sign in or connect.</p>
+            <a href="#" onclick="FB.Connect.requireSession(blogcastrFacebookSignIn); return false;"><img id="facebook_connect_image" src="http://static.ak.fbcdn.net/images/fbconnect/login-buttons/connect_light_medium_long.gif" alt="Facebook connect" /></a>
+            <a href="#" onclick="blogcastrTwitterSignIn(); return false;"><img id="twitter_sign_in_image" src="/images/Sign-in-with-Twitter-darker.png" alt="Twitter sign in" /></a>
+<% end -%>
+          </div>
+        </div>
+      </div>
+      <div class="background">
+        <h3><span class="counter-medium"><%= @num_posts -%></span> <%= @num_posts == 1 ? "Post" : "Posts" -%></h3>
+        <ol class="stream" id="public-stream">
+<%- for post in @posts -%>
+  <%- if post.instance_of?(TextPost) -%>
+          <%= render :partial => "text_post", :object => post -%>
+  <%- elsif post.instance_of?(ImagePost) -%>
+          <%= render :partial => "image_post", :object => post -%>
+  <%- elsif post.instance_of?(CommentPost) -%>
+          <%= render :partial => "comment_post", :object => post -%>
+  <%- elsif post.instance_of?(Repost) -%>
+          <%= render :partial => "repost", :object => post -%>
+  <%- end -%>
+<%- end -%>
+        </ol>
+      </div>
+    </div>
+    <div id="side">
+      <h4>Date</h4>
+      <p class="date"><%= @blogcast.starting_at.strftime("%a %m/%d/%y %I:%M %p").gsub(/ 0/,' ') %></p>
+      <br>
+<% if !@blogcast.tags.nil? %>
+      <h4>Tags</h4>
+      <p class="tags"><%= @blogcast.tags -%></p>
+      <br>
+<% end -%>
+<% if !@blogcast.description.nil? %>
+      <h4>Description</h4>
+      <p><%= @blogcast.description -%></p>
+      <br>
+<% end -%>
+      <h3><span class="counter-medium"><%= @num_comments -%></span> <%= @num_comments == 1 ? "Comment" : "Comments" -%></h3>
+      <h3><span class="counter-medium"><%= @num_likes -%></span> <%= @num_likes == 1 ? "Like" : "Likes" -%></h3>
+      <ul>
+<% for like in @likes -%>
+        <li>
+          <%= link_to "<div class=\"avatar-small-rounded\" style=\"background-image: url('#{like.setting.avatar.url(:small)}');\"></div>", profile_path(:username => like.name), :target => "_blank" %>
+        </li>
+<% end -%>
+      </ul>
+      <h3><span class="counter-medium"><%= @num_viewers -%></span> <%= @num_viewers == 1 ? "Viewer" : "Viewers" -%></h3>
+      <h3><span class="counter-medium"><%= @num_views -%></span> <%= @num_views == 1 ? "View" : "Views" -%></h3>
+    </div>
+  </div>
+  <div class="clear">
+  </div>
+  <div id="footer">
+    <p>&copy; 2009 Blogcastr</p>
+  </div>
+</div>

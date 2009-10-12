@@ -38,13 +38,41 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :users, :controller => "clearance/users" do |users|
     users.resource :password, :controller => "clearance/passwords", :only => [:create, :edit, :update]
     users.resource :confirmation, :controller => "clearance/confirmations", :only => [:new, :create]
-    users.resource "blogcasts", :controller => "blogcasts", :only => [:show], :collection => {"recent" => :get, "upcoming" => :get}
   end
   map.sign_up  "sign_up", :controller => "clearance/users", :action => "new"
   map.sign_in  "sign_in", :controller => "clearance/sessions", :action => "new"
   map.sign_out "sign_out", :controller => "clearance/sessions", :action => "destroy", :method => :delete
+  #MVR - user
+  map.resources :users, :only => [] do |users|
+    #MVR - user blogcasts
+    users.resources "blogcasts", :controller => "users/blogcasts", :only => [:index, :show], :collection => {"recent" => :get, "upcoming" => :get}
+    #MVR - user comments 
+    users.resources "comments", :controller => "users/comments", :only => [:index]
+    #MVR - users likes
+    users.resources "likes", :controller => "users/likes", :only => [:index]
+    #MVR - user subscriptions 
+    users.resources "subscriptions", :controller => "users/subscriptions", :only => [:index]
+    #MVR - user subscribers 
+    users.resources "subscribers", :controller => "users/subscribers", :only => [:index]
+  end
+  #MVR - user blogcasts
+  map.user_name_blogcasts ":user_name/blogcasts.:format", :controller => "users/blogcasts", :format => nil
+  map.user_name_recent_blogcasts ":user_name/blogcasts/recent.:format", :controller => "users/blogcasts", :action => "recent", :format => nil
+  map.user_name_upcoming_blogcasts ":user_name/blogcasts/upcoming.:format", :controller => "users/blogcasts", :action => "upcoming", :format => nil
+  #MVR - user blogcast
+  map.user_name_blogcast_permalink ":user_name/:year/:month/:day/:title.:format", :controller => "users/blogcasts", :action => "show", :format => nil, :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
+  #MVR - user likes 
+  map.user_name_likes ":user_name/likes.:format", :controller => "users/likes", :format => nil
+  #MVR - user comments 
+  map.user_name_comments ":user_name/comments.:format", :controller => "users/comments", :format => nil
+  #MVR - user subscriptions
+  map.user_name_subscriptions ":user_name/subscriptions.:format", :controller => "users/subscriptions", :format => nil
+  #MVR - user subscribers
+  map.user_name_subscribers ":user_name/subscribers.:format", :controller => "users/subscribers", :format => nil
   #MVR - site 
   map.root :controller => "site"
+  #MVR - authentication token
+  map.authentication_token "authentication_token.:format", :controller => "authentication_tokens", :action => "create", :method => "post", :format => nil
   #MVR - home
   map.home "home", :controller => "home"
   #MVR - settings 
@@ -59,13 +87,13 @@ ActionController::Routing::Routes.draw do |map|
     #MVR - dashboard
     blogcasts.resource :dashboard, :controller => "dashboard", :only => [:show]
     #MVR - text posts
-    blogcasts.resources "text_posts", :controller => "text_posts", :only => [:create, :destroy]
+    blogcasts.resources :text_posts, :controller => "text_posts", :only => [:create, :destroy]
     #MVR - image posts
-    blogcasts.resources "image_posts", :controller => "image_posts", :only => [:create, :destroy]
+    blogcasts.resources :image_posts, :controller => "image_posts", :only => [:create, :destroy]
     #MVR - comment posts
-    blogcasts.resources "comment_posts", :controller => "comment_posts", :only => [:create, :destroy]
+    blogcasts.resources :comment_posts, :controller => "comment_posts", :only => [:create, :destroy]
     #MVR - reposts
-    blogcasts.resources "reposts", :controller => "reposts", :only => [:create, :destroy]
+    blogcasts.resources :reposts, :controller => "reposts", :only => [:create, :destroy]
     #MVR - text comments
     blogcasts.resources :text_comments, :controller => "text_comments", :only => [:create]
     #MVR - image comments

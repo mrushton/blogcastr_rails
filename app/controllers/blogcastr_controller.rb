@@ -1,2 +1,0 @@
-class BlogcastrController < ApplicationController
-end

@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title><%= @blogcast_user.name %>'s Blogcast</title>
+    <link rel="stylesheet" href="/stylesheets/blogcastr.css" media="screen"/>
+    <%= javascript_include_tag :defaults, "jquery.js", "strophe/b64.js", "strophe/md5.js", "strophe/sha1.js", "strophe/strophe.js", "strophe/plugins/strophe.pubsub.js", "blogcast.js", :media => "all" %>
+    <style>
+      body
+      {
+        background: url('<%= @blogcast.user.setting.background.url %>') fixed no-repeat top left;
+      }
+<% if @user.instance_of?(BlogcastrUser) -%>
+      .avatar-small-rounded-background
+      {
+        background-image: url('<%= @user.setting.avatar(:small) %>');
+      }
+<% end -%>
+      .avatar-large-rounded-background
+      {
+        background-image: url('<%= @blogcast.user.setting.avatar(:large) %>');
+      }
+    </style>
+    <%= javascript_tag "var authenticity_token = \"#{form_authenticity_token}\"" %>
+<% if @user.instance_of?(FacebookUser) -%>
+    <%= javascript_tag "var facebook_id = #{@user.facebook_id}" %>
+<% end -%>
+    <script type="text/javascript">
+      jQuery.noConflict();
+      var blogname = "<%= @blogcast_user.name %>";
+      var nodename = "/home/blogcastr.com/<%= @blogcast_user.name %>/blog";
+      var roomname = "<%= @blogcast_user.name %>.blog@conference.blogcastr.com";
+<% if @user.instance_of?(BlogcastrUser) -%>
+      var username = "<%= @user.name %>";
+<% else -%>
+      var username;
+<% end -%>
+      var server_timestamp = <%= Time.now.to_i %>
+    </script>
+<% if @user.instance_of?(BlogcastrUser) -%>
+    <script type="text/javascript" src="http://blogcastr.com/ejabberd/password.js"></script>
+<% end -%>
+  </head>
+  <body>
+    <%= yield :layout %>
+    <%= fb_connect_javascript_tag %>
+    <%- #init_fb_connect :app_settings => "{\"ifUserConnected\": blogcastrFacebookUserConnected, \"ifUserNotConnected\": blogcastrFacebookUserNotConnected}" %>
+    <%= init_fb_connect %>
+  </body>
+</html>

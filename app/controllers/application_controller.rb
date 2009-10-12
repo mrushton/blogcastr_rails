@@ -35,6 +35,7 @@ class ApplicationController < ActionController::Base
     @thrift_transport.close if defined?(@thrift_transport)
   end
 
+  #TODO: get to work for xml
   def set_time_zone
     if signed_in?
       if !current_user.setting.nil?

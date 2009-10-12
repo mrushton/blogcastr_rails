@@ -1,0 +1,37 @@
+<div id="wrapper">
+  <div id="header">
+    <%= link_to "<div class=\"avatar-large-rounded avatar-large-rounded-background\" style=\"background-image: url('#{@user.setting.avatar(:large)}')\"></div>", profile_path(:username => @user.name), :target => "_blank" %>
+    <h1><%= @user.name %></h1>
+    <div id="navigation">
+      <%= link_to "Home", home_path %>
+      <%= link_to "Settings", settings_path %>
+      <%= link_to "Sign out", sign_out_path, :method => :delete %>
+    </div>
+  </div>
+  <div id="content">
+    <div id="main">
+      <h2>Edit Blogcast<h2>
+      <% form_for @blogcast, :url => blogcast_path(:id => @blogcast.id) do |form| %>
+        <%= form.error_messages %>
+        <%= form.label :title, "Title" %>
+        <%= form.text_field :title %>
+        <br>
+        <%= form.label :tags, "Tags" %>
+        <%= form.text_field :tags %>
+        <br>
+        <%= form.label :description, "Description" %>
+        <%= form.text_area :description %>
+        <br>
+        <%= form.datetime_select :starting_at %>
+        <br>
+        <%= form.submit 'Submit', :disable_with => 'Submitting...' %>
+      <% end %>
+    </div>
+    <div id="sidebar">
+    </div>
+    <div class="clear"></div>
+  </div>
+  <div id="footer">
+    <p>&copy; 2009 Blogcastr</p>
+  </div>
+</div>

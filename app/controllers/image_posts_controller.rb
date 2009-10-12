@@ -1,13 +1,31 @@
 class ImagePostsController < ApplicationController
-  before_filter :authenticate
+  before_filter do |controller|
+    if controller.request.format.html?
+      controller.authenticate
+    else 
+      controller.rest_authenticate
+    end
+  end
 
   def create
-    #MVR - no need to verify user or blog
-    @user = current_user
+    if request.format.html?
+      @user = current_user
+    else 
+      @user = rest_current_user
+    end
     @blogcast = @user.blogcasts.find(params[:blogcast_id]) 
     @image_post = ImagePost.new(params[:image_post])
     @image_post.blogcast_id = @blogcast.id
-    @image_post.save
+    begin
+      @image_post.save
+    rescue ActiveRecord::StatementInvalid => error
+      respond_to do |format|
+        format.html {render :file => "public/404.html", :layout => false, :status => 404}
+        format.xml {render :xml => "<errors><error>#{error.message}</error></errors>", :status => :unprocessable_entity}
+        format.json {render :json => "[[\"#{error.message}\"]]", :status => :unprocessable_entity}
+      end
+      return
+    end
     thrift_user = Thrift::User.new
     thrift_user.name = @user.name
     thrift_user.account = "Blogcastr"
