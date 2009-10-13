@@ -34,6 +34,7 @@ Rails::Initializer.run do |config|
   config.gem "thoughtbot-factory_girl", :lib => "factory_girl", :source => "http://gems.github.com"
   config.gem "thoughtbot-clearance", :lib => "clearance", :source => "http://gems.github.com", :version => "0.8.2"
   config.gem "thoughtbot-paperclip", :lib => "paperclip", :source => "http://gems.github.com"
+  config.gem "aws-s3", :lib => "aws/s3"
   config.gem "thrift"
   config.gem "twitter"
 

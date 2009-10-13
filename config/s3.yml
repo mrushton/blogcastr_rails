@@ -1,0 +1,14 @@
+development:
+  access_key_id: AKIAI2UO24FZRKUKVXVA
+  secret_access_key: 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
+  bucket: blogcastr-development
+
+test:
+  access_key_id: AKIAI2UO24FZRKUKVXVA
+  secret_access_key: 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
+  bucket: blogcastr-test
+
+production:
+  access_key_id: AKIAI2UO24FZRKUKVXVA
+  secret_access_key: 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
+  bucket: blogcastr
