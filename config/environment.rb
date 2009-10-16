@@ -37,7 +37,7 @@ Rails::Initializer.run do |config|
   config.gem "aws-s3", :lib => "aws/s3"
   config.gem "thrift"
   config.gem "twitter"
-  config.gem "memcache-client"
+  config.gem "memcache-client", :lib => "memcache"
   config.gem "sqlite3-ruby", :lib => "sqlite3"
   config.gem "postgres"
 
