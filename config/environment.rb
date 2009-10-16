@@ -38,7 +38,7 @@ Rails::Initializer.run do |config|
   config.gem "thrift"
   config.gem "twitter"
   config.gem "memcache-client"
-  config.gem "sqlite3-ruby"
+  config.gem "sqlite3-ruby", :lib => "sqlite3"
   config.gem "postgres"
 
   # Only load the plugins named here, in the order given (default is alphabetical).
