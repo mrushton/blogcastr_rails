@@ -17,12 +17,7 @@ role :web, "blogcastr.com"
 role :app, "blogcastr.com"
 role :db,  "blogcastr.com", :primary => true
 
-#MVR - need to set the permissions on the tmp directory so Passenger can remove the restart file
-after "deploy:finalize_update", :update_tmp_permissions
-task :update_tmp_permissions do
-  run "chmod g+w #{File.join(release_path, 'tmp')}"
-end
-
+#MVR - deploy tasks
 namespace :deploy do
   task :start do
   end 
@@ -30,7 +25,5 @@ namespace :deploy do
   end 
   task :restart, :roles => :app, :except => {:no_release => true} do
     run "touch #{File.join(current_path, 'tmp', 'restart.txt')}"
-    #MVR - give apache permission to delete file
-    run "chmod g+w #{File.join(current_path, 'tmp', 'restart.txt')}"
   end
 end
