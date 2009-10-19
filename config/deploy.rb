@@ -1,7 +1,7 @@
 #MVR - tty and ssh settings
 default_run_options[:pty] = true
+ssh_options[:keys] = [File.join(ENV["HOME"], ".ec2", "deploy.pem")]
 ssh_options[:forward_agent] = true
-ssh_options[:keys] = [File.join(ENV["HOME"], ".ec2", "root.pem")]
 
 set :application, "blogcastr"
 set :user, "deploy"

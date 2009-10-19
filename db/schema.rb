@@ -12,17 +12,18 @@
 ActiveRecord::Schema.define(:version => 20090929055821) do
 
   create_table "blogcasts", :force => true do |t|
-    t.integer  "user_id",                    :null => false
-    t.string   "title",                      :null => false
-    t.integer  "year",                       :null => false
-    t.integer  "day",                        :null => false
-    t.integer  "month",                      :null => false
-    t.string   "link_title",                 :null => false
+    t.integer  "user_id",                                   :null => false
+    t.string   "title",                                     :null => false
+    t.integer  "year",                                      :null => false
+    t.integer  "day",                                       :null => false
+    t.integer  "month",                                     :null => false
+    t.string   "link_title",                                :null => false
     t.string   "tags"
-    t.datetime "starting_at",                :null => false
+    t.datetime "starting_at",                               :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "views_count", :default => 0
+    t.integer  "views_count",                :default => 0
+    t.string   "description", :limit => nil
   end
 
   create_table "comments", :force => true do |t|
@@ -110,6 +111,7 @@ ActiveRecord::Schema.define(:version => 20090929055821) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "twitter_token_secret", :limit => nil
+    t.string   "authentication_token", :limit => nil
   end
 
   add_index "users", ["email"], :name => "index_users_on_email"
