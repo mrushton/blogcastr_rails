@@ -4,6 +4,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Blogcastr</title>
     <link rel="stylesheet" href="stylesheets/blogcastr.css" media="screen"/>
+  </head>
+  <body>
+    <%= yield :layout %>
     <script type="text/javascript" charset="utf-8">
       var is_ssl = ("https:" == document.location.protocol);
       var asset_host = is_ssl ? "https://s3.amazonaws.com/getsatisfaction.com/" : "http://s3.amazonaws.com/getsatisfaction.com/";
@@ -18,9 +21,6 @@
       feedback_widget_options.style = "idea";
       var feedback_widget = new GSFN.feedback_widget(feedback_widget_options);
     </script>
-  </head>
-  <body>
-    <%= yield :layout %>
     <script type="text/javascript">
       var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
       document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));

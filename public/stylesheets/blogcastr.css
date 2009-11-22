@@ -1,7 +1,12 @@
+html
+{
+	height: 100%;
+}
+
 body
 {
 	margin: 10px;
-	font-family: sans-serif;
+	font-family: Helvetica, sans-serif;
         background-image: url('/images/background.png');
 	background-color: #e1dada;
 	background-repeat: repeat-x;
@@ -89,17 +94,25 @@ h5
 
 #header
 {
-	height: 90px;
-	padding-top: 10px;
+	height: 80px;
 	text-align: right;
 }
 
-#header h1
+#header h1 
 {
 	margin: 0px;
 	position: absolute;
 	left: 120px;
 	top: 40px;
+	font-family: sans-serif;
+}
+
+#header img
+{
+	margin: 0px;
+	position: absolute;
+	left: 0px;
+	top: 0px;
 	font-family: sans-serif;
 }
 
@@ -220,7 +233,7 @@ h5
 	color: #336699;
 	font-weight: bold;
 	font-size: 2.0em;
-	font-family: helvetica;
+	font-family: Helvetica;
 }
 
 #main h3
@@ -337,7 +350,7 @@ h5
 	color: #336699;
 	font-size: 1.25em;
 	font-weight: bold;
-	font-family: helvetica, arial, sans-serif;
+	font-family: Helvetica, sans-serif;
 }
 
 #main ol li h3 a
@@ -922,7 +935,7 @@ h5
 	color: #336699;
 	font-size: 1.25em;
 	font-weight: bold;
-	font-family: helvetica, arial, sans-serif;
+	font-family: Helvetica, sans-serif;
 }
 
 #main ol li h3 a

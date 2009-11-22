@@ -1,6 +1,6 @@
 <div id="wrapper">
   <div id="header">
-    <h1>Blogcastr</h1>
+    <img src="images/logo.png" alt="Blogcastr"></img> 
 <% if @user.instance_of?(BlogcastrUser) -%>
     <div id="navigation">
       <%= link_to "Home", home_path %>
@@ -20,8 +20,7 @@
 <% end -%>
   </div>
   <div id="content">
-    <h2>Broadcast your blog live. <%= link_to "Sign up", sign_up_path %> today.<h2>
-    <h3>Launching soon!</h3>
+    <h2>Broadcast your blog live. <%= link_to "Sign up", sign_up_path %> today.</h2>
   </div>
   <div id="footer">
     <p>&copy; 2009 Blogcastr</p>
