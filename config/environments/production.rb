@@ -24,8 +24,18 @@ config.action_view.cache_template_loading            = true
 # Disable delivery errors, bad email addresses will be ignored
 # config.action_mailer.raise_delivery_errors = false
 
+#MVR - mail relay
+config.action_mailer.smtp_settings = {
+  :address => "smtp.1and1.com",
+  :port => 587,
+  :domain => "movolu.com",
+  :authentication => :login,
+  :user_name => "mrushton@movolu.com",
+  :password => "hkbcfjiP7"
+}
+
 # Enable threaded mode
 # config.threadsafe!
 
-#MVR - needed for clearance
-HOST = "http://blogcastr.com"
+#MVR - define the host we are running on 
+HOST = "blogcastr.com"

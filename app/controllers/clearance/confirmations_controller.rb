@@ -63,7 +63,7 @@ class Clearance::ConfirmationsController < ApplicationController
   end
 
   def url_after_create
-    dashboard_url
+    home_url
   end
 
   def url_already_confirmed

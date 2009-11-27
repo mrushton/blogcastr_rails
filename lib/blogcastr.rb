@@ -12,13 +12,13 @@ require 'blogcastr_types'
         class Client
           include ::Thrift::Client
 
-          def create_user(username, password)
-            send_create_user(username, password)
+          def create_user(user_name, host_name, password)
+            send_create_user(user_name, host_name, password)
             return recv_create_user()
           end
 
-          def send_create_user(username, password)
-            send_message('create_user', Create_user_args, :username => username, :password => password)
+          def send_create_user(user_name, host_name, password)
+            send_message('create_user', Create_user_args, :user_name => user_name, :host_name => host_name, :password => password)
           end
 
           def recv_create_user()
@@ -485,7 +485,7 @@ require 'blogcastr_types'
           def process_create_user(seqid, iprot, oprot)
             args = read_args(iprot, Create_user_args)
             result = Create_user_result.new()
-            result.success = @handler.create_user(args.username, args.password)
+            result.success = @handler.create_user(args.user_name, args.host_name, args.password)
             write_result(result, oprot, 'create_user', seqid)
           end
 
@@ -705,12 +705,14 @@ require 'blogcastr_types'
 
         class Create_user_args
           include ::Thrift::Struct
-          USERNAME = 1
-          PASSWORD = 2
+          USER_NAME = 1
+          HOST_NAME = 2
+          PASSWORD = 3
 
-          ::Thrift::Struct.field_accessor self, :username, :password
+          ::Thrift::Struct.field_accessor self, :user_name, :host_name, :password
           FIELDS = {
-            USERNAME => {:type => ::Thrift::Types::STRING, :name => 'username'},
+            USER_NAME => {:type => ::Thrift::Types::STRING, :name => 'user_name'},
+            HOST_NAME => {:type => ::Thrift::Types::STRING, :name => 'host_name'},
             PASSWORD => {:type => ::Thrift::Types::STRING, :name => 'password'}
           }
 

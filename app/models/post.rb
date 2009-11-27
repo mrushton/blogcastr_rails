@@ -1,4 +1,5 @@
 class Post < ActiveRecord::Base
-  acts_as_tree
   belongs_to :blogcast
+  acts_as_tree
+  acts_as_solr
 end

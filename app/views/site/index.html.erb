@@ -1,6 +1,6 @@
 <div id="wrapper">
   <div id="header">
-    <img src="images/logo.png" alt="Blogcastr"></img> 
+    <a href="/"><img src="/images/logo.png" alt="Blogcastr" border=0></img></a>
 <% if @user.instance_of?(BlogcastrUser) -%>
     <div id="navigation">
       <%= link_to "Home", home_path %>

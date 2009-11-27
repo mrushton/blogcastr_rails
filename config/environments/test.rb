@@ -27,5 +27,5 @@ config.action_mailer.delivery_method = :test
 # like if you have constraints or database-specific column types
 # config.active_record.schema_format = :sql
 
-#MVR - needed for clearance
+#MVR - define the host we are running on 
 HOST = "localhost"

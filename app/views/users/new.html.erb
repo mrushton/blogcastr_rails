@@ -19,11 +19,41 @@
     </script>
   </head>
   <body>
-    <h2>Sign up</h2>
-    <% form_for @user, :url => {:controller => "clearance/users"} do |form| %>
-      <input id="utc_offset" type="hidden" name="utc_offset" value="">
-      <%= render :partial => '/users/form', :object => form %>
-      <%= form.submit 'Sign up', :disable_with => 'Please wait...' %>
-    <% end %>
+    <div id="wrapper">
+      <div id="header">
+        <a href="/"><img src="/images/logo.png" alt="Blogcastr" border=0></img></a>
+        <div id="navigation">
+          <%= link_to "Sign up", sign_up_path %>
+          <%= link_to "Sign in", sign_in_path %>
+        </div>
+      </div>
+      <div id="content">
+        <h2>Sign up</h2>
+        <% form_for :blogcastr_user, :url => users_path do |form| %>
+          <%= form.error_messages %>
+          <input id="utc_offset" type="hidden" name="utc_offset" value="">
+          <%= form.label :user_name %>
+          <br>
+          <%= form.text_field :name %>
+          <br>
+          <%= form.label :email %>
+          <br>
+          <%= form.text_field :email %>
+          <br>
+          <%= form.label :password %>
+          <br>
+          <%= form.password_field :password %>
+          <br>
+          <%= form.label :password_confirmation, "Confirm password" %>
+          <br>
+          <%= form.password_field :password_confirmation %>
+          <br>
+          <%= form.submit 'Submit', :disable_with => 'Submitting...' %>
+        <% end %>
+      </div>
+      <div id="footer">
+        <p>&copy; 2009 Blogcastr</p>
+      </div>
+    </div>
   </body>
 </html>

@@ -6,7 +6,7 @@ RAILS_GEM_VERSION = '2.3.2' unless defined? RAILS_GEM_VERSION
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 
-#MVR - needed for clearence
+#MVR - clearence email
 DO_NOT_REPLY = "accounts@blogcastr.com"
 
 #TODO: refactor this

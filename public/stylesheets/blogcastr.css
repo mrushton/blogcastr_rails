@@ -199,7 +199,24 @@ h5
 #content
 {
 	margin: 20px;
-	text-align: center;
+	text-align: left;
+}
+
+#content form
+{
+	margin: auto;
+	width: 300px;
+	padding: 10px;
+	text-align: left;
+	background-color: #e1dada;
+	border: solid;
+	border-width: 3px;
+	border-color: #333333;
+}
+
+div .form_wrapper
+{
+	text-align: left;
 }
 
 #main

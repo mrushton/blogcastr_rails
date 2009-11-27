@@ -5,7 +5,7 @@ class Clearance::UsersController < ApplicationController
 
   def new
     @user = ::BlogcastrUser.new(params[:blogcastr_user])
-    render :template => 'users/new'
+    render :template => 'users/new', :layout => true
   end
 
   def create
@@ -32,16 +32,12 @@ class Clearance::UsersController < ApplicationController
       end
       begin
         #AS DESIGNED: create ejabberd account here since password gets encrypted
-        thrift_client.create_user(@user.name, params[:blogcastr_user][:password])
-        #AS DESIGNED: one node and muc per user
-        thrift_client.create_pubsub_node(@user.name, "/home/blogcastr.com/" + @user.name)
-        thrift_client.create_pubsub_node(@user.name, "/home/blogcastr.com/" + @user.name + "/blog")
-        thrift_client.create_muc_room(@user.name, @user.name + "." + "blog", @user.name + "'s blogcast", "")
+        thrift_client.create_user(@user.name, HOST, params[:blogcastr_user][:password])
         thrift_client_close
       rescue
         @user.destroy
         @setting.destroy
-        @blogcast.destroy
+        #TODO: error message is not working properly
         flash[:notice] = "Error: Unable to create ejabberd account"
         render :template => 'users/new'
         return
@@ -57,10 +53,7 @@ class Clearance::UsersController < ApplicationController
   private
 
   def flash_notice_after_create
-    flash[:notice] = translate(:deliver_confirmation,
-      :scope   => [:clearance, :controllers, :users],
-      :default => "You will receive an email within the next few minutes. " <<
-                  "It contains instructions for confirming your account.")
+    flash[:notice] = translate(:deliver_confirmation, :scope => [:clearance, :controllers, :users], :default => "You will receive an email shortly. " << "It contains instructions for confirming your account.")
   end
 
   def url_after_create

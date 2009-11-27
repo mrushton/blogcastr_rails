@@ -26,5 +26,5 @@ config.action_mailer.smtp_settings = {
   :password => "hkbcfjiP7"
 }
 
-#MVR - needed for clearance
-HOST = "blogcastr.com"
+#MVR - define the host we are running on 
+HOST = "localhost"
