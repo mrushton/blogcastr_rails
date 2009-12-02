@@ -75,7 +75,6 @@ h5
 	-moz-opacity:0.70;
 	-khtml-opacity: 0.70;
 	opacity: 0.70;
-
 }
 
 .counter-large-add
@@ -170,6 +169,13 @@ h5
 #navigation a:active
 {
 	text-decoration: underline;
+}
+
+#header form
+{
+	margin-right: 10px;
+	margin-top: 0px;
+	margin-left: 5px;
 }
 
 #subscription

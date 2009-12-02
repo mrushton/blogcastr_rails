@@ -71,6 +71,8 @@ ActionController::Routing::Routes.draw do |map|
   map.user_name_subscribers ":user_name/subscribers.:format", :controller => "users/subscribers", :format => nil
   #MVR - site 
   map.root :controller => "site"
+  #MVR - search
+  map.search "search", :controller => "search"
   #MVR - authentication token
   map.authentication_token "authentication_token.:format", :controller => "authentication_tokens", :action => "create", :method => "post", :format => nil
   #MVR - home

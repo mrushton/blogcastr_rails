@@ -1,0 +1,22 @@
+<% form_tag search_path, :onSubmit => "blogcastrValidateForm();" do %>
+  <%= text_field_tag :query, params[:query] %>
+  <%= radio_button_tag :type, "Blogcasts", true %>
+  <%= radio_button_tag :type, "Posts" %>
+  <%= radio_button_tag :type, "Comments" %>
+  <%= submit_tag "Submit" %>
+<% end %>
+<% if params[:query].nil? -%>
+  showing no results
+<% else %>
+  <%- if params[:type] == "Blogcasts" -%>
+  <%- elsif params[:type] == "Comments" -%>
+  <%- else -%>
+      <ol>
+    <%- for blogcast in @blogcasts.results -%>
+        <li class="blogcast">
+    <%= blogcast.title -%>
+        </li>
+    <%- end -%>
+      </ol>
+  <%- end -%>
+<% end -%>
