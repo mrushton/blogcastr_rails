@@ -27,13 +27,13 @@ require 'blogcastr_types'
             raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'create_user failed: unknown result')
           end
 
-          def destroy_user(username)
-            send_destroy_user(username)
+          def destroy_user(user_name)
+            send_destroy_user(user_name)
             return recv_destroy_user()
           end
 
-          def send_destroy_user(username)
-            send_message('destroy_user', Destroy_user_args, :username => username)
+          def send_destroy_user(user_name)
+            send_message('destroy_user', Destroy_user_args, :user_name => user_name)
           end
 
           def recv_destroy_user()
@@ -42,13 +42,13 @@ require 'blogcastr_types'
             raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'destroy_user failed: unknown result')
           end
 
-          def get_user_password(username)
-            send_get_user_password(username)
+          def get_user_password(user_name, host_name)
+            send_get_user_password(user_name, host_name)
             return recv_get_user_password()
           end
 
-          def send_get_user_password(username)
-            send_message('get_user_password', Get_user_password_args, :username => username)
+          def send_get_user_password(user_name, host_name)
+            send_message('get_user_password', Get_user_password_args, :user_name => user_name, :host_name => host_name)
           end
 
           def recv_get_user_password()
@@ -492,14 +492,14 @@ require 'blogcastr_types'
           def process_destroy_user(seqid, iprot, oprot)
             args = read_args(iprot, Destroy_user_args)
             result = Destroy_user_result.new()
-            result.success = @handler.destroy_user(args.username)
+            result.success = @handler.destroy_user(args.user_name)
             write_result(result, oprot, 'destroy_user', seqid)
           end
 
           def process_get_user_password(seqid, iprot, oprot)
             args = read_args(iprot, Get_user_password_args)
             result = Get_user_password_result.new()
-            result.success = @handler.get_user_password(args.username)
+            result.success = @handler.get_user_password(args.user_name, args.host_name)
             write_result(result, oprot, 'get_user_password', seqid)
           end
 
@@ -741,11 +741,11 @@ require 'blogcastr_types'
 
         class Destroy_user_args
           include ::Thrift::Struct
-          USERNAME = 1
+          USER_NAME = 1
 
-          ::Thrift::Struct.field_accessor self, :username
+          ::Thrift::Struct.field_accessor self, :user_name
           FIELDS = {
-            USERNAME => {:type => ::Thrift::Types::STRING, :name => 'username'}
+            USER_NAME => {:type => ::Thrift::Types::STRING, :name => 'user_name'}
           }
 
           def struct_fields; FIELDS; end
@@ -773,11 +773,13 @@ require 'blogcastr_types'
 
         class Get_user_password_args
           include ::Thrift::Struct
-          USERNAME = 1
+          USER_NAME = 1
+          HOST_NAME = 2
 
-          ::Thrift::Struct.field_accessor self, :username
+          ::Thrift::Struct.field_accessor self, :user_name, :host_name
           FIELDS = {
-            USERNAME => {:type => ::Thrift::Types::STRING, :name => 'username'}
+            USER_NAME => {:type => ::Thrift::Types::STRING, :name => 'user_name'},
+            HOST_NAME => {:type => ::Thrift::Types::STRING, :name => 'host_name'}
           }
 
           def struct_fields; FIELDS; end
