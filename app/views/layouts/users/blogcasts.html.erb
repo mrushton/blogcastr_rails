@@ -27,9 +27,10 @@
 <% end -%>
     <script type="text/javascript">
       jQuery.noConflict();
+      var hostname = "<%= HOST %>";
       var blogname = "<%= @blogcast_user.name %>";
       var nodename = "/home/blogcastr.com/<%= @blogcast_user.name %>/blog";
-      var roomname = "<%= @blogcast_user.name %>.blog@conference.blogcastr.com";
+      var blogcast_id = <%= @blogcast.id %>;
 <% if @user.instance_of?(BlogcastrUser) -%>
       var username = "<%= @user.name %>";
 <% else -%>
@@ -38,13 +39,17 @@
       var server_timestamp = <%= Time.now.to_i %>
     </script>
 <% if @user.instance_of?(BlogcastrUser) -%>
-    <script type="text/javascript" src="http://blogcastr.com/ejabberd/password.js"></script>
+  <%- if Rails.env.production? -%> 
+    <script type="text/javascript" src="https://blogcastr.com/ejabberd/password.js"></script>
+  <%- else -%>
+    <script type="text/javascript" src="/ejabberd/password.js"></script>
+  <%- end -%>
 <% end -%>
   </head>
   <body>
     <%= yield :layout %>
     <%= fb_connect_javascript_tag %>
-    <%- #init_fb_connect :app_settings => "{\"ifUserConnected\": blogcastrFacebookUserConnected, \"ifUserNotConnected\": blogcastrFacebookUserNotConnected}" %>
+    <%- init_fb_connect :app_settings => "{\"ifUserConnected\": blogcastrFacebookUserConnected, \"ifUserNotConnected\": blogcastrFacebookUserNotConnected}" %>
     <%= init_fb_connect %>
     <script type="text/javascript">
       var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");

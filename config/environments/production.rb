@@ -26,11 +26,11 @@ config.action_view.cache_template_loading            = true
 
 #MVR - mail relay
 config.action_mailer.smtp_settings = {
-  :address => "smtp.1and1.com",
+  :address => "smtp.sendgrid.net",
   :port => 587,
-  :domain => "movolu.com",
+  :domain => "blogcastr.com",
   :authentication => :login,
-  :user_name => "mrushton@movolu.com",
+  :user_name => "mrushton@blogcastr.com",
   :password => "hkbcfjiP7"
 }
 

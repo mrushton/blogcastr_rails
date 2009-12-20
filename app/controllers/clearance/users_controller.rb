@@ -4,13 +4,13 @@ class Clearance::UsersController < ApplicationController
   filter_parameter_logging :password
 
   def new
-    @user = ::BlogcastrUser.new(params[:blogcastr_user])
+    @blogcastr_user = BlogcastrUser.new(params[:blogcastr_user])
     render :template => 'users/new', :layout => true
   end
 
   def create
-    @user = ::BlogcastrUser.new params[:blogcastr_user]
-    if @user.save
+    @blogcastr_user = BlogcastrUser.new(params[:blogcastr_user])
+    if @blogcastr_user.save
       #MVR - create setting
       utc_offset = params[:utc_offset]
       if !utc_offset.nil?
@@ -24,27 +24,27 @@ class Clearance::UsersController < ApplicationController
           end
         end
         if !time_zone.nil?
-          @setting = Setting.create(:user_id => @user.id, :time_zone => time_zone.name)
+          @setting = Setting.create(:user_id => @blogcastr_user.id, :time_zone => time_zone.name)
         else
           #MVR - set time zone to UTC if we can't find it
-          @setting = Setting.create(:user_id => @user.id, :time_zone => "UTC")
+          @setting = Setting.create(:user_id => @blogcastr_user.id, :time_zone => "UTC")
         end
       end
       begin
         #AS DESIGNED: create ejabberd account here since password gets encrypted
-        thrift_client.create_user(@user.name, HOST, params[:blogcastr_user][:password])
+        thrift_client.create_user(@blogcastr_user.name, HOST, params[:blogcastr_user][:password])
         thrift_client_close
       rescue
-        @user.destroy
+        #TODO: could use flash in this case could be more appropriate
+        @blogcastr_user.errors.add_to_base "Unable to create ejabberd account"
+        @blogcastr_user.destroy
         @setting.destroy
-        #TODO: error message is not working properly
-        flash[:notice] = "Error: Unable to create ejabberd account"
         render :template => 'users/new'
         return
       end
-      ::ClearanceMailer.deliver_confirmation @user
+      ClearanceMailer.deliver_confirmation @blogcastr_user
       flash_notice_after_create
-      redirect_to(url_after_create)
+      redirect_to url_after_create
     else
       render :template => 'users/new'
     end

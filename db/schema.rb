@@ -26,20 +26,6 @@ ActiveRecord::Schema.define(:version => 20090929055821) do
     t.datetime "updated_at"
   end
 
-  create_table "comments", :force => true do |t|
-    t.string   "type",               :null => false
-    t.integer  "user_id",            :null => false
-    t.integer  "blogcast_id",        :null => false
-    t.string   "from",               :null => false
-    t.string   "text"
-    t.string   "image_file_name"
-    t.string   "image_content_type"
-    t.integer  "image_file_size"
-    t.datetime "image_updated_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "likes", :force => true do |t|
     t.integer  "user_id",     :null => false
     t.integer  "blogcast_id", :null => false

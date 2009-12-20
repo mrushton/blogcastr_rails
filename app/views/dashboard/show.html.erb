@@ -17,13 +17,23 @@
       <div class="background">
         <h3 class="post-header" onclick="blogcastrToggleBlindEffect('post')">Post</h3>
         <div id="post">
+<%- if flash[:notice] -%>
+          <div>
+            <%= flash[:notice] -%>
+          </div>
+<%- end -%>
+<%- if flash[:error] -%>
+          <div>
+            <%= flash[:error] -%>
+          </div>
+<%- end -%>
           <div class="center">
             <ul class="menu">
               <li class="selected text"><%= button_to_function "Text", "blogcastrPostTextMenuSelect()" -%></li>
               <li class="image"><%= button_to_function "Image", "blogcastrPostImageMenuSelect()" -%></li>
             </ul>
           </div>
-          <% remote_form_for :text_post, :url => {:controller => :text_posts, :action => :create}, :html => {:class => "text"}, :complete => "$('text_post_form').reset();" do |f| %>
+          <% remote_form_for :text_post, :url => {:controller => :text_posts, :action => :create}, :html => {:id => "text_post_form"} do |f| %>
             <%= f.hidden_field :from %>
             <%= f.label :text, "Text" %>
             <br>
@@ -53,11 +63,7 @@
         </div>
         <ol class="stream" id="comment-stream">
 <% for comment in @comments -%>
-  <%- if comment.instance_of?(TextComment) -%>
-          <%= render :partial => "text_comment", :object => comment -%>
-  <%- elsif post.instance_of?(ImageComment) -%>
-          <%= render :partial => "image_comment", :object => comment -%>
-  <%- end -%>
+          <%= render :partial => "comment", :object => comment -%>
 <% end %>
         </ol>
         <ol class="stream hidden" id="subscription-stream">

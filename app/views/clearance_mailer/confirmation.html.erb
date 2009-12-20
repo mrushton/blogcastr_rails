@@ -1,0 +1,7 @@
+<p style="font-size: 1.0em; font-family: helvetica, sans-serif;">
+Hi <%= @user.name %>,
+<br>
+Welcome to Blogcastr! To confirm your account click here: <%= new_user_confirmation_url(:user_id => @user, :token => @user.confirmation_token, :encode => false) -%>. Enjoy!
+<br>
+-The Blogcastr Team
+</p>

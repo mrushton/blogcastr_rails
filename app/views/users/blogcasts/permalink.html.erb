@@ -49,7 +49,7 @@
             <p>Send <%= @blogcast_user.name -%> a comment. <a class="sign-out" href="#" onclick="blogcastrTwitterSignOut(); return false;">Sign out</a> of Twitter.</p>
   <%- end -%>
             <%= link_to "<div class=\"avatar #{@user.get_user_avatar_class :medium}\" style=\"background-image: url('#{@user.get_user_avatar_url :medium}');\"></div>", @user.get_user_url, :target => "_blank", :class => "avatar" %>
-            <% remote_form_for :text_comment, :url => blogcast_text_comments_path(:blogcast_id => @blogcast.id), :html => { :id => "text_comment_form", :method => "post"}, :complete => "$('text_comment_form').reset();" do |f| -%>
+            <% remote_form_for :comment, :url => blogcast_comments_path(:blogcast_id => @blogcast.id), :html => { :id => "comment_form", :method => "post"}, :complete => "$('comment_form').reset();" do |f| -%>
               <input id="jid" type="hidden" value="" name="jid"/>
               <%= f.hidden_field :from %>
               <%= f.label :text, "Text" %>

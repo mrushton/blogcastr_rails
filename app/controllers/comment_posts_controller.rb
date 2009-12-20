@@ -29,7 +29,7 @@ class CommentPostsController < ApplicationController
       thrift_text_comment.medium = @comment.from
       thrift_text_comment.text = @comment.text
       #MVR - send text comment post to muc room and pubsub node
-      err = thrift_client.send_text_comment_post_to_muc_room(@user.name, @user.name + ".blog", thrift_comment_post_user, thrift_comment_post, thrift_comment_user, thrift_text_comment)
+      err = thrift_client.send_comment_post_to_muc_room(@user.name, @user.name + ".blog", thrift_comment_post_user, thrift_comment_post, thrift_comment_user, thrift_text_comment)
     #err = thrift_client.publish_text_post_to_pubsub_node(@user.login, "/home/blogcastr.com/" + @user.login + "/blog", thriftTextPost)
       thrift_client_close
     elsif @comment.instance_of?(ImageComment)

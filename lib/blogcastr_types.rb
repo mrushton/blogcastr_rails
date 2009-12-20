@@ -28,7 +28,7 @@ module Thrift
 
     end
 
-    class TextComment
+    class Comment
       include ::Thrift::Struct
       ID = 1
       TIMESTAMP = 2
@@ -41,28 +41,6 @@ module Thrift
         TIMESTAMP => {:type => ::Thrift::Types::I32, :name => 'timestamp'},
         MEDIUM => {:type => ::Thrift::Types::STRING, :name => 'medium'},
         TEXT => {:type => ::Thrift::Types::STRING, :name => 'text'}
-      }
-
-      def struct_fields; FIELDS; end
-
-      def validate
-      end
-
-    end
-
-    class ImageComment
-      include ::Thrift::Struct
-      ID = 1
-      TIMESTAMP = 2
-      MEDIUM = 3
-      IMAGE_URL = 4
-
-      ::Thrift::Struct.field_accessor self, :id, :timestamp, :medium, :image_url
-      FIELDS = {
-        ID => {:type => ::Thrift::Types::I32, :name => 'id'},
-        TIMESTAMP => {:type => ::Thrift::Types::I32, :name => 'timestamp'},
-        MEDIUM => {:type => ::Thrift::Types::STRING, :name => 'medium'},
-        IMAGE_URL => {:type => ::Thrift::Types::STRING, :name => 'image_url'}
       }
 
       def struct_fields; FIELDS; end

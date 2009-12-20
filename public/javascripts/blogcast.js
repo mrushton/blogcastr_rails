@@ -4,9 +4,9 @@ function blogcastrOnLoad()
   connection = new Strophe.Connection("/http-bind");  
   //TODO: connect as user if logged in
   if (username == undefined)
-    connection.connect("blogcastr.com","",onConnect);
+    connection.connect(hostname,"",onConnect);
   else
-    connection.connect(username + "@blogcastr.com", password, onConnect);
+    connection.connect(username + "@" + hostname, password, onConnect);
   //MVR - determine clock offset
   //TODO: we could do much better but since we are only going for sub-minute synchronization it's not a big deal 
   var client_date = new Date;
@@ -19,39 +19,46 @@ function onConnect(status, error)
 {
   if (status == Strophe.Status.CONNECTING)
   {
-    //console.log("Strophe is connecting");
+    console.log("Strophe is connecting");
   }
   else if (status == Strophe.Status.CONNFAIL)
   {
-  //  console.log("Strophe connection failed");
+    console.log("Strophe connection failed");
   }
   else if (status == Strophe.Status.DISCONNECTING)
   {
-  //  console.log('----------> Strophe is disconnecting.');
+    console.log('----------> Strophe is disconnecting.');
   }
   else if (status == Strophe.Status.AUTHENTICATING)
   {
-  //  console.log('----------> Strophe is authenticating.');
+    console.log('----------> Strophe is authenticating.');
   }
   else if (status == Strophe.Status.AUTHFAIL)
   {
-  //  console.log('----------> Strophe failed to authenticate.');
+    console.log('----------> Strophe failed to authenticate.');
   }
   else if (status == Strophe.Status.DISCONNECTED)
   {
- //   console.log('----------> Strophe is disconnected.');
+    console.log('----------> Strophe is disconnected.');
   }
   else if (status == Strophe.Status.CONNECTED)
   {
-   // console.log('----------> Strophe is connected.' );
+    console.log('----------> Strophe is connected.' );
     //MVR - set jid resource
     //TODO: hack for now
     jQuery("input[id='jid']").attr("value", connection.jid);
+    console.log('----------> Strophe is connected 2.' );
     //MVR - register message handlers 
-    connection.addHandler(blogcastrPostCallback, null, 'message', 'groupchat', null, roomname + "/dashboard");
+    connection.addHandler(blogcastrPostCallback, null, 'message', 'groupchat', null, "blogcast." + blogcast_id + "@conference." + hostname + "/dashboard");
+    console.log('----------> Strophe is connected 3.' );
     //MVR - join muc, nickname is resource 
-    mucPresenceStanza = $pres().attrs({from: connection.jid, to: blogname + ".blog@conference.blogcastr.com/" + Strophe.getResourceFromJid(connection.jid)}).c("x", {xmlns: "http://jabber.org/protocol/muc"});
+    console.log('----------> Strophe is connected 4.' );
+   mucPresenceStanza = $pres().attrs({from: connection.jid, to: "Blogcast." + blogcast_id + "@conference." + hostname + "/" + Strophe.getResourceFromJid(connection.jid)}).c("x", {xmlns: "http://jabber.org/protocol/muc"});
+    console.log('----------> Strophe is connected 5.' );
+blogcastrPrintStanza(mucPresenceStanza);
+    console.log('----------> Strophe is connected 6.' );
     connection.send(mucPresenceStanza);
+    console.log('----------> Strophe is connected 7.' );
   }
 }
 
@@ -59,6 +66,7 @@ function blogcastrPostCallback(stanza)
 {
   //Prototype has no XML support using jQuery
   //TODO: alternative could be to use a json convertor like http://www.thomasfrank.se/xml_to_json.html
+    console.log('GOT A POST' );
   var body = jQuery(stanza).find("body:first");
   var type = body.find("type:first").text();
   if (type == "textPost")
@@ -179,8 +187,7 @@ Strophe.log = function(log,msg)
 
 function blogcastrPrintStanza(stanza)
 {
-  var string = (new XMLSerializer()).serializeToString(stanza);
-  alert(string);
+//  var string = (new XMLSerializer()).serializeToString(stanza);
 }
 
 window.addEventListener("load",blogcastrOnLoad,false);

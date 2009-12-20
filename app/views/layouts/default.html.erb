@@ -2,23 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>New Blogcast</title>
+    <title><%= @title -%></title>
     <link rel="stylesheet" href="/stylesheets/blogcastr.css" media="screen"/>
-
-
-      <link type="text/css" href="http://jqueryui.com/latest/themes/base/ui.all.css" rel="stylesheet" />
-  <script type="text/javascript" src="http://jqueryui.com/latest/jquery-1.3.2.js"></script>
-  <script type="text/javascript" src="http://jqueryui.com/latest/ui/ui.core.js"></script>
-  <script type="text/javascript" src="http://jqueryui.com/latest/ui/ui.datepicker.js"></script>
-  <script type="text/javascript">
-  $(document).ready(function(){
-    $("#datepicker").datepicker();
-  });
-  </script>
-    
   </head>
   <body>
     <%= yield :layout %>
+<% if Rails.env.production? -%>
     <script type="text/javascript">
       var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
       document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
@@ -29,5 +18,6 @@
         pageTracker._trackPageview();
       } catch(err) {}
     </script>
+<% end -%>
   </body>
 </html>

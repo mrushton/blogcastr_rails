@@ -24,14 +24,12 @@
     <%= javascript_tag "var authenticity_token = \"#{form_authenticity_token}\"" %>
     <script type="text/javascript">
       jQuery.noConflict();
+      var hostname = "<%= HOST %>";
       var username = "<%= @user.name %>";
-      var jid = "<%= @user.name %>@blogcastr.com";
-      var blogname = "<%= @user.name %>";
-      var nodename = "/home/blogcastr.com/<%= @user.name %>/blog";
-      var roomname = "<%= @user.name %>";
+      var blogcast_id = "<%= @blogcast.id %>";
       var server_timestamp = <%= Time.now.to_i %>
     </script>
-    <script type="text/javascript" src="http://blogcastr.com/ejabberd/password.js"></script>
+    <script type="text/javascript" src="/ejabberd/password.js"></script>
   </head>
   <body>
     <%= yield :layout %>

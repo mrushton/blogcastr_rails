@@ -85,6 +85,7 @@ ActionController::Routing::Routes.draw do |map|
   #MVR - subscribed
   map.resources :subscribed, :controller => "subscribed", :only => [:index]
   #MVR - blogcasts
+  map.create_blogcast "/blogcasts/create", :controller => "blogcasts", :action => "create"
   map.resources :blogcasts, :controller => "blogcasts", :only => [:new, :create, :show, :edit, :update, :destroy] do |blogcasts|
     #MVR - dashboard
     blogcasts.resource :dashboard, :controller => "dashboard", :only => [:show]
@@ -97,7 +98,7 @@ ActionController::Routing::Routes.draw do |map|
     #MVR - reposts
     blogcasts.resources :reposts, :controller => "reposts", :only => [:create, :destroy]
     #MVR - text comments
-    blogcasts.resources :text_comments, :controller => "text_comments", :only => [:create]
+    blogcasts.resources :comments, :controller => "comments", :only => [:create]
     #MVR - image comments
     blogcasts.resources :image_comments, :controller => "image_comments", :only => [:create]
     #MVR - likes 

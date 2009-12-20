@@ -11,10 +11,13 @@
   <div id="content">
     <div id="main">
       <h2>New Blogcast<h2>
-      <% form_for @blogcast, :url => blogcasts_path do |form| %>
+      <% form_for @blogcast, :url => create_blogcast_path do |form| %>
         <%= form.error_messages %>
         <%= form.label :title, "Title" %>
         <%= form.text_field :title %>
+        <br>
+        <%= form.label :link_title, "Link title" %>
+        <%= form.text_field :link_title %>
         <br>
         <%= form.label :tags, "Tags" %>
         <%= form.text_field :tags %>
@@ -29,7 +32,8 @@
     </div>
     <div id="sidebar">
     </div>
-    <div id="clear"></div>
+    <div id="clear">
+    </div>
   </div>
   <div id="footer">
     <p>&copy; 2009 Blogcastr</p>

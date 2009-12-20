@@ -155,7 +155,7 @@ class Users::BlogcastsController < ApplicationController
                 @like = @user.likes.find(:first, :conditions => {:blogcast_id => @blogcast.id}) 
               end
             end
-            @text_comment = TextComment.new(:from => "Web")
+            @comment = Comment.new(:from => "Web")
           end
           #MVR - posts 
           @posts = @blogcast.posts.find(:all, :order => "created_at DESC") 

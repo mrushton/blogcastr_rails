@@ -17,12 +17,13 @@ config.action_controller.perform_caching             = false
 config.action_mailer.raise_delivery_errors = false
 
 #MVR - mail relay
+#TODO: use alternate relay for development
 config.action_mailer.smtp_settings = {
-  :address => "smtp.1and1.com",
-  :port => 587,
-  :domain => "movolu.com",
+  :address => "smtp.sendgrid.net",
+  :port => 25,
+  :domain => "blogcastr.com",
   :authentication => :login,
-  :user_name => "mrushton@movolu.com",
+  :user_name => "mrushton@blogcastr.com",
   :password => "hkbcfjiP7"
 }
 

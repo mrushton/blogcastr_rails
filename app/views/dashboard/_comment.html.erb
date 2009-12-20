@@ -1,0 +1,8 @@
+<li class="comment_stream_list_item" id="<%= comment.id %>">
+  <%= link_to "<div class=\"#{comment.user.get_user_avatar_class :medium}\" style=\"background-image: url('#{comment.user.get_user_avatar_url :medium}');\"></div>", comment.user.get_user_url, :target => "_blank" %>
+  <p class=list_item_text><%= comment.text %></p>
+  <div id="clear">
+  </div>
+  <p class="list_item_info">Commented by <%= link_to comment.user.get_user_name, comment.user.get_user_url, :target => "_blank" %> <%= hours_minutes_ago_helper comment.created_at %> from <%= comment.from %></p>
+  <%= link_to_remote "Post", :url => {:controller => "comment_posts", :action => "create", "comment_id" => comment.id, :from => "Web"}, :method => "post" %>
+</li>

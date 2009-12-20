@@ -3,7 +3,7 @@ function blogcastrOnLoad()
   //MVR - create a BOSH connection with Strophe
   connection = new Strophe.Connection("/http-bind");  
   //MVR - connect with resource equal to dashboard
-  connection.connect(jid + "/dashboard", password, blogcastrOnConnect);
+  connection.connect(username + "@" + hostname + "/dashboard", password, blogcastrOnConnect);
   //MVR - determine clock offset
   //TODO: we could do much better but since we are only going for sub-minute synchronization it's not a big deal 
   var client_date = new Date;
@@ -23,14 +23,14 @@ function blogcastrPostComment(id)
 function blogcastrSendMucPresence()
 {
     //MVR - nickname is always username
-    mucPresenceStanza = $pres().attrs({from: connection.jid, to: username + ".blog@conference.blogcastr.com/dashboard"}).c("x", {xmlns: "http://jabber.org/protocol/muc"});
+    mucPresenceStanza = $pres().attrs({from: connection.jid, to: "Blogcast." + blogcast_id + "@conference." + hostname + "/dashboard"}).c("x", {xmlns: "http://jabber.org/protocol/muc"});
     connection.send(mucPresenceStanza);
 }
 
 function blogcastrSendMucPresenceUnavailable()
 {
     //MVR - nickname is always username
-    mucPresenceStanza = $pres().attrs({from: connection.jid, to: username + ".blog@conference.blogcastr.com/" + username, type: "unavailable"});
+    mucPresenceStanza = $pres().attrs({from: connection.jid, to: "Blogcast." + blogcast_id + "@conference." + hostname + "/dashboard", type: "unavailable"});
     connection.send(mucPresenceStanza);
 }
 
@@ -80,11 +80,13 @@ function blogcastrCommentCallback(stanza)
   //Prototype has no XML support using jQuery
   //TODO: alternative could be to use a json convertor like http://www.thomasfrank.se/xml_to_json.html
   //TODO: from needs to be parsed better or included in message
+   console.log("received blogcastr event type: ");
   var from = jQuery(stanza).attr("from");
   var body = jQuery(stanza).find("body:first");
   var type = body.find("type:first").text();
-  if (type == "textComment")
+  if (type == "comment")
   {
+   console.log("received blogcastr event type comment ");
     var id = body.find("id:first").text();
     var timestamp = body.find("timestamp:first").text();
     var text = body.find("text:first").text();
@@ -115,21 +117,9 @@ function blogcastrCommentCallback(stanza)
     var li = jQuery("<li>").addClass("comment_stream_list_item").attr("id",id).append(avatar_a).append(text_p).append(clear_div).append(info_p).append(post_a);
     //add comment to document if not present
     if (jQuery("li.comment_stream_list_item[id=" + id + "]").length == 0)
-      jQuery("ol#comment_stream_list:first").prepend(li);
-  }
-  else if (type == "imageComment")
-  {
-    var id = body.find("id:first").text();
-    var date = body.find("date:first").text();
-    var image_url = body.find("image_url:first").text();
-    //create new comment element
-    var h2 = jQuery("<h2>").text(date);
-    var img = jQuery("<img>").attr("src",image_url);
-    var li = jQuery("<li>").append(h2).append(img).attr("id",id);
-    //add comment to document if not present
-    if (jQuery("li.comment_stream_list_item[id=" + id + "]").length == 0)
-      jQuery("ol#comment_stream_list:first").prepend(li);
-  }
+  { console.log("received blogcastr event type comment ");
+      jQuery("ol#comment-stream:first").prepend(li);
+  }}
   else
   {
    // console.log("received unknown blogcastr event type: " + type);

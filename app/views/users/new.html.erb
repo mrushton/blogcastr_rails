@@ -30,8 +30,8 @@
       <div id="content">
         <h2>Sign up</h2>
         <% form_for :blogcastr_user, :url => users_path do |form| %>
-          <%= form.error_messages %>
           <input id="utc_offset" type="hidden" name="utc_offset" value="">
+          <%= form.error_messages %>
           <%= form.label :user_name %>
           <br>
           <%= form.text_field :name %>

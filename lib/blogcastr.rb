@@ -192,21 +192,6 @@ require 'blogcastr_types'
             raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'publish_text_comment_post_to_pubsub_node failed: unknown result')
           end
 
-          def publish_image_comment_post_to_pubsub_node(username, node, comment_post_from, comment_post, image_comment_from, image_comment)
-            send_publish_image_comment_post_to_pubsub_node(username, node, comment_post_from, comment_post, image_comment_from, image_comment)
-            return recv_publish_image_comment_post_to_pubsub_node()
-          end
-
-          def send_publish_image_comment_post_to_pubsub_node(username, node, comment_post_from, comment_post, image_comment_from, image_comment)
-            send_message('publish_image_comment_post_to_pubsub_node', Publish_image_comment_post_to_pubsub_node_args, :username => username, :node => node, :comment_post_from => comment_post_from, :comment_post => comment_post, :image_comment_from => image_comment_from, :image_comment => image_comment)
-          end
-
-          def recv_publish_image_comment_post_to_pubsub_node()
-            result = receive_message(Publish_image_comment_post_to_pubsub_node_result)
-            return result.success unless result.success.nil?
-            raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'publish_image_comment_post_to_pubsub_node failed: unknown result')
-          end
-
           def publish_text_repost_to_pubsub_node(username, node, from, repost, text_post)
             send_publish_text_repost_to_pubsub_node(username, node, from, repost, text_post)
             return recv_publish_text_repost_to_pubsub_node()
@@ -252,28 +237,13 @@ require 'blogcastr_types'
             raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'publish_text_comment_repost_to_pubsub_node failed: unknown result')
           end
 
-          def publish_image_comment_repost_to_pubsub_node(username, node, from, repost, image_comment, via)
-            send_publish_image_comment_repost_to_pubsub_node(username, node, from, repost, image_comment, via)
-            return recv_publish_image_comment_repost_to_pubsub_node()
-          end
-
-          def send_publish_image_comment_repost_to_pubsub_node(username, node, from, repost, image_comment, via)
-            send_message('publish_image_comment_repost_to_pubsub_node', Publish_image_comment_repost_to_pubsub_node_args, :username => username, :node => node, :from => from, :repost => repost, :image_comment => image_comment, :via => via)
-          end
-
-          def recv_publish_image_comment_repost_to_pubsub_node()
-            result = receive_message(Publish_image_comment_repost_to_pubsub_node_result)
-            return result.success unless result.success.nil?
-            raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'publish_image_comment_repost_to_pubsub_node failed: unknown result')
-          end
-
-          def create_muc_room(username, room, title, subject)
-            send_create_muc_room(username, room, title, subject)
+          def create_muc_room(user_name, host_name, room, title, subject)
+            send_create_muc_room(user_name, host_name, room, title, subject)
             return recv_create_muc_room()
           end
 
-          def send_create_muc_room(username, room, title, subject)
-            send_message('create_muc_room', Create_muc_room_args, :username => username, :room => room, :title => title, :subject => subject)
+          def send_create_muc_room(user_name, host_name, room, title, subject)
+            send_message('create_muc_room', Create_muc_room_args, :user_name => user_name, :host_name => host_name, :room => room, :title => title, :subject => subject)
           end
 
           def recv_create_muc_room()
@@ -312,13 +282,13 @@ require 'blogcastr_types'
             raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'get_num_muc_room_occupants failed: unknown result')
           end
 
-          def send_text_post_to_muc_room(username, room, from, text_post)
-            send_send_text_post_to_muc_room(username, room, from, text_post)
+          def send_text_post_to_muc_room(user_name, host_name, room, from, text_post)
+            send_send_text_post_to_muc_room(user_name, host_name, room, from, text_post)
             return recv_send_text_post_to_muc_room()
           end
 
-          def send_send_text_post_to_muc_room(username, room, from, text_post)
-            send_message('send_text_post_to_muc_room', Send_text_post_to_muc_room_args, :username => username, :room => room, :from => from, :text_post => text_post)
+          def send_send_text_post_to_muc_room(user_name, host_name, room, from, text_post)
+            send_message('send_text_post_to_muc_room', Send_text_post_to_muc_room_args, :user_name => user_name, :host_name => host_name, :room => room, :from => from, :text_post => text_post)
           end
 
           def recv_send_text_post_to_muc_room()
@@ -327,13 +297,13 @@ require 'blogcastr_types'
             raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'send_text_post_to_muc_room failed: unknown result')
           end
 
-          def send_image_post_to_muc_room(username, room, from, image_post)
-            send_send_image_post_to_muc_room(username, room, from, image_post)
+          def send_image_post_to_muc_room(username, host_name, room, from, image_post)
+            send_send_image_post_to_muc_room(username, host_name, room, from, image_post)
             return recv_send_image_post_to_muc_room()
           end
 
-          def send_send_image_post_to_muc_room(username, room, from, image_post)
-            send_message('send_image_post_to_muc_room', Send_image_post_to_muc_room_args, :username => username, :room => room, :from => from, :image_post => image_post)
+          def send_send_image_post_to_muc_room(username, host_name, room, from, image_post)
+            send_message('send_image_post_to_muc_room', Send_image_post_to_muc_room_args, :username => username, :host_name => host_name, :room => room, :from => from, :image_post => image_post)
           end
 
           def recv_send_image_post_to_muc_room()
@@ -355,21 +325,6 @@ require 'blogcastr_types'
             result = receive_message(Send_text_comment_post_to_muc_room_result)
             return result.success unless result.success.nil?
             raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'send_text_comment_post_to_muc_room failed: unknown result')
-          end
-
-          def send_image_comment_post_to_muc_room(username, room, comment_post_from, comment_post, image_comment_from, image_comment)
-            send_send_image_comment_post_to_muc_room(username, room, comment_post_from, comment_post, image_comment_from, image_comment)
-            return recv_send_image_comment_post_to_muc_room()
-          end
-
-          def send_send_image_comment_post_to_muc_room(username, room, comment_post_from, comment_post, image_comment_from, image_comment)
-            send_message('send_image_comment_post_to_muc_room', Send_image_comment_post_to_muc_room_args, :username => username, :room => room, :comment_post_from => comment_post_from, :comment_post => comment_post, :image_comment_from => image_comment_from, :image_comment => image_comment)
-          end
-
-          def recv_send_image_comment_post_to_muc_room()
-            result = receive_message(Send_image_comment_post_to_muc_room_result)
-            return result.success unless result.success.nil?
-            raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'send_image_comment_post_to_muc_room failed: unknown result')
           end
 
           def send_text_repost_to_muc_room(username, room, from, repost, text_post)
@@ -417,49 +372,19 @@ require 'blogcastr_types'
             raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'send_text_comment_repost_to_muc_room failed: unknown result')
           end
 
-          def send_image_comment_repost_to_muc_room(username, room, from, repost, image_comment, via)
-            send_send_image_comment_repost_to_muc_room(username, room, from, repost, image_comment, via)
-            return recv_send_image_comment_repost_to_muc_room()
+          def send_comment_to_muc_occupant(to, from_jid, from, text_comment)
+            send_send_comment_to_muc_occupant(to, from_jid, from, text_comment)
+            return recv_send_comment_to_muc_occupant()
           end
 
-          def send_send_image_comment_repost_to_muc_room(username, room, from, repost, image_comment, via)
-            send_message('send_image_comment_repost_to_muc_room', Send_image_comment_repost_to_muc_room_args, :username => username, :room => room, :from => from, :repost => repost, :image_comment => image_comment, :via => via)
+          def send_send_comment_to_muc_occupant(to, from_jid, from, text_comment)
+            send_message('send_comment_to_muc_occupant', Send_comment_to_muc_occupant_args, :to => to, :from_jid => from_jid, :from => from, :text_comment => text_comment)
           end
 
-          def recv_send_image_comment_repost_to_muc_room()
-            result = receive_message(Send_image_comment_repost_to_muc_room_result)
+          def recv_send_comment_to_muc_occupant()
+            result = receive_message(Send_comment_to_muc_occupant_result)
             return result.success unless result.success.nil?
-            raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'send_image_comment_repost_to_muc_room failed: unknown result')
-          end
-
-          def send_text_comment_to_muc_occupant(to, from_jid, from, text_comment)
-            send_send_text_comment_to_muc_occupant(to, from_jid, from, text_comment)
-            return recv_send_text_comment_to_muc_occupant()
-          end
-
-          def send_send_text_comment_to_muc_occupant(to, from_jid, from, text_comment)
-            send_message('send_text_comment_to_muc_occupant', Send_text_comment_to_muc_occupant_args, :to => to, :from_jid => from_jid, :from => from, :text_comment => text_comment)
-          end
-
-          def recv_send_text_comment_to_muc_occupant()
-            result = receive_message(Send_text_comment_to_muc_occupant_result)
-            return result.success unless result.success.nil?
-            raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'send_text_comment_to_muc_occupant failed: unknown result')
-          end
-
-          def send_image_comment_to_muc_occupant(to, from_jid, from, image_comment)
-            send_send_image_comment_to_muc_occupant(to, from_jid, from, image_comment)
-            return recv_send_image_comment_to_muc_occupant()
-          end
-
-          def send_send_image_comment_to_muc_occupant(to, from_jid, from, image_comment)
-            send_message('send_image_comment_to_muc_occupant', Send_image_comment_to_muc_occupant_args, :to => to, :from_jid => from_jid, :from => from, :image_comment => image_comment)
-          end
-
-          def recv_send_image_comment_to_muc_occupant()
-            result = receive_message(Send_image_comment_to_muc_occupant_result)
-            return result.success unless result.success.nil?
-            raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'send_image_comment_to_muc_occupant failed: unknown result')
+            raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'send_comment_to_muc_occupant failed: unknown result')
           end
 
           def add(x, y)
@@ -566,13 +491,6 @@ require 'blogcastr_types'
             write_result(result, oprot, 'publish_text_comment_post_to_pubsub_node', seqid)
           end
 
-          def process_publish_image_comment_post_to_pubsub_node(seqid, iprot, oprot)
-            args = read_args(iprot, Publish_image_comment_post_to_pubsub_node_args)
-            result = Publish_image_comment_post_to_pubsub_node_result.new()
-            result.success = @handler.publish_image_comment_post_to_pubsub_node(args.username, args.node, args.comment_post_from, args.comment_post, args.image_comment_from, args.image_comment)
-            write_result(result, oprot, 'publish_image_comment_post_to_pubsub_node', seqid)
-          end
-
           def process_publish_text_repost_to_pubsub_node(seqid, iprot, oprot)
             args = read_args(iprot, Publish_text_repost_to_pubsub_node_args)
             result = Publish_text_repost_to_pubsub_node_result.new()
@@ -594,17 +512,10 @@ require 'blogcastr_types'
             write_result(result, oprot, 'publish_text_comment_repost_to_pubsub_node', seqid)
           end
 
-          def process_publish_image_comment_repost_to_pubsub_node(seqid, iprot, oprot)
-            args = read_args(iprot, Publish_image_comment_repost_to_pubsub_node_args)
-            result = Publish_image_comment_repost_to_pubsub_node_result.new()
-            result.success = @handler.publish_image_comment_repost_to_pubsub_node(args.username, args.node, args.from, args.repost, args.image_comment, args.via)
-            write_result(result, oprot, 'publish_image_comment_repost_to_pubsub_node', seqid)
-          end
-
           def process_create_muc_room(seqid, iprot, oprot)
             args = read_args(iprot, Create_muc_room_args)
             result = Create_muc_room_result.new()
-            result.success = @handler.create_muc_room(args.username, args.room, args.title, args.subject)
+            result.success = @handler.create_muc_room(args.user_name, args.host_name, args.room, args.title, args.subject)
             write_result(result, oprot, 'create_muc_room', seqid)
           end
 
@@ -625,14 +536,14 @@ require 'blogcastr_types'
           def process_send_text_post_to_muc_room(seqid, iprot, oprot)
             args = read_args(iprot, Send_text_post_to_muc_room_args)
             result = Send_text_post_to_muc_room_result.new()
-            result.success = @handler.send_text_post_to_muc_room(args.username, args.room, args.from, args.text_post)
+            result.success = @handler.send_text_post_to_muc_room(args.user_name, args.host_name, args.room, args.from, args.text_post)
             write_result(result, oprot, 'send_text_post_to_muc_room', seqid)
           end
 
           def process_send_image_post_to_muc_room(seqid, iprot, oprot)
             args = read_args(iprot, Send_image_post_to_muc_room_args)
             result = Send_image_post_to_muc_room_result.new()
-            result.success = @handler.send_image_post_to_muc_room(args.username, args.room, args.from, args.image_post)
+            result.success = @handler.send_image_post_to_muc_room(args.username, args.host_name, args.room, args.from, args.image_post)
             write_result(result, oprot, 'send_image_post_to_muc_room', seqid)
           end
 
@@ -641,13 +552,6 @@ require 'blogcastr_types'
             result = Send_text_comment_post_to_muc_room_result.new()
             result.success = @handler.send_text_comment_post_to_muc_room(args.username, args.room, args.comment_post_from, args.comment_post, args.text_comment_from, args.text_comment)
             write_result(result, oprot, 'send_text_comment_post_to_muc_room', seqid)
-          end
-
-          def process_send_image_comment_post_to_muc_room(seqid, iprot, oprot)
-            args = read_args(iprot, Send_image_comment_post_to_muc_room_args)
-            result = Send_image_comment_post_to_muc_room_result.new()
-            result.success = @handler.send_image_comment_post_to_muc_room(args.username, args.room, args.comment_post_from, args.comment_post, args.image_comment_from, args.image_comment)
-            write_result(result, oprot, 'send_image_comment_post_to_muc_room', seqid)
           end
 
           def process_send_text_repost_to_muc_room(seqid, iprot, oprot)
@@ -671,25 +575,11 @@ require 'blogcastr_types'
             write_result(result, oprot, 'send_text_comment_repost_to_muc_room', seqid)
           end
 
-          def process_send_image_comment_repost_to_muc_room(seqid, iprot, oprot)
-            args = read_args(iprot, Send_image_comment_repost_to_muc_room_args)
-            result = Send_image_comment_repost_to_muc_room_result.new()
-            result.success = @handler.send_image_comment_repost_to_muc_room(args.username, args.room, args.from, args.repost, args.image_comment, args.via)
-            write_result(result, oprot, 'send_image_comment_repost_to_muc_room', seqid)
-          end
-
-          def process_send_text_comment_to_muc_occupant(seqid, iprot, oprot)
-            args = read_args(iprot, Send_text_comment_to_muc_occupant_args)
-            result = Send_text_comment_to_muc_occupant_result.new()
-            result.success = @handler.send_text_comment_to_muc_occupant(args.to, args.from_jid, args.from, args.text_comment)
-            write_result(result, oprot, 'send_text_comment_to_muc_occupant', seqid)
-          end
-
-          def process_send_image_comment_to_muc_occupant(seqid, iprot, oprot)
-            args = read_args(iprot, Send_image_comment_to_muc_occupant_args)
-            result = Send_image_comment_to_muc_occupant_result.new()
-            result.success = @handler.send_image_comment_to_muc_occupant(args.to, args.from_jid, args.from, args.image_comment)
-            write_result(result, oprot, 'send_image_comment_to_muc_occupant', seqid)
+          def process_send_comment_to_muc_occupant(seqid, iprot, oprot)
+            args = read_args(iprot, Send_comment_to_muc_occupant_args)
+            result = Send_comment_to_muc_occupant_result.new()
+            result.success = @handler.send_comment_to_muc_occupant(args.to, args.from_jid, args.from, args.text_comment)
+            write_result(result, oprot, 'send_comment_to_muc_occupant', seqid)
           end
 
           def process_add(seqid, iprot, oprot)
@@ -1105,7 +995,7 @@ require 'blogcastr_types'
             COMMENT_POST_FROM => {:type => ::Thrift::Types::STRUCT, :name => 'comment_post_from', :class => Thrift::User},
             COMMENT_POST => {:type => ::Thrift::Types::STRUCT, :name => 'comment_post', :class => Thrift::CommentPost},
             TEXT_COMMENT_FROM => {:type => ::Thrift::Types::STRUCT, :name => 'text_comment_from', :class => Thrift::User},
-            TEXT_COMMENT => {:type => ::Thrift::Types::STRUCT, :name => 'text_comment', :class => Thrift::TextComment}
+            TEXT_COMMENT => {:type => ::Thrift::Types::STRUCT, :name => 'text_comment', :class => Thrift::Comment}
           }
 
           def struct_fields; FIELDS; end
@@ -1116,48 +1006,6 @@ require 'blogcastr_types'
         end
 
         class Publish_text_comment_post_to_pubsub_node_result
-          include ::Thrift::Struct
-          SUCCESS = 0
-
-          ::Thrift::Struct.field_accessor self, :success
-          FIELDS = {
-            SUCCESS => {:type => ::Thrift::Types::I32, :name => 'success'}
-          }
-
-          def struct_fields; FIELDS; end
-
-          def validate
-          end
-
-        end
-
-        class Publish_image_comment_post_to_pubsub_node_args
-          include ::Thrift::Struct
-          USERNAME = 1
-          NODE = 2
-          COMMENT_POST_FROM = 3
-          COMMENT_POST = 4
-          IMAGE_COMMENT_FROM = 5
-          IMAGE_COMMENT = 6
-
-          ::Thrift::Struct.field_accessor self, :username, :node, :comment_post_from, :comment_post, :image_comment_from, :image_comment
-          FIELDS = {
-            USERNAME => {:type => ::Thrift::Types::STRING, :name => 'username'},
-            NODE => {:type => ::Thrift::Types::STRING, :name => 'node'},
-            COMMENT_POST_FROM => {:type => ::Thrift::Types::STRUCT, :name => 'comment_post_from', :class => Thrift::User},
-            COMMENT_POST => {:type => ::Thrift::Types::STRUCT, :name => 'comment_post', :class => Thrift::CommentPost},
-            IMAGE_COMMENT_FROM => {:type => ::Thrift::Types::STRUCT, :name => 'image_comment_from', :class => Thrift::User},
-            IMAGE_COMMENT => {:type => ::Thrift::Types::STRUCT, :name => 'image_comment', :class => Thrift::ImageComment}
-          }
-
-          def struct_fields; FIELDS; end
-
-          def validate
-          end
-
-        end
-
-        class Publish_image_comment_post_to_pubsub_node_result
           include ::Thrift::Struct
           SUCCESS = 0
 
@@ -1268,7 +1116,7 @@ require 'blogcastr_types'
             NODE => {:type => ::Thrift::Types::STRING, :name => 'node'},
             FROM => {:type => ::Thrift::Types::STRUCT, :name => 'from', :class => Thrift::User},
             REPOST => {:type => ::Thrift::Types::STRUCT, :name => 'repost', :class => Thrift::Repost},
-            TEXT_COMMENT => {:type => ::Thrift::Types::STRUCT, :name => 'text_comment', :class => Thrift::TextComment},
+            TEXT_COMMENT => {:type => ::Thrift::Types::STRUCT, :name => 'text_comment', :class => Thrift::Comment},
             VIA => {:type => ::Thrift::Types::LIST, :name => 'via', :element => {:type => ::Thrift::Types::STRUCT, :class => Thrift::User}}
           }
 
@@ -1295,58 +1143,18 @@ require 'blogcastr_types'
 
         end
 
-        class Publish_image_comment_repost_to_pubsub_node_args
-          include ::Thrift::Struct
-          USERNAME = 1
-          NODE = 2
-          FROM = 3
-          REPOST = 4
-          IMAGE_COMMENT = 5
-          VIA = 6
-
-          ::Thrift::Struct.field_accessor self, :username, :node, :from, :repost, :image_comment, :via
-          FIELDS = {
-            USERNAME => {:type => ::Thrift::Types::STRING, :name => 'username'},
-            NODE => {:type => ::Thrift::Types::STRING, :name => 'node'},
-            FROM => {:type => ::Thrift::Types::STRUCT, :name => 'from', :class => Thrift::User},
-            REPOST => {:type => ::Thrift::Types::STRUCT, :name => 'repost', :class => Thrift::Repost},
-            IMAGE_COMMENT => {:type => ::Thrift::Types::STRUCT, :name => 'image_comment', :class => Thrift::ImageComment},
-            VIA => {:type => ::Thrift::Types::LIST, :name => 'via', :element => {:type => ::Thrift::Types::STRUCT, :class => Thrift::User}}
-          }
-
-          def struct_fields; FIELDS; end
-
-          def validate
-          end
-
-        end
-
-        class Publish_image_comment_repost_to_pubsub_node_result
-          include ::Thrift::Struct
-          SUCCESS = 0
-
-          ::Thrift::Struct.field_accessor self, :success
-          FIELDS = {
-            SUCCESS => {:type => ::Thrift::Types::I32, :name => 'success'}
-          }
-
-          def struct_fields; FIELDS; end
-
-          def validate
-          end
-
-        end
-
         class Create_muc_room_args
           include ::Thrift::Struct
-          USERNAME = 1
-          ROOM = 2
-          TITLE = 3
-          SUBJECT = 4
+          USER_NAME = 1
+          HOST_NAME = 2
+          ROOM = 3
+          TITLE = 4
+          SUBJECT = 5
 
-          ::Thrift::Struct.field_accessor self, :username, :room, :title, :subject
+          ::Thrift::Struct.field_accessor self, :user_name, :host_name, :room, :title, :subject
           FIELDS = {
-            USERNAME => {:type => ::Thrift::Types::STRING, :name => 'username'},
+            USER_NAME => {:type => ::Thrift::Types::STRING, :name => 'user_name'},
+            HOST_NAME => {:type => ::Thrift::Types::STRING, :name => 'host_name'},
             ROOM => {:type => ::Thrift::Types::STRING, :name => 'room'},
             TITLE => {:type => ::Thrift::Types::STRING, :name => 'title'},
             SUBJECT => {:type => ::Thrift::Types::STRING, :name => 'subject'}
@@ -1441,14 +1249,16 @@ require 'blogcastr_types'
 
         class Send_text_post_to_muc_room_args
           include ::Thrift::Struct
-          USERNAME = 1
-          ROOM = 2
-          FROM = 3
-          TEXT_POST = 4
+          USER_NAME = 1
+          HOST_NAME = 2
+          ROOM = 3
+          FROM = 4
+          TEXT_POST = 5
 
-          ::Thrift::Struct.field_accessor self, :username, :room, :from, :text_post
+          ::Thrift::Struct.field_accessor self, :user_name, :host_name, :room, :from, :text_post
           FIELDS = {
-            USERNAME => {:type => ::Thrift::Types::STRING, :name => 'username'},
+            USER_NAME => {:type => ::Thrift::Types::STRING, :name => 'user_name'},
+            HOST_NAME => {:type => ::Thrift::Types::STRING, :name => 'host_name'},
             ROOM => {:type => ::Thrift::Types::STRING, :name => 'room'},
             FROM => {:type => ::Thrift::Types::STRUCT, :name => 'from', :class => Thrift::User},
             TEXT_POST => {:type => ::Thrift::Types::STRUCT, :name => 'text_post', :class => Thrift::TextPost}
@@ -1480,13 +1290,15 @@ require 'blogcastr_types'
         class Send_image_post_to_muc_room_args
           include ::Thrift::Struct
           USERNAME = 1
-          ROOM = 2
-          FROM = 3
-          IMAGE_POST = 4
+          HOST_NAME = 2
+          ROOM = 3
+          FROM = 4
+          IMAGE_POST = 5
 
-          ::Thrift::Struct.field_accessor self, :username, :room, :from, :image_post
+          ::Thrift::Struct.field_accessor self, :username, :host_name, :room, :from, :image_post
           FIELDS = {
             USERNAME => {:type => ::Thrift::Types::STRING, :name => 'username'},
+            HOST_NAME => {:type => ::Thrift::Types::STRING, :name => 'host_name'},
             ROOM => {:type => ::Thrift::Types::STRING, :name => 'room'},
             FROM => {:type => ::Thrift::Types::STRUCT, :name => 'from', :class => Thrift::User},
             IMAGE_POST => {:type => ::Thrift::Types::STRUCT, :name => 'image_post', :class => Thrift::ImagePost}
@@ -1531,7 +1343,7 @@ require 'blogcastr_types'
             COMMENT_POST_FROM => {:type => ::Thrift::Types::STRUCT, :name => 'comment_post_from', :class => Thrift::User},
             COMMENT_POST => {:type => ::Thrift::Types::STRUCT, :name => 'comment_post', :class => Thrift::CommentPost},
             TEXT_COMMENT_FROM => {:type => ::Thrift::Types::STRUCT, :name => 'text_comment_from', :class => Thrift::User},
-            TEXT_COMMENT => {:type => ::Thrift::Types::STRUCT, :name => 'text_comment', :class => Thrift::TextComment}
+            TEXT_COMMENT => {:type => ::Thrift::Types::STRUCT, :name => 'text_comment', :class => Thrift::Comment}
           }
 
           def struct_fields; FIELDS; end
@@ -1542,48 +1354,6 @@ require 'blogcastr_types'
         end
 
         class Send_text_comment_post_to_muc_room_result
-          include ::Thrift::Struct
-          SUCCESS = 0
-
-          ::Thrift::Struct.field_accessor self, :success
-          FIELDS = {
-            SUCCESS => {:type => ::Thrift::Types::I32, :name => 'success'}
-          }
-
-          def struct_fields; FIELDS; end
-
-          def validate
-          end
-
-        end
-
-        class Send_image_comment_post_to_muc_room_args
-          include ::Thrift::Struct
-          USERNAME = 1
-          ROOM = 2
-          COMMENT_POST_FROM = 3
-          COMMENT_POST = 4
-          IMAGE_COMMENT_FROM = 5
-          IMAGE_COMMENT = 6
-
-          ::Thrift::Struct.field_accessor self, :username, :room, :comment_post_from, :comment_post, :image_comment_from, :image_comment
-          FIELDS = {
-            USERNAME => {:type => ::Thrift::Types::STRING, :name => 'username'},
-            ROOM => {:type => ::Thrift::Types::STRING, :name => 'room'},
-            COMMENT_POST_FROM => {:type => ::Thrift::Types::STRUCT, :name => 'comment_post_from', :class => Thrift::User},
-            COMMENT_POST => {:type => ::Thrift::Types::STRUCT, :name => 'comment_post', :class => Thrift::CommentPost},
-            IMAGE_COMMENT_FROM => {:type => ::Thrift::Types::STRUCT, :name => 'image_comment_from', :class => Thrift::User},
-            IMAGE_COMMENT => {:type => ::Thrift::Types::STRUCT, :name => 'image_comment', :class => Thrift::ImageComment}
-          }
-
-          def struct_fields; FIELDS; end
-
-          def validate
-          end
-
-        end
-
-        class Send_image_comment_post_to_muc_room_result
           include ::Thrift::Struct
           SUCCESS = 0
 
@@ -1694,7 +1464,7 @@ require 'blogcastr_types'
             ROOM => {:type => ::Thrift::Types::STRING, :name => 'room'},
             FROM => {:type => ::Thrift::Types::STRUCT, :name => 'from', :class => Thrift::User},
             REPOST => {:type => ::Thrift::Types::STRUCT, :name => 'repost', :class => Thrift::Repost},
-            TEXT_COMMENT => {:type => ::Thrift::Types::STRUCT, :name => 'text_comment', :class => Thrift::TextComment},
+            TEXT_COMMENT => {:type => ::Thrift::Types::STRUCT, :name => 'text_comment', :class => Thrift::Comment},
             VIA => {:type => ::Thrift::Types::LIST, :name => 'via', :element => {:type => ::Thrift::Types::STRUCT, :class => Thrift::User}}
           }
 
@@ -1721,49 +1491,7 @@ require 'blogcastr_types'
 
         end
 
-        class Send_image_comment_repost_to_muc_room_args
-          include ::Thrift::Struct
-          USERNAME = 1
-          ROOM = 2
-          FROM = 3
-          REPOST = 4
-          IMAGE_COMMENT = 5
-          VIA = 6
-
-          ::Thrift::Struct.field_accessor self, :username, :room, :from, :repost, :image_comment, :via
-          FIELDS = {
-            USERNAME => {:type => ::Thrift::Types::STRING, :name => 'username'},
-            ROOM => {:type => ::Thrift::Types::STRING, :name => 'room'},
-            FROM => {:type => ::Thrift::Types::STRUCT, :name => 'from', :class => Thrift::User},
-            REPOST => {:type => ::Thrift::Types::STRUCT, :name => 'repost', :class => Thrift::Repost},
-            IMAGE_COMMENT => {:type => ::Thrift::Types::STRUCT, :name => 'image_comment', :class => Thrift::ImageComment},
-            VIA => {:type => ::Thrift::Types::LIST, :name => 'via', :element => {:type => ::Thrift::Types::STRUCT, :class => Thrift::User}}
-          }
-
-          def struct_fields; FIELDS; end
-
-          def validate
-          end
-
-        end
-
-        class Send_image_comment_repost_to_muc_room_result
-          include ::Thrift::Struct
-          SUCCESS = 0
-
-          ::Thrift::Struct.field_accessor self, :success
-          FIELDS = {
-            SUCCESS => {:type => ::Thrift::Types::I32, :name => 'success'}
-          }
-
-          def struct_fields; FIELDS; end
-
-          def validate
-          end
-
-        end
-
-        class Send_text_comment_to_muc_occupant_args
+        class Send_comment_to_muc_occupant_args
           include ::Thrift::Struct
           TO = 1
           FROM_JID = 2
@@ -1775,7 +1503,7 @@ require 'blogcastr_types'
             TO => {:type => ::Thrift::Types::STRING, :name => 'to'},
             FROM_JID => {:type => ::Thrift::Types::STRING, :name => 'from_jid'},
             FROM => {:type => ::Thrift::Types::STRUCT, :name => 'from', :class => Thrift::User},
-            TEXT_COMMENT => {:type => ::Thrift::Types::STRUCT, :name => 'text_comment', :class => Thrift::TextComment}
+            TEXT_COMMENT => {:type => ::Thrift::Types::STRUCT, :name => 'text_comment', :class => Thrift::Comment}
           }
 
           def struct_fields; FIELDS; end
@@ -1785,45 +1513,7 @@ require 'blogcastr_types'
 
         end
 
-        class Send_text_comment_to_muc_occupant_result
-          include ::Thrift::Struct
-          SUCCESS = 0
-
-          ::Thrift::Struct.field_accessor self, :success
-          FIELDS = {
-            SUCCESS => {:type => ::Thrift::Types::I32, :name => 'success'}
-          }
-
-          def struct_fields; FIELDS; end
-
-          def validate
-          end
-
-        end
-
-        class Send_image_comment_to_muc_occupant_args
-          include ::Thrift::Struct
-          TO = 1
-          FROM_JID = 2
-          FROM = 3
-          IMAGE_COMMENT = 4
-
-          ::Thrift::Struct.field_accessor self, :to, :from_jid, :from, :image_comment
-          FIELDS = {
-            TO => {:type => ::Thrift::Types::STRING, :name => 'to'},
-            FROM_JID => {:type => ::Thrift::Types::STRING, :name => 'from_jid'},
-            FROM => {:type => ::Thrift::Types::STRUCT, :name => 'from', :class => Thrift::User},
-            IMAGE_COMMENT => {:type => ::Thrift::Types::STRUCT, :name => 'image_comment', :class => Thrift::ImageComment}
-          }
-
-          def struct_fields; FIELDS; end
-
-          def validate
-          end
-
-        end
-
-        class Send_image_comment_to_muc_occupant_result
+        class Send_comment_to_muc_occupant_result
           include ::Thrift::Struct
           SUCCESS = 0
 
