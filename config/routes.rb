@@ -65,14 +65,22 @@ ActionController::Routing::Routes.draw do |map|
   map.user_name_likes ":user_name/likes.:format", :controller => "users/likes", :format => nil
   #MVR - user comments 
   map.user_name_comments ":user_name/comments.:format", :controller => "users/comments", :format => nil
+  #MVR - user posts 
+  map.user_name_posts ":user_name/posts.:format", :controller => "users/posts", :format => nil
   #MVR - user subscriptions
   map.user_name_subscriptions ":user_name/subscriptions.:format", :controller => "users/subscriptions", :format => nil
   #MVR - user subscribers
   map.user_name_subscribers ":user_name/subscribers.:format", :controller => "users/subscribers", :format => nil
   #MVR - site 
   map.root :controller => "site"
+  #MVR - site links
+  map.about "about", :controller => "site", :action => "about"
+  map.faq "faq", :controller => "site", :action => "faq"
+  map.terms_of_service "terms_of_service", :controller => "site", :action => "terms_of_service"
+  map.privacy_policy "privacy_policy", :controller => "site", :action => "privacy_policy"
   #MVR - search
   map.search "search", :controller => "search"
+  map.user_search ":user_name/search.:format", :controller => "search", :action => "user"
   #MVR - authentication token
   map.authentication_token "authentication_token.:format", :controller => "authentication_tokens", :action => "create", :method => "post", :format => nil
   #MVR - home
@@ -124,6 +132,8 @@ ActionController::Routing::Routes.draw do |map|
   map.profile ":username", :controller => "profile", :action => "index"
   #MVR - public blogcasts
   map.public_blogcasts ":username/blogcasts", :controller => ":blogcasts", :action => "index"
+  #MVR - RSS
+  map.rss ":username/blogcasts.rss", :controller => ":blogcasts", :action => "rss"
   #MVR - public subscriptions 
   map.public_subscriptions ":username/subscriptions", :controller => ":subscriptions", :action => "index"
   #MVR - public subscribers 
@@ -134,6 +144,8 @@ ActionController::Routing::Routes.draw do |map|
   #TODO: decide if this should include the date
   #map.blogcast "/:username/:year/:month/:day/:title", :controller => "blogcasts", :action => "show",  map.full_blogcast "/:username/:year/:month/:day/:title", :controller => "blogcasts", :action => "show"
   map.blogcast_permalink ":username/:year/:month/:day/:title", :controller => "blogcasts", :action => "permalink", :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
+  #TODO: make these part of each individual controller
+  map.blogcast_posts_permalink ":username/:year/:month/:day/:title/posts", :controller => "blogcasts", :action => "posts_permalink", :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
   map.blogcast_comments_permalink ":username/:year/:month/:day/:title/comments", :controller => "blogcasts", :action => "comments_permalink", :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
   map.blogcast_likes_permalink ":username/:year/:month/:day/:title/likes", :controller => "blogcasts", :action => "likes_permalink", :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
 

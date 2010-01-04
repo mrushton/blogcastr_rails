@@ -152,12 +152,12 @@ function blogcastrTwitterSignOut()
 
 function blogcastrToggleBlindEffect(id)
 {
-  new Effect.toggle(id, 'blind', {duration: 0.5});
+  new Effect.toggle(id, 'blind', {duration: 0.25});
 }
 
 function blogcastrToggleSlideEffect(id)
 {
-  new Effect.toggle(id, 'slide', {duration: 0.5});
+  new Effect.toggle(id, 'slide', {duration: 0.25});
 }
 
 function blogcastrOnExpandableHeaderLinkClick(event)
@@ -176,4 +176,21 @@ function blogcastrOnExpandableHeaderLinkHoverOff()
 {
   //MVR - revert the headers hover styles 
   jQuery(this.parentNode).removeClass("no-hover");
+}
+
+function blogcastrCollapsibleEvent(obj, id)
+{
+  //TODO: fix bug with repeated clicks
+  //change the image
+  img_src = jQuery(obj).children().filter("img").attr("src");
+  if (img_src == "/images/up.png")
+  {
+    jQuery(obj).children().filter("img").attr("src", "/images/down.png");
+  }
+  else
+  {
+    jQuery(obj).children().filter("img").attr("src", "/images/up.png");
+  }
+  //effect
+  blogcastrToggleBlindEffect(id);
 }

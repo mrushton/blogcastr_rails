@@ -2,26 +2,16 @@
   <div class="notice" id="success-notice" style="display: none;">
   </div>
   <div id="header">
-    <%= link_to "<div class=\"avatar-large-rounded\" style=\"background-image: url('#{@profile_user.setting.avatar.url(:large)}')\"></div>", profile_path(:username => @profile_user.name), :target => "_blank" %>
-    <h1><%= @profile_user.name %>'s Blogcastr</h1>
+      <%= link_to(image_tag("/images/logo-small.png", :border => 0), "/") %>
 <% if @user.instance_of?(BlogcastrUser) -%>
     <div id="navigation">
+      <%= link_to image_tag(@user.setting.avatar.url(:small))+@user.name, profile_path(:username => @user.name), :class => "first" %>
       <%= link_to "Home", home_path %>
       <%= link_to "Settings", settings_path %>
       <%= link_to "Sign out", sign_out_path, :method => "delete" %>
     </div>
-    <%= link_to "<div class=\"avatar-small-rounded\" style=\"background-image: url('#{@user.setting.avatar.url(:small)}')\"></div>", profile_path(:username => @user.name), :target => "_blank" %>
     <div class="clear">
     </div>
-  <%- if @user.id != @profile_user.id -%> 
-    <div id="subscription">
-    <%- if @subscription.nil? -%>
-    <%= button_to_remote "Subscribe", :url => subscriptions_path(:user_id => @profile_user.id), :type => "submit", :failure => "alert('Error communicating with server, unable to subscribe to #{@profile_user.name}\\'s blogcast');" %>
-    <%- else -%>
-    <%= button_to_remote "Unsubscribe", :url => subscription_path(:id => @subscription.id), :method => "delete", :failure => "alert('Error communicating with server, unable to unsubscribe from #{@profile_user.name}\\'s blogcast');" %>
-    <%- end -%>
-    </div>
-  <%- end -%>
 <% elsif !@user.nil? -%>
     <div id="navigation">
       <%= link_to "Sign up", sign_up_path %>
@@ -35,92 +25,257 @@
   </div>
   <div id="content">
     <div id="main">
-      <h3><span class="counter-large"><%= @num_upcoming_blogcasts -%></span> <%= link_to @num_upcoming_blogcasts == 1 ? "Upcoming Blogcast" : "Upcoming Blogcasts", public_blogcasts_path(:username => @profile_user.name) -%></h3>
-      <ol>
+      <div class="upper-left-border-squared-corner">
+      </div>
+      <div class="top-border">
+      </div>
+      <div class="upper-right-border-squared-corner">
+      </div>
+      <div class="clear">
+      </div>
+      <div id="top">
+        <div id="left">
+          <%= image_tag "frame.png", :class => "frame" %>
+          <%= image_tag @profile_user.setting.avatar.url(:large), :class => "avatar" %>
+        </div>
+        <div id="right">
+          <h1><%= @profile_user.name -%>'s blogcastr</h1>
+<% if !@profile_user.setting.moto.nil? -%>
+          <p class="moto"><%= @profile_user.setting.moto -%></p>
+<% end -%>
+<% if @user.instance_of?(BlogcastrUser) -%>
+  <%- if @user.id == @profile_user.id -%> 
+          <div id="welcome">
+            <p>
+              Welcome to your blogcastr!
+            </p>
+          </div>
+  <%- else -%>
+          <div id="subscribe">
+    <%- if @subscription.nil? -%>
+            <p>
+              Welcome to <%= @profile_user_name_possesive -%> blogcastr! Want to subscribe to <%= @profile_user.name -%> or drop <%= @profile_user.name -%> a message?
+            </p>
+            <%= button_to_remote "Subscribe", {:url => subscriptions_path(:user_id => @profile_user.id), :type => "submit", :failure => "alert('Error communicating with server, unable to subscribe to #{@profile_user.name}');"} -%><%= link_to "Message!", sign_in_path, :class => "last" -%>
+    <%- else -%>
+            <p>
+              Welcome to <%= @profile_user_name_possesive -%> blogcastr! You are currently subscribed to <%= @profile_user.name -%>. Want to drop <%= @profile_user.name -%> a message?
+            </p>
+            <%= button_to_remote "Unsubscribe!", :url => subscription_path(:id => @subscription.id), :method => "delete", :failure => "alert('Error communicating with server, unable to unsubscribe from #{@profile_user.name}');" %><%= link_to "Message!", sign_in_path, :class => "last" -%>
+    <%- end -%>
+          </div>
+  <%- end -%>
+<% else -%>
+          <div id="sign-up">
+            <p>
+              Welcome to <%= @profile_user_name_possesive -%> blogcastr! If you would like to subscribe to <%= @profile_user.name -%> or drop <%= @profile_user.name -%> a message sign up or sign in.
+            </p>
+            <%= link_to "Sign up!", sign_up_path -%><%= link_to "Sign in!", sign_in_path, :class => "last" -%>
+          </div>
+<% end -%>
+          <%- form_tag user_search_path(:user_name => @profile_user.name, :controller => "search") do -%>
+            <%= label_tag(:query, image_tag("magnifying_glass.png")) %>
+            <%= text_field_tag :query, "Search #{@profile_user_name_possesive} blogcastr", :onfocus => "this.value = '';", :onblur => "this.value = 'Search #{@profile_user_name_possesive_escaped} blogcastr';"  %>
+          <%- end -%>
+        </div>
+        <div class="clear">
+        </div>
+      </div>
+      <div class="lower-left-border-squared-corner">
+      </div>
+      <div class="bottom-border">
+      </div>
+      <div class="lower-right-border-squared-corner">
+      </div>
+      <div class="clear">
+      </div>
+      <div class="upper-left-border-squared-corner">
+      </div>
+      <div class="top-border">
+      </div>
+      <div class="upper-right-border-squared-corner">
+      </div>
+      <div class="clear">
+      </div>
+      <div id="bottom">
+        <h2><span class="counter"><%= @num_upcoming_blogcasts -%></span><%= @num_upcoming_blogcasts == 1 ? "Upcoming Blogcast" : "Upcoming Blogcasts" -%></h2>
+        <ol>
 <% for blogcast in @upcoming_blogcasts -%>
-        <li class="blogcast">
-          <h4 class="blogcast-title"><%= link_to blogcast.title, blogcast_permalink_path(:username => blogcast.user.name, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%></h4>
-          <p class="blogcast-date"><%= blogcast.starting_at.strftime("%a %b %d, %Y %I:%M %p").gsub(/ 0/,' ') %></p>
-          <div class="clear">
-          </div>
-          <p class="blogcast-tags"><%= blogcast.tags -%></p>
+          <li class="blogcast">
+            <h3><%= link_to blogcast.title, blogcast_permalink_path(:username => blogcast.user.name, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%></h3>
+            <p class="date"><%= blogcast.starting_at.strftime("%a %b %d, %Y %I:%M %p").gsub(/ 0/,' ') %></p>
+            <div class="clear">
+            </div>
+            <p class="tags"><%= blogcast.tags -%></p>
+            <p class="description"><%= blogcast.description -%></p>
   <%- num_likes = blogcast.likes.count -%>
-          <h5 class=""><span class="counter-small"><%= num_likes -%></span><%= link_to num_likes == 1 ? "Like" : "Likes", blogcast_likes_permalink_path(:username => blogcast.user.name, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%></h5>
-          <ul>
+            <h4 class="three first selected" onclick="blogcastrCollapsibleEvent(this, 'blogcast-<%= blogcast.id -%>-likes');"><%= num_likes.to_s + ((num_likes == 1) ? " Like" : " Likes") -%><%= image_tag "down.png" -%></h4>
+  <%- num_posts = blogcast.posts.count -%>
+            <a class="tab" href="<%= blogcast_posts_permalink_path(:username => blogcast.user.name, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%>"><h4 class="three"><%= num_posts.to_s + ((num_posts == 1) ? " Post" : " Posts") -%></h4></a>
+  <%- num_comments = blogcast.comments.count -%>
+            <a class="tab" href="<%= blogcast_comments_permalink_path(:username => blogcast.user.name, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%>"><h4 class="three"><%= num_comments.to_s + ((num_comments == 1) ? " Comment" : " Comments") -%></h4></a>
+            <div class="clear">
+            </div>
+            <div id="blogcast-<%= blogcast.id -%>-likes">
+              <ul>
   <%- likes = User.find_by_sql(["SELECT users.* FROM likes, users WHERE likes.blogcast_id = ? AND likes.user_id = users.id LIMIT 30", blogcast.id]) -%>
+  <%- i = 0 -%>
   <%- for like in likes -%>
-            <li>
-              <%= link_to "<div class=\"avatar-small-rounded\" style=\"background-image: url('#{like.setting.avatar.url(:small)}');\"></div>", profile_path(:username => like.name), :target => "_blank" %>
-            </li>
+    <%- if i == 0 -%>
+                <li class="first">
+    <%- else -%>
+                <li>
+    <%- end -%>
+                  <%= link_to image_tag(like.setting.avatar.url(:small), :class => "avatar-small", :alt => "#{like.name}"), profile_path(:username => like.name), :target => "_blank" %>
+                </li>
   <%- end -%>
-          </ul>
-        </li>
+              </ul>
+            </div>
+            <div class="clear">
+            </div>
+          </li>
 <% end %>
-      </ol>
-      <h3><span class="counter-large"><%= @num_recent_blogcasts -%></span> <%= link_to @num_recent_blogcasts == 1 ? "Recent Blogcast" : "Recent Blogcasts", public_blogcasts_path(:username => @profile_user.name) -%></h3>
-      <ol>
+        </ol>
+        <h2><span class="counter"><%= @num_recent_blogcasts -%></span><%= @num_recent_blogcasts == 1 ? "Recent Blogcast" : "Recent Blogcasts" -%></h2>
+        <ol>
 <% for blogcast in @recent_blogcasts -%>
-        <li class="blogcast">
-          <h4 class="blogcast-title"><%= link_to blogcast.title, blogcast_permalink_path(:username => blogcast.user.name, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%></h4>
-          <p class="blogcast-date"><%= blogcast.starting_at.strftime("%a %b %d, %Y %I:%M %p").gsub(/ 0/,' ') %></p>
-          <div class="clear">
-          </div>
-          <p class="blogcast-tags"><%= blogcast.tags -%></p>
+          <li class="blogcast">
+            <h4 class="blogcast-title"><%= link_to blogcast.title, blogcast_permalink_path(:username => blogcast.user.name, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%></h4>
+            <p class="blogcast-date"><%= blogcast.starting_at.strftime("%a %b %d, %Y %I:%M %p").gsub(/ 0/,' ') %></p>
+            <div class="clear">
+            </div>
+            <p class="blogcast-tags"><%= blogcast.tags -%></p>
   <%- num_likes = blogcast.likes.count -%>
-          <h5 class=""><span class="counter-small"><%= num_likes -%></span><%= link_to num_likes == 1 ? "Like" : "Likes", blogcast_likes_permalink_path(:username => blogcast.user.name, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%></h5>
-          <ul>
+            <h5 class=""><%= num_likes + ((num_likes == 1) ? " Like" : " Likes") -%></h5>
+            <ul>
   <%- likes = User.find_by_sql(["SELECT users.* FROM likes, users WHERE likes.blogcast_id = ? AND likes.user_id = users.id LIMIT 30", blogcast.id]) -%>
   <%- for like in likes -%>
-            <li>
-              <%= link_to "<div class=\"avatar-small-rounded\" style=\"background-image: url('#{like.setting.avatar.url(:small)}');\"></div>", profile_path(:username => like.name), :target => "_blank" %>
-            </li>
+              <li>
+                <%= link_to "<div class=\"avatar-small-rounded\" style=\"background-image: url('#{like.setting.avatar.url(:small)}');\"></div>", profile_path(:username => like.name), :target => "_blank" %>
+              </li>
   <%- end -%>
-          </ul>
-        </li>
+            </ul>
+          </li>
 <% end %>
-      </ol>
+        </ol>
+      </div>
+      <div class="lower-left-border-squared-corner">
+      </div>
+      <div class="bottom-border">
+      </div>
+      <div class="lower-right-border-squared-corner">
+      </div>
+      <div class="clear">
+      </div>
     </div>
     <div id="side">
-<% if !@profile_user.setting.name.nil? %>
-      <h4>Name</h4>
-      <p><%= @profile_user.setting.name %></p>
-      <br>
-<% end -%>
-<% if !@profile_user.setting.about.nil? %>
-      <h4>About</h4>
-      <p><%= @profile_user.setting.about %></p>
-      <br>
+      <div class="upper-left-border-rounded-corner">
+      </div>
+      <div class="top-border-large">
+      </div>
+      <div class="upper-right-border-rounded-corner">
+      </div>
+      <div class="clear">
+      </div>
+      <div class="background">
+        <div class="all">
+          <h4 class="first">Name:</h4>
+          <p class="first"><%= @profile_user.setting.name %></p>
+          <br>
+<% if !@profile_user.setting.bio.nil? %>
+          <h4>Bio:</h4>
+          <p><%= @profile_user.setting.bio %></p>
+          <br>
 <% end -%>
 <% if !@profile_user.setting.web.nil? %>
-      <h4>Web</h4>
-      <a href="<%= @profile_user.setting.web %>" target="_blank"><%= @profile_user.setting.web.length > 25 ? (@profile_user.setting.web[0,21] + "...") : @profile_user.setting.web -%></a>
+          <h4>Web:</h4>
+          <a class="web" href="<%= @profile_user.setting.web %>" target="_blank"><%= @profile_user.setting.web.length > 27 ? (@profile_user.setting.web[0,23] + "...") : @profile_user.setting.web -%></a>
 <% end -%>
-      <h3><span class="counter-medium"><%= @num_blogcasts -%></span> <%= @num_blogcasts == 1 ? "Blogcast" : "Blogcasts" -%></h3>
-      <h3 class="expandable" onclick="blogcastrToggleBlindEffect('subscriptions')"><span class="counter-medium"><%= @num_subscriptions -%></span> <%= link_to  @num_subscriptions == 1 ? "Subscription" : "Subscriptions", public_subscriptions_path(:username => @profile_user.name) -%></h3>
-      <ul id="subscriptions">
-<% for subscription in @subscriptions -%>
-        <li>
-          <%= link_to "<div class=\"avatar-small-rounded\" style=\"background-image: url('#{subscription.setting.avatar.url(:small)}');\"></div>", profile_path(:username => subscription.name), :target => "_blank" %>
-        </li>
-<% end -%>
-      </ul>
-      <h3 class="expandable" onclick="blogcastrToggleBlindEffect('subscribers');"><span class="counter-medium"><%= @num_subscribers -%></span> <%= @num_subscribers == 1 ? "Subscriber" : "Subscribers" -%></h3>
-      <ul id="subscribers">
+          <hr>
+          <div id="stats">
+            <a href="<%= user_name_blogcasts_path :user_name => @profile_user.name -%>"><h3 class="first"><span class="counter"><%= @num_blogcasts -%></span><span class="stat"><%= @num_blogcasts == 1 ? "Blogcast" : "Blogcasts" -%></span></h3></a>
+            <a  href="<%= user_name_comments_path :user_name => @profile_user.name -%>"><h3 class="second"><span class="counter"><%= @num_comments -%></span><span class="stat"><%= @num_comments == 1 ? "Comment" : "Comments" -%></span></h3></a>
+            <a href="<%= user_name_likes_path :user_name => @profile_user.name -%>"><h3 class="third"><span class="counter"><%= @num_likes -%></span><span class="stat"><%= @num_like == 1 ? "Like" : "Likes" -%></span></h3></a>
+            <a href="<%= user_name_posts_path :user_name => @profile_user.name -%>"><h3 class="fourth"><span class="counter"><%= @num_posts -%></span><span class="stat"><%= @num_posts == 1 ? "Post" : "Posts" -%></span></h3></a>
+            <h3 class="fifth" onclick="blogcastrCollapsibleEvent(this, 'subscribers');"><span class="counter"><%= @num_subscribers -%></span><span class="stat"><%= @num_subscribers == 1 ? "Subscriber" : "Subscribers" -%></span><%= image_tag "down.png" -%></h3>
+            <div id="subscribers">
+              <ul>
+<% i = 0 -%>
 <% for subscriber in @subscribers -%>
-        <li>
-          <%= link_to "<div class=\"avatar-small-rounded\" style=\"background-image: url('#{subscriber.setting.avatar.url(:small)}');\"></div>", profile_path(:username => subscriber.name), :target => "_blank" %>
-        </li>
+  <%- if ((i%8) == 0) -%>
+    <%- if (i < 8) -%>
+                <li class="first top">
+    <%- else -%>
+                <li>
+    <%- end -%>
+  <%- else -%>
+    <%- if (i < 8) -%>
+                <li class="top">
+    <%- else -%>
+                <li>
+    <%- end -%>
+  <%- end -%>
+                  <%= link_to image_tag(subscriber.setting.avatar.url(:small), :class => "avatar-small", :alt => "#{subscriber.name}"), profile_path(:username => subscriber.name), :target => "_blank" %>
+                </li>
+  <%- i += 1 -%>
 <% end -%>
-      </ul>
-      <h3><span class="counter-medium"><%= @num_posts -%></span> <%= @num_posts == 1 ? "Post" : "Posts" -%></h3>
-      <h3><span class="counter-medium"><%= @num_reposts -%></span> <%= @num_reposts == 1 ? "Repost" : "Reposts" -%></h3>
-      <h3><span class="counter-medium"><%= @num_comments -%></span> <%= @num_comments == 1 ? "Comment" : "Comments" -%></h3>
+                <div class="clear">
+                </div>
+<% if (@num_subscribers > 16) -%>
+               <%= link_to "More", user_name_subscribers_path(:user_name => @profile_user.name), :class => "more" -%>
+<% end -%>
+              </ul>
+            </div>
+            <h3 class="sixth" onclick="blogcastrCollapsibleEvent(this, 'subscriptions')"><span class="counter"><%= @num_subscriptions -%></span> <span class="stat"><%= @num_subscriptions == 1 ? "Subscription" : "Subscriptions" -%></span><%= image_tag "down.png" -%></h3>
+            <div id="subscriptions">
+              <ul>
+<% i = 0 -%>
+<% for subscription in @subscriptions -%>
+  <%- if ((i%8) == 0) -%>
+    <%- if (i < 8) -%>
+                <li class="first top">
+    <%- else -%>
+                <li>
+    <%- end -%>
+  <%- else -%>
+    <%- if (i < 8) -%>
+                <li class="top">
+    <%- else -%>
+                <li>
+    <%- end -%>
+  <%- end -%>
+                  <%= link_to image_tag(subscription.setting.avatar.url(:small), :class => "avatar-small"), profile_path(:username => subscription.name), :target => "_blank" %>
+                </li>
+<% end -%>
+                <div class="clear">
+                </div>
+              </ul>
+            </div>
+          </div>
+          <hr>
+          <div class="hack">
+            <%= link_to image_tag("feed-icon-28x28.png")+"RSS feed of #{@profile_user.name}'s blogcasts", rss_path(:username => @profile_user.name), :class => "rss" %>
+          </div>
+        </div>
+      </div>
+      <div class="lower-left-border-rounded-corner">
+      </div>
+      <div class="bottom-border-large">
+      </div>
+      <div class="lower-right-border-rounded-corner">
+      </div>
+      <div class="clear">
+      </div>
     </div>
     <div class="clear">
     </div>
-    </div>
-    <div id="footer">
-      <p>&copy; 2009 Blogcastr</p>
-    </div>
+  </div>
+  <div id="footer">
+    <span>&copy; 2009 Blogcastr</span>
+    <a href="http://blogcastr.wordpress.com">Blog</a>
+    <%= link_to "About", about_path -%>
+    <%= link_to "FAQ", faq_path -%>
+    <%= link_to "Terms of Service", terms_of_service_path -%>
+    <%= link_to "Privacy Policy", privacy_policy_path -%>
   </div>
 </div>

@@ -26,6 +26,15 @@ ActiveRecord::Schema.define(:version => 20090929055821) do
     t.datetime "updated_at"
   end
 
+  create_table "comments", :force => true do |t|
+    t.integer  "user_id",     :null => false
+    t.integer  "blogcast_id", :null => false
+    t.string   "from",        :null => false
+    t.string   "text"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "likes", :force => true do |t|
     t.integer  "user_id",     :null => false
     t.integer  "blogcast_id", :null => false
@@ -53,7 +62,8 @@ ActiveRecord::Schema.define(:version => 20090929055821) do
   create_table "settings", :force => true do |t|
     t.integer  "user_id",                 :null => false
     t.string   "name"
-    t.string   "about"
+    t.string   "moto"
+    t.string   "bio"
     t.string   "web"
     t.string   "time_zone"
     t.string   "avatar_file_name"
