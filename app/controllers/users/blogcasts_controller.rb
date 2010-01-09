@@ -4,8 +4,8 @@ class Users::BlogcastsController < ApplicationController
   def index
     #MVR - find user by name or id
     if !params[:user_name].nil?
-      @user = BlogcastrUser.find_by_name(params[:user_name])
-      if @user.nil?
+      @blogcasts_user = BlogcastrUser.find_by_name(params[:user_name])
+      if @blogcasts_user.nil?
         respond_to do |format|
           format.html {render :file => "public/404.html", :layout => false, :status => 404}
           format.xml {render :xml => "<errors><error>Couldn't find BlogcastrUser with NAME=\"#{params[:user_name]}\"</error></errors>", :status => :unprocessable_entity}
@@ -15,7 +15,7 @@ class Users::BlogcastsController < ApplicationController
       end
     else
       begin
-        @user = BlogcastrUser.find(params[:user_id])
+        @blogcasts_user = BlogcastrUser.find(params[:user_id])
       rescue ActiveRecord::RecordNotFound => error
         respond_to do |format|
           format.html {render :file => "public/404.html", :layout => false, :status => 404}
@@ -25,11 +25,16 @@ class Users::BlogcastsController < ApplicationController
         return
       end
     end
+    @blogcasts = @blogcasts_user.blogcasts
+    @blogcasts_user_name_possesive = @blogcasts_user.name + (@blogcasts_user.name =~ /.*s$/ ? "'":"'s")
+    @blogcasts_user_settings_name = @blogcasts_user.setting.name
+    @blogcasts_user_settings_name_possesive = @blogcasts_user_settings_name + (@blogcasts_user_settings_name =~ /.*s$/ ? "'":"'s")
     respond_to do |format|
         format.html
         #TODO: limit result set and order by most recent 
-        format.xml {render :xml => @user.blogcasts.to_xml}
-        format.json {render :json => @user.blogcasts.to_json}
+        format.xml {render :xml => @blogcasts.to_xml}
+        format.json {render :json => @blogcasts.to_json}
+        format.rss {render :layout => false}
     end
   end
 

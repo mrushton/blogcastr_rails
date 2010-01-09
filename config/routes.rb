@@ -131,9 +131,7 @@ ActionController::Routing::Routes.draw do |map|
   #MVR - profile
   map.profile ":username", :controller => "profile", :action => "index"
   #MVR - public blogcasts
-  map.public_blogcasts ":username/blogcasts", :controller => ":blogcasts", :action => "index"
-  #MVR - RSS
-  map.rss ":username/blogcasts.rss", :controller => ":blogcasts", :action => "rss"
+  map.public_blogcasts ":username/blogcasts.:format", :controller => "blogcasts", :action => "index", :format => nil
   #MVR - public subscriptions 
   map.public_subscriptions ":username/subscriptions", :controller => ":subscriptions", :action => "index"
   #MVR - public subscribers 

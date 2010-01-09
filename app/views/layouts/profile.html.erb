@@ -5,7 +5,7 @@
     <title><%= @profile_user_name_possesive %> Blogcastr</title>
     <%= stylesheet_link_tag "blogcastr", :media => "screen" %>
     <%= stylesheet_link_tag "profile", :media => "screen" %>
-    <link rel="alternate" href="<%= rss_path :username => @profile_user.name -%>" title="<%= @profile_user_name_possesive -%> blogcasts" type="application/rss+xml"/>
+    <%= auto_discovery_link_tag(:rss, public_blogcasts_url(:username => @profile_user.name, :format => "rss"), {:title => "#{@profile_user_name_possesive} blogcasts"}) %>
     <style>
       body
       {

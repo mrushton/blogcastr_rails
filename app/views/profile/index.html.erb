@@ -262,7 +262,7 @@
           </div>
           <hr>
           <div class="hack">
-            <%= link_to image_tag("feed-icon-14x14.png")+"<p>RSS feed of #{@profile_user.name}'s<br>blogcasts</p>", rss_path(:username => @profile_user.name), :class => "rss" %>
+            <%= link_to image_tag("feed-icon-14x14.png")+"<p>RSS feed of #{@profile_user.name}'s<br>blogcasts</p>", public_blogcasts_path(:username => @profile_user.name, :format => "rss"), :class => "rss" %>
           </div>
         </div>
       </div>
