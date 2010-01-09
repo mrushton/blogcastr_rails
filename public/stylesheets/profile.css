@@ -13,11 +13,6 @@
 	top: -10px;
 }
 
-#top
-{
-	height: 187px;
-}
-
 #left
 {
 	position: absolute;
@@ -39,6 +34,7 @@
 	height: 188px;
 	left: 15px;
 	top: 15px;
+	border: none;
 }
 
 #right
@@ -56,6 +52,7 @@
 	margin-right: 0px;
 	margin-bottom: 0px;
 	font-size: 2.3em;
+	line-height: 40px;
 }
 
 #right p.moto
@@ -68,40 +65,6 @@
 	font-style: italic;
 	line-height: 1.3em;
 	font-family: Gill Sans, Helvetica, sans-serif;
-}
-
-#right input.tab 
-{
-	margin-top: 15px;
-	padding: 0px;
-	width: 204px;
-	height: 30px;
-	line-height: 30px;
-	font-size: 1.1em;
-}
-
-#right input.subscribe
-{
-	margin-right: 1px;
-}
-
-#right form
-{
-	width: 397px;;
-	margin-top: 5px;
-	margin-bottom: 5px;
-}
-
-#right form label img
-{
-	border: solid;
-	border-width: 1px;
-	border-color: #59636f; 
-	position: absolute;
-	left: 192px;
-	top: 143px;
-	display: block;
-	vertical-align: bottom;
 }
 
 #sign-up, #subscribe, #welcome
@@ -123,21 +86,46 @@
 	font-weight: bold;
 }
 
+#subscribe button 
+{
+	padding: 0px;
+	margin-right: 1px;
+	display: block;
+	float: left;
+	width: 194px;
+	height: 26px;
+	line-height: 26px;
+	color: #000000;
+	background-color: #efc02d;
+	border: none;
+	text-decoration: none;
+	text-align: center;
+	font-family: Helvetica, sans-serif;
+	font-weight: bold;
+	font-size: .85em;
+	cursor: pointer;
+}
+
+#subscribe button:hover
+{
+	background-color: #d79400;
+}
+
 #sign-up a, #subscribe a
 {
 	margin-right: 1px;
-	display: inline-block;
+	padding: 0px;
+	display: block;
+	float: left;
 	width: 194px;
 	height: 26px;
-	line-height: 28px;
-	vertical-align: bottom;
+	line-height: 26px;
 	color: #000000;
 	background-color: #efc02d;
 	text-decoration: none;
 	text-align: center;
 	font-weight: bold;
-	font-size: .75em;
-	
+	font-size: .85em;
 }
 
 #sign-up a:hover, #subscribe a:hover
@@ -158,6 +146,25 @@
 	width: 195px;
 }
 
+#right form
+{
+	width: 397px;;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+#right form label img
+{
+	border: solid;
+	border-width: 1px;
+	border-color: #59636f; 
+	left: 192px;
+	top: 143px;
+	display: block;
+	float: left;
+	vertical-align: bottom;
+}
+
 #query
 {
 	width: 356px;
@@ -170,8 +177,8 @@
 	border-width: 1px;
 	border-color: #59636f; 
 	display: block;
-	position: absolute;
 	left: 223px;
+	float: left;
 	top: 143px;
 	line-height: 29px;
 	color: #c0c0c0;
@@ -185,11 +192,8 @@
 	margin-top: 0px;
 	vertical-align: top;
 	text-decoration: none;
-	color: gray;
 	display: block;
-	font-style: italic;
-	font-size: 0.85em;
-	line-height: 14px;
+	color: gray;
 }
 
 #side a.rss:hover
@@ -199,9 +203,19 @@
 
 #side a.rss img
 {
-	margin-right: 3px;
+	margin-right: 5px;
 	display: inline;
 	vertical-align: top;
 	float: left;
 	border: none;
+}
+
+#side a.rss p
+{
+	margin: 0px;
+	font-style: italic;
+	font-size: 0.80em;
+	font-weight: normal;
+	line-height: 14px;
+	float: left;
 }

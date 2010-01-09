@@ -347,7 +347,13 @@ a:hover
 	border: none;
 }
 
-#stats h3
+#stats
+{
+	-moz-user-select: none;
+	-webkit-user-select: none;
+}
+
+#stats h3, #stats a.stat
 {
 	margin-top: 1px;
 	margin-bottom: 1px;
@@ -358,16 +364,24 @@ a:hover
 	display: block;
 	position: relative;
 	color: #000000;
+	border: none;
 	text-decoration: none;
 	font-weight: bolder;
 	line-height: 30px;
 	font-size: 1.15em;
+	text-align: left;
+	cursor: pointer;
 }
 
-#stats h3:hover
+#stats h3
+{
+	-moz-user-select: none;
+	-webkit-user-select: none;
+}
+
+#stats h3:hover, #stats a.stat:hover
 {
 	background-color: #0097e0;
-	cursor: pointer;
 	text-decoration: none;
 }
 
@@ -376,7 +390,7 @@ a:hover
 	font-size: 1.0em;
 }
 
-#stats span.stat
+#stats span.name
 {
 	position: absolute;
 	left: 65px;
@@ -439,6 +453,8 @@ a:hover
 	margin: 0px;
 	padding: 0px;
 	list-style-type: none;	
+	-moz-user-select: none;
+	-webkit-user-select: none;
 }
 
 #stats li, #bottom ul li
@@ -447,6 +463,8 @@ a:hover
 	margin-top: 1px;
 	display: block;
 	float: left;
+	-moz-user-select: none;
+	-webkit-user-select: none;
 }
 
 #stats li.first, #bottom ul li.first
@@ -470,6 +488,18 @@ a:hover
 #stats a.more:hover
 {
 	text-decoration: underline;
+}
+
+#subscribers
+{
+	-moz-user-select: none;
+	-webkit-user-select: none;
+}
+
+#subscriptions
+{
+	-moz-user-select: none;
+	-webkit-user-select: none;
 }
 
 #side div.hack
@@ -705,4 +735,3 @@ div.lower-right-border-rounded-corner
 {
 	clear: left;
 }
-

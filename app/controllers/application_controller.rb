@@ -4,6 +4,7 @@
 require 'thrift'
 require 'blogcastr'
 require 'tzinfo'
+require 'javascript_helper.rb'
 
 class ApplicationController < ActionController::Base
   include Clearance::Authentication

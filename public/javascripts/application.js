@@ -180,16 +180,20 @@ function blogcastrOnExpandableHeaderLinkHoverOff()
 
 function blogcastrCollapsibleEvent(obj, id)
 {
-  //TODO: fix bug with repeated clicks
   //change the image
-  img_src = jQuery(obj).children().filter("img").attr("src");
-  if (img_src == "/images/up.png")
+  //MVR - only change image if effect will run
+  queue = Effect.Queues.get(id);
+  if (queue.effects.length == 0)
   {
-    jQuery(obj).children().filter("img").attr("src", "/images/down.png");
-  }
-  else
-  {
-    jQuery(obj).children().filter("img").attr("src", "/images/up.png");
+    img_src = jQuery(obj).children().filter("img").attr("src");
+    if (img_src == "/images/up.png")
+    {
+      jQuery(obj).children().filter("img").attr("src", "/images/down.png");
+    }
+    else
+    {
+      jQuery(obj).children().filter("img").attr("src", "/images/up.png");
+    }
   }
   //effect
   blogcastrToggleBlindEffect(id);
