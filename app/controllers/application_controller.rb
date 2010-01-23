@@ -4,7 +4,6 @@
 require 'thrift'
 require 'blogcastr'
 require 'tzinfo'
-require 'javascript_helper.rb'
 
 class ApplicationController < ActionController::Base
   include Clearance::Authentication
@@ -40,9 +39,24 @@ class ApplicationController < ActionController::Base
   def set_time_zone
     if signed_in?
       if !current_user.setting.nil?
-        time_zone = current_user.setting.time_zone
-        if !time_zone.nil?
-          Time.zone = time_zone
+        @time_zone = current_user.setting.time_zone
+        if !@time_zone.nil?
+          Time.zone = @time_zone
+        end
+      end
+    end
+  end
+
+  def set_blogcast_time_zone
+    #MVR - if time zone has not been set, set it to the blogcast time zone
+    if @time_zone.nil?
+      if !params[:username].nil?
+        blogcast_user = BlogcastrUser.find_by_username(params[:username])
+        if !blogcast_user.nil?
+          @time_zone = blogcast_user.setting.time_zone
+          if !@time_zone.nil?
+            Time.zone = @time_zone
+          end
         end
       end
     end

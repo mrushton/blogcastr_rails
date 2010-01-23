@@ -8,11 +8,6 @@
 	height: 50px;
 }
 
-#header img
-{
-	top: -10px;
-}
-
 #left
 {
 	position: absolute;
@@ -193,7 +188,7 @@
 	vertical-align: top;
 	text-decoration: none;
 	display: block;
-	color: gray;
+	color: #787878;
 }
 
 #side a.rss:hover
@@ -204,8 +199,6 @@
 #side a.rss img
 {
 	margin-right: 5px;
-	display: inline;
-	vertical-align: top;
 	float: left;
 	border: none;
 }
@@ -213,6 +206,7 @@
 #side a.rss p
 {
 	margin: 0px;
+	width: 188px;
 	font-style: italic;
 	font-size: 0.80em;
 	font-weight: normal;

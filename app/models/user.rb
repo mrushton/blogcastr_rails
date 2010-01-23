@@ -10,9 +10,9 @@ class User < ActiveRecord::Base
   has_many :likes
 
   #TODO: refactor this
-  def get_user_name
+  def get_username2
     if instance_of?(BlogcastrUser)
-      name
+      username
     elsif instance_of?(FacebookUser)
       name = CACHE.get("SELECTnameFROMuserWHEREuid=" + facebook_id.to_s) 
       unless name
@@ -33,10 +33,10 @@ class User < ActiveRecord::Base
     end
   end
 
-  def get_user_url
+  def get_url2
     if instance_of?(BlogcastrUser)
       #MVR - it looks like objects don't get helpers so can't use blogast_path
-      "/" + name 
+      "/" + username 
     elsif instance_of?(FacebookUser)
       url = CACHE.get("SELECTprofile_urlFROMuserWHEREuid=" + facebook_id.to_s) 
       unless url
@@ -57,7 +57,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  def get_user_avatar_url(size)
+  def get_avatar_url2(size)
     if instance_of?(BlogcastrUser)
       setting.avatar.url(size)
     elsif instance_of?(FacebookUser)
@@ -68,43 +68,15 @@ class User < ActiveRecord::Base
       end
       avatar_url
     elsif instance_of?(TwitterUser)
-      avatar_url = CACHE.get(id.to_s + "-avatar_url") 
-      unless avatar_url 
+      profile_image_url = CACHE.get(id.to_s + "-profile_image_url") 
+      unless profile_image_url 
         no_auth = Twitter::NoAuth::NoAuth.new()
         base = Twitter::Base.new(no_auth)
-        avatar_url = base.user(twitter_id).profile_image_url
-        CACHE.set(id.to_s + "-avatar_url", avatar_url, 1.day)
+        profile_image_url = base.user(twitter_id).profile_image_url
+        CACHE.set(id.to_s + "-profile_image_url", avatar_url, 1.day)
       end
-      avatar_url
+      profile_image_url
     else
-    end
-  end
-
-  def get_user_avatar_class(size)
-    if instance_of?(BlogcastrUser)
-      if size == :small
-        "avatar-small-rounded"
-      elsif size == :medium
-        "avatar-medium-rounded"
-      elsif size == :large
-        "avatar-large-rounded"
-      end
-    elsif instance_of?(FacebookUser)
-      if size == :small
-        "facebook-avatar-small-rounded"
-      elsif size == :medium
-        "facebook-avatar-medium-rounded"
-      elsif size == :large
-        "facebook-avatar-large-rounded"
-      end
-    elsif instance_of?(TwitterUser)
-      if size == :small
-        "twitter-avatar-small-rounded"
-      elsif size == :medium
-        "twitter-avatar-medium-rounded"
-      elsif size == :large
-        "twitter-avatar-large-rounded"
-      end
     end
   end
 end

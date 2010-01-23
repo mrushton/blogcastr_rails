@@ -2,10 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title><%= @profile_user_name_possesive %> Blogcastr</title>
+    <title><%= @profile_username_possesive %> Blogcastr</title>
     <%= stylesheet_link_tag "blogcastr", :media => "screen" %>
     <%= stylesheet_link_tag "profile", :media => "screen" %>
-    <%= auto_discovery_link_tag(:rss, public_blogcasts_url(:username => @profile_user.name, :format => "rss"), {:title => "#{@profile_user_name_possesive} blogcasts"}) %>
+    <%= auto_discovery_link_tag(:rss, username_blogcasts_url(:username => @profile_user.username, :format => "rss"), {:title => "#{@profile_username_possesive} blogcasts"}) %>
     <style>
       body
       {

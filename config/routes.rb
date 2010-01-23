@@ -56,21 +56,24 @@ ActionController::Routing::Routes.draw do |map|
     users.resources "subscribers", :controller => "users/subscribers", :only => [:index]
   end
   #MVR - user blogcasts
-  map.user_name_blogcasts ":user_name/blogcasts.:format", :controller => "users/blogcasts", :format => nil
-  map.user_name_recent_blogcasts ":user_name/blogcasts/recent.:format", :controller => "users/blogcasts", :action => "recent", :format => nil
-  map.user_name_upcoming_blogcasts ":user_name/blogcasts/upcoming.:format", :controller => "users/blogcasts", :action => "upcoming", :format => nil
+  map.username_blogcasts ":username/blogcasts.:format", :controller => "users/blogcasts", :format => nil
+  map.username_recent_blogcasts ":username/blogcasts/recent.:format", :controller => "users/blogcasts", :action => "recent", :format => nil
+  map.username_upcoming_blogcasts ":username/blogcasts/upcoming.:format", :controller => "users/blogcasts", :action => "upcoming", :format => nil
   #MVR - user blogcast
-  map.user_name_blogcast_permalink ":user_name/:year/:month/:day/:title.:format", :controller => "users/blogcasts", :action => "show", :format => nil, :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
+  map.username_blogcast_permalink ":username/:year/:month/:day/:title.:format", :controller => "users/blogcasts", :action => "show", :format => nil, :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
+  map.username_blogcast_posts_permalink ":username/:year/:month/:day/:title/posts.:format", :controller => "users/blogcasts", :action => "show", :format => nil, :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
+  map.username_blogcast_comments_permalink ":username/:year/:month/:day/:title/posts.:format", :controller => "users/blogcasts", :action => "show", :format => nil, :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
+  map.username_blogcast_likes_permalink ":username/:year/:month/:day/:title/likes.:format", :controller => "users/blogcasts", :action => "show", :format => nil, :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
   #MVR - user likes 
-  map.user_name_likes ":user_name/likes.:format", :controller => "users/likes", :format => nil
+  map.username_likes ":username/likes.:format", :controller => "users/likes", :format => nil
   #MVR - user comments 
-  map.user_name_comments ":user_name/comments.:format", :controller => "users/comments", :format => nil
+  map.username_comments ":username/comments.:format", :controller => "users/comments", :format => nil
   #MVR - user posts 
-  map.user_name_posts ":user_name/posts.:format", :controller => "users/posts", :format => nil
+  map.username_posts ":username/posts.:format", :controller => "users/posts", :format => nil
   #MVR - user subscriptions
-  map.user_name_subscriptions ":user_name/subscriptions.:format", :controller => "users/subscriptions", :format => nil
+  map.username_subscriptions ":username/subscriptions.:format", :controller => "users/subscriptions", :format => nil
   #MVR - user subscribers
-  map.user_name_subscribers ":user_name/subscribers.:format", :controller => "users/subscribers", :format => nil
+  map.username_subscribers ":username/subscribers.:format", :controller => "users/subscribers", :format => nil
   #MVR - site 
   map.root :controller => "site"
   #MVR - site links
@@ -80,7 +83,7 @@ ActionController::Routing::Routes.draw do |map|
   map.privacy_policy "privacy_policy", :controller => "site", :action => "privacy_policy"
   #MVR - search
   map.search "search", :controller => "search"
-  map.user_search ":user_name/search.:format", :controller => "search", :action => "user"
+  map.user_search ":username/search.:format", :controller => "search", :action => "user"
   #MVR - authentication token
   map.authentication_token "authentication_token.:format", :controller => "authentication_tokens", :action => "create", :method => "post", :format => nil
   #MVR - home
@@ -112,14 +115,6 @@ ActionController::Routing::Routes.draw do |map|
     #MVR - likes 
     blogcasts.resources :likes, :controller => "likes", :only => [:create, :destroy]
   end
-  #AS DESIGNED: map 
-  #map.edit_blogcast "/blogcasts/:year/:month/:day/:title/edit", :controller => "dashboard", :action => "edit" 
-  #map.blogcast_dashboard "/blogcasts/:year/:month/:day/:title/dashboard", :controller => "dashboard", :action => "show" 
-  #MVR - subscriptions
-  #map.resources :users, :controller => "clearance/users",  :only => [] do |users|
-  #  users.resource :subscription, :controller => "subscriptions", :only => [:index, :create, :destroy]
-  #  users.resources :subscribed, :controller => "subscribed", :only => [:index]
- # end
   #MVR - Facebook sessions
   map.resource :facebook_session, :controller => "facebook_sessions", :only => [:create, :destroy]
   #MVR - Twitter sessions
@@ -130,22 +125,6 @@ ActionController::Routing::Routes.draw do |map|
   map.ejabberd "ejabberd/:action.:format", :controller => "ejabberd"
   #MVR - profile
   map.profile ":username", :controller => "profile", :action => "index"
-  #MVR - public blogcasts
-  map.public_blogcasts ":username/blogcasts.:format", :controller => "blogcasts", :action => "index", :format => nil
-  #MVR - public subscriptions 
-  map.public_subscriptions ":username/subscriptions", :controller => ":subscriptions", :action => "index"
-  #MVR - public subscribers 
-  map.public_subscribers ":username/subscribers", :controller => ":subscribers", :action => "index"
-  #MVR - public posts 
-  map.public_posts ":username/posts", :controller => ":posts", :action => "index"
-  #MVR - blogcasts
-  #TODO: decide if this should include the date
-  #map.blogcast "/:username/:year/:month/:day/:title", :controller => "blogcasts", :action => "show",  map.full_blogcast "/:username/:year/:month/:day/:title", :controller => "blogcasts", :action => "show"
-  map.blogcast_permalink ":username/:year/:month/:day/:title", :controller => "blogcasts", :action => "permalink", :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
-  #TODO: make these part of each individual controller
-  map.blogcast_posts_permalink ":username/:year/:month/:day/:title/posts", :controller => "blogcasts", :action => "posts_permalink", :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
-  map.blogcast_comments_permalink ":username/:year/:month/:day/:title/comments", :controller => "blogcasts", :action => "comments_permalink", :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
-  map.blogcast_likes_permalink ":username/:year/:month/:day/:title/likes", :controller => "blogcasts", :action => "likes_permalink", :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
 
   # See how all your routes lay out with "rake routes"
 

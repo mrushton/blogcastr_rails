@@ -1,6 +1,6 @@
 <div id="wrapper">
   <div id="header">
-    <h1><%= @user.name %>'s Settings</h1>
+    <h1><%= @user.username %>'s Settings</h1>
     <div id="navigation">
       <%= link_to "Home", home_path %>
       <%= link_to "Settings", settings_path %>
@@ -11,9 +11,9 @@
     <div id="main">
       <% form_for :setting, :url => {:controller => "settings", :action => "update"}, :html => {:multipart => true, :id => "settings_form", :method => "put"} do |form| %>
         <%= form.error_messages %>
-        <%= form.label :name, "Name" %>
+        <%= form.label :full_name %>
 	<br>
-        <%= form.text_field :name %>
+        <%= form.text_field :full_name %>
 	<br>
         <%= form.label :moto, "Moto" %>
 	<br>

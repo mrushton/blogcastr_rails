@@ -4,7 +4,7 @@ class ProfileController < ApplicationController
 
   def index
     @user = current_user
-    @profile_user = User.find_by_name(params[:username])
+    @profile_user = User.find_by_username(params[:username])
     if @profile_user.nil?
       #MVR - treat this as a 404 error
       render :file => "#{RAILS_ROOT}/public/404.html", :layout => false, :status => 404
@@ -36,7 +36,7 @@ class ProfileController < ApplicationController
     #MVR - subscription blogcasts
     @upcoming_subscription_blogcasts = Blogcast.find_by_sql(["SELECT blogcasts.* FROM subscriptions, users, blogcasts WHERE subscriptions.user_id = ? AND subscriptions.subscribed_to = users.id AND users.id = blogcasts.user_id AND blogcasts.starting_at > ? ORDER BY blogcasts.starting_at LIMIT 3", @profile_user.id, Time.zone.now])
     @recent_subscription_blogcasts = Blogcast.find_by_sql(["SELECT blogcasts.* FROM subscriptions, users, blogcasts WHERE subscriptions.user_id = ? AND subscriptions.subscribed_to = users.id AND users.id = blogcasts.user_id AND blogcasts.starting_at < ? ORDER BY blogcasts.starting_at DESC LIMIT 3", @profile_user.id, Time.zone.now])
-    @profile_user_name_possesive = @profile_user.name + (@profile_user.name =~ /.*s$/ ? "'":"'s")
-    @profile_user_name_possesive_escaped = @profile_user_name_possesive.gsub(/'/,"\\\\\'")
+    @profile_username_possesive = @profile_user.username + (@profile_user.username =~ /.*s$/ ? "'":"'s")
+    @profile_username_possesive_escaped = @profile_username_possesive.gsub(/'/,"\\\\\'")
   end
 end

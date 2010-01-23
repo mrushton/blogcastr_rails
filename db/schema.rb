@@ -61,7 +61,7 @@ ActiveRecord::Schema.define(:version => 20090929055821) do
 
   create_table "settings", :force => true do |t|
     t.integer  "user_id",                 :null => false
-    t.string   "name"
+    t.string   "full_name"
     t.string   "moto"
     t.string   "bio"
     t.string   "web"
@@ -87,7 +87,7 @@ ActiveRecord::Schema.define(:version => 20090929055821) do
 
   create_table "users", :force => true do |t|
     t.string   "type",                                                   :null => false
-    t.string   "name"
+    t.string   "username",             :limit => 15
     t.string   "email"
     t.string   "encrypted_password",   :limit => 128
     t.string   "salt",                 :limit => 128
@@ -106,8 +106,8 @@ ActiveRecord::Schema.define(:version => 20090929055821) do
   add_index "users", ["email"], :name => "index_users_on_email"
   add_index "users", ["facebook_id"], :name => "index_users_on_facebook_id"
   add_index "users", ["id", "confirmation_token"], :name => "index_users_on_id_and_confirmation_token"
-  add_index "users", ["name"], :name => "index_users_on_name"
   add_index "users", ["remember_token"], :name => "index_users_on_remember_token"
+  add_index "users", ["username"], :name => "index_users_on_username"
 
   create_table "views", :force => true do |t|
     t.integer  "blogcast_id", :null => false

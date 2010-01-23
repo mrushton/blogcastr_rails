@@ -9,8 +9,8 @@
 # This should only be necessary until the final version of the new profile is released.
 
 development:
-  api_key: 83db10504f9a37d9300a3bd22d9bdfd9 
-  secret_key: f056ec28e6463fe24469abb0b0a56e0f 
+  api_key: 4300d543ce99ec80390e261872291502
+  secret_key: d04c149be09170e05a1fd36c03d4e79d
   canvas_page_name:
   callback_url:
   pretty_errors: true

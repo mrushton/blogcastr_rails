@@ -4,7 +4,11 @@ class TwitterSessionsController < ApplicationController
     oauth_client = Twitter::OAuth.new(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET, :sign_in => true)
     begin
       #TODO: better way of setting domain?
-      oauth_client.set_callback_url("http://blogcastr.com" + twitter_oauth_callback_path)
+      if Rails.env.production?
+        oauth_client.set_callback_url("http://blogcastr.com" + twitter_oauth_callback_path)
+      else
+        oauth_client.set_callback_url("http://sandbox.blogcastr.com" + twitter_oauth_callback_path)
+      end
     rescue 
       render :nothing => true
       return

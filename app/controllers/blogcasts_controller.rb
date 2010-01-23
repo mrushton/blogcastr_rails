@@ -8,7 +8,6 @@ class BlogcastsController < ApplicationController
   end
   before_filter :set_time_zone
   before_filter :set_facebook_session
-  after_filter :view, :only => ["show", "show_permalink"]
   helper_method :facebook_session
 
   def new
@@ -55,7 +54,7 @@ class BlogcastsController < ApplicationController
     end
     begin  
       #MVR - create muc room
-      thrift_client.create_muc_room(@user.name, HOST, "Blogcast."+@blogcast.id.to_s, @blogcast.title, "")
+      thrift_client.create_muc_room(@user.username, HOST, "Blogcast."+@blogcast.id.to_s, @blogcast.title, "")
       thrift_client_close
     rescue
       @blogcast.errors.add_to_base "Unable to create blogcast muc room"
@@ -79,7 +78,7 @@ class BlogcastsController < ApplicationController
     respond_to do |format|
       begin
         @blogcast = Blogcast.find(params[:id])
-        format.html {redirect_to blogcast_permalink_path(:username => @blogcast.user.name, :year => @blogcast.year, :month => @blogcast.month, :day => @blogcast.day, :title => @blogcast.link_title)}
+        format.html {redirect_to blogcast_permalink_path(:username => @blogcast.user.username, :year => @blogcast.year, :month => @blogcast.month, :day => @blogcast.day, :title => @blogcast.link_title)}
         format.xml {render :xml => @blogcast.to_xml}
         format.json {render :json => @blogcast.to_json}
       rescue ActiveRecord::RecordNotFound => error
@@ -136,56 +135,5 @@ class BlogcastsController < ApplicationController
   def destroy
     #TODO: implement destroy
     redirect_to home_path
-  end
-
-  def permalink
-    @blogcast_user = User.find_by_name(params[:username])
-    if @blogcast_user.nil?
-      #MVR - treat this as a 404 error
-      render :file => "public/404.html", :layout => false, :status => 404
-      return
-    end
-    @blogcast = @blogcast_user.blogcasts.find(:first, :conditions => {:year => params[:year].to_i, :month => params[:month].to_i, :day => params[:day].to_i, :link_title => params[:title]})
-    if @blogcast.nil?
-      #MVR - treat this as a 404 error
-      render :file => "public/404.html", :layout => false, :status => 404
-      return
-    end
-    #MVR - get settings
-    @blogcast_setting = @blogcast_user.setting
-    @user = current_user
-    if !@user.nil?
-      if @user.instance_of?(BlogcastrUser)
-        #MVR - does user like blog or not
-        if @user != @blogcast_user
-          @like = @user.likes.find(:first, :conditions => {:blogcast_id => @blogcast.id}) 
-        end
-      end
-      @comment = Comment.new(:from => "Web")
-    end
-    #MVR - posts 
-    @posts = @blogcast.posts.find(:all, :order => "created_at DESC") 
-    @num_posts = @blogcast.posts.count
-    #MVR - comments
-    @num_comments = @blogcast.comments.count
-    #TODO: live viewers
-    @num_viewers = 0
-    #TODO: views
-    @num_views = @blogcast.views.count
-    #TODO: do not use find_by_sql
-    @likes = User.find_by_sql(["SELECT users.* FROM likes, users WHERE likes.blogcast_id = ? AND likes.user_id = users.id LIMIT 30", @blogcast.id])
-    @num_likes = @blogcast.likes.count 
-  end
-
-  private
-
-  def view
-    if !@blogcast.nil?
-      if @user.nil?
-        @blogcast.views.create
-      else
-        @blogcast.views.create(:user_id => @user.id)
-      end
-    end
   end
 end

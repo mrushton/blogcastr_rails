@@ -14,4 +14,17 @@ class Blogcast < ActiveRecord::Base
         errors.add(:link_title, "is already being used")
     end
   end
+
+  def get_username
+    username
+  end
+
+  def get_url
+    #MVR - it looks like objects don't get helpers so can't use blogast_path
+    "/" + username 
+  end
+
+  def get_avatar_url(size)
+    setting.avatar.url(size)
+  end
 end

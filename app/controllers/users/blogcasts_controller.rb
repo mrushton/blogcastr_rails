@@ -1,15 +1,18 @@
 class Users::BlogcastsController < ApplicationController
   before_filter :set_time_zone
+  before_filter :set_blogcast_time_zone
+  before_filter :set_facebook_session
+  helper_method :facebook_session
 
   def index
     #MVR - find user by name or id
-    if !params[:user_name].nil?
-      @blogcasts_user = BlogcastrUser.find_by_name(params[:user_name])
+    if !params[:username].nil?
+      @blogcasts_user = BlogcastrUser.find_by_username(params[:username])
       if @blogcasts_user.nil?
         respond_to do |format|
           format.html {render :file => "public/404.html", :layout => false, :status => 404}
-          format.xml {render :xml => "<errors><error>Couldn't find BlogcastrUser with NAME=\"#{params[:user_name]}\"</error></errors>", :status => :unprocessable_entity}
-          format.json {render :json => "[[\"Couldn't find BlogcastrUser with NAME=\"#{params[:user_name]}\"\"]]", :status => :unprocessable_entity}
+          format.xml {render :xml => "<errors><error>Couldn't find BlogcastrUser with NAME=\"#{params[:username]}\"</error></errors>", :status => :unprocessable_entity}
+          format.json {render :json => "[[\"Couldn't find BlogcastrUser with NAME=\"#{params[:username]}\"\"]]", :status => :unprocessable_entity}
         end
         return
       end
@@ -26,9 +29,9 @@ class Users::BlogcastsController < ApplicationController
       end
     end
     @blogcasts = @blogcasts_user.blogcasts
-    @blogcasts_user_name_possesive = @blogcasts_user.name + (@blogcasts_user.name =~ /.*s$/ ? "'":"'s")
-    @blogcasts_user_settings_name = @blogcasts_user.setting.name
-    @blogcasts_user_settings_name_possesive = @blogcasts_user_settings_name + (@blogcasts_user_settings_name =~ /.*s$/ ? "'":"'s")
+    @blogcasts_user_username_possesive = @blogcasts_user.username + (@blogcasts_user.username =~ /.*s$/ ? "'":"'s")
+    @blogcasts_user_full_name = @blogcasts_user.setting.full_name
+    @blogcasts_user_full_name_possesive = @blogcasts_user_full_name + (@blogcasts_user_full_name =~ /.*s$/ ? "'":"'s")
     respond_to do |format|
         format.html
         #TODO: limit result set and order by most recent 
@@ -40,13 +43,13 @@ class Users::BlogcastsController < ApplicationController
 
   def recent 
     #MVR - find user by name or id
-    if !params[:user_name].nil?
-      @user = BlogcastrUser.find_by_name(params[:user_name])
+    if !params[:username].nil?
+      @user = BlogcastrUser.find_by_username(params[:username])
       if @user.nil?
         respond_to do |format|
           format.html {render :file => "public/404.html", :layout => false, :status => 404}
-          format.xml {render :xml => "<errors><error>Couldn't find BlogcastrUser with NAME=\"#{params[:user_name]}\"</error></errors>", :status => :unprocessable_entity}
-          format.json {render :json => "[[\"Couldn't find BlogcastrUser with NAME=\"#{params[:user_name]}\"\"]]", :status => :unprocessable_entity}
+          format.xml {render :xml => "<errors><error>Couldn't find BlogcastrUser with NAME=\"#{params[:username]}\"</error></errors>", :status => :unprocessable_entity}
+          format.json {render :json => "[[\"Couldn't find BlogcastrUser with NAME=\"#{params[:username]}\"\"]]", :status => :unprocessable_entity}
         end
         return
       end
@@ -72,13 +75,13 @@ class Users::BlogcastsController < ApplicationController
 
   def upcoming 
     #MVR - find user by name or id
-    if !params[:user_name].nil?
-      @user = BlogcastrUser.find_by_name(params[:user_name])
+    if !params[:username].nil?
+      @user = BlogcastrUser.find_by_username(params[:username])
       if @user.nil?
         respond_to do |format|
           format.html {render :file => "public/404.html", :layout => false, :status => 404}
-          format.xml {render :xml => "<errors><error>Couldn't find BlogcastrUser with NAME=\"#{params[:user_name]}\"</error></errors>", :status => :unprocessable_entity}
-          format.json {render :json => "[[\"Couldn't find BlogcastrUser with NAME=\"#{params[:user_name]}\"\"]]", :status => :unprocessable_entity}
+          format.xml {render :xml => "<errors><error>Couldn't find BlogcastrUser with NAME=\"#{params[:username]}\"</error></errors>", :status => :unprocessable_entity}
+          format.json {render :json => "[[\"Couldn't find BlogcastrUser with NAME=\"#{params[:username]}\"\"]]", :status => :unprocessable_entity}
         end
         return
       end
@@ -103,13 +106,13 @@ class Users::BlogcastsController < ApplicationController
   end
 
   def show
-    if !params[:user_name].nil?
-      @blogcast_user = BlogcastrUser.find_by_name(params[:user_name])
+    if !params[:username].nil?
+      @blogcast_user = BlogcastrUser.find_by_username(params[:username])
       if @blogcast_user.nil?
         respond_to do |format|
           format.html {render :file => "public/404.html", :layout => false, :status => 404}
-          format.xml {render :xml => "<errors><error>Couldn't find BlogcastrUser with NAME=\"#{params[:user_name]}\"</error></errors>", :status => :unprocessable_entity}
-          format.json {render :json => "[[\"Couldn't find BlogcastrUser with NAME=\"#{params[:user_name]}\"\"]]", :status => :unprocessable_entity}
+          format.xml {render :xml => "<errors><error>Couldn't find BlogcastrUser with NAME=\"#{params[:username]}\"</error></errors>", :status => :unprocessable_entity}
+          format.json {render :json => "[[\"Couldn't find BlogcastrUser with NAME=\"#{params[:username]}\"\"]]", :status => :unprocessable_entity}
         end
         return
       end
@@ -169,11 +172,18 @@ class Users::BlogcastsController < ApplicationController
           @num_comments = @blogcast.comments.count
           #TODO: live viewers
           @num_viewers = 0
-          #TODO: views
+          #MVR - create view
+          if !@user.nil?
+            @blogcast.views.create :user_id => @user.id;
+          else
+            @blogcast.views.create;
+          end
           @num_views = @blogcast.views.count
           #TODO: do not use find_by_sql
           @likes = User.find_by_sql(["SELECT users.* FROM likes, users WHERE likes.blogcast_id = ? AND likes.user_id = users.id LIMIT 30", @blogcast.id])
           @num_likes = @blogcast.likes.count 
+          @blogcast_username_possesive = @blogcast_user.username + (@blogcast_user.username =~ /.*s$/ ? "'":"'s")
+          @tweet_url = "http://twitter.com/home?status=%22" + @blogcast.title + "%22%20by%20" + @blogcast_user.username + ".%20" + username_blogcast_permalink_url(:username => @blogcast_user.username, :year => @blogcast.year, :month => @blogcast.month, :day => @blogcast.day, :title => @blogcast.link_title)
         end
         #TODO: limit result set and order by most recent 
         format.xml {render :xml => @blogcast.to_xml(:include => :posts)}

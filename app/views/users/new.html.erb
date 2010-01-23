@@ -3,56 +3,87 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Blogcastr Sign Up</title>
-    <%= javascript_include_tag "jquery.js", :media => "all" %>
+    <%= javascript_include_tag "sign_up.js", "jquery.js", :media => "all" %>
     <%= stylesheet_link_tag "blogcastr.css", :media => "screen" %>
-    <script type="text/javascript">
-      //<![CDATA[
-      function blogcastrOnLoad()
-      {
-        //MVR - determine user's timezone
-        var date = new Date()
-        var utc_offset = -date.getTimezoneOffset();
-        $("input#utc_offset").attr("value", utc_offset);
-      }
-      window.addEventListener("load", blogcastrOnLoad, false);
-      //]]>
-    </script>
   </head>
   <body>
     <div id="wrapper">
       <div id="header">
         <a href="/"><img src="/images/logo.png" alt="Blogcastr" border=0></img></a>
         <div id="navigation">
-          <%= link_to "Sign up", sign_up_path %>
+          <%= link_to "Sign up", sign_up_path, :class => "selected" %>
           <%= link_to "Sign in", sign_in_path %>
         </div>
       </div>
-      <div id="content">
-        <h2>Sign up</h2>
-        <% form_for :blogcastr_user, :url => users_path do |form| %>
-          <input id="utc_offset" type="hidden" name="utc_offset" value="">
-          <%= form.error_messages %>
-          <%= form.label :user_name %>
-          <br>
-          <%= form.text_field :name %>
-          <br>
-          <%= form.label :email %>
-          <br>
-          <%= form.text_field :email %>
-          <br>
-          <%= form.label :password %>
-          <br>
-          <%= form.password_field :password %>
-          <br>
-          <%= form.label :password_confirmation, "Confirm password" %>
-          <br>
-          <%= form.password_field :password_confirmation %>
-          <br>
-          <%= form.submit 'Submit', :disable_with => 'Submitting...' %>
-        <% end %>
+      <div id="content" class="one-column">
+        <div id="main">
+          <div id="title">
+            <div id="side-border">
+              <div class="upper-left-border-squared-corner-gray">
+              </div>
+              <div class="left-border-gray">
+              </div>
+              <div class="lower-left-border-squared-corner-gray">
+              </div>
+            </div>
+            <h1>Sign up!</h1>
+            <div id="side-border">
+              <div class="upper-right-border-squared-corner-gray">
+              </div>
+              <div class="right-border-gray">
+              </div>
+              <div class="lower-right-border-squared-corner-gray">
+              </div>
+            </div>
+          </div>
+          <div class="upper-left-border-squared-corner-blue">
+          </div>
+          <div class="top-border-blue">
+          </div>
+          <div class="upper-right-border-squared-corner-blue">
+          </div>
+          <div class="clear">
+          </div>
+          <div id="background">
+            <% form_for :blogcastr_user, :url => users_path do |form| %>
+              <%= error_messages_for "blogcastr_user", "setting", :header_message => "Oops!", :message => nil -%>
+              <input id="utc_offset" type="hidden" name="utc_offset" value="">
+              <%= form.label :email, "Email address" %>
+              <%= form.text_field :email %>
+              <%= form.label :username %>
+              <%= form.text_field :username %>
+<% fields_for :setting do |setting| -%>
+              <%= setting.label :full_name %>
+              <%= setting.text_field :full_name %>
+<% end -%>
+              <%= form.label :password %>
+              <%= form.password_field :password %>
+              <%= form.label :password_confirmation, "Confirm password" %>
+              <%= form.password_field :password_confirmation %>
+              <%= form.submit "Start blogcasting!", :class => "button" %>
+            <% end %>
+          </div>
+          <div class="lower-left-border-squared-corner-blue">
+          </div>
+          <div class="bottom-border-blue">
+          </div>
+          <div class="lower-right-border-squared-corner-blue">
+          </div>
+          <div class="clear">
+          </div>
+        </div>
+      </div>
+      <div class="clear">
       </div>
       <div id="footer">
-        <p>&copy; 2009 Blogcastr</p>
+        <span>&copy; 2010 Blogcastr</span>
+        <%= link_to "About", about_path -%>
+        <a href="http://blogcastr.wordpress.com">Blog</a>
+        <a href="http://www.facebook.com/blogcastr">Facebook</a>
+        <%= link_to "FAQ", faq_path -%>
+        <%= link_to "Privacy Policy", privacy_policy_path -%>
+        <%= link_to "Terms of Service", terms_of_service_path -%>
+        <a href="http://twitter.com/blogcastr">Twitter</a>
       </div>
     </div>
   </body>

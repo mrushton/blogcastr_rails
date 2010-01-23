@@ -8,14 +8,10 @@
   <body>
     <div id="wrapper">
       <div id="header">
-        <%- form_tag search_path :controller => "search" do -%>
-          <%= label_tag(:query, image_tag("magnifying_glass.png")) %>
-          <%= text_field_tag :query, "Search Blogcastr", :onfocus => "this.value = '';", :onblur => "this.value = 'Search Blogcastr';"  %>
-        <%- end -%>
-        <a href="/"><img src="/images/logo.png" alt="Blogcastr"></img></a>
+        <a href="/"><img src="/images/logo.png" alt="Blogcastr" border=0></img></a>
         <div id="navigation">
           <%= link_to "Sign up", sign_up_path %>
-          <%= link_to "Sign in", sign_in_path, :class => "selected" %>
+          <%= link_to "Sign in", sign_in_path %>
         </div>
       </div>
       <div id="content" class="one-column">
@@ -29,7 +25,7 @@
               <div class="lower-left-border-squared-corner-gray">
               </div>
             </div>
-            <h1>Sign in!</h1>
+            <h1>Forget your password?</h1>
             <div id="side-border">
               <div class="upper-right-border-squared-corner-gray">
               </div>
@@ -48,25 +44,18 @@
           <div class="clear">
           </div>
           <div id="background">
-            <% form_tag session_path do %>
+            <% form_tag passwords_path do %>
 <%- if !flash[:error].nil? -%>
               <div class="error">
                 <h2><%= flash[:error] -%></h2>
               </div>            
 <%- elsif !flash[:info].nil? -%>
-              <div class="info">
-                <h2><%= flash[:info] -%></h2>            
-              </div>            
+              <h2 class="info"><%= flash[:info] -%></h2>            
 <%- end -%>
-              <%= label_tag :user_name, "Username or email address" %>
-              <%= text_field_tag :user_name %>
-              <%= label_tag :password %>
-              <%= password_field_tag :password %>
-              <div class="right-justify">
-                <%= link_to "forget your password?", new_password_path %>
-              </div>
-              <%= submit_tag "Submit", :class => "button" %>
-            <% end %>
+            <%= label_tag :email, "Please enter your email address and we will send you instructions on how to reset your password." %>
+            <%= text_field_tag :email %>
+            <%= submit_tag "Submit", :class => "button" %>
+          <% end %>
           </div>
           <div class="lower-left-border-squared-corner-blue">
           </div>
@@ -82,13 +71,11 @@
       </div>
       <div id="footer">
         <span>&copy; 2010 Blogcastr</span>
-        <%= link_to "About", about_path -%>
         <a href="http://blogcastr.wordpress.com">Blog</a>
-        <a href="http://www.facebook.com/blogcastr">Facebook</a>
+        <%= link_to "About", about_path -%>
         <%= link_to "FAQ", faq_path -%>
-        <%= link_to "Privacy Policy", privacy_policy_path -%>
         <%= link_to "Terms of Service", terms_of_service_path -%>
-        <a href="http://twitter.com/blogcastr">Twitter</a>
+        <%= link_to "Privacy Policy", privacy_policy_path -%>
       </div>
     </div>
   </body>
