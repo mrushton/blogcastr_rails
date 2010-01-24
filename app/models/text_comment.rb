@@ -1,2 +1,0 @@
-class TextComment < Comment 
-end
