@@ -41,6 +41,8 @@
 	line-height: 30px;
 	font-weight: bold;
 	font-size: 2.0em;
+	background-image: none;
+	float: none;
 }
 
 #title div.background hr
@@ -48,6 +50,7 @@
 	margin-top: 0px;
 	margin-bottom: 3px;
 	height: 2px;
+	display: block;
 	background-color: #000000;
 	border: none;
 }
@@ -161,4 +164,50 @@
 	position: absolute;
 	left: 557px;
 	top: 11px;
+}
+
+#comment form
+{
+	margin-top: 3px;
+}
+
+#comment form textarea
+{
+	padding: 5px;
+	width: 562px;
+	height: 115px;
+	border: solid;
+	border-width: 1px;
+	border-color: #000000;
+	background-image: url(/images/comment_prompt.png);
+	background-repeat: no-repeat;
+	background-position: 5px 5px;
+	font-size: 1.2em;
+	resize: none;
+}
+
+#comment form textarea.selected
+{
+	background-image: none;
+}
+
+#comment form input 
+{
+	margin-top: 5px;
+	width: 125px;
+	height: 28px;
+	border: solid;
+	border-width: 1px;
+	border-color: #000000;
+	border-color: #4e606f;
+	float: right;
+	font-size: 1.15em;
+	font-weight: bold;
+	font-size: 0.75em;
+	cursor: pointer;
+}
+
+#comment form input:hover
+{
+	background-color: #a3a3a3;
 }

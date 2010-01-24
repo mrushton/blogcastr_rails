@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>Blogcastr Sign In</title>
+    <title>Blogcastr Forget Password</title>
     <%= stylesheet_link_tag "blogcastr.css", :media => "screen" %>
   </head>
   <body>
@@ -16,25 +16,6 @@
       </div>
       <div id="content" class="one-column">
         <div id="main">
-          <div id="title">
-            <div id="side-border">
-              <div class="upper-left-border-squared-corner-gray">
-              </div>
-              <div class="left-border-gray">
-              </div>
-              <div class="lower-left-border-squared-corner-gray">
-              </div>
-            </div>
-            <h1>Forget your password?</h1>
-            <div id="side-border">
-              <div class="upper-right-border-squared-corner-gray">
-              </div>
-              <div class="right-border-gray">
-              </div>
-              <div class="lower-right-border-squared-corner-gray">
-              </div>
-            </div>
-          </div>
           <div class="upper-left-border-squared-corner-blue">
           </div>
           <div class="top-border-blue">
@@ -43,7 +24,26 @@
           </div>
           <div class="clear">
           </div>
-          <div id="background">
+          <div class="background">
+            <div id="title">
+              <div class="side-border">
+                <div class="upper-left-border-squared-corner-gray">
+                </div>
+                <div class="left-border-gray">
+                </div>
+                <div class="lower-left-border-squared-corner-gray">
+                </div>
+              </div>
+              <h1>Forget your password?</h1>
+              <div class="side-border">
+                <div class="upper-right-border-squared-corner-gray">
+                </div>
+                <div class="right-border-gray">
+                </div>
+                <div class="lower-right-border-squared-corner-gray">
+                </div>
+              </div>
+            </div>
             <% form_tag passwords_path do %>
 <%- if !flash[:error].nil? -%>
               <div class="error">

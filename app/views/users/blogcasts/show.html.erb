@@ -80,6 +80,16 @@
 <%- end -%>
         <h2 onclick="blogcastrCollapsibleEvent(this, 'comment');">Comment<%= image_tag "down.png" -%></h2>
         <div id="comment">
+<% if signed_in? -%>
+          <% remote_form_for :comment, :url => blogcast_comments_path(:blogcast_id => @blogcast.id), :html => { :id => "comment_form", :method => "post"}, :complete => "$('comment_form').reset();" do |f| -%>
+            <input id="jid" type="hidden" value="" name="jid"/>
+            <%= f.hidden_field :from %>
+            <%= f.text_area :text, :onfocus => "jQuery(this).addClass('selected');", :onblur => "if (this.value == '') jQuery(this).removeClass('selected')" %>
+            <%= f.submit "Post" %>
+          <%- end -%>
+          <div class="clear">
+          </div>
+<% else -%>
         <p>To comment on "<%= @blogcast.title -%>" or tell your friends about it sign up or sign in.</p>
         <div id="sign-up">
           <%= link_to "Sign up!", sign_up_path -%>
@@ -88,36 +98,11 @@
           </div>
         </div>
         <p>Or connect with Facebook or Twitter.</p>
-        <div id="comment-effect-outer">
-        <div id="comment-effect-inner">
-<% if signed_in? -%>
-  <%- if signed_in_as_blogcastr_user? -%>
-            <p>Send <%= @blogcast_user.username -%> a comment.</p>
-  <%- elsif signed_in_as_facebook_user? -%>
-            <p>Send <%= @blogcast_user.username -%> a comment. <a class="sign-out" href="#" onclick="FB.Connect.logout(blogcastrFacebookSignOut); return false;">Sign out</a> of Facebook.</p>
-            <div onclick="var attachment = {'name':'Google','href':'http://www.google.com/','description':'Google Home Page'};  FB.Connect.streamPublish('',attachment);">Post to Facebook</div>
-  <%- elsif signed_in_as_twitter_user? -%>
-            <p>Send <%= @blogcast_user.username -%> a comment. <a class="sign-out" href="#" onclick="blogcastrTwitterSignOut(); return false;">Sign out</a> of Twitter.</p>
-  <%- end -%>
-            <% remote_form_for :comment, :url => blogcast_comments_path(:blogcast_id => @blogcast.id), :html => { :id => "comment_form", :method => "post"}, :complete => "$('comment_form').reset();" do |f| -%>
-              <input id="jid" type="hidden" value="" name="jid"/>
-              <%= f.hidden_field :from %>
-              <%= f.label :text, "Text" %>
-              <br>
-              <%= f.text_area :text %>
-	      <br>
-              <%= f.submit "Submit" %>
-            <%- end -%>
-            <div class="clear">
-            </div>
-<% else -%>
             <p>To send <%= @blogcast_user.username -%> a comment sign in or connect.</p>
             <a href="#" onclick="FB.Connect.requireSession(blogcastrFacebookSignIn); return false;"><img id="facebook_connect_image" src="http://static.ak.fbcdn.net/images/fbconnect/login-buttons/connect_light_medium_long.gif" alt="Facebook connect" /></a>
             <a href="#" onclick="blogcastrTwitterSignIn(); return false;"><img id="twitter_sign_in_image" src="/images/Sign-in-with-Twitter-darker.png" alt="Twitter sign in" /></a>
 <% end -%>
-          </div>
         </div>
-      </div>
       </div>
       <div class="lower-left-border-squared-corner">
       </div>
@@ -127,8 +112,16 @@
       </div>
       <div class="clear">
       </div>
-      <div class="background">
-        <h3><span class="counter-medium"><%= @num_posts -%></span> <%= @num_posts == 1 ? "Post" : "Posts" -%></h3>
+      <div class="upper-left-border-squared-corner">
+      </div>
+      <div class="top-border">
+      </div>
+      <div class="upper-right-border-squared-corner">
+      </div>
+      <div class="clear">
+      </div>
+      <div id="bottom">
+        <h2><span class="counter"><%= @num_posts -%></span><%= @num_posts == 1 ? "Post" : "Posts" -%></h2>
         <ol class="stream" id="public-stream">
 <%- for post in @posts -%>
   <%- if post.instance_of?(TextPost) -%>
@@ -142,6 +135,14 @@
   <%- end -%>
 <%- end -%>
         </ol>
+      </div>
+      <div class="lower-left-border-squared-corner">
+      </div>
+      <div class="bottom-border">
+      </div>
+      <div class="lower-right-border-squared-corner">
+      </div>
+      <div class="clear">
       </div>
     </div>
     <div id="side">

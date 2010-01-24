@@ -17,25 +17,6 @@
       </div>
       <div id="content" class="one-column">
         <div id="main">
-          <div id="title">
-            <div id="side-border">
-              <div class="upper-left-border-squared-corner-gray">
-              </div>
-              <div class="left-border-gray">
-              </div>
-              <div class="lower-left-border-squared-corner-gray">
-              </div>
-            </div>
-            <h1>Sign up!</h1>
-            <div id="side-border">
-              <div class="upper-right-border-squared-corner-gray">
-              </div>
-              <div class="right-border-gray">
-              </div>
-              <div class="lower-right-border-squared-corner-gray">
-              </div>
-            </div>
-          </div>
           <div class="upper-left-border-squared-corner-blue">
           </div>
           <div class="top-border-blue">
@@ -44,7 +25,26 @@
           </div>
           <div class="clear">
           </div>
-          <div id="background">
+          <div class="background">
+            <div id="title">
+              <div class="side-border">
+                <div class="upper-left-border-squared-corner-gray">
+                </div>
+                <div class="left-border-gray">
+                </div>
+                <div class="lower-left-border-squared-corner-gray">
+                </div>
+              </div>
+              <h1>Sign up!</h1>
+              <div class="side-border">
+                <div class="upper-right-border-squared-corner-gray">
+                </div>
+                <div class="right-border-gray">
+                </div>
+                <div class="lower-right-border-squared-corner-gray">
+                </div>
+              </div>
+            </div>
             <% form_for :blogcastr_user, :url => users_path do |form| %>
               <%= error_messages_for "blogcastr_user", "setting", :header_message => "Oops!", :message => nil -%>
               <input id="utc_offset" type="hidden" name="utc_offset" value="">
