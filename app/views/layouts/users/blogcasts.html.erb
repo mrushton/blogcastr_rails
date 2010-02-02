@@ -7,20 +7,13 @@
     <link rel="stylesheet" href="/stylesheets/blogcast.css" media="screen"/>
     <%= javascript_include_tag :defaults, "jquery.js", "strophe/b64.js", "strophe/md5.js", "strophe/sha1.js", "strophe/strophe.js", "strophe/plugins/strophe.pubsub.js", "blogcast.js", :media => "all" %>
     <style>
+<% if !@blogcast.user.setting.background_file_name.nil? -%>
       body
       {
         background: url('<%= @blogcast.user.setting.background.url %>') fixed no-repeat top left;
-      }
-<% if @user.instance_of?(BlogcastrUser) -%>
-      .avatar-small-rounded-background
-      {
-        background-image: url('<%= @user.setting.avatar(:small) %>');
+        background: url('<%= @blogcast.user.setting.background.url %>') no-repeat top left;
       }
 <% end -%>
-      .avatar-large-rounded-background
-      {
-        background-image: url('<%= @blogcast.user.setting.avatar(:large) %>');
-      }
     </style>
     <%= javascript_tag "var authenticity_token = \"#{form_authenticity_token}\"" %>
 <% if @user.instance_of?(FacebookUser) -%>
@@ -38,7 +31,7 @@
       var username;
 <% end -%>
       var server_timestamp = <%= Time.now.to_i %>;
-      var facebook_attachment = {'name':'<%= @blogcast.title-%> by <%= @blogcast_user.username -%>', 'href':'<%= username_blogcast_permalink_url(:username => @blogcast_user.username, :year => @blogcast.year, :month => @blogcast.month, :day => @blogcast.day, :title => @blogcast.link_title) -%>', 'description':'<%= @blogcast.description.gsub(/'/,"\\'") -%>'};
+      var facebook_attachment = {'name':'<%= @blogcast.title-%>', 'href':'<%= username_blogcast_permalink_url(:username => @blogcast_user.username, :year => @blogcast.year, :month => @blogcast.month, :day => @blogcast.day, :title => @blogcast.link_title) -%>', 'description':'By <%= @blogcast_user.username -%> on <%= @blogcast.starting_at.strftime("%B %e, %Y") -%>. <%= @blogcast.description.gsub(/'/,"\\'") -%>'};
     </script>
 <% if @user.instance_of?(BlogcastrUser) -%>
   <%- if Rails.env.production? -%> 

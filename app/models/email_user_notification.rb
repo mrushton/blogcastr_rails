@@ -1,0 +1,2 @@
+class EmailUserNotification < UserNotification 
+end

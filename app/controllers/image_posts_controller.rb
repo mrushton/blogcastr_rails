@@ -29,9 +29,9 @@ class ImagePostsController < ApplicationController
     end
     begin
       thrift_user = Thrift::User.new
-      thrift_user.name = @user.name
+      thrift_user.name = @user.username
       thrift_user.account = "Blogcastr"
-      thrift_user.url = profile_path :username => @user.name
+      thrift_user.url = profile_path :username => @user.username
       thrift_user.avatar_url = @user.setting.avatar.url(:medium)
       thrift_image_post = Thrift::ImagePost.new
       thrift_image_post.id = @image_post.id
@@ -39,7 +39,7 @@ class ImagePostsController < ApplicationController
       thrift_image_post.medium = @image_post.from
       thrift_image_post.image_url = @image_post.image.url(:default)
       #MVR - send image post to muc room
-      err = thrift_client.send_image_post_to_muc_room(@user.name, HOST, "Blogcast."+@blogcast.id.to_s, thrift_user, thrift_image_post)
+      #err = thrift_client.send_image_post_to_muc_room(@user.username, HOST, "Blogcast."+@blogcast.id.to_s, thrift_user, thrift_image_post)
       thrift_client_close
     rescue
       @image_post.errors.add_to_base "Unable to send image post to muc room"

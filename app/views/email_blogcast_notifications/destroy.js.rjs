@@ -1,0 +1,1 @@
+page.replace_html "email-notification", :partial => "add_email_notification"

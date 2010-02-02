@@ -1,8 +1,17 @@
 <li id="<%= text_post.id %>">
-  <div class="stream-effect">
-    <p class="text"><%= text_post.text %></p>
+<%- if @first == 1 -%>
+  <div class="first effect">
+<%- else -%>
+  <div class="effect">
+<%- end -%>
+    <%= hours_minutes_ago_helper text_post.created_at %>
+    <a href="<%= profile_path(:username => text_post.user.username) -%>" class="user"><%= image_tag(text_post.user.setting.avatar.url(:small), :class => "avatar") -%> <%= text_post.user.username -%></a>
     <div class="clear">
     </div>
-    <p class="info">Posted <%= hours_minutes_ago_helper text_post.created_at %> from <%= text_post.from %></p>
+    <p class="text"><%= text_post.text %></p>
+    <h4 onclick="blogcastrCollapsibleEvent(this, 'TextPost:<%= text_post.id -%>-info');">Info<img src="/images/up.png"</img></h4>
+    <div id="TextPost:<%= text_post.id -%>-info" style="display: none;">
+      <p class="info">Posted by <%= text_post.user.username -%> on <%= text_post.created_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/,' ') %> from <%= text_post.from %></p>
+    </div>
   </div>
 </li>

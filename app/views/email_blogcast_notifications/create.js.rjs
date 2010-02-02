@@ -1,0 +1,1 @@
+page.replace_html "email-notification", :partial => "delete_email_notification"

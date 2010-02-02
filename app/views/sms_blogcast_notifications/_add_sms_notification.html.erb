@@ -1,0 +1,1 @@
+<%= link_to_remote image_tag("phone_add.png") + "<p>SMS notification for \"#{@blogcast.title}\"</p>", :url => blogcast_sms_notifications_path(:blogcast_id => @blogcast.id), :failure => "alert('Error communicating with server, failed to create sms notification for \\\"#{@blogcast.title}\\\"');", :html => {:class => "notification"}, :method => "post" %>

@@ -15,11 +15,7 @@
 	height: 218px;
 	left: -30px;
 	top: -40px;
-}
-
-#left img.frame
-{
-	position: absolute;
+	background-image: url('/images/frame.png');
 }
 
 #left img.avatar
@@ -181,13 +177,17 @@
 	font-variant: Gill Sans, Helvetica, sans-serif;
 }
 
+#side
+{
+	margin-top: 10px;
+}
+
 #side a.rss
 {
 	margin-left: 0px;
 	margin-top: 0px;
 	vertical-align: top;
 	text-decoration: none;
-	display: block;
 	color: #787878;
 }
 
@@ -206,10 +206,10 @@
 #side a.rss p
 {
 	margin: 0px;
-	width: 188px;
+	width: 186px;
 	font-style: italic;
-	font-size: 0.80em;
+	font-size: 0.65em;
 	font-weight: normal;
-	line-height: 14px;
-	float: left;
+	line-height: 16px;
+	display: inline;
 }

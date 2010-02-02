@@ -1,6 +1,7 @@
 class ProfileController < ApplicationController
   before_filter :set_cache_headers
   before_filter :set_time_zone
+  before_filter :store_location
 
   def index
     @user = current_user
@@ -38,5 +39,9 @@ class ProfileController < ApplicationController
     @recent_subscription_blogcasts = Blogcast.find_by_sql(["SELECT blogcasts.* FROM subscriptions, users, blogcasts WHERE subscriptions.user_id = ? AND subscriptions.subscribed_to = users.id AND users.id = blogcasts.user_id AND blogcasts.starting_at < ? ORDER BY blogcasts.starting_at DESC LIMIT 3", @profile_user.id, Time.zone.now])
     @profile_username_possesive = @profile_user.username + (@profile_user.username =~ /.*s$/ ? "'":"'s")
     @profile_username_possesive_escaped = @profile_username_possesive.gsub(/'/,"\\\\\'")
+    if @user.instance_of?(BlogcastrUser)
+      @email_user_notification = EmailUserNotification.find(:first, :conditions => ["user_id = ? AND notifying_about = ?", @user.id, @profile_user.id])
+      @sms_user_notification = SmsUserNotification.find(:first, :conditions => ["user_id = ? AND notifying_about = ?", @user.id, @profile_user.id])
+    end
   end
 end

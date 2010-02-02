@@ -1,8 +1,20 @@
 <li id="<%= image_post.id %>">
-  <div class="stream-effect">
-    <img class="list_item_image" src="<%= image_post.image.url(:default) %>"/>
+<%- if @first == 1 -%>
+  <div class="first effect">
+<%- else -%>
+  <div class="effect">
+<%- end -%>
+    <%= hours_minutes_ago_helper image_post.created_at %>
+    <a href="<%= profile_path(:username => image_post.user.username) -%>" class="user"><%= image_tag(image_post.user.setting.avatar.url(:small), :class => "avatar") -%> <%= image_post.user.username -%></a>
     <div class="clear">
     </div>
-    <p class="list_item_info">Posted <%= hours_minutes_ago_helper image_post.created_at %> from <%= image_post.from %></p>
+    <%= image_tag image_post.image.url(:default), :class => "image" %>
+<% if !image_post.text.nil? -%>
+    <p class="text"><%= image_post.text %></p>
+<% end -%>
+    <h4 onclick="blogcastrCollapsibleEvent(this, 'ImagePost:<%= image_post.id -%>-info');">Info<img src="/images/up.png"</img></h4>
+    <div id="ImagePost:<%= image_post.id -%>-info" style="display: none;">
+      <p class="info">Posted by <%= image_post.user.username -%> on <%= image_post.created_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/,' ') %> from <%= image_post.from %></p>
+    </div>
   </div>
 </li>

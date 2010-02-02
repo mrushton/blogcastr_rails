@@ -44,9 +44,9 @@ module ApplicationHelper
           hours_minutes_ago = minutes.to_s + " minutes ago";
         end
       end
-      return "<span class=\"hours_minutes_ago\" timestamp=\"" + time.to_i.to_s + "\">" + hours_minutes_ago + "</span>"
+      return "<span class=\"date hours_minutes_ago\" timestamp=\"" + time.to_i.to_s + "\">" + hours_minutes_ago + "</span>"
     else
-      return time.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/,' ')
+      return "<span class=\"date\">" + time.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/,' ') + "</span>"
     end
   end
 
@@ -106,14 +106,28 @@ module ApplicationHelper
     end
   end
 
-  #MVR - for facebook users with a private profile
-  def get_facebook_avatar_url
+  #MVR - for facebook users with a private profile, needs to be a helper because models can not access facebook session
+  #TODO: handle the case of logging out of facebook while at site
+  def get_facebook_avatar_url(facebook_id)
     if !session[:facebook_avatar_url].nil?
       session[:facebook_avatar_url]
     else
       if !facebook_session.nil?  
         facebook_avatar_url = facebook_session.fql_query("SELECT pic_square_with_logo FROM user WHERE uid = " + facebook_id.to_s)[0].pic_square_with_logo 
         session[:facebook_avatar_url] = facebook_avatar_url
+      else
+        nil
+      end
+    end
+  end
+
+  def get_facebook_name(facebook_id)
+    if !session[:facebook_name].nil?
+      session[:facebook_name]
+    else
+      if !facebook_session.nil?  
+        facebook_name = facebook_session.fql_query("SELECT name FROM user WHERE uid = " + facebook_id.to_s)[0].name
+        session[:facebook_name] = facebook_name
       else
         nil
       end

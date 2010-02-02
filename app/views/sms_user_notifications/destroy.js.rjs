@@ -1,0 +1,1 @@
+page.replace_html "sms-notifications", :partial => "add_sms_notification"

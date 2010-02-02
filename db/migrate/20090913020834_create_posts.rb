@@ -4,7 +4,6 @@ class CreatePosts < ActiveRecord::Migration
       t.string :type, :null => false
       t.integer :user_id, :null => false
       t.integer :blogcast_id, :null => false
-      t.integer :category_id
       t.string :from, :null => false
       #MVR - text posts
       t.string :text
@@ -13,8 +12,6 @@ class CreatePosts < ActiveRecord::Migration
       t.string :image_content_type
       t.integer :image_file_size
       t.datetime :image_updated_at
-      #MVR - comment posts
-      t.integer :comment_id
       #MVR - reposts
       t.integer :parent_id
       t.timestamps

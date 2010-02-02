@@ -1,0 +1,1 @@
+<%= link_to_remote image_tag("email_add.png") + "<p>Email notification for \"#{@blogcast.title}\"</p>", :url => blogcast_email_notifications_path(:blogcast_id => @blogcast.id), :failure => "alert('Error communicating with server, failed to create email notification for \\\"#{@blogcast.title}\\\"');", :html => {:class => "notification"}, :method => "post" %>

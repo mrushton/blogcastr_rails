@@ -1,25 +1,35 @@
 <div id="wrapper" class="user">
   <div id="header">
-      <%= link_to(image_tag("/images/logo-small.png", :border => 0), "/") %>
-<% if @user.instance_of?(BlogcastrUser) -%>
+    <%= link_to(image_tag("/images/logo-small.png", :border => 0), "/") %>
     <div id="navigation">
+<% if @user.instance_of?(BlogcastrUser) -%>
       <%= link_to image_tag(@user.setting.avatar.url(:small))+@user.username, profile_path(:username => @user.username), :class => "first" %>
       <%= link_to "Home", home_path %>
       <%= link_to "Settings", settings_path %>
       <%= link_to "Sign out", sign_out_path, :method => "delete" %>
+<% elsif @user.instance_of?(FacebookUser) -%>
+  <%- avatar = @user.get_avatar_url :small %>
+  <%- if avatar.nil? -%>
+      <%- avatar = get_facebook_avatar_url @user.facebook_id %>
+  <%- end -%>
+  <%- if avatar.nil? -%>
+      <%= link_to image_tag("http://static.ak.facebook.com/pics/q_silhouette_logo.gif") + @user.get_username, @user.get_url, :class => "first" %>
+  <%- else -%>
+      <%= link_to image_tag(avatar) + @user.get_username, @user.get_url, :class => "first" %>
+  <%- end -%>
+      <%= link_to "Sign up", sign_up_path %>
+      <span onclick="FB.Connect.logout(blogcastrFacebookSignOut);">Sign out</span>
+<% elsif @user.instance_of?(TwitterUser) -%>
+      <%= link_to image_tag(@user.get_avatar_url(:small)) + @user.get_username, @user.get_url, :class => "first" %>
+      <%= link_to "Sign up", sign_up_path %>
+      <span onclick="blogcastrTwitterSignOut();">Sign out</span>
+<% else -%>
+      <%= link_to "Sign up", sign_up_path %>
+      <%= link_to "Sign in", sign_in_path %>
+<% end -%>
     </div>
     <div class="clear">
     </div>
-<% elsif !@user.nil? -%>
-    <div id="navigation">
-      <%= link_to "Sign up", sign_up_path %>
-    </div>
-<% else -%>
-    <div id="navigation">
-      <%= link_to "Sign up", sign_up_path %>
-      <%= link_to "Sign in", sign_in_path %>
-    </div>
-<% end -%>
   </div>
   <div id="content">
     <div id="main">
@@ -33,8 +43,7 @@
       </div>
       <div id="top">
         <div id="left">
-          <%= image_tag "frame.png", :class => "frame" %>
-          <%= link_to image_tag(@profile_user.setting.avatar.url(:large), :class => "avatar"), @profile_user.setting.avatar.url(:original) %>
+            <%= link_to image_tag(@profile_user.setting.avatar.url(:large), :class => "avatar"), @profile_user.setting.avatar.url(:original) %>
         </div>
         <div id="right">
           <h1><%= @profile_user.username -%>'s<br>blogcastr</h1>
@@ -202,6 +211,11 @@
         <h4 class="first">Name:</h4>
         <p class="first"><%= @profile_user.setting.full_name %></p>
         <br>
+<% if !@profile_user.setting.location.nil? && @profile_user.setting.location != "" %>
+        <h4>Location:</h4>
+        <p><%= @profile_user.setting.location %></p>
+        <br>
+<% end -%>
 <% if !@profile_user.setting.bio.nil? && @profile_user.setting.bio != "" %>
         <h4>Bio:</h4>
         <p><%= @profile_user.setting.bio %></p>
@@ -274,9 +288,33 @@
           </div>
         </div>
         <hr>
-        <%= link_to image_tag("feed-icon-14x14.png")+"<p>RSS feed of #{@profile_user.username}'s blogcasts</p>", username_blogcasts_path(:username => @profile_user.username, :format => "rss"), :class => "rss" %>
+        <%= link_to image_tag("feed.png")+"<p>RSS feed of #{@profile_user.username}'s blogcasts</p>", username_blogcasts_path(:username => @profile_user.username, :format => "rss"), :class => "rss" %>
         <div class="clear">
         </div>
+<% if @user.instance_of?(BlogcastrUser) -%>
+  <%- if @user != @profile_user -%>
+    <%- if @email_user_notification.nil? -%>
+        <div id="email-notifications">
+          <%= link_to_remote image_tag("email_add.png") + "<p>Email notifications for #{@profile_username_possesive} blogcasts</p>", :url => username_email_notifications_path(:username => @profile_user.username), :failure => "alert('Error communicating with server, failed to create email notifications for #{@profile_user.username}');", :html => {:class => "notification"}, :method => "post" %>
+    <%- else -%>
+          <%= link_to_remote image_tag("email_delete.png") + "<p>Email notifications for #{@profile_username_possesive} blogcasts</p>", :url => username_email_notifications_path(:username => @profile_user.username), :failure => "alert('Error communicating with server, failed to create email notifications for #{@profile_user.username}');", :html => {:class => "notification"}, :method => "delete" %>
+    <%- end -%>
+        </div>
+        <div class="clear">
+        </div>
+    <%- if @user.setting.mobile_confirmed == true -%>
+        <div id="sms-notifications">
+      <%- if @sms_user_notification.nil? -%>
+          <%= link_to_remote image_tag("phone_add.png") + "<p>SMS notifications for #{@profile_username_possesive} blogcasts</p>", :url => username_sms_notifications_path(:username => @profile_user.username), :failure => "alert('Error communicating with server, failed to create notifications for #{@profile_user.username}');", :html => {:class => "notification"}, :method => "post" %>
+      <%- else -%>
+          <%= link_to_remote image_tag("phone_delete.png") + "<p>SMS notifications for #{@profile_username_possesive} blogcasts</p>", :url => username_sms_notifications_path(:username => @profile_user.username), :failure => "alert('Error communicating with server, failed to create notifications for #{@profile_user.username}');", :html => {:class => "notification"}, :method => "delete" %>
+      <%- end -%>
+        </div>
+        <div class="clear">
+        </div>
+    <%- end -%>
+  <%- end -%>
+<% end -%>
       </div>
       <div class="lower-left-border-rounded-corner">
       </div>

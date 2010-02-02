@@ -9,7 +9,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090929055821) do
+ActiveRecord::Schema.define(:version => 20100130020109) do
+
+  create_table "blogcast_notifications", :force => true do |t|
+    t.string   "type",        :null => false
+    t.integer  "user_id",     :null => false
+    t.integer  "blogcast_id", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "blogcasts", :force => true do |t|
     t.integer  "user_id",                    :null => false
@@ -46,23 +54,22 @@ ActiveRecord::Schema.define(:version => 20090929055821) do
     t.string   "type",               :null => false
     t.integer  "user_id",            :null => false
     t.integer  "blogcast_id",        :null => false
-    t.integer  "category_id"
     t.string   "from",               :null => false
     t.string   "text"
     t.string   "image_file_name"
     t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
-    t.integer  "comment_id"
     t.integer  "parent_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "settings", :force => true do |t|
-    t.integer  "user_id",                 :null => false
+    t.integer  "user_id",                                :null => false
     t.string   "full_name"
     t.string   "moto"
+    t.string   "location"
     t.string   "bio"
     t.string   "web"
     t.string   "time_zone"
@@ -74,6 +81,10 @@ ActiveRecord::Schema.define(:version => 20090929055821) do
     t.string   "background_content_type"
     t.integer  "background_file_size"
     t.datetime "background_updated_at"
+    t.boolean  "mobile_confirmed"
+    t.string   "mobile_confirmation_token", :limit => 5
+    t.string   "mobile_number"
+    t.string   "carrier"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -81,6 +92,14 @@ ActiveRecord::Schema.define(:version => 20090929055821) do
   create_table "subscriptions", :force => true do |t|
     t.integer  "user_id",       :null => false
     t.integer  "subscribed_to", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "user_notifications", :force => true do |t|
+    t.string   "type",            :null => false
+    t.integer  "user_id",         :null => false
+    t.integer  "notifying_about", :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

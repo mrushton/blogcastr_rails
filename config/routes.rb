@@ -74,6 +74,12 @@ ActionController::Routing::Routes.draw do |map|
   map.username_subscriptions ":username/subscriptions.:format", :controller => "users/subscriptions", :format => nil
   #MVR - user subscribers
   map.username_subscribers ":username/subscribers.:format", :controller => "users/subscribers", :format => nil
+  #MVR - user email notifications 
+  map.username_email_notifications ":username/email_notifications", :controller => "email_user_notifications", :action => "create", :conditions => {:method => :post}
+  map.username_email_notifications ":username/email_notifications", :controller => "email_user_notifications", :action => "destroy", :conditions => {:method => :delete}
+  #MVR - user sms notifications 
+  map.username_sms_notifications ":username/sms_notifications", :controller => "sms_user_notifications", :action => "create", :conditions => {:method => :post}
+  map.username_sms_notifications ":username/sms_notifications", :controller => "sms_user_notifications", :action => "destroy", :conditions => {:method => :delete}
   #MVR - site 
   map.root :controller => "site"
   #MVR - site links
@@ -114,6 +120,10 @@ ActionController::Routing::Routes.draw do |map|
     blogcasts.resources :image_comments, :controller => "image_comments", :only => [:create]
     #MVR - likes 
     blogcasts.resources :likes, :controller => "likes", :only => [:create, :destroy]
+    #MVR - email notifications 
+    blogcasts.resources :email_notifications, :controller => "email_blogcast_notifications", :only => [:create, :destroy]
+    #MVR - sms notifications 
+    blogcasts.resources :sms_notifications, :controller => "sms_blogcast_notifications", :only => [:create, :destroy]
   end
   #MVR - Facebook sessions
   map.resource :facebook_session, :controller => "facebook_sessions", :only => [:create, :destroy]

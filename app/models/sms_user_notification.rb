@@ -1,0 +1,2 @@
+class SmsUserNotification < UserNotification 
+end

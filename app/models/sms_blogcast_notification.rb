@@ -1,0 +1,2 @@
+class SmsBlogcastNotification < BlogcastNotification 
+end

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title><%= @user.name %>'s Dashboard</title>
+    <title><%= @user.username %>'s Dashboard</title>
     <link rel="stylesheet" href="/stylesheets/dashboard.css" media="screen"/>
     <style>
       body
@@ -25,7 +25,7 @@
     <script type="text/javascript">
       jQuery.noConflict();
       var hostname = "<%= HOST %>";
-      var username = "<%= @user.name %>";
+      var username = "<%= @user.username %>";
       var blogcast_id = "<%= @blogcast.id %>";
       var server_timestamp = <%= Time.now.to_i %>
     </script>

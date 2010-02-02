@@ -1,6 +1,6 @@
 <div id="wrapper" class="user">
   <div id="header">
-      <%= link_to(image_tag("/images/logo-small.png", :border => 0), "/") %>
+    <%= link_to(image_tag("/images/logo-small.png", :border => 0), "/") %>
     <div id="navigation">
 <% if @user.instance_of?(BlogcastrUser) -%>
       <%= link_to image_tag(@user.setting.avatar.url(:small))+@user.username, profile_path(:username => @user.username), :class => "first" %>
@@ -8,15 +8,22 @@
       <%= link_to "Settings", settings_path %>
       <%= link_to "Sign out", sign_out_path, :method => "delete" %>
 <% elsif @user.instance_of?(FacebookUser) -%>
-  <%- avatar = @user.get_avatar_url :small %>
-  <%- if avatar.nil? -%>
-      <%- avatar = get_facebook_avatar_url %>
+  <%- avatar_url = @user.get_avatar_url :small -%>
+  <%- if avatar_url.nil? -%>
+    <%- avatar_url = get_facebook_avatar_url @user.facebook_id %>
+    <%- if avatar_url.nil? -%>
+      <%- avatar = "http://static.ak.facebook.com/pics/q_silhouette_logo.gif" %>
+    <%- end -%>
   <%- end -%>
-  <%- if avatar.nil? -%>
-      <%= link_to @user.get_username, @user.get_url %>
-  <%- else -%>
-      <%= link_to image_tag(avatar) + @user.get_username, @user.get_url, :class => "first" %>
+  <%- username = @user.get_username -%>
+  <%- if username.nil? -%>
+    <%- username = get_facebook_name @user.facebook_id %>
   <%- end -%>
+  <%- url = @user.get_url -%>
+  <%- if url.nil? -%>
+    <%- url = get_facebook_url @user.facebook_id %>
+  <%- end -%>
+      <%= link_to image_tag(avatar_url) + username, url, :class => "first" %>
       <%= link_to "Sign up", sign_up_path %>
       <span onclick="FB.Connect.logout(blogcastrFacebookSignOut);">Sign out</span>
 <% elsif @user.instance_of?(TwitterUser) -%>
@@ -51,14 +58,7 @@
             <div class="lower-left-border-squared-corner-gray horizontal">
             </div>
           </div>
-          <div class="background">
-            <h1><%= @blogcast.title -%></h1>
-            <hr>
-            <span class="date"><%= @blogcast.starting_at.strftime("%B %e, %Y") %></span>
-            <div class="align">
-              <a href="<%= profile_path(:username => @blogcast_user.username) -%>"><%= image_tag(@blogcast_user.setting.avatar.url(:small), :class => "avatar") -%><span class="username"><%= @blogcast_user.username -%></span></a>
-            </div>
-          </div>
+          <h1><a href="<%= profile_path(:username => @blogcast_user.username) -%>"><%= image_tag(@blogcast_user.setting.avatar.url(:medium), :class => "avatar") -%></a><%= @blogcast.title -%></h1>
           <div class="side-border">
             <div class="upper-right-border-squared-corner-gray horizontal">
             </div>
@@ -68,16 +68,7 @@
             </div>
           </div>
         </div>
-<% if @user.instance_of?(BlogcastrUser) -%>
-        <p>Like it?</p>
-        <p>Let other people know!</p>
-        <div class="facebook" onclick="FB.Connect.streamPublish('',facebook_attachment);">Post to Facebook</div>
-        <a class="twitter" href="<%= @tweet_url -%>" target="_blank">Tweet</a>
-<%- else -%>
-        <p>Share with friends and followers!</p>
-        <div class="facebook" onclick="FB.Connect.streamPublish('',facebook_attachment);">Post to Facebook</div>
-        <a class="twitter" href="<%= @tweet_url -%>" target="_blank">Tweet</a>
-<%- end -%>
+        <p>By <a href="<%= profile_path(:username => @blogcast_user.username) -%>" class="user"><%= @blogcast_user.username -%></a> on <span class="date"><%= @blogcast.starting_at.strftime("%B %e, %Y") -%></span>
         <h2 onclick="blogcastrCollapsibleEvent(this, 'comment');">Comment<%= image_tag "down.png" -%></h2>
         <div id="comment">
 <% if signed_in? -%>
@@ -90,17 +81,18 @@
           <div class="clear">
           </div>
 <% else -%>
-        <p>To comment on "<%= @blogcast.title -%>" or tell your friends about it sign up or sign in.</p>
-        <div id="sign-up">
-          <%= link_to "Sign up!", sign_up_path -%>
-          <%= link_to "Sign in!", sign_in_path, :class => "last" -%>
+          <p class="first">To comment on "<%= @blogcast.title -%>" sign up or sign in.</p>
+          <div id="sign-up">
+            <%= link_to "Sign up!", sign_up_path -%>
+            <%= link_to "Sign in!", sign_in_path -%>
+            <div class="clear">
+            </div>
+          </div>
+          <p class="connect">Or connect with Facebook or Twitter.</p>
+          <a href="#" onclick="FB.Connect.requireSession(blogcastrFacebookSignIn); return false;"><img id="facebook_connect_image" src="http://static.ak.fbcdn.net/images/fbconnect/login-buttons/connect_light_medium_long.gif" alt="Facebook connect" /></a>
+          <a href="#" onclick="blogcastrTwitterSignIn(); return false;"><img id="twitter_sign_in_image" src="/images/Sign-in-with-Twitter-darker.png" alt="Twitter sign in" /></a>
           <div class="clear">
           </div>
-        </div>
-        <p>Or connect with Facebook or Twitter.</p>
-            <p>To send <%= @blogcast_user.username -%> a comment sign in or connect.</p>
-            <a href="#" onclick="FB.Connect.requireSession(blogcastrFacebookSignIn); return false;"><img id="facebook_connect_image" src="http://static.ak.fbcdn.net/images/fbconnect/login-buttons/connect_light_medium_long.gif" alt="Facebook connect" /></a>
-            <a href="#" onclick="blogcastrTwitterSignIn(); return false;"><img id="twitter_sign_in_image" src="/images/Sign-in-with-Twitter-darker.png" alt="Twitter sign in" /></a>
 <% end -%>
         </div>
       </div>
@@ -123,7 +115,8 @@
       <div id="bottom">
         <h2><span class="counter"><%= @num_posts -%></span><%= @num_posts == 1 ? "Post" : "Posts" -%></h2>
         <ol class="stream" id="public-stream">
-<%- for post in @posts -%>
+<% @first = 1 -%>
+<% for post in @posts -%>
   <%- if post.instance_of?(TextPost) -%>
           <%= render :partial => "text_post", :object => post -%>
   <%- elsif post.instance_of?(ImagePost) -%>
@@ -133,7 +126,10 @@
   <%- elsif post.instance_of?(Repost) -%>
           <%= render :partial => "repost", :object => post -%>
   <%- end -%>
-<%- end -%>
+  <%- if (@first == 1) -%>
+    <%- @first = 0 -%>
+  <%- end -%>
+<% end -%>
         </ol>
       </div>
       <div class="lower-left-border-squared-corner">
@@ -190,8 +186,31 @@
           <div class="stat third"><span class="counter"><%= @num_viewers -%></span><span class="name"><%= @num_viewers == 1 ? "Viewer" : "Viewers" -%></span></div>
           <div class="last stat fourth"><span class="counter"><%= @num_views -%></span><span class="name"><%= @num_views == 1 ? "View" : "Views" -%></span></div>
         </div>
+<% if @user.instance_of?(BlogcastrUser) -%>
+  <%- if @user != @blogcast_user -%>
         <hr>
-        <p>Notifications go here</p>
+        <div id="email-notification">
+    <%- if @email_blogcast_notification.nil? -%>
+          <%= link_to_remote image_tag("email_add.png") + "<p>Email notification for \"#{@blogcast.title}\"</p>", :url => blogcast_email_notifications_path(:blogcast_id => @blogcast.id), :failure => "alert('Error communicating with server, failed to create email notification for \\\"#{@blogcast.title}\\\"');", :html => {:class => "notification"}, :method => "post" %>
+    <%- else -%>
+          <%= link_to_remote image_tag("email_delete.png") + "<p>Email notification for \"#{@blogcast.title}\"</p>", :url => blogcast_email_notification_path(:blogcast_id => @blogcast.id, :id => @email_blogcast_notification.id), :failure => "alert('Error communicating with server, failed to create email notification for \\\"#{@blogcast.title}\\\"');", :html => {:class => "notification"}, :method => "delete" %>
+    <%- end -%>
+        </div>
+        <div class="clear">
+        </div>
+    <%- if @user.setting.mobile_confirmed == true -%>
+        <div id="sms-notification">
+      <%- if @sms_blogcast_notification.nil? -%>
+          <%= link_to_remote image_tag("phone_add.png") + "<p>SMS notification for \"#{@blogcast.title}\"</p>", :url => blogcast_sms_notifications_path(:blogcast_id => @blogcast.id), :failure => "alert('Error communicating with server, failed to create sms notification for \"#{@blogcast.title}\"');", :html => {:class => "notification"}, :method => "post" %>
+      <%- else -%>
+          <%= link_to_remote image_tag("phone_delete.png") + "<p>SMS notification for \"#{@blogcast.title}\"</p>", :url => blogcast_sms_notification_path(:blogcast_id => @blogcast.id, :id => @sms_user_notification.id), :failure => "alert('Error communicating with server, failed to create sms notification for \"#{@blogcast.title}\"');", :html => {:class => "notification"}, :method => "delete" %>
+      <%- end -%>
+        </div>
+        <div class="clear">
+        </div>
+    <%- end -%>
+  <%- end -%>
+<% end -%>
       </div>
       <div class="lower-left-border-rounded-corner">
       </div>

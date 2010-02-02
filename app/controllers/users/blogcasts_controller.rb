@@ -2,6 +2,7 @@ class Users::BlogcastsController < ApplicationController
   before_filter :set_time_zone
   before_filter :set_blogcast_time_zone
   before_filter :set_facebook_session
+  before_filter :store_location, :only => ["show"]
   helper_method :facebook_session
 
   def index
@@ -184,6 +185,10 @@ class Users::BlogcastsController < ApplicationController
           @num_likes = @blogcast.likes.count 
           @blogcast_username_possesive = @blogcast_user.username + (@blogcast_user.username =~ /.*s$/ ? "'":"'s")
           @tweet_url = "http://twitter.com/home?status=%22" + @blogcast.title + "%22%20by%20" + @blogcast_user.username + ".%20" + username_blogcast_permalink_url(:username => @blogcast_user.username, :year => @blogcast.year, :month => @blogcast.month, :day => @blogcast.day, :title => @blogcast.link_title)
+          if @user.instance_of?(BlogcastrUser)
+            @email_blogcast_notification = EmailBlogcastNotification.find(:first, :conditions => ["user_id = ? AND blogcast_id = ?", @user.id, @blogcast.id])
+            @sms_blogcast_notification = SmsBlogcastNotification.find(:first, :conditions => ["user_id = ? AND blogcast_id = ?", @user.id, @blogcast.id])
+          end
         end
         #TODO: limit result set and order by most recent 
         format.xml {render :xml => @blogcast.to_xml(:include => :posts)}
