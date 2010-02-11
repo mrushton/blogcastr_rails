@@ -9,7 +9,7 @@
     <div class="clear">
     </div>
     <p class="text"><%= text_post.text %></p>
-    <h4 onclick="blogcastrCollapsibleEvent(this, 'TextPost:<%= text_post.id -%>-info');">Info<img src="/images/up.png"</img></h4>
+    <h4 onclick="blogcastrCollapsibleEvent(this, 'TextPost:<%= text_post.id -%>-info');">Info<%= image_tag "up.png" -%></h4>
     <div id="TextPost:<%= text_post.id -%>-info" style="display: none;">
       <p class="info">Posted by <%= text_post.user.username -%> on <%= text_post.created_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/,' ') %> from <%= text_post.from %></p>
     </div>

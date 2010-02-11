@@ -19,46 +19,46 @@ function onConnect(status, error)
 {
   if (status == Strophe.Status.CONNECTING)
   {
-    console.log("Strophe is connecting");
+    //console.log("Strophe is connecting");
   }
   else if (status == Strophe.Status.CONNFAIL)
   {
-    console.log("Strophe connection failed");
+    //console.log("Strophe connection failed");
   }
   else if (status == Strophe.Status.DISCONNECTING)
   {
-    console.log('----------> Strophe is disconnecting.');
+    //console.log('----------> Strophe is disconnecting.');
   }
   else if (status == Strophe.Status.AUTHENTICATING)
   {
-    console.log('----------> Strophe is authenticating.');
+   // console.log('----------> Strophe is authenticating.');
   }
   else if (status == Strophe.Status.AUTHFAIL)
   {
-    console.log('----------> Strophe failed to authenticate.');
+    //console.log('----------> Strophe failed to authenticate.');
   }
   else if (status == Strophe.Status.DISCONNECTED)
   {
-    console.log('----------> Strophe is disconnected.');
+    //console.log('----------> Strophe is disconnected.');
   }
   else if (status == Strophe.Status.CONNECTED)
   {
-    console.log('----------> Strophe is connected.' );
+//    console.log('----------> Strophe is connected.' );
     //MVR - set jid resource
     //TODO: hack for now
     jQuery("input[id='jid']").attr("value", connection.jid);
-    console.log('----------> Strophe is connected 2.' );
+//    console.log('----------> Strophe is connected 2.' );
     //MVR - register message handlers 
     connection.addHandler(blogcastrPostCallback, null, 'message', 'groupchat', null, "blogcast." + blogcast_id + "@conference." + hostname + "/dashboard");
-    console.log('----------> Strophe is connected 3.' );
+//    console.log('----------> Strophe is connected 3.' );
     //MVR - join muc, nickname is resource 
-    console.log('----------> Strophe is connected 4.' );
+//    console.log('----------> Strophe is connected 4.' );
    mucPresenceStanza = $pres().attrs({from: connection.jid, to: "Blogcast." + blogcast_id + "@conference." + hostname + "/" + Strophe.getResourceFromJid(connection.jid)}).c("x", {xmlns: "http://jabber.org/protocol/muc"});
-    console.log('----------> Strophe is connected 5.' );
+//    console.log('----------> Strophe is connected 5.' );
 blogcastrPrintStanza(mucPresenceStanza);
-    console.log('----------> Strophe is connected 6.' );
+//    console.log('----------> Strophe is connected 6.' );
     connection.send(mucPresenceStanza);
-    console.log('----------> Strophe is connected 7.' );
+//    console.log('----------> Strophe is connected 7.' );
   }
 }
 
@@ -66,22 +66,31 @@ function blogcastrPostCallback(stanza)
 {
   //Prototype has no XML support using jQuery
   //TODO: alternative could be to use a json convertor like http://www.thomasfrank.se/xml_to_json.html
-    console.log('GOT A POST' );
   var body = jQuery(stanza).find("body:first");
   var type = body.find("type:first").text();
   if (type == "textPost")
   {
     var id = body.find("id:first").text();
     var timestamp = body.find("timestamp:first").text();
+    var date = body.find("date:first").text();
     var text = body.find("text:first").text();
     var medium = body.find("medium:first").text();
+    var user = jQuery(body).find("user:first");
+    var username = user.find("username:first").text();
+    var url = user.find("url:first").text();
+    var avatar_url = user.find("avatar_url:first").text();
     //create new post element
+    var hours_minutes_ago_span = jQuery("<span>").addClass("date").addClass("hours_minutes_ago").attr("timestamp", timestamp).text(blogcastrHoursMinutesAgo(timestamp));
+    var avatar_img = jQuery("<img>").addClass("avatar").attr("src", avatar_url);
+    var user_a = jQuery("<a>").addClass("user").attr("href", url).append(avatar_img).append(username); 
+    var clear_div = jQuery("<div>").addClass("clear");
     var text_p = jQuery("<p>").addClass("text").text(text);
-    var hours_minutes_ago_span = jQuery("<span>").addClass("hours_minutes_ago").attr("timestamp", timestamp).text(blogcastrHoursMinutesAgo(timestamp));
-    var info_p = jQuery("<p>").addClass("info").text("Posted ");
-    info_p.append(hours_minutes_ago_span);
-    info_p.append(" from " + medium);
-    var effect_div = jQuery("<div>").addClass("stream-effect").append(text_p).append(info_p);
+    var up_img = jQuery("<img>").attr("src", up_image);
+    //AS DESIGNED: some browsers don't work when adding the onclick attribute
+    var info_h4 = jQuery("<h4>").click(function() { blogcastrCollapsibleEvent(this, "TextPost:" + id + "-info"); }).append("Info").append(up_img);
+    var info_p = jQuery("<p>").addClass("info").text("Posted by " + username + " on " + date + " from " + medium);
+    var info_div = jQuery("<div>").attr("id", "TextPost:" + id + "-info").css("display", "none").append(info_p);
+    var effect_div = jQuery("<div>").addClass("effect").append(hours_minutes_ago_span).append(user_a).append(clear_div).append(text_p).append(info_h4).append(info_div);
     var post_li = jQuery("<li>").attr("id",id).css("display", "none").append(effect_div);
     //add post to document if not present
     if (jQuery("li[id=" + id + "]").length == 0)
@@ -95,16 +104,39 @@ function blogcastrPostCallback(stanza)
   {
     var id = body.find("id:first").text();
     var timestamp = body.find("timestamp:first").text();
+    var date = body.find("date:first").text();
     var image_url = body.find("image_url:first").text();
+    var text = body.find("text:first").text();
     var medium = body.find("medium:first").text();
+    var user = jQuery(body).find("user:first");
+    var username = user.find("username:first").text();
+    var url = user.find("url:first").text();
+    var avatar_url = user.find("avatar_url:first").text();
+    var image_url = body.find("image_url:first").text();
     //create new post element
+    var hours_minutes_ago_span = jQuery("<span>").addClass("date").addClass("hours_minutes_ago").attr("timestamp", timestamp).text(blogcastrHoursMinutesAgo(timestamp));
+    var avatar_img = jQuery("<img>").addClass("avatar").attr("src", avatar_url);
+    var user_a = jQuery("<a>").addClass("user").attr("href", url).append(avatar_img).append(username); 
+    var clear_div = jQuery("<div>").addClass("clear");
     var image_img = jQuery("<img>").addClass("image").attr("src", image_url);
-    var hours_minutes_ago_span = jQuery("<span>").addClass("hours_minutes_ago").attr("timestamp", timestamp).text(blogcastrHoursMinutesAgo(timestamp));
-    var info_p = jQuery("<p>").addClass("info").text("Posted ");
-    info_p.append(hours_minutes_ago_span);
-    info_p.append(" from " + medium);
-    var effect_div = jQuery("<div>").addClass("stream-effect").append(image_img).append(info_p);
-    var post_li = jQuery("<li>").attr("id",id).append(effect_div);
+    if (text != "")
+    {
+      var text_p = jQuery("<p>").addClass("text").text(text);
+    }
+    var up_img = jQuery("<img>").attr("src", up_image);
+    //AS DESIGNED: some browsers don't work when adding the onclick attribute
+    var info_h4 = jQuery("<h4>").click(function() { blogcastrCollapsibleEvent(this, "ImagePost:" + id + "-info"); }).append("Info").append(up_img);
+    var info_p = jQuery("<p>").addClass("info").text("Posted by " + username + " on " + date + " from " + medium);
+    var info_div = jQuery("<div>").attr("id", "ImagePost:" + id + "-info").css("display", "none").append(info_p);
+    if (typeof(text_p)  == "undefined")
+    {
+      var effect_div = jQuery("<div>").addClass("effect").append(hours_minutes_ago_span).append(user_a).append(clear_div).append(image_img).append(info_h4).append(info_div);
+    }
+    else
+    {
+      var effect_div = jQuery("<div>").addClass("effect").append(hours_minutes_ago_span).append(user_a).append(clear_div).append(image_img).append(text_p).append(info_h4).append(info_div);
+    }
+    var post_li = jQuery("<li>").attr("id",id).css("display", "none").append(effect_div);
     //add post to document if not present
     if (jQuery("li[id=" + id + "]").length == 0)
     {

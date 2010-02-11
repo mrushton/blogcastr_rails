@@ -1,3 +1,6 @@
+//MVR - is a remote request pending
+var remote_request = false;
+
 function blogcastrOnLoad()
 {
   //MVR - determine clock offset

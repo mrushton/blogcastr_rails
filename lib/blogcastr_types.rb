@@ -8,14 +8,14 @@
 module Thrift
     class User
       include ::Thrift::Struct
-      NAME = 1
+      USERNAME = 1
       ACCOUNT = 2
       URL = 3
       AVATAR_URL = 4
 
-      ::Thrift::Struct.field_accessor self, :name, :account, :url, :avatar_url
+      ::Thrift::Struct.field_accessor self, :username, :account, :url, :avatar_url
       FIELDS = {
-        NAME => {:type => ::Thrift::Types::STRING, :name => 'name'},
+        USERNAME => {:type => ::Thrift::Types::STRING, :name => 'username'},
         ACCOUNT => {:type => ::Thrift::Types::STRING, :name => 'account'},
         URL => {:type => ::Thrift::Types::STRING, :name => 'url'},
         AVATAR_URL => {:type => ::Thrift::Types::STRING, :name => 'avatar_url'}
@@ -31,13 +31,15 @@ module Thrift
     class Comment
       include ::Thrift::Struct
       ID = 1
-      TIMESTAMP = 2
-      MEDIUM = 3
-      TEXT = 4
+      DATE = 2
+      TIMESTAMP = 3
+      MEDIUM = 4
+      TEXT = 5
 
-      ::Thrift::Struct.field_accessor self, :id, :timestamp, :medium, :text
+      ::Thrift::Struct.field_accessor self, :id, :date, :timestamp, :medium, :text
       FIELDS = {
         ID => {:type => ::Thrift::Types::I32, :name => 'id'},
+        DATE => {:type => ::Thrift::Types::STRING, :name => 'date'},
         TIMESTAMP => {:type => ::Thrift::Types::I32, :name => 'timestamp'},
         MEDIUM => {:type => ::Thrift::Types::STRING, :name => 'medium'},
         TEXT => {:type => ::Thrift::Types::STRING, :name => 'text'}
@@ -53,13 +55,15 @@ module Thrift
     class TextPost
       include ::Thrift::Struct
       ID = 1
-      TIMESTAMP = 2
-      MEDIUM = 3
-      TEXT = 4
+      DATE = 2
+      TIMESTAMP = 3
+      MEDIUM = 4
+      TEXT = 5
 
-      ::Thrift::Struct.field_accessor self, :id, :timestamp, :medium, :text
+      ::Thrift::Struct.field_accessor self, :id, :date, :timestamp, :medium, :text
       FIELDS = {
         ID => {:type => ::Thrift::Types::I32, :name => 'id'},
+        DATE => {:type => ::Thrift::Types::STRING, :name => 'date'},
         TIMESTAMP => {:type => ::Thrift::Types::I32, :name => 'timestamp'},
         MEDIUM => {:type => ::Thrift::Types::STRING, :name => 'medium'},
         TEXT => {:type => ::Thrift::Types::STRING, :name => 'text'}
@@ -75,16 +79,20 @@ module Thrift
     class ImagePost
       include ::Thrift::Struct
       ID = 1
-      TIMESTAMP = 2
-      MEDIUM = 3
-      IMAGE_URL = 4
+      DATE = 2
+      TIMESTAMP = 3
+      MEDIUM = 4
+      IMAGE_URL = 5
+      TEXT = 6
 
-      ::Thrift::Struct.field_accessor self, :id, :timestamp, :medium, :image_url
+      ::Thrift::Struct.field_accessor self, :id, :date, :timestamp, :medium, :image_url, :text
       FIELDS = {
         ID => {:type => ::Thrift::Types::I32, :name => 'id'},
+        DATE => {:type => ::Thrift::Types::STRING, :name => 'date'},
         TIMESTAMP => {:type => ::Thrift::Types::I32, :name => 'timestamp'},
         MEDIUM => {:type => ::Thrift::Types::STRING, :name => 'medium'},
-        IMAGE_URL => {:type => ::Thrift::Types::STRING, :name => 'image_url'}
+        IMAGE_URL => {:type => ::Thrift::Types::STRING, :name => 'image_url'},
+        TEXT => {:type => ::Thrift::Types::STRING, :name => 'text'}
       }
 
       def struct_fields; FIELDS; end
@@ -97,12 +105,14 @@ module Thrift
     class CommentPost
       include ::Thrift::Struct
       ID = 1
-      TIMESTAMP = 2
-      MEDIUM = 3
+      DATE = 2
+      TIMESTAMP = 3
+      MEDIUM = 4
 
-      ::Thrift::Struct.field_accessor self, :id, :timestamp, :medium
+      ::Thrift::Struct.field_accessor self, :id, :date, :timestamp, :medium
       FIELDS = {
         ID => {:type => ::Thrift::Types::I32, :name => 'id'},
+        DATE => {:type => ::Thrift::Types::STRING, :name => 'date'},
         TIMESTAMP => {:type => ::Thrift::Types::I32, :name => 'timestamp'},
         MEDIUM => {:type => ::Thrift::Types::STRING, :name => 'medium'}
       }
@@ -117,12 +127,14 @@ module Thrift
     class Repost
       include ::Thrift::Struct
       ID = 1
-      TIMESTAMP = 2
-      MEDIUM = 3
+      DATE = 2
+      TIMESTAMP = 3
+      MEDIUM = 4
 
-      ::Thrift::Struct.field_accessor self, :id, :timestamp, :medium
+      ::Thrift::Struct.field_accessor self, :id, :date, :timestamp, :medium
       FIELDS = {
         ID => {:type => ::Thrift::Types::I32, :name => 'id'},
+        DATE => {:type => ::Thrift::Types::STRING, :name => 'date'},
         TIMESTAMP => {:type => ::Thrift::Types::I32, :name => 'timestamp'},
         MEDIUM => {:type => ::Thrift::Types::STRING, :name => 'medium'}
       }

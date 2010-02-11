@@ -9,7 +9,7 @@ set :use_sudo, false
 
 #MVR - git options
 set :scm, :git
-set :repository, "git@github.com:blogcastr/blogcastr.git"
+set :repository, "git@github.com:blogcastr/rails.git"
 set :branch, "master"
 set :deploy_via, :remote_cache
 

@@ -5,7 +5,10 @@ html
 
 body
 {
-	margin: 10px;
+	margin-left: 5px;
+	margin-top: 10px;
+	margin-right: 5px;
+	margin-bottom: 10px;
 	font-family: Helvetica, sans-serif;
         background-image: url('/images/background.png');
 	background-color: #e5e5e5;
@@ -23,9 +26,45 @@ a:hover
 	text-decoration: underline;
 }
 
+#alert
+{
+	margin: 0px;
+	width: 100%;
+	height: 50px;
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	background-color: #99d9f6;
+	z-index: 1;
+	opacity: 0.90;
+	-moz-opactiy: 0.90;
+	filter: alpha(opacity=90);
+}
+
+#alert img
+{
+	margin-left: 20px;
+	margin-top: 10px;
+	width: 30px;
+	height: 30px;
+	float: left;
+}
+
+#alert p
+{
+	margin-left: 8px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	display: inline-block;
+	line-height: 50px;
+	font-size: 1.2em;
+	font-style: bold;
+}
+
 #wrapper
 {
-	width: 860px;
+	width: 880px;
 	margin-left: auto;
 	margin-right: auto;
 	position: relative;
@@ -33,50 +72,55 @@ a:hover
 
 #header
 {
+	padding-left: 5px;
+	padding-right: 5px;
 	height: 80px;
 }
 
 #wrapper.user #header
 {
-	height: 60px;
+	height: 45px;
 }
 
-#header form input
+#header form
 {
-	padding: 2px;
-	border: none;
-	width: 150px;
-	height: 16px;
-	position: absolute;
-	left: 20px;
-	top: 0px;
-	line-height: 16px;
-	color: #c0c0c0;
-	font-size: 0.85em;
-	font-variant: Gill Sans, Helvetica, sans-serif;
-	color: #000000;
-	background-color: #ffffff;
 	opacity: 0.5;
 	-moz-opactiy: 0.5;
 	filter: alpha(opacity=50);
 }
 
-#header form input:focus
+#header form:hover, #header form.selected
 {
 	opacity: 0.75;
 	-moz-opactiy: 0.75;
 	filter: alpha(opacity=75);
 }
 
-#header form img
+#wrapper.user #header form label img
 {
-	width: 20px;
-	height: 20px;
-	margin: 0px;
+	height: 28px;
 	position: absolute;
-	left: 0px;
+	left: 5px;
 	top: 0px;
+}
+
+#header form input
+{
+	padding-left: 3px;
+	padding-top: 6px;
+	padding-right: 3px;
+	padding-bottom: 6px;
 	border: none;
+	width: 200px;
+	height: 16px;
+	position: absolute;
+	left: 33px;
+	top: 0px;
+	line-height: 16px;
+	font-variant: Gill Sans, Helvetica, sans-serif;
+	color: #000000;
+	background-color: #ffffff;
+	font-size: 0.75em;
 }
 
 #header img
@@ -84,13 +128,19 @@ a:hover
 	margin: 0px;
 	position: absolute;
 	left: 280px;
-	top: 0px;
+	top: -10px;
 	border: none;
 }
 
 #wrapper.user #header img
 {
-	left: 320px;
+	left: 352px;
+}
+
+#wrapper.user #header img.beta
+{
+	left: 527px;
+	top: 18px;
 }
 
 #navigation
@@ -103,21 +153,16 @@ a:hover
 
 #wrapper.user #header #navigation img
 {
-	margin-right: 5px;
+	margin-right: 3px;
 	width: 28px;
 	height: 28px;
 	position: relative;
 	left: 0px;
+	top: 0px;
 	float: left;
 }
 
-input
-{
-	
-	font-size: .65em;
-}
-
-#navigation a, #navigation span
+#navigation a, #navigation span.button
 {
 	margin-left: 1px;
 	padding-left: 5px;
@@ -127,7 +172,7 @@ input
 	display: inline;
 	float: left;
 	font-weight: bold;
-	font-size: .85em;
+	font-size: 0.8em;
 	text-decoration: none;
 	color: #000000;
 	background-color: #ffffff;
@@ -138,10 +183,15 @@ input
 	cursor: pointer;
 }
 
+#navigation a.username
+{
+	padding-left: 0px;
+	padding-right: 3px;
+	font-size: 0.6em;
+}
+
 #navigation a.first
 {
-	margin-left: 0px;
-	padding-left: 0px;
 }
 
 #navigation a.selected
@@ -169,7 +219,7 @@ input
 {
 	margin-left: 20px;
 	margin-top: 20px;
-	margin-right: 0px;
+	margin-right: 20px;
 	margin-bottom: 0px;
 	text-align: left;
 }
@@ -353,8 +403,9 @@ input
 #bottom
 {
 	padding-left: 14px;
+	padding-top: 4px;
 	padding-right: 14px;
-	padding-bottom: 3px;
+	padding-bottom: 4px;
 	width: 572px;
 	background-image: url("../images/background-border-main.png");
 }
@@ -365,6 +416,7 @@ input
 	margin-bottom: 0px;
 	font-size: 1.75em;
 	font-weight: bold;
+	line-height: 35px;
 }
 
 #bottom h2 span.counter
@@ -484,7 +536,7 @@ input
 
 #bottom ol li div.effect
 {
-	margin-top: 8px;
+	margin-bottom: 10px;
 	border: solid;
 	border-width: 1px;
 	border-color: #59636f;
@@ -493,7 +545,7 @@ input
 
 #bottom ol li div.effect.first
 {
-	margin-top: 0px;
+	margin-bottom: 0px;
 }
 
 #bottom ol li a.user
@@ -528,9 +580,9 @@ input
 #bottom ol li p.text
 {
 	margin-left: 32px;
-	margin-top: 0px;
+	margin-top: 3px;
 	margin-right: 32px;
-	margin-bottom: 0px;
+	margin-bottom: 3px;
 	font-weight: bold;
 	font-size: 0.85em;
 }
@@ -538,7 +590,9 @@ input
 #bottom ol li img.image 
 {
 	margin-left: 60px;
+	margin-top: 3px;
 	margin-right: 60px;
+	margin-bottom: 3px;
 }
 
 #bottom ol li h4
@@ -889,13 +943,15 @@ input.tab
 
 #footer
 {
-	margin-top: 16px;
+	margin-left: 5px;
+	margin-top: 20px;
+	margin-right: 5px;
 	width: 900;
 	height: 28px;
 	position: relative;
 	text-align: center;
 	font-weight: bold;
-	font-size: .85em;
+	font-size: .8em;
 	background-color: #ffffff;
 	line-height: 28px;
 	opacity: 0.5;
@@ -997,6 +1053,11 @@ div.lower-right-border-squared-corner
 	background-image: url("../images/lower-right-border-squared-corner.png");
 }
 
+div.lower-left-border-squared-corner.last, div.bottom-border.last, div.lower-right-border-squared-corner.last
+{
+	margin-bottom: 0px;
+}
+
 div.upper-left-border-squared-corner.horizontal, div.upper-right-border-squared-corner.horizontal, div.lower-right-border-squared-corner.horizontal, div.lower-left-border-squared-corner.horizontal
 {
 	float: none;
@@ -1063,6 +1124,11 @@ div.lower-right-border-rounded-corner
 	float: left;
 	background-color: transparent;
 	background-image: url("../images/lower-right-border-rounded-corner.png");
+}
+
+div.lower-left-border-rounded-corner.last, div.bottom-border-large.last, div.lower-right-border-rounded-corner.last
+{
+	margin-bottom: 0px;
 }
 
 div.left-border-gray

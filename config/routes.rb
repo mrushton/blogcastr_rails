@@ -64,6 +64,7 @@ ActionController::Routing::Routes.draw do |map|
   map.username_blogcast_posts_permalink ":username/:year/:month/:day/:title/posts.:format", :controller => "users/blogcasts", :action => "show", :format => nil, :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
   map.username_blogcast_comments_permalink ":username/:year/:month/:day/:title/posts.:format", :controller => "users/blogcasts", :action => "show", :format => nil, :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
   map.username_blogcast_likes_permalink ":username/:year/:month/:day/:title/likes.:format", :controller => "users/blogcasts", :action => "show", :format => nil, :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
+  map.username_blogcast_search_permalink ":username/:year/:month/:day/:title/search", :controller => "search", :action => "blogcasts", :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
   #MVR - user likes 
   map.username_likes ":username/likes.:format", :controller => "users/likes", :format => nil
   #MVR - user comments 

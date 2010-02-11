@@ -3,7 +3,7 @@ class CreateSettings < ActiveRecord::Migration
     create_table :settings do |t|
       t.integer :user_id, :null => false
       t.string :full_name
-      t.string :moto
+      t.string :motto
       t.string :location
       t.string :bio
       t.string :web

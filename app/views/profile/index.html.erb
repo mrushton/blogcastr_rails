@@ -1,9 +1,16 @@
+<div id="alert" style="display: none;">
+</div>
 <div id="wrapper" class="user">
   <div id="header">
-    <%= link_to(image_tag("/images/logo-small.png", :border => 0), "/") %>
+    <%- form_tag user_search_path(:username => @profile_user.username, :controller => "search") do -%>
+      <%= label_tag :query, image_tag("magnifying_glass.png") -%>
+      <%= text_field_tag :query, "Search #{@profile_username_possesive} Blogcastr", :onfocus => "if (this.value == 'Search #{@profile_username_possesive_escaped} Blogcastr') this.value = ''; jQuery('#header form').addClass('selected');", :onblur => "if (this.value == '') this.value = 'Search #{@profile_username_possesive_escaped} Blogcastr'; jQuery('#header form').removeClass('selected');" -%>
+    <%- end -%>
+    <%= link_to(image_tag("/images/logo-small.png"), "/") %>
+    <%= image_tag "/images/beta-small.png", :class => "beta" %>
     <div id="navigation">
 <% if @user.instance_of?(BlogcastrUser) -%>
-      <%= link_to image_tag(@user.setting.avatar.url(:small))+@user.username, profile_path(:username => @user.username), :class => "first" %>
+      <%= link_to image_tag(@user.setting.avatar.url(:small)) + @user.username, profile_path(:username => @user.username), :class => "username" %>
       <%= link_to "Home", home_path %>
       <%= link_to "Settings", settings_path %>
       <%= link_to "Sign out", sign_out_path, :method => "delete" %>
@@ -18,7 +25,7 @@
       <%= link_to image_tag(avatar) + @user.get_username, @user.get_url, :class => "first" %>
   <%- end -%>
       <%= link_to "Sign up", sign_up_path %>
-      <span onclick="FB.Connect.logout(blogcastrFacebookSignOut);">Sign out</span>
+      <span class="button" onclick="FB.Connect.logout(blogcastrFacebookSignOut);">Sign out</span>
 <% elsif @user.instance_of?(TwitterUser) -%>
       <%= link_to image_tag(@user.get_avatar_url(:small)) + @user.get_username, @user.get_url, :class => "first" %>
       <%= link_to "Sign up", sign_up_path %>
@@ -33,6 +40,7 @@
   </div>
   <div id="content">
     <div id="main">
+      <div id="spacer">
       <div class="upper-left-border-squared-corner">
       </div>
       <div class="top-border">
@@ -46,51 +54,44 @@
             <%= link_to image_tag(@profile_user.setting.avatar.url(:large), :class => "avatar"), @profile_user.setting.avatar.url(:original) %>
         </div>
         <div id="right">
-          <h1><%= @profile_user.username -%>'s<br>blogcastr</h1>
+          <h1><%= @profile_user.username -%>'s<br>Blogcastr</h1>
 <% if !@profile_user.setting.moto.nil? -%>
           <p class="moto"><%= @profile_user.setting.moto -%></p>
 <% end -%>
+          <hr>
 <% if @user.instance_of?(BlogcastrUser) -%>
   <%- if @user.id == @profile_user.id -%> 
-          <div id="welcome">
-            <p>
-              Welcome to your blogcastr!
-            </p>
+          <p>Welcome to your Blogcastr!</p>
+          <div class="navigation">
+            <%= link_to "Home", home_path -%>
+            <%= link_to "Settings", settings_path -%>
+            <div class="clear">
+            </div>
           </div>
   <%- else -%>
-          <div id="subscribe">
+          <p>Subscribe to or message <%= @profile_user.username -%>.</p>
+          <div class="subscribe">
+            <div id="subscription-button">
     <%- if @subscription.nil? -%>
-            <p>
-              Welcome to <%= @profile_username_possesive -%> blogcastr! Want to subscribe to <%= @profile_user.username -%> or drop <%= @profile_user.username -%> a message?
-            </p>
-            <%= button_to_remote "Subscribe", {:url => subscriptions_path(:user_id => @profile_user.id), :type => "submit", :failure => "alert('Error communicating with server, unable to subscribe to #{@profile_user.username}');"} -%>
-            <%= link_to "Message!", sign_in_path, :class => "last" -%>
+              <%= button_to_remote "Subscribe!", :url => subscriptions_path(:user_id => @profile_user.id), :failure => "alert('Error communicating with server, unable to subscribe to #{@profile_user.username}');", :id => "subscription-button", :condition => "remote_request == false", :before => "remote_request = true", :complete => "setTimeout('remote_request = false', 3500)" -%>
     <%- else -%>
-            <p>
-              Welcome to <%= @profile_username_possesive -%> blogcastr! You are currently subscribed to <%= @profile_user.username -%>. Want to drop <%= @profile_user.username -%> a message?
-            </p>
-            <%= button_to_remote "Unsubscribe!", :url => subscription_path(:id => @subscription.id), :method => "delete", :failure => "alert('Error communicating with server, unable to unsubscribe from #{@profile_user.username}');" -%>
-            <%= link_to "Message!", sign_in_path, :class => "last" -%>
+            <%= button_to_remote "Unsubscribe", :url => subscription_path(:id => @subscription.id), :method => "delete", :failure => "alert('Error communicating with server, unable to unsubscribe from #{@profile_user.username}');", :id => "subscription-button", :condition => "remote_request == false", :before => "remote_request = true", :complete => "setTimeout('remote_request = false', 3500)" -%>
     <%- end -%>
+            </div>
+            <%= link_to "Message!", sign_in_path, :class => "last" -%>
             <div class="clear">
             </div>
           </div>
   <%- end -%>
 <% else -%>
-          <div id="sign-up">
-            <p>
-              Welcome to <%= @profile_username_possesive -%> blogcastr! If you would like to subscribe to <%= @profile_user.username -%> or drop <%= @profile_user.username -%> a message sign up or sign in.
-            </p>
+          <p>To subscribe to or message <%= @profile_user.username -%> sign up or sign in.</p>
+          <div class="sign-up">
             <%= link_to "Sign up!", sign_up_path -%>
-            <%= link_to "Sign in!", sign_in_path, :class => "last" -%>
+            <%= link_to "Sign in!", sign_in_path -%>
             <div class="clear">
             </div>
           </div>
 <% end -%>
-          <%- form_tag user_search_path(:user_name => @profile_user.username, :controller => "search") do -%>
-            <%= label_tag(:query, image_tag("magnifying_glass.png")) %>
-            <%= text_field_tag :query, "Search #{@profile_username_possesive} blogcastr", :onfocus => "this.value = '';", :onblur => "this.value = 'Search #{@profile_username_possesive_escaped} blogcastr';"  %>
-          <%- end -%>
         </div>
         <div class="clear">
         </div>
@@ -103,6 +104,7 @@
       </div>
       <div class="clear">
       </div>
+      </div>
       <div class="upper-left-border-squared-corner">
       </div>
       <div class="top-border">
@@ -112,7 +114,7 @@
       <div class="clear">
       </div>
       <div id="bottom">
-        <h2><span class="counter"><%= @num_upcoming_blogcasts -%></span><%= @num_upcoming_blogcasts == 1 ? "Upcoming Blogcast" : "Upcoming Blogcasts" -%></h2>
+        <h2><span class="counter"><%= @num_upcoming_blogcasts -%></span><%= @num_upcoming_blogcasts == 1 ? "Upcoming blogcast" : "Upcoming blogcasts" -%></h2>
         <ol>
 <% for blogcast in @upcoming_blogcasts -%>
           <li class="blogcast">
@@ -150,7 +152,7 @@
           </li>
 <% end %>
         </ol>
-        <h2><span class="counter"><%= @num_recent_blogcasts -%></span><%= @num_recent_blogcasts == 1 ? "Recent Blogcast" : "Recent Blogcasts" -%></h2>
+        <h2><span class="counter"><%= @num_recent_blogcasts -%></span><%= @num_recent_blogcasts == 1 ? "Recent Blogcast" : "Recent blogcasts" -%></h2>
         <ol>
 <% for blogcast in @recent_blogcasts -%>
           <li class="blogcast">
@@ -189,11 +191,11 @@
 <% end %>
         </ol>
       </div>
-      <div class="lower-left-border-squared-corner">
+      <div class="last lower-left-border-squared-corner">
       </div>
-      <div class="bottom-border">
+      <div class="last bottom-border">
       </div>
-      <div class="lower-right-border-squared-corner">
+      <div class="last lower-right-border-squared-corner">
       </div>
       <div class="clear">
       </div>
@@ -288,16 +290,13 @@
           </div>
         </div>
         <hr>
-        <%= link_to image_tag("feed.png")+"<p>RSS feed of #{@profile_user.username}'s blogcasts</p>", username_blogcasts_path(:username => @profile_user.username, :format => "rss"), :class => "rss" %>
-        <div class="clear">
-        </div>
 <% if @user.instance_of?(BlogcastrUser) -%>
   <%- if @user != @profile_user -%>
-    <%- if @email_user_notification.nil? -%>
         <div id="email-notifications">
-          <%= link_to_remote image_tag("email_add.png") + "<p>Email notifications for #{@profile_username_possesive} blogcasts</p>", :url => username_email_notifications_path(:username => @profile_user.username), :failure => "alert('Error communicating with server, failed to create email notifications for #{@profile_user.username}');", :html => {:class => "notification"}, :method => "post" %>
+    <%- if @email_user_notification.nil? -%>
+          <%= link_to_remote image_tag("email_add.png") + "<p>Email notifications for #{@profile_username_possesive} blogcasts</p>", :url => username_email_notifications_path(:username => @profile_user.username), :failure => "alert('Error communicating with server, failed to create email notifications for #{@profile_user.username}');", :html => {:class => "notification"}, :method => "post", :condition => "remote_request == false", :before => "remote_request = true", :complete => "setTimeout('remote_request = false', 3500)" %>
     <%- else -%>
-          <%= link_to_remote image_tag("email_delete.png") + "<p>Email notifications for #{@profile_username_possesive} blogcasts</p>", :url => username_email_notifications_path(:username => @profile_user.username), :failure => "alert('Error communicating with server, failed to create email notifications for #{@profile_user.username}');", :html => {:class => "notification"}, :method => "delete" %>
+          <%= link_to_remote image_tag("email_delete.png") + "<p>Email notifications for #{@profile_username_possesive} blogcasts</p>", :url => username_email_notifications_path(:username => @profile_user.username), :failure => "alert('Error communicating with server, failed to delete email notifications for #{@profile_user.username}');", :html => {:class => "notification"}, :method => "delete", :condition => "remote_request == false", :before => "remote_request = true", :complete => "setTimeout('remote_request = false', 3500)" %>
     <%- end -%>
         </div>
         <div class="clear">
@@ -305,9 +304,9 @@
     <%- if @user.setting.mobile_confirmed == true -%>
         <div id="sms-notifications">
       <%- if @sms_user_notification.nil? -%>
-          <%= link_to_remote image_tag("phone_add.png") + "<p>SMS notifications for #{@profile_username_possesive} blogcasts</p>", :url => username_sms_notifications_path(:username => @profile_user.username), :failure => "alert('Error communicating with server, failed to create notifications for #{@profile_user.username}');", :html => {:class => "notification"}, :method => "post" %>
+          <%= link_to_remote image_tag("phone_add.png") + "<p>SMS notifications for #{@profile_username_possesive} blogcasts</p>", :url => username_sms_notifications_path(:username => @profile_user.username), :failure => "alert('Error communicating with server, failed to create sms notifications for #{@profile_user.username}');", :html => {:class => "notification"}, :method => "post", :condition => "remote_request == false", :before => "remote_request = true", :complete => "setTimeout('remote_request = false', 3500)" %>
       <%- else -%>
-          <%= link_to_remote image_tag("phone_delete.png") + "<p>SMS notifications for #{@profile_username_possesive} blogcasts</p>", :url => username_sms_notifications_path(:username => @profile_user.username), :failure => "alert('Error communicating with server, failed to create notifications for #{@profile_user.username}');", :html => {:class => "notification"}, :method => "delete" %>
+          <%= link_to_remote image_tag("phone_delete.png") + "<p>SMS notifications for #{@profile_username_possesive} blogcasts</p>", :url => username_sms_notifications_path(:username => @profile_user.username), :failure => "alert('Error communicating with server, failed to create sms notifications for #{@profile_user.username}');", :html => {:class => "notification"}, :method => "delete", :condition => "remote_request == false", :before => "remote_request = true", :complete => "setTimeout('remote_request = false', 3500)" %>
       <%- end -%>
         </div>
         <div class="clear">
@@ -315,12 +314,15 @@
     <%- end -%>
   <%- end -%>
 <% end -%>
+        <%= link_to image_tag("feed.png")+"<p>RSS feed of #{@profile_user.username}'s blogcasts</p>", username_blogcasts_path(:username => @profile_user.username, :format => "rss"), :class => "rss" %>
+        <div class="clear">
+        </div>
       </div>
-      <div class="lower-left-border-rounded-corner">
+      <div class="last lower-left-border-rounded-corner">
       </div>
-      <div class="bottom-border-large">
+      <div class="last bottom-border-large">
       </div>
-      <div class="lower-right-border-rounded-corner">
+      <div class="last lower-right-border-rounded-corner">
       </div>
       <div class="clear">
       </div>

@@ -12,13 +12,13 @@ require 'blogcastr_types'
         class Client
           include ::Thrift::Client
 
-          def create_user(user_name, host_name, password)
-            send_create_user(user_name, host_name, password)
+          def create_user(username, host_name, password)
+            send_create_user(username, host_name, password)
             return recv_create_user()
           end
 
-          def send_create_user(user_name, host_name, password)
-            send_message('create_user', Create_user_args, :user_name => user_name, :host_name => host_name, :password => password)
+          def send_create_user(username, host_name, password)
+            send_message('create_user', Create_user_args, :username => username, :host_name => host_name, :password => password)
           end
 
           def recv_create_user()
@@ -27,13 +27,13 @@ require 'blogcastr_types'
             raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'create_user failed: unknown result')
           end
 
-          def destroy_user(user_name)
-            send_destroy_user(user_name)
+          def destroy_user(username)
+            send_destroy_user(username)
             return recv_destroy_user()
           end
 
-          def send_destroy_user(user_name)
-            send_message('destroy_user', Destroy_user_args, :user_name => user_name)
+          def send_destroy_user(username)
+            send_message('destroy_user', Destroy_user_args, :username => username)
           end
 
           def recv_destroy_user()
@@ -42,13 +42,13 @@ require 'blogcastr_types'
             raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'destroy_user failed: unknown result')
           end
 
-          def get_user_password(user_name, host_name)
-            send_get_user_password(user_name, host_name)
+          def get_user_password(username, host_name)
+            send_get_user_password(username, host_name)
             return recv_get_user_password()
           end
 
-          def send_get_user_password(user_name, host_name)
-            send_message('get_user_password', Get_user_password_args, :user_name => user_name, :host_name => host_name)
+          def send_get_user_password(username, host_name)
+            send_message('get_user_password', Get_user_password_args, :username => username, :host_name => host_name)
           end
 
           def recv_get_user_password()
@@ -237,13 +237,13 @@ require 'blogcastr_types'
             raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'publish_text_comment_repost_to_pubsub_node failed: unknown result')
           end
 
-          def create_muc_room(user_name, host_name, room, title, subject)
-            send_create_muc_room(user_name, host_name, room, title, subject)
+          def create_muc_room(username, host_name, room, title, subject)
+            send_create_muc_room(username, host_name, room, title, subject)
             return recv_create_muc_room()
           end
 
-          def send_create_muc_room(user_name, host_name, room, title, subject)
-            send_message('create_muc_room', Create_muc_room_args, :user_name => user_name, :host_name => host_name, :room => room, :title => title, :subject => subject)
+          def send_create_muc_room(username, host_name, room, title, subject)
+            send_message('create_muc_room', Create_muc_room_args, :username => username, :host_name => host_name, :room => room, :title => title, :subject => subject)
           end
 
           def recv_create_muc_room()
@@ -282,13 +282,13 @@ require 'blogcastr_types'
             raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'get_num_muc_room_occupants failed: unknown result')
           end
 
-          def send_text_post_to_muc_room(user_name, host_name, room, from, text_post)
-            send_send_text_post_to_muc_room(user_name, host_name, room, from, text_post)
+          def send_text_post_to_muc_room(username, host_name, room, from, text_post)
+            send_send_text_post_to_muc_room(username, host_name, room, from, text_post)
             return recv_send_text_post_to_muc_room()
           end
 
-          def send_send_text_post_to_muc_room(user_name, host_name, room, from, text_post)
-            send_message('send_text_post_to_muc_room', Send_text_post_to_muc_room_args, :user_name => user_name, :host_name => host_name, :room => room, :from => from, :text_post => text_post)
+          def send_send_text_post_to_muc_room(username, host_name, room, from, text_post)
+            send_message('send_text_post_to_muc_room', Send_text_post_to_muc_room_args, :username => username, :host_name => host_name, :room => room, :from => from, :text_post => text_post)
           end
 
           def recv_send_text_post_to_muc_room()
@@ -410,21 +410,21 @@ require 'blogcastr_types'
           def process_create_user(seqid, iprot, oprot)
             args = read_args(iprot, Create_user_args)
             result = Create_user_result.new()
-            result.success = @handler.create_user(args.user_name, args.host_name, args.password)
+            result.success = @handler.create_user(args.username, args.host_name, args.password)
             write_result(result, oprot, 'create_user', seqid)
           end
 
           def process_destroy_user(seqid, iprot, oprot)
             args = read_args(iprot, Destroy_user_args)
             result = Destroy_user_result.new()
-            result.success = @handler.destroy_user(args.user_name)
+            result.success = @handler.destroy_user(args.username)
             write_result(result, oprot, 'destroy_user', seqid)
           end
 
           def process_get_user_password(seqid, iprot, oprot)
             args = read_args(iprot, Get_user_password_args)
             result = Get_user_password_result.new()
-            result.success = @handler.get_user_password(args.user_name, args.host_name)
+            result.success = @handler.get_user_password(args.username, args.host_name)
             write_result(result, oprot, 'get_user_password', seqid)
           end
 
@@ -515,7 +515,7 @@ require 'blogcastr_types'
           def process_create_muc_room(seqid, iprot, oprot)
             args = read_args(iprot, Create_muc_room_args)
             result = Create_muc_room_result.new()
-            result.success = @handler.create_muc_room(args.user_name, args.host_name, args.room, args.title, args.subject)
+            result.success = @handler.create_muc_room(args.username, args.host_name, args.room, args.title, args.subject)
             write_result(result, oprot, 'create_muc_room', seqid)
           end
 
@@ -536,7 +536,7 @@ require 'blogcastr_types'
           def process_send_text_post_to_muc_room(seqid, iprot, oprot)
             args = read_args(iprot, Send_text_post_to_muc_room_args)
             result = Send_text_post_to_muc_room_result.new()
-            result.success = @handler.send_text_post_to_muc_room(args.user_name, args.host_name, args.room, args.from, args.text_post)
+            result.success = @handler.send_text_post_to_muc_room(args.username, args.host_name, args.room, args.from, args.text_post)
             write_result(result, oprot, 'send_text_post_to_muc_room', seqid)
           end
 
@@ -595,13 +595,13 @@ require 'blogcastr_types'
 
         class Create_user_args
           include ::Thrift::Struct
-          USER_NAME = 1
+          USERNAME = 1
           HOST_NAME = 2
           PASSWORD = 3
 
-          ::Thrift::Struct.field_accessor self, :user_name, :host_name, :password
+          ::Thrift::Struct.field_accessor self, :username, :host_name, :password
           FIELDS = {
-            USER_NAME => {:type => ::Thrift::Types::STRING, :name => 'user_name'},
+            USERNAME => {:type => ::Thrift::Types::STRING, :name => 'username'},
             HOST_NAME => {:type => ::Thrift::Types::STRING, :name => 'host_name'},
             PASSWORD => {:type => ::Thrift::Types::STRING, :name => 'password'}
           }
@@ -631,11 +631,11 @@ require 'blogcastr_types'
 
         class Destroy_user_args
           include ::Thrift::Struct
-          USER_NAME = 1
+          USERNAME = 1
 
-          ::Thrift::Struct.field_accessor self, :user_name
+          ::Thrift::Struct.field_accessor self, :username
           FIELDS = {
-            USER_NAME => {:type => ::Thrift::Types::STRING, :name => 'user_name'}
+            USERNAME => {:type => ::Thrift::Types::STRING, :name => 'username'}
           }
 
           def struct_fields; FIELDS; end
@@ -663,12 +663,12 @@ require 'blogcastr_types'
 
         class Get_user_password_args
           include ::Thrift::Struct
-          USER_NAME = 1
+          USERNAME = 1
           HOST_NAME = 2
 
-          ::Thrift::Struct.field_accessor self, :user_name, :host_name
+          ::Thrift::Struct.field_accessor self, :username, :host_name
           FIELDS = {
-            USER_NAME => {:type => ::Thrift::Types::STRING, :name => 'user_name'},
+            USERNAME => {:type => ::Thrift::Types::STRING, :name => 'username'},
             HOST_NAME => {:type => ::Thrift::Types::STRING, :name => 'host_name'}
           }
 
@@ -1145,15 +1145,15 @@ require 'blogcastr_types'
 
         class Create_muc_room_args
           include ::Thrift::Struct
-          USER_NAME = 1
+          USERNAME = 1
           HOST_NAME = 2
           ROOM = 3
           TITLE = 4
           SUBJECT = 5
 
-          ::Thrift::Struct.field_accessor self, :user_name, :host_name, :room, :title, :subject
+          ::Thrift::Struct.field_accessor self, :username, :host_name, :room, :title, :subject
           FIELDS = {
-            USER_NAME => {:type => ::Thrift::Types::STRING, :name => 'user_name'},
+            USERNAME => {:type => ::Thrift::Types::STRING, :name => 'username'},
             HOST_NAME => {:type => ::Thrift::Types::STRING, :name => 'host_name'},
             ROOM => {:type => ::Thrift::Types::STRING, :name => 'room'},
             TITLE => {:type => ::Thrift::Types::STRING, :name => 'title'},
@@ -1249,15 +1249,15 @@ require 'blogcastr_types'
 
         class Send_text_post_to_muc_room_args
           include ::Thrift::Struct
-          USER_NAME = 1
+          USERNAME = 1
           HOST_NAME = 2
           ROOM = 3
           FROM = 4
           TEXT_POST = 5
 
-          ::Thrift::Struct.field_accessor self, :user_name, :host_name, :room, :from, :text_post
+          ::Thrift::Struct.field_accessor self, :username, :host_name, :room, :from, :text_post
           FIELDS = {
-            USER_NAME => {:type => ::Thrift::Types::STRING, :name => 'user_name'},
+            USERNAME => {:type => ::Thrift::Types::STRING, :name => 'username'},
             HOST_NAME => {:type => ::Thrift::Types::STRING, :name => 'host_name'},
             ROOM => {:type => ::Thrift::Types::STRING, :name => 'room'},
             FROM => {:type => ::Thrift::Types::STRUCT, :name => 'from', :class => Thrift::User},

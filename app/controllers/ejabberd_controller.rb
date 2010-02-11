@@ -15,7 +15,7 @@ class EjabberdController < ApplicationController
     end
     #MVR - get password from ejabberd
     begin
-      @password = thrift_client.get_user_password(@user.name, HOST)
+      @password = thrift_client.get_user_password(@user.username, HOST)
       thrift_client_close
     rescue
       respond_to do |format|

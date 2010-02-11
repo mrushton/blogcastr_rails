@@ -1,10 +1,10 @@
 #top
 {
-	padding-left: 13px;
+	padding-left: 14px;
 	padding-top: 25px;
-	padding-right: 13px;
-	padding-bottom: 3px;
-	width: 574px; 
+	padding-right: 14px;
+	padding-bottom: 4px;
+	width: 572px; 
 	background-image: url("../images/background-border-main.png");
 }
 
@@ -107,6 +107,8 @@
 	line-height: 32px;
 	color: #000000;
 	background-color: #efc02d;
+	background-image: url('/images/fade.png');
+	background-repeat: repeat-x;
 	text-decoration: none;
 	text-align: center;
 	font-weight: bold;
@@ -133,6 +135,7 @@
 	width: 160px;
 	display: inline-block;
 	font-weight: normal;
+	text-align: center;
 }
 
 #comment img

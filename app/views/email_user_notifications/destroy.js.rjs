@@ -1,1 +1,6 @@
 page.replace_html "email-notifications", :partial => "add_email_notification"
+page.replace_html "alert", :partial => "delete_email_notification_alert"
+page.visual_effect :slide_down, "alert", :duration => 0.5
+page.delay(3) do
+  page.visual_effect :slide_up, "alert", :duration => 0.5
+end

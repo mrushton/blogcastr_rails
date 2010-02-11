@@ -106,7 +106,6 @@
 	text-align: center;
 	font-weight: bold;
 	font-size: 0.85em;
-	vertical-align: top;
 	background-color: #efc02d;
 	background-image: url('/images/fade.png');
 	background-repeat: repeat-x;
@@ -201,8 +200,7 @@
 #side a.rss
 {
 	margin-left: 0px;
-	margin-top: 5px;
-	display: block;
+	margin-top: 0px;
 	vertical-align: top;
 	text-decoration: none;
 	color: #787878;

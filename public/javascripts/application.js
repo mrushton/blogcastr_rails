@@ -186,13 +186,13 @@ function blogcastrCollapsibleEvent(obj, id)
   if (queue.effects.length == 0)
   {
     img_src = jQuery(obj).children().filter("img").attr("src");
-    if (img_src == "/images/up.png")
+    if (img_src == up_image)
     {
-      jQuery(obj).children().filter("img").attr("src", "/images/down.png");
+      jQuery(obj).children().filter("img").attr("src", down_image);
     }
     else
     {
-      jQuery(obj).children().filter("img").attr("src", "/images/up.png");
+      jQuery(obj).children().filter("img").attr("src", up_image);
     }
   }
   //effect

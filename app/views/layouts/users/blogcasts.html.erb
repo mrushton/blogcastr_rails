@@ -19,12 +19,13 @@
 <% if @user.instance_of?(FacebookUser) -%>
     <%= javascript_tag "var facebook_id = #{@user.facebook_id}" %>
 <% end -%>
-    <script type="text/javascript">
+    <% javascript_tag do %>
       jQuery.noConflict();
       var hostname = "<%= HOST %>";
-      var blogname = "<%= @blogcast_user.username %>";
-      var nodename = "/home/blogcastr.com/<%= @blogcast_user.username %>/blog";
+      var removemeblogname = "<%= @blogcast_user.username %>";
       var blogcast_id = <%= @blogcast.id %>;
+      var up_image = "<%= image_path "up.png" -%>";
+      var down_image = "<%= image_path "down.png" -%>";
 <% if @user.instance_of?(BlogcastrUser) -%>
       var username = "<%= @user.username %>";
 <% else -%>
@@ -32,7 +33,7 @@
 <% end -%>
       var server_timestamp = <%= Time.now.to_i %>;
       var facebook_attachment = {'name':'<%= @blogcast.title-%>', 'href':'<%= username_blogcast_permalink_url(:username => @blogcast_user.username, :year => @blogcast.year, :month => @blogcast.month, :day => @blogcast.day, :title => @blogcast.link_title) -%>', 'description':'By <%= @blogcast_user.username -%> on <%= @blogcast.starting_at.strftime("%B %e, %Y") -%>. <%= @blogcast.description.gsub(/'/,"\\'") -%>'};
-    </script>
+    <% end %>
 <% if @user.instance_of?(BlogcastrUser) -%>
   <%- if Rails.env.production? -%> 
     <script type="text/javascript" src="https://blogcastr.com/ejabberd/password.js"></script>
