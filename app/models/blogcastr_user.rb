@@ -12,6 +12,14 @@ class BlogcastrUser < User
     return user if user.authenticated?(password)
   end
 
+  def get_username
+    username
+  end
+
+  def get_url
+    profile_path :username => username 
+  end
+
   protected
 
   #MVR - added authentication token

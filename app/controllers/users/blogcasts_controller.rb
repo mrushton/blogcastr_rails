@@ -189,6 +189,12 @@ class Users::BlogcastsController < ApplicationController
             @email_blogcast_notification = EmailBlogcastNotification.find(:first, :conditions => ["user_id = ? AND blogcast_id = ?", @user.id, @blogcast.id])
             @sms_blogcast_notification = SmsBlogcastNotification.find(:first, :conditions => ["user_id = ? AND blogcast_id = ?", @user.id, @blogcast.id])
           end
+          #MVR - subscribers
+          @num_subscribers = @blogcast_user.subscribers.count
+          #MVR - blogcasts
+          @num_blogcasts = @blogcast_user.blogcasts.count
+          #MVR - subscriptions
+          @num_subscriptions = @blogcast_user.subscriptions.count
         end
         #TODO: limit result set and order by most recent 
         format.xml {render :xml => @blogcast.to_xml(:include => :posts)}

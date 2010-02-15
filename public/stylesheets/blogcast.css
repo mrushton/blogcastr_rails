@@ -1,3 +1,15 @@
+#left-side img.avatar
+{
+	width: 142px;
+	height: 142px;
+	border: none;
+}
+
+#main
+{
+	margin-left: 4px;
+}
+
 #top
 {
 	padding-left: 14px;
@@ -10,7 +22,8 @@
 
 #title
 {
-	top: -32px;
+	left: 9px;
+	top: -30px;
 }
 
 #title img
@@ -26,8 +39,8 @@
 
 #top p
 {
-	margin-top: 0px;
-	margin-bottom: 0px;
+	margin-top: 3px;
+	margin-bottom: 3px;
 	font-size: 1.0em;
 	font-weight: bold;
 }
@@ -35,6 +48,20 @@
 #top p a.user
 {
 	color: #00A7EE;
+}
+
+#top p img.avatar
+{
+	margin-left: 1px;
+	margin-top: 1px;
+	margin-right: 3px;
+	border: none;
+	height: 28px;
+	width: 28px;
+	position: relative;
+	top: 7px;
+	display: block;
+	float: left;
 }
 
 #top p span.date
@@ -48,7 +75,6 @@
 	margin-bottom: 0px;
 	padding-left: 4px;
 	padding-right: 4px;
-	width: 566px;
 	height: 30px;
 	display: block;
 	position: relative;
@@ -151,7 +177,7 @@
 #comment form textarea
 {
 	padding: 5px;
-	width: 562px;
+	width: 560px;
 	height: 115px;
 	border: solid;
 	border-width: 1px;
@@ -170,7 +196,7 @@
 
 #comment form input 
 {
-	margin-top: 5px;
+	margin-top: 3px;
 	width: 125px;
 	height: 28px;
 	border: solid;

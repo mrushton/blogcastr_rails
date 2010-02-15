@@ -1,7 +1,7 @@
 <div id="wrapper">
   <div id="header">
-    <%= link_to "<div class=\"avatar-large-rounded avatar-large-rounded-background\" style=\"background-image: url('#{@user.setting.avatar(:large)}')\"></div>", profile_path(:username => @user.name), :target => "_blank" %>
-    <h1><%= @user.name %></h1>
+    <%= link_to "<div class=\"avatar-large-rounded avatar-large-rounded-background\" style=\"background-image: url('#{@user.setting.avatar(:large)}')\"></div>", profile_path(:username => @user.username), :target => "_blank" %>
+    <h1><%= @user.username %></h1>
     <div id="navigation">
       <%= link_to "Home", home_path %>
       <%= link_to "Settings", settings_path %>

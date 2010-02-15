@@ -87,156 +87,6 @@ require 'blogcastr_types'
             raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'get_user_status failed: unknown result')
           end
 
-          def create_pubsub_node(username, node)
-            send_create_pubsub_node(username, node)
-            return recv_create_pubsub_node()
-          end
-
-          def send_create_pubsub_node(username, node)
-            send_message('create_pubsub_node', Create_pubsub_node_args, :username => username, :node => node)
-          end
-
-          def recv_create_pubsub_node()
-            result = receive_message(Create_pubsub_node_result)
-            return result.success unless result.success.nil?
-            raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'create_pubsub_node failed: unknown result')
-          end
-
-          def destroy_pubsub_node(username, node)
-            send_destroy_pubsub_node(username, node)
-            return recv_destroy_pubsub_node()
-          end
-
-          def send_destroy_pubsub_node(username, node)
-            send_message('destroy_pubsub_node', Destroy_pubsub_node_args, :username => username, :node => node)
-          end
-
-          def recv_destroy_pubsub_node()
-            result = receive_message(Destroy_pubsub_node_result)
-            return result.success unless result.success.nil?
-            raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'destroy_pubsub_node failed: unknown result')
-          end
-
-          def subscribe_to_pubsub_node(username, resource, node)
-            send_subscribe_to_pubsub_node(username, resource, node)
-            return recv_subscribe_to_pubsub_node()
-          end
-
-          def send_subscribe_to_pubsub_node(username, resource, node)
-            send_message('subscribe_to_pubsub_node', Subscribe_to_pubsub_node_args, :username => username, :resource => resource, :node => node)
-          end
-
-          def recv_subscribe_to_pubsub_node()
-            result = receive_message(Subscribe_to_pubsub_node_result)
-            return result.success unless result.success.nil?
-            raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'subscribe_to_pubsub_node failed: unknown result')
-          end
-
-          def unsubscribe_from_pubsub_node(username, resource, node, sub_id)
-            send_unsubscribe_from_pubsub_node(username, resource, node, sub_id)
-            return recv_unsubscribe_from_pubsub_node()
-          end
-
-          def send_unsubscribe_from_pubsub_node(username, resource, node, sub_id)
-            send_message('unsubscribe_from_pubsub_node', Unsubscribe_from_pubsub_node_args, :username => username, :resource => resource, :node => node, :sub_id => sub_id)
-          end
-
-          def recv_unsubscribe_from_pubsub_node()
-            result = receive_message(Unsubscribe_from_pubsub_node_result)
-            return result.success unless result.success.nil?
-            raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'unsubscribe_from_pubsub_node failed: unknown result')
-          end
-
-          def publish_text_post_to_pubsub_node(username, node, from, text_post)
-            send_publish_text_post_to_pubsub_node(username, node, from, text_post)
-            return recv_publish_text_post_to_pubsub_node()
-          end
-
-          def send_publish_text_post_to_pubsub_node(username, node, from, text_post)
-            send_message('publish_text_post_to_pubsub_node', Publish_text_post_to_pubsub_node_args, :username => username, :node => node, :from => from, :text_post => text_post)
-          end
-
-          def recv_publish_text_post_to_pubsub_node()
-            result = receive_message(Publish_text_post_to_pubsub_node_result)
-            return result.success unless result.success.nil?
-            raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'publish_text_post_to_pubsub_node failed: unknown result')
-          end
-
-          def publish_image_post_to_pubsub_node(username, node, from, image_post)
-            send_publish_image_post_to_pubsub_node(username, node, from, image_post)
-            return recv_publish_image_post_to_pubsub_node()
-          end
-
-          def send_publish_image_post_to_pubsub_node(username, node, from, image_post)
-            send_message('publish_image_post_to_pubsub_node', Publish_image_post_to_pubsub_node_args, :username => username, :node => node, :from => from, :image_post => image_post)
-          end
-
-          def recv_publish_image_post_to_pubsub_node()
-            result = receive_message(Publish_image_post_to_pubsub_node_result)
-            return result.success unless result.success.nil?
-            raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'publish_image_post_to_pubsub_node failed: unknown result')
-          end
-
-          def publish_text_comment_post_to_pubsub_node(username, node, comment_post_from, comment_post, text_comment_from, text_comment)
-            send_publish_text_comment_post_to_pubsub_node(username, node, comment_post_from, comment_post, text_comment_from, text_comment)
-            return recv_publish_text_comment_post_to_pubsub_node()
-          end
-
-          def send_publish_text_comment_post_to_pubsub_node(username, node, comment_post_from, comment_post, text_comment_from, text_comment)
-            send_message('publish_text_comment_post_to_pubsub_node', Publish_text_comment_post_to_pubsub_node_args, :username => username, :node => node, :comment_post_from => comment_post_from, :comment_post => comment_post, :text_comment_from => text_comment_from, :text_comment => text_comment)
-          end
-
-          def recv_publish_text_comment_post_to_pubsub_node()
-            result = receive_message(Publish_text_comment_post_to_pubsub_node_result)
-            return result.success unless result.success.nil?
-            raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'publish_text_comment_post_to_pubsub_node failed: unknown result')
-          end
-
-          def publish_text_repost_to_pubsub_node(username, node, from, repost, text_post)
-            send_publish_text_repost_to_pubsub_node(username, node, from, repost, text_post)
-            return recv_publish_text_repost_to_pubsub_node()
-          end
-
-          def send_publish_text_repost_to_pubsub_node(username, node, from, repost, text_post)
-            send_message('publish_text_repost_to_pubsub_node', Publish_text_repost_to_pubsub_node_args, :username => username, :node => node, :from => from, :repost => repost, :text_post => text_post)
-          end
-
-          def recv_publish_text_repost_to_pubsub_node()
-            result = receive_message(Publish_text_repost_to_pubsub_node_result)
-            return result.success unless result.success.nil?
-            raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'publish_text_repost_to_pubsub_node failed: unknown result')
-          end
-
-          def publish_image_repost_to_pubsub_node(username, node, from, repost, image_post)
-            send_publish_image_repost_to_pubsub_node(username, node, from, repost, image_post)
-            return recv_publish_image_repost_to_pubsub_node()
-          end
-
-          def send_publish_image_repost_to_pubsub_node(username, node, from, repost, image_post)
-            send_message('publish_image_repost_to_pubsub_node', Publish_image_repost_to_pubsub_node_args, :username => username, :node => node, :from => from, :repost => repost, :image_post => image_post)
-          end
-
-          def recv_publish_image_repost_to_pubsub_node()
-            result = receive_message(Publish_image_repost_to_pubsub_node_result)
-            return result.success unless result.success.nil?
-            raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'publish_image_repost_to_pubsub_node failed: unknown result')
-          end
-
-          def publish_text_comment_repost_to_pubsub_node(username, node, from, repost, text_comment, via)
-            send_publish_text_comment_repost_to_pubsub_node(username, node, from, repost, text_comment, via)
-            return recv_publish_text_comment_repost_to_pubsub_node()
-          end
-
-          def send_publish_text_comment_repost_to_pubsub_node(username, node, from, repost, text_comment, via)
-            send_message('publish_text_comment_repost_to_pubsub_node', Publish_text_comment_repost_to_pubsub_node_args, :username => username, :node => node, :from => from, :repost => repost, :text_comment => text_comment, :via => via)
-          end
-
-          def recv_publish_text_comment_repost_to_pubsub_node()
-            result = receive_message(Publish_text_comment_repost_to_pubsub_node_result)
-            return result.success unless result.success.nil?
-            raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'publish_text_comment_repost_to_pubsub_node failed: unknown result')
-          end
-
           def create_muc_room(username, host_name, room, title, subject)
             send_create_muc_room(username, host_name, room, title, subject)
             return recv_create_muc_room()
@@ -312,19 +162,19 @@ require 'blogcastr_types'
             raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'send_image_post_to_muc_room failed: unknown result')
           end
 
-          def send_text_comment_post_to_muc_room(username, room, comment_post_from, comment_post, text_comment_from, text_comment)
-            send_send_text_comment_post_to_muc_room(username, room, comment_post_from, comment_post, text_comment_from, text_comment)
-            return recv_send_text_comment_post_to_muc_room()
+          def send_comment_post_to_muc_room(username, host_name, room, comment_post_from, comment_post, comment_from, comment)
+            send_send_comment_post_to_muc_room(username, host_name, room, comment_post_from, comment_post, comment_from, comment)
+            return recv_send_comment_post_to_muc_room()
           end
 
-          def send_send_text_comment_post_to_muc_room(username, room, comment_post_from, comment_post, text_comment_from, text_comment)
-            send_message('send_text_comment_post_to_muc_room', Send_text_comment_post_to_muc_room_args, :username => username, :room => room, :comment_post_from => comment_post_from, :comment_post => comment_post, :text_comment_from => text_comment_from, :text_comment => text_comment)
+          def send_send_comment_post_to_muc_room(username, host_name, room, comment_post_from, comment_post, comment_from, comment)
+            send_message('send_comment_post_to_muc_room', Send_comment_post_to_muc_room_args, :username => username, :host_name => host_name, :room => room, :comment_post_from => comment_post_from, :comment_post => comment_post, :comment_from => comment_from, :comment => comment)
           end
 
-          def recv_send_text_comment_post_to_muc_room()
-            result = receive_message(Send_text_comment_post_to_muc_room_result)
+          def recv_send_comment_post_to_muc_room()
+            result = receive_message(Send_comment_post_to_muc_room_result)
             return result.success unless result.success.nil?
-            raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'send_text_comment_post_to_muc_room failed: unknown result')
+            raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'send_comment_post_to_muc_room failed: unknown result')
           end
 
           def send_text_repost_to_muc_room(username, room, from, repost, text_post)
@@ -442,76 +292,6 @@ require 'blogcastr_types'
             write_result(result, oprot, 'get_user_status', seqid)
           end
 
-          def process_create_pubsub_node(seqid, iprot, oprot)
-            args = read_args(iprot, Create_pubsub_node_args)
-            result = Create_pubsub_node_result.new()
-            result.success = @handler.create_pubsub_node(args.username, args.node)
-            write_result(result, oprot, 'create_pubsub_node', seqid)
-          end
-
-          def process_destroy_pubsub_node(seqid, iprot, oprot)
-            args = read_args(iprot, Destroy_pubsub_node_args)
-            result = Destroy_pubsub_node_result.new()
-            result.success = @handler.destroy_pubsub_node(args.username, args.node)
-            write_result(result, oprot, 'destroy_pubsub_node', seqid)
-          end
-
-          def process_subscribe_to_pubsub_node(seqid, iprot, oprot)
-            args = read_args(iprot, Subscribe_to_pubsub_node_args)
-            result = Subscribe_to_pubsub_node_result.new()
-            result.success = @handler.subscribe_to_pubsub_node(args.username, args.resource, args.node)
-            write_result(result, oprot, 'subscribe_to_pubsub_node', seqid)
-          end
-
-          def process_unsubscribe_from_pubsub_node(seqid, iprot, oprot)
-            args = read_args(iprot, Unsubscribe_from_pubsub_node_args)
-            result = Unsubscribe_from_pubsub_node_result.new()
-            result.success = @handler.unsubscribe_from_pubsub_node(args.username, args.resource, args.node, args.sub_id)
-            write_result(result, oprot, 'unsubscribe_from_pubsub_node', seqid)
-          end
-
-          def process_publish_text_post_to_pubsub_node(seqid, iprot, oprot)
-            args = read_args(iprot, Publish_text_post_to_pubsub_node_args)
-            result = Publish_text_post_to_pubsub_node_result.new()
-            result.success = @handler.publish_text_post_to_pubsub_node(args.username, args.node, args.from, args.text_post)
-            write_result(result, oprot, 'publish_text_post_to_pubsub_node', seqid)
-          end
-
-          def process_publish_image_post_to_pubsub_node(seqid, iprot, oprot)
-            args = read_args(iprot, Publish_image_post_to_pubsub_node_args)
-            result = Publish_image_post_to_pubsub_node_result.new()
-            result.success = @handler.publish_image_post_to_pubsub_node(args.username, args.node, args.from, args.image_post)
-            write_result(result, oprot, 'publish_image_post_to_pubsub_node', seqid)
-          end
-
-          def process_publish_text_comment_post_to_pubsub_node(seqid, iprot, oprot)
-            args = read_args(iprot, Publish_text_comment_post_to_pubsub_node_args)
-            result = Publish_text_comment_post_to_pubsub_node_result.new()
-            result.success = @handler.publish_text_comment_post_to_pubsub_node(args.username, args.node, args.comment_post_from, args.comment_post, args.text_comment_from, args.text_comment)
-            write_result(result, oprot, 'publish_text_comment_post_to_pubsub_node', seqid)
-          end
-
-          def process_publish_text_repost_to_pubsub_node(seqid, iprot, oprot)
-            args = read_args(iprot, Publish_text_repost_to_pubsub_node_args)
-            result = Publish_text_repost_to_pubsub_node_result.new()
-            result.success = @handler.publish_text_repost_to_pubsub_node(args.username, args.node, args.from, args.repost, args.text_post)
-            write_result(result, oprot, 'publish_text_repost_to_pubsub_node', seqid)
-          end
-
-          def process_publish_image_repost_to_pubsub_node(seqid, iprot, oprot)
-            args = read_args(iprot, Publish_image_repost_to_pubsub_node_args)
-            result = Publish_image_repost_to_pubsub_node_result.new()
-            result.success = @handler.publish_image_repost_to_pubsub_node(args.username, args.node, args.from, args.repost, args.image_post)
-            write_result(result, oprot, 'publish_image_repost_to_pubsub_node', seqid)
-          end
-
-          def process_publish_text_comment_repost_to_pubsub_node(seqid, iprot, oprot)
-            args = read_args(iprot, Publish_text_comment_repost_to_pubsub_node_args)
-            result = Publish_text_comment_repost_to_pubsub_node_result.new()
-            result.success = @handler.publish_text_comment_repost_to_pubsub_node(args.username, args.node, args.from, args.repost, args.text_comment, args.via)
-            write_result(result, oprot, 'publish_text_comment_repost_to_pubsub_node', seqid)
-          end
-
           def process_create_muc_room(seqid, iprot, oprot)
             args = read_args(iprot, Create_muc_room_args)
             result = Create_muc_room_result.new()
@@ -547,11 +327,11 @@ require 'blogcastr_types'
             write_result(result, oprot, 'send_image_post_to_muc_room', seqid)
           end
 
-          def process_send_text_comment_post_to_muc_room(seqid, iprot, oprot)
-            args = read_args(iprot, Send_text_comment_post_to_muc_room_args)
-            result = Send_text_comment_post_to_muc_room_result.new()
-            result.success = @handler.send_text_comment_post_to_muc_room(args.username, args.room, args.comment_post_from, args.comment_post, args.text_comment_from, args.text_comment)
-            write_result(result, oprot, 'send_text_comment_post_to_muc_room', seqid)
+          def process_send_comment_post_to_muc_room(seqid, iprot, oprot)
+            args = read_args(iprot, Send_comment_post_to_muc_room_args)
+            result = Send_comment_post_to_muc_room_result.new()
+            result.success = @handler.send_comment_post_to_muc_room(args.username, args.host_name, args.room, args.comment_post_from, args.comment_post, args.comment_from, args.comment)
+            write_result(result, oprot, 'send_comment_post_to_muc_room', seqid)
           end
 
           def process_send_text_repost_to_muc_room(seqid, iprot, oprot)
@@ -761,388 +541,6 @@ require 'blogcastr_types'
 
         end
 
-        class Create_pubsub_node_args
-          include ::Thrift::Struct
-          USERNAME = 1
-          NODE = 2
-
-          ::Thrift::Struct.field_accessor self, :username, :node
-          FIELDS = {
-            USERNAME => {:type => ::Thrift::Types::STRING, :name => 'username'},
-            NODE => {:type => ::Thrift::Types::STRING, :name => 'node'}
-          }
-
-          def struct_fields; FIELDS; end
-
-          def validate
-          end
-
-        end
-
-        class Create_pubsub_node_result
-          include ::Thrift::Struct
-          SUCCESS = 0
-
-          ::Thrift::Struct.field_accessor self, :success
-          FIELDS = {
-            SUCCESS => {:type => ::Thrift::Types::I32, :name => 'success'}
-          }
-
-          def struct_fields; FIELDS; end
-
-          def validate
-          end
-
-        end
-
-        class Destroy_pubsub_node_args
-          include ::Thrift::Struct
-          USERNAME = 1
-          NODE = 2
-
-          ::Thrift::Struct.field_accessor self, :username, :node
-          FIELDS = {
-            USERNAME => {:type => ::Thrift::Types::STRING, :name => 'username'},
-            NODE => {:type => ::Thrift::Types::STRING, :name => 'node'}
-          }
-
-          def struct_fields; FIELDS; end
-
-          def validate
-          end
-
-        end
-
-        class Destroy_pubsub_node_result
-          include ::Thrift::Struct
-          SUCCESS = 0
-
-          ::Thrift::Struct.field_accessor self, :success
-          FIELDS = {
-            SUCCESS => {:type => ::Thrift::Types::I32, :name => 'success'}
-          }
-
-          def struct_fields; FIELDS; end
-
-          def validate
-          end
-
-        end
-
-        class Subscribe_to_pubsub_node_args
-          include ::Thrift::Struct
-          USERNAME = 1
-          RESOURCE = 2
-          NODE = 3
-
-          ::Thrift::Struct.field_accessor self, :username, :resource, :node
-          FIELDS = {
-            USERNAME => {:type => ::Thrift::Types::STRING, :name => 'username'},
-            RESOURCE => {:type => ::Thrift::Types::STRING, :name => 'resource'},
-            NODE => {:type => ::Thrift::Types::STRING, :name => 'node'}
-          }
-
-          def struct_fields; FIELDS; end
-
-          def validate
-          end
-
-        end
-
-        class Subscribe_to_pubsub_node_result
-          include ::Thrift::Struct
-          SUCCESS = 0
-
-          ::Thrift::Struct.field_accessor self, :success
-          FIELDS = {
-            SUCCESS => {:type => ::Thrift::Types::I32, :name => 'success'}
-          }
-
-          def struct_fields; FIELDS; end
-
-          def validate
-          end
-
-        end
-
-        class Unsubscribe_from_pubsub_node_args
-          include ::Thrift::Struct
-          USERNAME = 1
-          RESOURCE = 2
-          NODE = 3
-          SUB_ID = 4
-
-          ::Thrift::Struct.field_accessor self, :username, :resource, :node, :sub_id
-          FIELDS = {
-            USERNAME => {:type => ::Thrift::Types::STRING, :name => 'username'},
-            RESOURCE => {:type => ::Thrift::Types::STRING, :name => 'resource'},
-            NODE => {:type => ::Thrift::Types::STRING, :name => 'node'},
-            SUB_ID => {:type => ::Thrift::Types::STRING, :name => 'sub_id'}
-          }
-
-          def struct_fields; FIELDS; end
-
-          def validate
-          end
-
-        end
-
-        class Unsubscribe_from_pubsub_node_result
-          include ::Thrift::Struct
-          SUCCESS = 0
-
-          ::Thrift::Struct.field_accessor self, :success
-          FIELDS = {
-            SUCCESS => {:type => ::Thrift::Types::I32, :name => 'success'}
-          }
-
-          def struct_fields; FIELDS; end
-
-          def validate
-          end
-
-        end
-
-        class Publish_text_post_to_pubsub_node_args
-          include ::Thrift::Struct
-          USERNAME = 1
-          NODE = 2
-          FROM = 3
-          TEXT_POST = 4
-
-          ::Thrift::Struct.field_accessor self, :username, :node, :from, :text_post
-          FIELDS = {
-            USERNAME => {:type => ::Thrift::Types::STRING, :name => 'username'},
-            NODE => {:type => ::Thrift::Types::STRING, :name => 'node'},
-            FROM => {:type => ::Thrift::Types::STRUCT, :name => 'from', :class => Thrift::User},
-            TEXT_POST => {:type => ::Thrift::Types::STRUCT, :name => 'text_post', :class => Thrift::TextPost}
-          }
-
-          def struct_fields; FIELDS; end
-
-          def validate
-          end
-
-        end
-
-        class Publish_text_post_to_pubsub_node_result
-          include ::Thrift::Struct
-          SUCCESS = 0
-
-          ::Thrift::Struct.field_accessor self, :success
-          FIELDS = {
-            SUCCESS => {:type => ::Thrift::Types::I32, :name => 'success'}
-          }
-
-          def struct_fields; FIELDS; end
-
-          def validate
-          end
-
-        end
-
-        class Publish_image_post_to_pubsub_node_args
-          include ::Thrift::Struct
-          USERNAME = 1
-          NODE = 2
-          FROM = 3
-          IMAGE_POST = 4
-
-          ::Thrift::Struct.field_accessor self, :username, :node, :from, :image_post
-          FIELDS = {
-            USERNAME => {:type => ::Thrift::Types::STRING, :name => 'username'},
-            NODE => {:type => ::Thrift::Types::STRING, :name => 'node'},
-            FROM => {:type => ::Thrift::Types::STRUCT, :name => 'from', :class => Thrift::User},
-            IMAGE_POST => {:type => ::Thrift::Types::STRUCT, :name => 'image_post', :class => Thrift::ImagePost}
-          }
-
-          def struct_fields; FIELDS; end
-
-          def validate
-          end
-
-        end
-
-        class Publish_image_post_to_pubsub_node_result
-          include ::Thrift::Struct
-          SUCCESS = 0
-
-          ::Thrift::Struct.field_accessor self, :success
-          FIELDS = {
-            SUCCESS => {:type => ::Thrift::Types::I32, :name => 'success'}
-          }
-
-          def struct_fields; FIELDS; end
-
-          def validate
-          end
-
-        end
-
-        class Publish_text_comment_post_to_pubsub_node_args
-          include ::Thrift::Struct
-          USERNAME = 1
-          NODE = 2
-          COMMENT_POST_FROM = 3
-          COMMENT_POST = 4
-          TEXT_COMMENT_FROM = 5
-          TEXT_COMMENT = 6
-
-          ::Thrift::Struct.field_accessor self, :username, :node, :comment_post_from, :comment_post, :text_comment_from, :text_comment
-          FIELDS = {
-            USERNAME => {:type => ::Thrift::Types::STRING, :name => 'username'},
-            NODE => {:type => ::Thrift::Types::STRING, :name => 'node'},
-            COMMENT_POST_FROM => {:type => ::Thrift::Types::STRUCT, :name => 'comment_post_from', :class => Thrift::User},
-            COMMENT_POST => {:type => ::Thrift::Types::STRUCT, :name => 'comment_post', :class => Thrift::CommentPost},
-            TEXT_COMMENT_FROM => {:type => ::Thrift::Types::STRUCT, :name => 'text_comment_from', :class => Thrift::User},
-            TEXT_COMMENT => {:type => ::Thrift::Types::STRUCT, :name => 'text_comment', :class => Thrift::Comment}
-          }
-
-          def struct_fields; FIELDS; end
-
-          def validate
-          end
-
-        end
-
-        class Publish_text_comment_post_to_pubsub_node_result
-          include ::Thrift::Struct
-          SUCCESS = 0
-
-          ::Thrift::Struct.field_accessor self, :success
-          FIELDS = {
-            SUCCESS => {:type => ::Thrift::Types::I32, :name => 'success'}
-          }
-
-          def struct_fields; FIELDS; end
-
-          def validate
-          end
-
-        end
-
-        class Publish_text_repost_to_pubsub_node_args
-          include ::Thrift::Struct
-          USERNAME = 1
-          NODE = 2
-          FROM = 3
-          REPOST = 4
-          TEXT_POST = 5
-
-          ::Thrift::Struct.field_accessor self, :username, :node, :from, :repost, :text_post
-          FIELDS = {
-            USERNAME => {:type => ::Thrift::Types::STRING, :name => 'username'},
-            NODE => {:type => ::Thrift::Types::STRING, :name => 'node'},
-            FROM => {:type => ::Thrift::Types::STRUCT, :name => 'from', :class => Thrift::User},
-            REPOST => {:type => ::Thrift::Types::STRUCT, :name => 'repost', :class => Thrift::Repost},
-            TEXT_POST => {:type => ::Thrift::Types::STRUCT, :name => 'text_post', :class => Thrift::TextPost}
-          }
-
-          def struct_fields; FIELDS; end
-
-          def validate
-          end
-
-        end
-
-        class Publish_text_repost_to_pubsub_node_result
-          include ::Thrift::Struct
-          SUCCESS = 0
-
-          ::Thrift::Struct.field_accessor self, :success
-          FIELDS = {
-            SUCCESS => {:type => ::Thrift::Types::I32, :name => 'success'}
-          }
-
-          def struct_fields; FIELDS; end
-
-          def validate
-          end
-
-        end
-
-        class Publish_image_repost_to_pubsub_node_args
-          include ::Thrift::Struct
-          USERNAME = 1
-          NODE = 2
-          FROM = 3
-          REPOST = 4
-          IMAGE_POST = 5
-
-          ::Thrift::Struct.field_accessor self, :username, :node, :from, :repost, :image_post
-          FIELDS = {
-            USERNAME => {:type => ::Thrift::Types::STRING, :name => 'username'},
-            NODE => {:type => ::Thrift::Types::STRING, :name => 'node'},
-            FROM => {:type => ::Thrift::Types::STRUCT, :name => 'from', :class => Thrift::User},
-            REPOST => {:type => ::Thrift::Types::STRUCT, :name => 'repost', :class => Thrift::Repost},
-            IMAGE_POST => {:type => ::Thrift::Types::STRUCT, :name => 'image_post', :class => Thrift::ImagePost}
-          }
-
-          def struct_fields; FIELDS; end
-
-          def validate
-          end
-
-        end
-
-        class Publish_image_repost_to_pubsub_node_result
-          include ::Thrift::Struct
-          SUCCESS = 0
-
-          ::Thrift::Struct.field_accessor self, :success
-          FIELDS = {
-            SUCCESS => {:type => ::Thrift::Types::I32, :name => 'success'}
-          }
-
-          def struct_fields; FIELDS; end
-
-          def validate
-          end
-
-        end
-
-        class Publish_text_comment_repost_to_pubsub_node_args
-          include ::Thrift::Struct
-          USERNAME = 1
-          NODE = 2
-          FROM = 3
-          REPOST = 4
-          TEXT_COMMENT = 5
-          VIA = 6
-
-          ::Thrift::Struct.field_accessor self, :username, :node, :from, :repost, :text_comment, :via
-          FIELDS = {
-            USERNAME => {:type => ::Thrift::Types::STRING, :name => 'username'},
-            NODE => {:type => ::Thrift::Types::STRING, :name => 'node'},
-            FROM => {:type => ::Thrift::Types::STRUCT, :name => 'from', :class => Thrift::User},
-            REPOST => {:type => ::Thrift::Types::STRUCT, :name => 'repost', :class => Thrift::Repost},
-            TEXT_COMMENT => {:type => ::Thrift::Types::STRUCT, :name => 'text_comment', :class => Thrift::Comment},
-            VIA => {:type => ::Thrift::Types::LIST, :name => 'via', :element => {:type => ::Thrift::Types::STRUCT, :class => Thrift::User}}
-          }
-
-          def struct_fields; FIELDS; end
-
-          def validate
-          end
-
-        end
-
-        class Publish_text_comment_repost_to_pubsub_node_result
-          include ::Thrift::Struct
-          SUCCESS = 0
-
-          ::Thrift::Struct.field_accessor self, :success
-          FIELDS = {
-            SUCCESS => {:type => ::Thrift::Types::I32, :name => 'success'}
-          }
-
-          def struct_fields; FIELDS; end
-
-          def validate
-          end
-
-        end
-
         class Create_muc_room_args
           include ::Thrift::Struct
           USERNAME = 1
@@ -1327,23 +725,25 @@ require 'blogcastr_types'
 
         end
 
-        class Send_text_comment_post_to_muc_room_args
+        class Send_comment_post_to_muc_room_args
           include ::Thrift::Struct
           USERNAME = 1
-          ROOM = 2
-          COMMENT_POST_FROM = 3
-          COMMENT_POST = 4
-          TEXT_COMMENT_FROM = 5
-          TEXT_COMMENT = 6
+          HOST_NAME = 2
+          ROOM = 3
+          COMMENT_POST_FROM = 4
+          COMMENT_POST = 5
+          COMMENT_FROM = 6
+          COMMENT = 7
 
-          ::Thrift::Struct.field_accessor self, :username, :room, :comment_post_from, :comment_post, :text_comment_from, :text_comment
+          ::Thrift::Struct.field_accessor self, :username, :host_name, :room, :comment_post_from, :comment_post, :comment_from, :comment
           FIELDS = {
             USERNAME => {:type => ::Thrift::Types::STRING, :name => 'username'},
+            HOST_NAME => {:type => ::Thrift::Types::STRING, :name => 'host_name'},
             ROOM => {:type => ::Thrift::Types::STRING, :name => 'room'},
             COMMENT_POST_FROM => {:type => ::Thrift::Types::STRUCT, :name => 'comment_post_from', :class => Thrift::User},
             COMMENT_POST => {:type => ::Thrift::Types::STRUCT, :name => 'comment_post', :class => Thrift::CommentPost},
-            TEXT_COMMENT_FROM => {:type => ::Thrift::Types::STRUCT, :name => 'text_comment_from', :class => Thrift::User},
-            TEXT_COMMENT => {:type => ::Thrift::Types::STRUCT, :name => 'text_comment', :class => Thrift::Comment}
+            COMMENT_FROM => {:type => ::Thrift::Types::STRUCT, :name => 'comment_from', :class => Thrift::User},
+            COMMENT => {:type => ::Thrift::Types::STRUCT, :name => 'comment', :class => Thrift::Comment}
           }
 
           def struct_fields; FIELDS; end
@@ -1353,7 +753,7 @@ require 'blogcastr_types'
 
         end
 
-        class Send_text_comment_post_to_muc_room_result
+        class Send_comment_post_to_muc_room_result
           include ::Thrift::Struct
           SUCCESS = 0
 

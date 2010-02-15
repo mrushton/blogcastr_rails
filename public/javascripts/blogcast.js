@@ -64,12 +64,13 @@ blogcastrPrintStanza(mucPresenceStanza);
 
 function blogcastrPostCallback(stanza)
 {
-  //Prototype has no XML support using jQuery
+  //jQuery is used for XML parsing, Prototype has no XML support
   //TODO: alternative could be to use a json convertor like http://www.thomasfrank.se/xml_to_json.html
   var body = jQuery(stanza).find("body:first");
   var type = body.find("type:first").text();
   if (type == "textPost")
   {
+    //parse text post
     var id = body.find("id:first").text();
     var timestamp = body.find("timestamp:first").text();
     var date = body.find("date:first").text();
@@ -102,6 +103,7 @@ function blogcastrPostCallback(stanza)
   }
   else if (type == "imagePost")
   {
+    //parse image post
     var id = body.find("id:first").text();
     var timestamp = body.find("timestamp:first").text();
     var date = body.find("date:first").text();
@@ -147,6 +149,55 @@ function blogcastrPostCallback(stanza)
   }
   else if (type == "commentPost")
   {
+    //parse comment post
+    var id = body.find("id:first").text();
+    var timestamp = body.find("timestamp:first").text();
+    var date = body.find("date:first").text();
+    var medium = body.find("medium:first").text();
+    var user = jQuery(body).find("user:first");
+    var username = user.find("username:first").text();
+    var url = user.find("url:first").text();
+    var avatar_url = user.find("avatar_url:first").text();
+    var comment = jQuery(body).find("comment:first");
+    var comment_id = comment.find("id:first").text();
+    var comment_timestamp = comment.find("timestamp:first").text();
+    var comment_date = comment.find("date:first").text();
+    var comment_text = comment.find("text:first").text();
+    var comment_medium = comment.find("medium:first").text();
+    var comment_user = jQuery(comment).find("user:first");
+    var comment_username = comment_user.find("username:first").text();
+    var comment_account = comment_user.find("account:first").text();
+    var comment_url = comment_user.find("url:first").text();
+    var comment_avatar_url = comment_user.find("avatar_url:first").text();
+    //create new post element
+    var hours_minutes_ago_span = jQuery("<span>").addClass("date").addClass("hours_minutes_ago").attr("timestamp", timestamp).text(blogcastrHoursMinutesAgo(timestamp));
+    var avatar_img = jQuery("<img>").addClass("avatar").attr("src", comment_avatar_url);
+    var user_a = jQuery("<a>").addClass("user").attr("href", url).append(avatar_img).append(comment_username); 
+    var clear_div = jQuery("<div>").addClass("clear");
+    var text_p = jQuery("<p>").addClass("text").text(comment_text);
+    var up_img = jQuery("<img>").attr("src", up_image);
+    //AS DESIGNED: some browsers don't work when adding the onclick attribute
+    var info_h4 = jQuery("<h4>").click(function() { blogcastrCollapsibleEvent(this, "TextPost:" + id + "-info"); }).append("Info").append(up_img);
+    var info_p = jQuery("<p>").addClass("info").text("Posted by " + username + " on " + date + " from " + medium);
+    if (comment_account == "FacebookUser")
+      var comment_info_p = jQuery("<p>").addClass("info").text("Commented by " + comment_username + " on " + comment_date + " from " + comment_medium + " using Facebook Connect");
+    else if (comment_account == "TwitterUser")
+      var comment_info_p = jQuery("<p>").addClass("info").text("Commented by " + comment_username + " on " + comment_date + " from " + comment_medium + " using Twitter Sign In");
+    else
+      var comment_info_p = jQuery("<p>").addClass("info").text("Commented by " + comment_username + " on " + comment_date + " from " + comment_medium);
+    var info_div = jQuery("<div>").attr("id", "TextPost:" + id + "-info").css("display", "none").append(info_p).append(comment_info_p);
+    var effect_div = jQuery("<div>").addClass("effect").append(hours_minutes_ago_span).append(user_a).append(clear_div).append(text_p).append(info_h4).append(info_div);
+    var post_li = jQuery("<li>").attr("id",id).css("display", "none").append(effect_div);
+    //add post to document if not present
+    if (jQuery("li[id=" + id + "]").length == 0)
+    {
+      jQuery("ol:first").prepend(post_li);
+      var element = jQuery("li:first").get(0);
+      new Effect.SlideDown(element, {duration: 0.5, queue: "end"});
+    }
+  }
+  else
+  {
     var id = body.find("id:first").text();
     var timestamp = body.find("timestamp:first").text();
     var medium = body.find("medium:first").text();
@@ -190,13 +241,6 @@ function blogcastrPostCallback(stanza)
       if (jQuery("li[id=" + id + "]").length == 0)
         jQuery("ol:first").prepend(li);
     }
-    else
-    {
-
-    }
-  }
-  else
-  {
     //console.log("received unknown blogcastr event type: " + type);
   }
   return true;

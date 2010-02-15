@@ -14,7 +14,7 @@ class CommentsController < ApplicationController
       @user = rest_current_user
     end
     #MVR - find blogcast
-    @blogcast = @user.blogcasts.find(params[:blogcast_id]) 
+    @blogcast = Blogcast.find(params[:blogcast_id]) 
     @comment = Comment.new(params[:comment])
     @comment.user_id = @user.id
     @comment.blogcast_id = @blogcast.id
@@ -29,11 +29,15 @@ class CommentsController < ApplicationController
     end
     begin
       thrift_user = Thrift::User.new
-      thrift_user.name = @user.get_user_name
-      #MVR - support Facebook and Twitter with authentication library
-      thrift_user.account = @user.class.to_s 
-      thrift_user.url = @user.get_user_url
-      thrift_user.avatar_url = @user.get_user_avatar_url :medium
+      if @user.instance_of?(BlogcastrUser)
+        thrift_user.username = @user.username
+        thrift_user.url = profile_path :username => @user.username
+        thrift_user.avatar_url = @user.setting.avatar.url :small
+      else
+        thrift_user.username = @user.get_username
+        thrift_user.url = @user.get_url
+        thrift_user.avatar_url = @user.get_avatar_url :small
+      end
       thrift_comment = Thrift::Comment.new
       thrift_comment.id = @comment.id
       thrift_comment.timestamp = @comment.created_at.to_i
@@ -41,7 +45,7 @@ class CommentsController < ApplicationController
       thrift_comment.text = @comment.text
       jid = params[:jid]
       #MVR - send to ejabberd
-      err = thrift_client.send_comment_to_muc_occupant("Blogcast." + @blogcast.id.to_s + "@conference." + HOST + "/dashboard", jid, thrift_user, thrift_comment)
+      #err = thrift_client.send_comment_to_muc_occupant("Blogcast." + @blogcast.id.to_s + "@conference." + HOST + "/dashboard", jid, thrift_user, thrift_comment)
       thrift_client_close
     rescue
       @comment.errors.add_to_base "Unable to send comment to muc room"

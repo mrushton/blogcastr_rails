@@ -1,13 +1,30 @@
+<%- comment = comment_post.comment -%>
 <li id="<%= comment_post.id %>">
-  <% comment = comment_post.comment %>
-  <%= link_to "<div class=\"#{comment.user.get_user_avatar_class :medium}\" style=\"background-image: url('#{comment.user.get_user_avatar_url :medium}');\"></div>", comment.user.get_user_url, :target => "_blank" %>
-<% if comment.instance_of?(TextComment) -%>
-  <p class=list_item_text><%= comment.text %></p>
-<% elsif comment.instance_of?(ImageComment) -%>
-  <img class="list_item_image" src="<%= comment.image.url(:default) %>"/>
+<%- if @first == 1 -%>
+  <div class="first effect">
+<%- else -%>
+  <div class="effect">
+<%- end -%>
+    <%= hours_minutes_ago_helper comment_post.created_at %>
+<% comment_user = comment.user -%>
+<% if comment.user.instance_of?(BlogcastrUser) -%>
+    <a href="<%= profile_path(:username => comment_user.username) -%>" class="user"><%= image_tag(comment_user.setting.avatar.url(:small), :class => "avatar") -%><%= comment_user.username -%></a>
+<% else -%>
+    <a href="<%= comment_user.get_url -%>" class="user"><%= image_tag(comment_user.get_avatar_url(:small), :class => "avatar") -%><%= comment_user.get_username -%></a>
 <% end -%>
-  <p class="list_item_info">Commented by <%= link_to comment.user.get_user_name, comment.user.get_user_url, :target => "_blank" %> <%= hours_minutes_ago_helper comment.created_at %> from <%= comment.from %></p>
-  <div id="clear">
+    <div class="clear">
+    </div>
+    <p class="text"><%= comment.text %></p>
+    <h4 onclick="blogcastrCollapsibleEvent(this, 'CommentPost:<%= comment_post.id -%>-info');">Info<%= image_tag "up.png" -%></h4>
+    <div id="CommentPost:<%= comment_post.id -%>-info" style="display: none;">
+      <p class="info">Posted by <%= comment_post.user.username -%> on <%= comment_post.created_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/,' ') %> from <%= comment_post.from %></p>
+<% if comment.user.instance_of?(FacebookUser) -%>
+      <p class="info">Commented by <%= comment_user.get_username -%> on <%= comment.created_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/,' ') %> from <%= comment.from %> using Facebook Connect</p>
+<% elsif comment.user.instance_of?(TwitterUser) -%>
+      <p class="info">Commented by <%= comment_user.get_username -%> on <%= comment.created_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/,' ') %> from <%= comment.from %> using Twitter Sign In</p>
+<% else -%>
+      <p class="info">Commented by <%= comment_user.username -%> on <%= comment.created_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/,' ') %> from <%= comment.from %></p>
+<% end -%>
+    </div>
   </div>
-  <p class="list_item_info">Posted <%= hours_minutes_ago_helper comment_post.created_at %> from <%= comment_post.from %></p>
 </li>

@@ -5,6 +5,7 @@ class DashboardController < ApplicationController
   def show
     @user = current_user
     #@blogcast = @user.blogcasts.find(:first, :conditions => ["year = ? AND month = ? AND day = ? AND link_title = ?", params[:year], params[:month], params[:day], params[:title]])
+    #TODO: handle unauthorized and not exists
     @blogcast = @user.blogcasts.find(params[:blogcast_id])
     @text_post = TextPost.new(:from => "Web")
     @image_post = ImagePost.new(:from => "Web")
