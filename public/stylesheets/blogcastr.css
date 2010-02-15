@@ -64,7 +64,7 @@ a:hover
 
 #wrapper
 {
-	width: 880px;
+	width: 860px;
 	margin-left: auto;
 	margin-right: auto;
 	position: relative;
@@ -72,7 +72,7 @@ a:hover
 
 #wrapper.three-column
 {
-	width: 1054px;
+	width: 1014px;
 }
 
 #header
@@ -84,7 +84,7 @@ a:hover
 
 #wrapper.user #header
 {
-	height: 45px;
+	height: 38px;
 }
 
 #header form
@@ -139,7 +139,7 @@ a:hover
 
 #wrapper.three-column.user #header img.logo
 {
-	left: 439px;
+	left: 419px;
 }
 
 #wrapper.user #header img
@@ -155,7 +155,7 @@ a:hover
 
 #wrapper.three-column.user #header img.beta
 {
-	left: 614px;
+	left: 594px;
 }
 
 #navigation
@@ -229,8 +229,8 @@ a:hover
 #content
 {
 	margin-left: 20px;
-	margin-top: 20px;
-	margin-right: 20px;
+	margin-top: 25px;
+	margin-right: 0px;
 	margin-bottom: 0px;
 	text-align: left;
 }
@@ -242,6 +242,12 @@ a:hover
 	margin-right: auto;
 	margin-bottom: 0px;
 	width: 475px;
+}
+
+#content.three-column
+{
+	margin-left: 0px;
+	margin-right: 0px;
 }
 
 #main
@@ -1025,7 +1031,7 @@ input.tab
 #footer
 {
 	margin-left: 5px;
-	margin-top: 20px;
+	margin-top: 15px;
 	margin-right: 5px;
 	width: 900;
 	height: 28px;
@@ -1192,7 +1198,7 @@ div.lower-left-border-rounded-corner
 
 #left-side div.bottom-border-large, #side div.bottom-border-large
 {
-	margin-bottom: 4px;
+	margin-bottom: 0px;
 	width: 205px;
 	height: 15px;
 	display: block;

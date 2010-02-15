@@ -43,7 +43,7 @@
     <div class="clear">
     </div>
   </div>
-  <div id="content">
+  <div id="content" class="three-column">
     <div id="left-side">
       <div class="upper-left-border-rounded-corner">
       </div>
@@ -72,11 +72,11 @@
           <a class="last third stat" href="<%= username_subscriptions_path :username => @blogcast_user.username -%>"><span class="counter"><%= @num_subscriptions -%></span><span class="name"><%= @num_subscriptions == 1 ? "Subscription" : "Subscriptions" -%></span></a>
         </div>
       </div>
-      <div class="lower-left-border-rounded-corner">
+      <div class="last lower-left-border-rounded-corner">
       </div>
-      <div class="bottom-border-large">
+      <div class="last bottom-border-large">
       </div>
-      <div class="lower-right-border-rounded-corner">
+      <div class="last lower-right-border-rounded-corner">
       </div>
       <div class="clear">
       </div>
@@ -111,9 +111,10 @@
           </div>
         </div>
         <p>By <a class="user" href="<%= profile_path(:username => @blogcast_user.username) -%>"><%= @blogcast_user.username -%></a></span> on <span class="date"><%= @blogcast.starting_at.strftime("%B %e, %Y") -%></span>
+<% if @user != @blogcast_user -%>
         <h2 onclick="blogcastrCollapsibleEvent(this, 'comment');">Comment<%= image_tag "down.png" -%></h2>
         <div id="comment">
-<% if signed_in? -%>
+  <%- if signed_in? -%>
           <% remote_form_for :comment, :url => blogcast_comments_path(:blogcast_id => @blogcast.id), :html => { :id => "comment_form", :method => "post"}, :complete => "$('comment_form').reset();" do |f| -%>
             <input id="jid" type="hidden" value="" name="jid"/>
             <%= f.hidden_field :from %>
@@ -122,7 +123,7 @@
           <%- end -%>
           <div class="clear">
           </div>
-<% else -%>
+  <%- else -%>
           <p class="first">To comment on "<%= @blogcast.title -%>" sign up or sign in.</p>
           <div id="sign-up">
             <%= link_to "Sign up!", sign_up_path -%>
@@ -135,8 +136,9 @@
           <a href="#" onclick="blogcastrTwitterSignIn(); return false;"><img id="twitter_sign_in_image" src="/images/Sign-in-with-Twitter-darker.png" alt="Twitter sign in" /></a>
           <div class="clear">
           </div>
-<% end -%>
+  <%- end -%>
         </div>
+<% end -%>
       </div>
       <div class="lower-left-border-squared-corner">
       </div>
@@ -176,11 +178,11 @@
 <% end -%>
         </ol>
       </div>
-      <div class="lower-left-border-squared-corner">
+      <div class="last lower-left-border-squared-corner">
       </div>
-      <div class="bottom-border">
+      <div class="last bottom-border">
       </div>
-      <div class="lower-right-border-squared-corner">
+      <div class="last lower-right-border-squared-corner">
       </div>
       <div class="clear">
       </div>

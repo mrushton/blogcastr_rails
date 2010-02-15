@@ -74,7 +74,7 @@
 <% for blogcast in @upcoming_subscription_blogcasts -%>
         <li class="blogcast">
           <%= link_to "<div class=\"avatar-medium-rounded avatar-medium-rounded-background\" style=\"background-image: url('#{blogcast.user.setting.avatar(:medium)}')\"></div>", profile_path(:username => blogcast.user.username), :target => "_blank" %>
-          <h4 class="blogcast-title"><%= link_to blogcast.title, blogcast_permalink_path(:username => blogcast.user.username, :year => blogcast.starting_at.year, :month => blogcast.starting_at.month, :day => blogcast.starting_at.day, :title => blogcast.link_title) -%></h4>
+          <h4 class="blogcast-title"><%= link_to blogcast.title, username_blogcast_permalink_path(:username => blogcast.user.username, :year => blogcast.starting_at.year, :month => blogcast.starting_at.month, :day => blogcast.starting_at.day, :title => blogcast.link_title) -%></h4>
           <p class="blogcast-date"><%= blogcast.starting_at.strftime("%a %b %d, %Y %I:%M %p").gsub(/ 0/,' ') %></p>
           <div class="clear">
           </div>
