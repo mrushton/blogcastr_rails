@@ -7,5 +7,4 @@
   <div id="clear">
   </div>
   <p class="list_item_info">Posted by <%= link_to comment_post.blogcast.user.name, (blogcast_path :username => comment_post.blogcast.user.name), :target => "_blank" %> <%= hours_minutes_ago_helper comment_post.created_at %> from <%= comment_post.from %></p>
-  <%= link_to_remote "Repost", :url => {:controller => "reposts", :action => "create", "post_id" => comment_post.id, :from => "Web"} %>
 </li>

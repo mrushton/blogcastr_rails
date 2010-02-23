@@ -88,7 +88,7 @@
         <li class="blogcast">
           <%= link_to "<div class=\"avatar-medium-rounded avatar-medium-rounded-background\" style=\"background-image: url('#{blogcast.user.setting.avatar(:medium)}')\"></div>", profile_path(:username => blogcast.user.username), :target => "_blank" %>
           <div class="blogcast-inner">
-            <h4 class="blogcast-title"><%= link_to blogcast.title, blogcast_permalink_path(:username => blogcast.user.username, :year => blogcast.starting_at.year, :month => blogcast.starting_at.month, :day => blogcast.starting_at.day, :title => blogcast.link_title) -%></h4>
+            <h4 class="blogcast-title"><%= link_to blogcast.title, username_blogcast_permalink_path(:username => blogcast.user.username, :year => blogcast.starting_at.year, :month => blogcast.starting_at.month, :day => blogcast.starting_at.day, :title => blogcast.link_title) -%></h4>
             <p class="blogcast-date"><%= blogcast.starting_at.strftime("%a %b %d, %Y %I:%M %p").gsub(/ 0/,' ') %></p>
             <div class="clear">
             </div>
@@ -98,7 +98,7 @@
           <div class="clear">
           </div>
   <%- num_likes = blogcast.likes.count -%>
-          <h5 class=""><span class="counter-small"><%= num_likes -%></span><%= link_to num_likes == 1 ? "Like" : "Likes", blogcast_likes_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%></h5>
+          <h5 class=""><span class="counter-small"><%= num_likes -%></span><%= link_to num_likes == 1 ? "Like" : "Likes", username_blogcast_likes_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%></h5>
           <ul>
   <%- likes = User.find_by_sql(["SELECT users.* FROM likes, users WHERE likes.blogcast_id = ? AND likes.user_id = users.id LIMIT 30", blogcast.id]) -%>
   <%- for like in likes -%>

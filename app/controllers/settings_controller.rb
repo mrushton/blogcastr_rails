@@ -5,13 +5,77 @@ class SettingsController < ApplicationController
     @user = current_user
     #MVR - find setting object or create it 
     @setting = Setting.find_or_create_by_user_id(@user.id)
+    @username_possesive = @user.username + (@user.username =~ /.*s$/ ? "'":"'s")
   end
 
   def update
     @user = current_user
-    #MVR - find setting object or create it 
-    @setting = Setting.find_or_create_by_user_id(@user.id)
-    Setting.update(@setting.id, params[:setting])
-    redirect_to :back
+    #MVR - setting object exists
+    Setting.update(@user.setting.id, params[:setting])
+    #TODO: this isn't used by the web interface so add xml/json support
+    render :template => 'settings/edit'
+  end
+
+  def account
+    @user = current_user
+    #MVR - setting object is guaranteed to exist
+    @setting = @user.setting
+    #MVR - make a copy of the setting object
+    @account_setting = Marshal.load(Marshal.dump(@setting))
+    #MVR - avatar is the only optional argument
+    if params[:setting][:avatar].nil?
+      #MVR - the paperclip attachment gets set on assignment
+      err = @account_setting.update_attributes(:full_name => params[:setting][:full_name], :motto => params[:setting][:motto], :location => params[:setting][:location], :bio => params[:setting][:bio], :web => params[:setting][:web], :time_zone => params[:setting][:time_zone])
+    else
+      err = @account_setting.update_attributes(:full_name => params[:setting][:full_name], :motto => params[:setting][:motto], :location => params[:setting][:location], :bio => params[:setting][:bio], :web => params[:setting][:web], :time_zone => params[:setting][:time_zone], :avatar => params[:setting][:avatar])
+    end
+    if err 
+      flash[:settings_tab] = "account"
+      flash[:success] = "Changes saved!"
+      redirect_to settings_path 
+    else
+      @settings_tab = "account"
+      @username_possesive = @user.username + (@user.username =~ /.*s$/ ? "'":"'s")
+      render :action => "edit"
+    end
+  end
+  
+  def appearance
+    @user = current_user
+    #MVR - setting object is guaranteed to exist
+    @setting = @user.setting
+    #MVR - make a copy of the setting object
+    @appearance_setting = Marshal.load(Marshal.dump(@setting))
+    #MVR - are we using a theme or custom background?
+    if params[:setting][:use_background_image] == "1"
+      #MVR - background is the only optional argument
+      if params[:setting][:background_image].nil?
+        #MVR - the paperclip attachment gets set on assignment
+        err = @appearance_setting.update_attributes(:use_background_image => params[:setting][:use_background_image], :tile_background_image => params[:setting][:tile_background_image], :scroll_background_image => params[:setting][:scroll_background_image], :background_color => params[:setting][:background_color])
+      else
+        err = @appearance_setting.update_attributes(:use_background_image => params[:setting][:use_background_image], :tile_background_image => params[:setting][:tile_background_image], :scroll_background_image => params[:setting][:scroll_background_image], :background_color => params[:setting][:background_color], :background_image => params[:setting][:background_image])
+      end
+    else
+      err = false
+    end
+    if err 
+      flash[:settings_tab] = "appearance"
+      if params[:setting][:use_background_image] == "1"
+        flash[:appearance_view] = "custom-background"
+      else
+        flash[:appearance_view] = "themes"
+      end
+      flash[:success] = "Changes saved!"
+      redirect_to settings_path 
+    else
+      @settings_tab = "appearance"
+      if params[:setting][:use_background_image] == "1" 
+        @appearance_view = "custom-background" 
+      else
+        @appearance_view = "themes"
+      end
+      @username_possesive = @user.username + (@user.username =~ /.*s$/ ? "'":"'s")
+      render :action => "edit"
+    end
   end
 end

@@ -39,9 +39,10 @@ ActionController::Routing::Routes.draw do |map|
     users.resource :password, :controller => "clearance/passwords", :only => [:create, :edit, :update]
     users.resource :confirmation, :controller => "clearance/confirmations", :only => [:new, :create]
   end
-  map.sign_up  "sign_up", :controller => "clearance/users", :action => "new"
-  map.sign_in  "sign_in", :controller => "clearance/sessions", :action => "new"
+  map.sign_up "sign_up", :controller => "clearance/users", :action => "new"
+  map.sign_in "sign_in", :controller => "clearance/sessions", :action => "new"
   map.sign_out "sign_out", :controller => "clearance/sessions", :action => "destroy", :method => :delete
+  map.goodbye "goodbye", :controller => "clearance/users", :action => "destroy"
   #MVR - user
   map.resources :users, :only => [] do |users|
     #MVR - user blogcasts
@@ -98,6 +99,13 @@ ActionController::Routing::Routes.draw do |map|
   #MVR - settings 
   map.resource :settings, :controller => "settings", :only => [:edit, :update]
   map.settings "settings", :controller => "settings", :action => "edit"
+  map.account_settings "settings/account", :controller => "settings", :action => "account", :conditions => {:method => :post}
+  map.appearance_settings "settings/appearance", :controller => "settings", :action => "appearance", :conditions => {:method => :post}
+  map.blogcast_settings "settings/blogcasts", :controller => "settings", :action => "blogcasts", :conditions => {:method => :post}
+  map.connect_settings "settings/connect", :controller => "settings", :action => "connect", :conditions => {:method => :post}
+  map.email_settings "settings/email", :controller => "settings", :action => "email", :conditions => {:method => :post}
+  map.notification_settings "settings/notifications", :controller => "settings", :action => "notifications", :conditions => {:method => :post}
+  map.password_settings "settings/password", :controller => "settings", :action => "password", :conditions => {:method => :post}
   #MVR - subscriptions
   map.resources :subscriptions, :controller => "subscriptions", :only => [:index, :create, :destroy]
   #MVR - subscribed

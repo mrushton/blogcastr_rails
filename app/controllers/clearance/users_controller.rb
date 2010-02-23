@@ -60,6 +60,9 @@ class Clearance::UsersController < ApplicationController
     redirect_to sign_in_path
   end
 
+  def destroy
+  end
+
   private
 
   def redirect_to_home

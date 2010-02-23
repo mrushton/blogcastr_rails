@@ -8,7 +8,7 @@
     <%= image_tag "/images/beta-small.png", :class => "beta" %>
     <div id="navigation">
 <% if @user.instance_of?(BlogcastrUser) -%>
-      <%= link_to image_tag(@user.setting.avatar.url(:small))+@user.username, profile_path(:username => @user.username), :class => "username" %>
+      <%= link_to image_tag(@user.setting.avatar.url(:small))+@user.username, profile_path(:username => @user.username), :class => "first user" %>
       <%= link_to "Home", home_path %>
       <%= link_to "Settings", settings_path %>
       <%= link_to "Sign out", sign_out_path, :method => "delete" %>
@@ -28,11 +28,11 @@
   <%- if url.nil? -%>
     <%- url = get_facebook_url @user.facebook_id %>
   <%- end -%>
-      <%= link_to image_tag(avatar_url) + username, url, :class => "username" %>
+      <%= link_to image_tag(avatar_url) + username, url, :class => "first user" %>
       <%= link_to "Sign up", sign_up_path %>
       <span onclick="FB.Connect.logout(blogcastrFacebookSignOut);">Sign out</span>
 <% elsif @user.instance_of?(TwitterUser) -%>
-      <%= link_to image_tag(@user.get_avatar_url(:small)) + @user.get_username, @user.get_url, :class => "username" %>
+      <%= link_to image_tag(@user.get_avatar_url(:small)) + @user.get_username, @user.get_url, :class => "first user" %>
       <%= link_to "Sign up", sign_up_path %>
       <span onclick="blogcastrTwitterSignOut();">Sign out</span>
 <% else -%>

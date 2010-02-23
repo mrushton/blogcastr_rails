@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100130020109) do
+ActiveRecord::Schema.define(:version => 20100218034011) do
 
   create_table "blogcast_notifications", :force => true do |t|
     t.string   "type",        :null => false
@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(:version => 20100130020109) do
     t.integer  "user_id",     :null => false
     t.integer  "blogcast_id", :null => false
     t.string   "from",        :null => false
-    t.string   "text"
+    t.string   "text",        :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -60,15 +60,16 @@ ActiveRecord::Schema.define(:version => 20100130020109) do
     t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
+    t.integer  "comment_id"
     t.integer  "parent_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "settings", :force => true do |t|
-    t.integer  "user_id",                                :null => false
+    t.integer  "user_id",                                                       :null => false
     t.string   "full_name"
-    t.string   "moto"
+    t.string   "motto"
     t.string   "location"
     t.string   "bio"
     t.string   "web"
@@ -77,12 +78,17 @@ ActiveRecord::Schema.define(:version => 20100130020109) do
     t.string   "avatar_content_type"
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
-    t.string   "background_file_name"
-    t.string   "background_content_type"
-    t.integer  "background_file_size"
-    t.datetime "background_updated_at"
+    t.integer  "theme_id",                                   :default => 1,     :null => false
+    t.boolean  "use_background_image",                       :default => false, :null => false
+    t.string   "background_image_file_name"
+    t.string   "background_image_content_type"
+    t.integer  "background_image_file_size"
+    t.datetime "background_image_updated_at"
+    t.boolean  "tile_background_image"
+    t.boolean  "scroll_background_image"
+    t.string   "background_color",              :limit => 7
     t.boolean  "mobile_confirmed"
-    t.string   "mobile_confirmation_token", :limit => 5
+    t.string   "mobile_confirmation_token",     :limit => 5
     t.string   "mobile_number"
     t.string   "carrier"
     t.datetime "created_at"
@@ -92,6 +98,18 @@ ActiveRecord::Schema.define(:version => 20100130020109) do
   create_table "subscriptions", :force => true do |t|
     t.integer  "user_id",       :null => false
     t.integer  "subscribed_to", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "themes", :force => true do |t|
+    t.string   "title"
+    t.string   "background_image_file_name"
+    t.string   "background_image_content_type"
+    t.integer  "background_image_file_size"
+    t.boolean  "tile_background_image"
+    t.boolean  "scroll_background_image"
+    t.string   "background_color"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

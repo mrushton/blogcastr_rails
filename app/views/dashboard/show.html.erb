@@ -66,19 +66,6 @@
           <%= render :partial => "comment", :object => comment -%>
 <% end %>
         </ol>
-        <ol class="stream hidden" id="subscription-stream">
-<% for post in @posts -%>
-  <%- if post.instance_of?(TextPost) -%>
-          <%= render :partial => "text_post", :object => post -%>
-  <%- elsif post.instance_of?(ImagePost) -%>
-          <%= render :partial => "image_post", :object => post -%>
-  <%- elsif post.instance_of?(CommentPost) -%>
-          <%= render :partial => "comment_post", :object => post -%>
-  <%- elsif post.instance_of?(Repost) -%>
-          <%= render :partial => "repost", :object => post -%>
-  <%- end -%>
-<% end %>
-        </ol>
       </div>
     </div>
     <div id="side">

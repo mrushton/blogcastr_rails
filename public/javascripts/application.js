@@ -198,3 +198,30 @@ function blogcastrCollapsibleEvent(obj, id)
   //effect
   blogcastrToggleBlindEffect(id);
 }
+
+function blogcastrToggleHidden(id)
+{
+  //TODO: make more general purpose with the display property
+  if (jQuery("#" + id).css("display") == "none")
+    jQuery("#" + id).css("display", "inline-block");
+  else
+    jQuery("#" + id).css("display", "none");
+}
+
+function blogcastrPageSelect(obj, section_id, page_id)
+{
+  //unselect current tab
+  jQuery("#" + section_id).find(".tab.selected").removeClass("selected");
+  //select tab
+  jQuery(obj).addClass("selected");
+  //AS DESIGNED - hide everything and then display selected page
+  jQuery("#" + section_id).find("div.page").removeClass("selected");
+  jQuery("#" + page_id).addClass("selected");
+}
+
+function blogcastrViewSelect(section_id, view_id)
+{
+  //AS DESIGNED - hide everything and then display selected view 
+  jQuery("#" + section_id).find("div.view").removeClass("selected");
+  jQuery("#" + view_id).addClass("selected");
+}

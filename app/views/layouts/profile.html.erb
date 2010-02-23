@@ -7,10 +7,21 @@
     <%= stylesheet_link_tag "profile", :media => "screen" %>
     <%= auto_discovery_link_tag(:rss, username_blogcasts_url(:username => @profile_user.username, :format => "rss"), {:title => "#{@profile_username_possesive} blogcasts"}) %>
     <style>
-<% if !@profile_user.setting.background_file_name.nil? -%>
+<% if @profile_user.setting.use_background_image == true -%>
       body
       {
-        background: url('<%= @profile_user.setting.background.url %>') fixed no-repeat top left;
+  <%- if !@profile_user.setting.background_image.nil? -%>
+        background: url('<%= @profile_user.setting.background_image.url %>');
+  <% end -%>
+  <%- if @profile_user.setting.tile_background_image ==false -%>
+        background-repeat: no-repeat;
+  <% end -%>
+  <%- if @profile_user.setting.scroll_background_image == false -%>
+        background-attachment: fixed;
+  <% end -%>
+  <%- if !@profile_user.setting.background_color.blank? -%>
+        background-color: <%= @profile_user.setting.background_color; -%>
+  <% end -%>
       }
 <% end -%>
     </style>
