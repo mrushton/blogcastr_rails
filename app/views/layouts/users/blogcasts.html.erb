@@ -10,7 +10,7 @@
 <% if @theme.nil? -%>
       body
       {
-  <%- if !@blogcast_setting.background_image.nil? -%>
+  <%- if !@blogcast_setting.background_image_file_name.nil? -%>
         background-image: url('<%= @blogcast_setting.background_image.url %>');
   <% end -%>
   <%- if @blogcast_setting.tile_background_image == false -%>

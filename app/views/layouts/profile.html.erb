@@ -10,7 +10,7 @@
 <% if @theme.nil? -%>
       body
       {
-  <%- if !@profile_setting.background_image.nil? -%>
+  <%- if !@profile_setting.background_image_file_name.nil? -%>
         background: url('<%= @profile_setting.background_image.url %>');
   <% end -%>
   <%- if @profile_setting.tile_background_image == false -%>

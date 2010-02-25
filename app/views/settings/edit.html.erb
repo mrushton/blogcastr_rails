@@ -252,7 +252,11 @@
 <table class="wide">
 <tr>
      <td>   <%= form.label :background, "Background image" %></td>
-     <td> <%= image_tag @setting.background_image.url, :class => "background-image" -%> <br> <%= form.file_field :background_image, :class => "file" %><p>A jpg, png or gif less than 3MB.</p>
+     <td>
+<%- if !@setting.background_image_file_name.nil? -%>
+ <%= image_tag @setting.background_image.url, :class => "background-image" -%> <br> 
+<%- end -%>
+<%= form.file_field :background_image, :class => "file" %><p>A jpg, png or gif less than 3MB.</p>
 
 
      <%= form.check_box :tile_background_image, :class => "check-box" %>
