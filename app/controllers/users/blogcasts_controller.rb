@@ -195,6 +195,7 @@ class Users::BlogcastsController < ApplicationController
           @num_blogcasts = @blogcast_user.blogcasts.count
           #MVR - subscriptions
           @num_subscriptions = @blogcast_user.subscriptions.count
+          @theme = @blogcast_setting.theme
         end
         #TODO: limit result set and order by most recent 
         format.xml {render :xml => @blogcast.to_xml(:include => :posts)}

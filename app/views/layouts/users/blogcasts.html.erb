@@ -7,11 +7,39 @@
     <link rel="stylesheet" href="/stylesheets/blogcast.css" media="screen"/>
     <%= javascript_include_tag :defaults, "jquery.js", "strophe/b64.js", "strophe/md5.js", "strophe/sha1.js", "strophe/strophe.js", "strophe/plugins/strophe.pubsub.js", "blogcast.js", :media => "all" %>
     <style>
-<% if !@blogcast.user.setting.background_file_name.nil? -%>
+<% if @theme.nil? -%>
       body
       {
-        background: url('<%= @blogcast.user.setting.background.url %>') fixed no-repeat top left;
-        background: url('<%= @blogcast.user.setting.background.url %>') no-repeat top left;
+  <%- if !@blogcast_setting.background_image.nil? -%>
+        background-image: url('<%= @blogcast_setting.background_image.url %>');
+  <% end -%>
+  <%- if @blogcast_setting.tile_background_image == false -%>
+        background-repeat: no-repeat;
+  <% end -%>
+  <%- if @blogcast_setting.scroll_background_image == false -%>
+        background-attachment: fixed;
+  <% end -%>
+  <%- if !@blogcast_setting.background_color.blank? -%>
+        background-color: <%= @blogcast_setting.background_color; -%>
+  <% end -%>
+      }
+<% else -%>
+      body
+      {
+  <%- if !@theme.background_image_file_name.nil? -%>
+        background-image: url('/images/themes/<%= @theme.id -%>/background_image/original/<%= @theme.background_image_file_name -%>');
+  <% end -%>
+  <%- if @theme.id == 1 -%>
+        background-repeat: repeat-x;
+  <%- elsif @theme.tile_background_image == false -%>
+        background-repeat: no-repeat;
+  <%- end -%>
+  <%- if @theme.scroll_background_image == false -%>
+        background-attachment: fixed;
+  <% end -%>
+  <%- if !@theme.background_color.blank? -%>
+        background-color: <%= @theme.background_color; -%>
+  <% end -%>
       }
 <% end -%>
     </style>

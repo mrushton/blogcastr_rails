@@ -7,20 +7,38 @@
     <%= stylesheet_link_tag "profile", :media => "screen" %>
     <%= auto_discovery_link_tag(:rss, username_blogcasts_url(:username => @profile_user.username, :format => "rss"), {:title => "#{@profile_username_possesive} blogcasts"}) %>
     <style>
-<% if @profile_user.setting.use_background_image == true -%>
+<% if @theme.nil? -%>
       body
       {
-  <%- if !@profile_user.setting.background_image.nil? -%>
-        background: url('<%= @profile_user.setting.background_image.url %>');
+  <%- if !@profile_setting.background_image.nil? -%>
+        background: url('<%= @profile_setting.background_image.url %>');
   <% end -%>
-  <%- if @profile_user.setting.tile_background_image ==false -%>
+  <%- if @profile_setting.tile_background_image == false -%>
         background-repeat: no-repeat;
   <% end -%>
-  <%- if @profile_user.setting.scroll_background_image == false -%>
+  <%- if @profile_setting.scroll_background_image == false -%>
         background-attachment: fixed;
   <% end -%>
-  <%- if !@profile_user.setting.background_color.blank? -%>
-        background-color: <%= @profile_user.setting.background_color; -%>
+  <%- if !@profile_setting.background_color.blank? -%>
+        background-color: <%= @profile_setting.background_color; -%>
+  <% end -%>
+      }
+<% else -%>
+      body
+      {
+  <%- if !@theme.background_image_file_name.nil? -%>
+        background: url('/images/themes/<%= @theme.id -%>/background_image/original/<%= @theme.background_image_file_name -%>');
+  <% end -%>
+  <%- if @theme.id == 1 -%>
+        background-repeat: repeat-x;
+  <%- elsif @theme.tile_background_image == false -%>
+        background-repeat: no-repeat;
+  <%- end -%>
+  <%- if @theme.scroll_background_image == false -%>
+        background-attachment: fixed;
+  <% end -%>
+  <%- if !@theme.background_color.blank? -%>
+        background-color: <%= @theme.background_color; -%>
   <% end -%>
       }
 <% end -%>

@@ -157,12 +157,65 @@
 <% else -%>
 <div id="themes-view" class="view">
 <% end -%>
-        <% form_for :setting, :url => {:controller => "settings", :action => "update"}, :html => {:multipart => true, :id => "settings_form", :method => "put"} do |form| %>
+        <% form_for :setting, (@appearance_setting.nil?)?@setting:@appearance_setting, :url => appearance_settings_path do |form| %>
+<% if flash[:settings_tab] == "appearance" && flash[:appearance_view] == "themes" -%>
+
+<%- if !flash[:error].nil? -%>
+              <div class="alert error">
+                <h3><%= flash[:error] -%></h3>
+              </div>            
+<%- elsif !flash[:info].nil? -%>
+              <div class="alert info">
+                <h3><%= flash[:info] -%></h3>            
+              </div>            
+<%- elsif !flash[:success].nil? -%>
+              <div class="alert success">
+ <div class="effect">               <h3><%= flash[:success] -%></h3>            </div>
+              </div>            
+<%- end -%>
+<%- end -%>
         <%= form.error_messages :header_tag => "h3", :header_message => "Oops!", :message => nil %>
+<%= form.hidden_field :use_background_image, :value => "0" -%>
+<%= form.hidden_field :theme_id, :value => @setting.theme_id -%>
 <table class="wide">
 <tr>
 <td>Theme</td>
-<td>these are the themes:</td>
+<td>
+
+<%- i = 0 -%>
+<% for theme in @themes -%>
+  <%- if i % 4 == 0 -%>
+    <%- if i < 4 -%>
+<div class="wrapper thumbnail first top">
+    <%- else -%>
+<div class="wrapper thumbnail first">
+    <%- end -%>
+  <%- elsif i < 4 -%>
+    <%- if i == 20 || i == 3 -%>
+<div class="wrapper thumbnail top short">
+    <%- else -%>
+<div class="wrapper thumbnail top">
+    <%- end -%>
+  <%- else -%>
+    <%- if i == 20 || i == 3 -%>
+<div class="wrapper thumbnail short">
+<%- else -%>
+<div class="wrapper thumbnail">
+<%- end -%>
+<%- end -%>
+<%- if theme.id == @setting.theme_id -%>
+<%= image_tag "themes/#{theme.id}/thumbnail/original/#{theme.thumbnail_file_name}", :class => "thumbnail selected", :onclick => "blogcastrSelectTheme(this, #{theme.id})" -%>
+<%- else -%>
+<%= image_tag "themes/#{theme.id}/thumbnail/original/#{theme.thumbnail_file_name}", :class => "thumbnail", :onclick => "blogcastrSelectTheme(this, #{theme.id})" -%>
+<%- end -%>
+<p><%= theme.title -%></p>
+</div>
+<%- i = i + 1 -%>
+<%- end -%>
+
+
+
+</td>
 </tr>
    <td></td>
    <td>     <%= form.submit "Save changes", :class => "submit" %></td>
@@ -178,7 +231,7 @@
 <% end -%>
 
         <% form_for :setting, (@appearance_setting.nil?)?@setting:@appearance_setting, :url => appearance_settings_path, :html => {:multipart => true} do |form| %>
-<% if flash[:settings_tab] == "appearance" && flash[:appearance_view] = "custom-background" -%>
+<% if flash[:settings_tab] == "appearance" && flash[:appearance_view] == "custom-background" -%>
 
 <%- if !flash[:error].nil? -%>
               <div class="alert error">

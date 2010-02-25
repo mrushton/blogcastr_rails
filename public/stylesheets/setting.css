@@ -91,17 +91,21 @@
 	margin-top: 10px;
 	width: 406px;
 	float: left;
+	border-collapse: collapse;
 }
 
 #settings table.wide
 {
+	border: none;
 	width: 812px;
 	float: none;
 }
 
 #settings td
 {
+	padding-left: 0px;
 	padding-top: 10px;
+	padding-right: 0px;
 }
 
 #settings tr:first-child td
@@ -173,6 +177,42 @@
 	margin-left: 3px;
 	cursor: pointer;
 	vertical-align: top;
+}
+
+#settings div.thumbnail
+{
+	margin-left: 11px;
+	margin-top: 10px;
+}
+
+#settings div.thumbnail.short
+{
+	margin-left: 10px;
+}
+
+#settings div.thumbnail.first
+{
+	margin-left: 0px;
+}
+
+#settings div.thumbnail.top
+{
+	margin-top: 0px;
+}
+
+#settings img.thumbnail
+{
+width: 134px;
+height: 90px;
+	border: solid;
+	border-width: 4px;
+	border-color: #e0e0e0;
+	cursor: pointer;
+}
+
+#settings img.thumbnail:hover, #settings img.thumbnail.selected
+{
+	border-color: #ac9f35; 
 }
 
 #settings textarea

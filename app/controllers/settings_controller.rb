@@ -6,6 +6,7 @@ class SettingsController < ApplicationController
     #MVR - find setting object or create it 
     @setting = Setting.find_or_create_by_user_id(@user.id)
     @username_possesive = @user.username + (@user.username =~ /.*s$/ ? "'":"'s")
+    @themes = Theme.all
   end
 
   def update
@@ -36,6 +37,7 @@ class SettingsController < ApplicationController
     else
       @settings_tab = "account"
       @username_possesive = @user.username + (@user.username =~ /.*s$/ ? "'":"'s")
+      @themes = Themes.all
       render :action => "edit"
     end
   end
@@ -56,7 +58,7 @@ class SettingsController < ApplicationController
         err = @appearance_setting.update_attributes(:use_background_image => params[:setting][:use_background_image], :tile_background_image => params[:setting][:tile_background_image], :scroll_background_image => params[:setting][:scroll_background_image], :background_color => params[:setting][:background_color], :background_image => params[:setting][:background_image])
       end
     else
-      err = false
+        err = @appearance_setting.update_attributes(:use_background_image => params[:setting][:use_background_image], :theme_id => params[:setting][:theme_id])
     end
     if err 
       flash[:settings_tab] = "appearance"
@@ -74,6 +76,7 @@ class SettingsController < ApplicationController
       else
         @appearance_view = "themes"
       end
+      @themes = Themes.all
       @username_possesive = @user.username + (@user.username =~ /.*s$/ ? "'":"'s")
       render :action => "edit"
     end

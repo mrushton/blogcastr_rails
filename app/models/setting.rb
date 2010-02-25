@@ -1,5 +1,6 @@
 class Setting < ActiveRecord::Base
   belongs_to :user
+  belongs_to :theme
   validates_presence_of :full_name
   #MVR - store in either s3 or locally on file
   if Rails.env.production?

@@ -14,4 +14,12 @@ function blogcastrHideSuccessAlerts()
     new Effect.SlideUp(element, {duration: 0.5, queue: "end"});
 }
 
-window.addEventListener("load",blogcastrOnLoad,false);
+function blogcastrSelectTheme(obj, id)
+{
+  //AS DESIGNED - hide everything and then display selected thumbnail 
+  jQuery("img.thumbnail").removeClass("selected");
+  jQuery(obj).addClass("selected");
+  jQuery("#setting_theme_id").val(id);
+}
+
+window.addEventListener("load", blogcastrOnLoad, false);
