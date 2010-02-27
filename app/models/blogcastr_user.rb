@@ -4,6 +4,7 @@ class BlogcastrUser < User
   validates_presence_of :username
   validates_uniqueness_of :username, :case_sensitive => false
   validate :valid_username?
+  validate :valid_password?
   validate :unique_authentication_token?
 
   #MVR - added username support
@@ -36,6 +37,13 @@ class BlogcastrUser < User
     end
     if username !~ /^[\w_]*$/
         errors.add(:username, "can only contain alphanumeric characters and underscores")
+    end
+  end
+
+  #MVR - password must be at least 6 characters
+  def valid_password?
+    if password.length < 6
+        errors.add(:password, "must be at least 6 characters")
     end
   end
 

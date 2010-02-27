@@ -30,7 +30,7 @@
           <div class="center">
             <ul class="menu">
               <li class="selected text"><%= button_to_function "Text", "blogcastrPostTextMenuSelect()" -%></li>
-              <li class="image"><%= button_to_function "Image", "blogcastrPostImageMenuSelect()" -%></li>
+              <li class="selected image"><%= button_to_function "Image", "blogcastrPostImageMenuSelect()" -%></li>
             </ul>
           </div>
           <% remote_form_for :text_post, :url => {:controller => :text_posts, :action => :create}, :html => {:id => "text_post_form"} do |f| %>

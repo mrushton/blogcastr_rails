@@ -54,6 +54,16 @@
 	font-size: 0.75em;
 }
 
+#settings div.alert
+{
+	margin-top: 10px;
+}
+
+#settings div.success
+{
+	margin-top: 0px;
+}
+
 #settings div.success div.effect
 {
 	padding-top: 10px;
@@ -79,6 +89,11 @@
 #settings div.success h3
 {
 	background-color: green;
+}
+
+#settings div.error h3
+{
+	background-color: red;
 }
 
 #settings a.tab:hover

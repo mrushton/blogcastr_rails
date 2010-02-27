@@ -77,9 +77,9 @@
           <h2 class="tab short" onclick="blogcastrPageSelect(this, 'settings', '');">Notifications</h2>
 <% end -%>
 <% if @settings_tab == "password" || flash[:settings_tab] == "password" -%>
-          <h2 class="tab short last selected" onclick="blogcastrPageSelect(this, 'settings', '');">Password</h2>
+          <h2 class="tab short last selected" onclick="blogcastrPageSelect(this, 'settings', 'password-page');">Password</h2>
 <% else -%>
-          <h2 class="tab short last" onclick="blogcastrPageSelect(this, 'settings', '');">Password</h2>
+          <h2 class="tab short last" onclick="blogcastrPageSelect(this, 'settings', 'password-page');">Password</h2>
 <% end -%>
           <div class="clear">
           </div>
@@ -88,200 +88,246 @@
 <% else -%>
           <div id="account-page" class="page">
 <% end -%>
-        <% form_for :setting, (@account_setting.nil?)?@setting:@account_setting, :url => account_settings_path, :html => {:multipart => true} do |form| %>
+            <% form_for :setting, (@account_setting.nil?)?@setting:@account_setting, :url => account_settings_path, :html => {:multipart => true} do |form| %>
 <% if flash[:settings_tab] == "account" -%>
-
-<%- if !flash[:error].nil? -%>
+  <%- if !flash[:error].nil? -%>
               <div class="alert error">
                 <h3><%= flash[:error] -%></h3>
               </div>            
-<%- elsif !flash[:info].nil? -%>
+  <%- elsif !flash[:info].nil? -%>
               <div class="alert info">
                 <h3><%= flash[:info] -%></h3>            
               </div>            
-<%- elsif !flash[:success].nil? -%>
+  <%- elsif !flash[:success].nil? -%>
               <div class="alert success">
- <div class="effect">               <h3><%= flash[:success] -%></h3>            </div>
+                <div class="effect">
+                  <h3><%= flash[:success] -%></h3>
+                </div>
               </div>            
+  <%- end -%>
 <%- end -%>
-<%- end -%>
-        <%= form.error_messages :header_tag => "h3", :header_message => "Oops!", :message => nil %>
-          <table>
-<tr>
-     <td>   <%= form.label :full_name %> </td>
-    <td>    <%= form.text_field :full_name, :class => "short" %><p>Pretty simple, what's your name?</p></td>
+              <%= form.error_messages :header_tag => "h3", :header_message => "Oops!", :message => nil %>
+              <table>
+                <tr>
+                  <td><%= form.label :full_name %></td>
+                  <td><%= form.text_field :full_name, :class => "short" %><p>Pretty simple, what's your name?</p></td>
+                </tr>
+                <tr>
+                  <td><%= form.label :motto, "Motto" %></td>
+                  <td><%= form.text_field :motto %><p>What you're all about in 30 characters or less.</p></td>
+                </tr>
+                <tr>
+                  <td><%= form.label :location, "Location" %></td>
+                  <td><%= form.text_field :location, :class => "short" %><p>Where do you live?</p></td>
+                </tr>
+                <tr>
+                  <td><%= form.label :bio, "Bio" %></td>
+                  <td><%= form.text_area :bio, :size => "50x10" %><p>Condense your life to 100 characters or less.</p></td>
+                </tr>
+                <tr>
+                  <td><%= form.label :web, "Web" %></td>
+                  <td><%= form.text_field :web %><p>Share a link with everyone.</p></td>
+                </tr>
+                <tr>
+                  <td><label for="setting_time_zone">Time zone</label></td>
+                  <td><%= time_zone_select "setting", "time_zone", ActiveSupport::TimeZone.us_zones, :default => "Eastern Time (US & Canada)", :size => "20" %></td>
 </tr>
-<tr>
-    <td>     <%= form.label :motto, "Motto" %></td>
-       <td>  <%= form.text_field :motto %><p>What you're all about in 30 characters or less.</p></td>
-</tr>
-<tr>
-  <td>       <%= form.label :location, "Location" %></td>
-     <td>    <%= form.text_field :location, :class => "short" %><p>Where do you live?</p></td>
-</tr>
-<tr>
-      <td>   <%= form.label :bio, "Bio" %></td>
-      <td>   <%= form.text_area :bio, :size => "50x10" %><p>Condense your life to 100 characters or less.</p></td>
-</tr>
-<tr>
-   <td>      <%= form.label :web, "Web" %></td>
-     <td>   <%= form.text_field :web %><p>Share a link with everyone.</p></td>
-</tr>
-<tr>
- <td>       <label for="setting_time_zone">Time zone</label></td>
-   <td>     <%= time_zone_select "setting", "time_zone", ActiveSupport::TimeZone.us_zones, :default => "Eastern Time (US & Canada)", :size => "20" %></td>
-</tr>
-<tr>
-   <td></td>
-   <td>     <%= form.submit "Save changes", :class => "submit" %></td>
-</tr>
-</table>
-<table>
-<tr>
-     <td>   <%= form.label :avatar, "Avatar" %></td>
-     <td> <%= image_tag @setting.avatar.url(:medium) -%>  <%= form.file_field :avatar, :size => "15", :class => "file" %><p>A jpg, png or gif less than 1MB.</p></td>
-</tr>
-</table>
-<div class="clear">
-</div>
-<%= link_to "Delete your account", goodbye_path, :class => "view delete" -%>
-        <% end %>
-        </div>
+                <tr>
+                  <td></td>
+                  <td><%= form.submit "Save changes", :class => "submit" %></td>
+                </tr>
+              </table>
+              <table>
+                <tr>
+                  <td><%= form.label :avatar, "Avatar" %></td>
+                  <td><%= image_tag @setting.avatar.url(:medium) -%><%= form.file_field :avatar, :size => "15", :class => "file" %><p>A jpg, png or gif less than 1MB.</p></td>
+                </tr>
+              </table>
+              <div class="clear">
+              </div>
+              <%= link_to "Delete your account", goodbye_path, :class => "view delete" -%>
+            <% end %>
+          </div>
 <% if @settings_tab == "appearance" || flash[:settings_tab] == "appearance" -%>
-        <div id="appearance-page" class="page selected">
+          <div id="appearance-page" class="page selected">
 <% else -%>
-        <div id="appearance-page" class="page">
+          <div id="appearance-page" class="page">
 <% end -%>
 <% if @appearance_view == "themes" || flash[:appearance_view] == "themes" || (@setting.use_background_image == false &&  @appearance_view.nil? && flash[:appearance_view].nil?) -%>
-<div id="themes-view" class="view selected">
+            <div id="themes-view" class="view selected">
 <% else -%>
-<div id="themes-view" class="view">
+            <div id="themes-view" class="view">
 <% end -%>
-        <% form_for :setting, (@appearance_setting.nil?)?@setting:@appearance_setting, :url => appearance_settings_path do |form| %>
+              <% form_for :setting, (@appearance_setting.nil?)?@setting:@appearance_setting, :url => appearance_settings_path do |form| %>
 <% if flash[:settings_tab] == "appearance" && flash[:appearance_view] == "themes" -%>
-
-<%- if !flash[:error].nil? -%>
-              <div class="alert error">
-                <h3><%= flash[:error] -%></h3>
-              </div>            
-<%- elsif !flash[:info].nil? -%>
-              <div class="alert info">
-                <h3><%= flash[:info] -%></h3>            
-              </div>            
-<%- elsif !flash[:success].nil? -%>
-              <div class="alert success">
- <div class="effect">               <h3><%= flash[:success] -%></h3>            </div>
-              </div>            
+  <%- if !flash[:error].nil? -%>
+                <div class="alert error">
+                  <h3><%= flash[:error] -%></h3>
+                </div>            
+  <%- elsif !flash[:info].nil? -%>
+                <div class="alert info">
+                  <h3><%= flash[:info] -%></h3>            
+                </div>            
+  <%- elsif !flash[:success].nil? -%>
+                <div class="alert success">
+                  <div class="effect">
+                    <h3><%= flash[:success] -%></h3>
+                  </div>
+                </div>            
+  <%- end -%>
 <%- end -%>
-<%- end -%>
-        <%= form.error_messages :header_tag => "h3", :header_message => "Oops!", :message => nil %>
-<%= form.hidden_field :use_background_image, :value => "0" -%>
-<%= form.hidden_field :theme_id, :value => @setting.theme_id -%>
-<table class="wide">
-<tr>
-<td>Theme</td>
-<td>
-
+                <%= form.error_messages :header_tag => "h3", :header_message => "Oops!", :message => nil %>
+                <%= form.hidden_field :use_background_image, :value => "0" -%>
+                <%= form.hidden_field :theme_id, :value => @setting.theme_id -%>
+                <table class="wide">
+                  <tr>
+                    <td>Theme</td>
+                    <td>
 <%- i = 0 -%>
 <% for theme in @themes -%>
   <%- if i % 4 == 0 -%>
     <%- if i < 4 -%>
-<div class="wrapper thumbnail first top">
+                      <div class="wrapper thumbnail first top">
     <%- else -%>
-<div class="wrapper thumbnail first">
+                      <div class="wrapper thumbnail first">
     <%- end -%>
   <%- elsif i < 4 -%>
     <%- if i == 20 || i == 3 -%>
-<div class="wrapper thumbnail top short">
+                      <div class="wrapper thumbnail top short">
     <%- else -%>
-<div class="wrapper thumbnail top">
+                      <div class="wrapper thumbnail top">
     <%- end -%>
+  <%- elsif i == 20 || i == 3 -%>
+                      <div class="wrapper thumbnail short">
   <%- else -%>
-    <%- if i == 20 || i == 3 -%>
-<div class="wrapper thumbnail short">
-<%- else -%>
-<div class="wrapper thumbnail">
+                      <div class="wrapper thumbnail">
+  <%- end -%>
+  <%- if theme.id == @setting.theme_id -%>
+                        <%= image_tag "themes/#{theme.id}/thumbnail/original/#{theme.thumbnail_file_name}", :class => "thumbnail selected", :onclick => "blogcastrSelectTheme(this, #{theme.id})" -%>
+  <%- else -%>
+                        <%= image_tag "themes/#{theme.id}/thumbnail/original/#{theme.thumbnail_file_name}", :class => "thumbnail", :onclick => "blogcastrSelectTheme(this, #{theme.id})" -%>
+  <%- end -%>
+                        <p><%= theme.title -%></p>
+                      </div>
+  <%- i = i + 1 -%>
 <%- end -%>
-<%- end -%>
-<%- if theme.id == @setting.theme_id -%>
-<%= image_tag "themes/#{theme.id}/thumbnail/original/#{theme.thumbnail_file_name}", :class => "thumbnail selected", :onclick => "blogcastrSelectTheme(this, #{theme.id})" -%>
-<%- else -%>
-<%= image_tag "themes/#{theme.id}/thumbnail/original/#{theme.thumbnail_file_name}", :class => "thumbnail", :onclick => "blogcastrSelectTheme(this, #{theme.id})" -%>
-<%- end -%>
-<p><%= theme.title -%></p>
-</div>
-<%- i = i + 1 -%>
-<%- end -%>
-
-
-
-</td>
-</tr>
-   <td></td>
-   <td>     <%= form.submit "Save changes", :class => "submit" %></td>
-</tr>
-</table>
-        <% end %>
-<%= link_to_function "Upload a custom background", "blogcastrViewSelect('appearance-page', 'custom-background-view');", :class => "view" -%>
-</div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td><%= form.submit "Save changes", :class => "submit" %></td>
+                  </tr>
+                </table>
+              <% end %>
+              <%= link_to_function "Upload a custom background", "blogcastrViewSelect('appearance-page', 'custom-background-view');", :class => "view" -%>
+            </div>
 <% if @appearance_view == "custom-background" || flash[:appearance_view] == "custom-background" || (@setting.use_background_image == true && @appearance_view.nil? && flash[:appearance_view].nil?) -%>
-<div id="custom-background-view" class="view selected">
+            <div id="custom-background-view" class="view selected">
 <% else -%>
-<div id="custom-background-view" class="view">
+            <div id="custom-background-view" class="view">
 <% end -%>
-
-        <% form_for :setting, (@appearance_setting.nil?)?@setting:@appearance_setting, :url => appearance_settings_path, :html => {:multipart => true} do |form| %>
+              <% form_for :setting, (@appearance_setting.nil?)?@setting:@appearance_setting, :url => appearance_settings_path, :html => {:multipart => true} do |form| %>
 <% if flash[:settings_tab] == "appearance" && flash[:appearance_view] == "custom-background" -%>
-
-<%- if !flash[:error].nil? -%>
+  <%- if !flash[:error].nil? -%>
+                <div class="alert error">
+                  <h3><%= flash[:error] -%></h3>
+                </div>            
+  <%- elsif !flash[:info].nil? -%>
+                <div class="alert info">
+                  <h3><%= flash[:info] -%></h3>            
+                </div>            
+  <%- elsif !flash[:success].nil? -%>
+                <div class="alert success">
+                  <div class="effect">
+                    <h3><%= flash[:success] -%></h3>
+                  </div>
+                </div>            
+  <%- end -%>
+<%- end -%>
+                <%= form.error_messages :header_tag => "h3", :header_message => "Oops!", :message => nil %>
+                <%= form.hidden_field :use_background_image, :value => "1" -%>
+                <table class="wide">
+                  <tr>
+                    <td><%= form.label :background, "Background image" %></td>
+                    <td>
+<%- if !@setting.background_image_file_name.nil? -%>
+                      <%= image_tag @setting.background_image.url, :class => "background-image" -%>
+                      <br> 
+<%- end -%>
+                      <%= form.file_field :background_image, :class => "file" %><p>A jpg, png or gif less than 3MB.</p>
+                      <%= form.check_box :tile_background_image, :class => "check-box" %>
+                      <%= form.label :tile_background_image, "Tile background image", :class => "inner" %>
+                      <br>
+                      <%= form.check_box :scroll_background_image, :class => "check-box" %>
+                      <%= form.label :scroll_background_image, "Scroll background image", :class => "inner" %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><%= form.label :background_color, "Background color" %></td>
+                    <td>
+                      <div class="wrapper">
+                        <%= form.text_field :background_color, :class => "short" %><p>In html notation.</p>
+                      </div>
+                      <%= image_tag "color_wheel.png", :class => "icon", :onclick => "blogcastrToggleHidden('colorpicker');" -%>
+                      <div id="colorpicker">
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td><%= form.submit "Save changes", :class => "submit" %></td>
+                  </tr>
+                </table>
+              <% end %>
+              <%= link_to_function "Select one of our themes", "blogcastrViewSelect('appearance-page', 'themes-view');", :class => "view" -%>
+            </div>
+          </div>
+<% if @settings_tab == "password" || flash[:settings_tab] == "password" -%>
+          <div id="password-page" class="page selected">
+<% else -%>
+          <div id="password-page" class="page">
+<% end -%>
+            <% form_for :user, (@password_user.nil?)?@user:@password_user, :url => password_settings_path do |form| %>
+<% if flash[:settings_tab] == "password" -%>
+  <%- if !flash[:error].nil? -%>
               <div class="alert error">
                 <h3><%= flash[:error] -%></h3>
               </div>            
-<%- elsif !flash[:info].nil? -%>
+  <%- elsif !flash[:info].nil? -%>
               <div class="alert info">
                 <h3><%= flash[:info] -%></h3>            
               </div>            
-<%- elsif !flash[:success].nil? -%>
+  <%- elsif !flash[:success].nil? -%>
               <div class="alert success">
- <div class="effect">               <h3><%= flash[:success] -%></h3>            </div>
+                <div class="effect">
+                  <h3><%= flash[:success] -%></h3>
+                </div>
               </div>            
+  <%- end -%>
 <%- end -%>
-<%- end -%>
-        <%= form.error_messages :header_tag => "h3", :header_message => "Oops!", :message => nil %>
-<%= form.hidden_field :use_background_image, :value => "1" -%>
-<table class="wide">
-<tr>
-     <td>   <%= form.label :background, "Background image" %></td>
-     <td>
-<%- if !@setting.background_image_file_name.nil? -%>
- <%= image_tag @setting.background_image.url, :class => "background-image" -%> <br> 
-<%- end -%>
-<%= form.file_field :background_image, :class => "file" %><p>A jpg, png or gif less than 3MB.</p>
-
-
-     <%= form.check_box :tile_background_image, :class => "check-box" %>
-     <%= form.label :tile_background_image, "Tile background image", :class => "inner" %>
-     <br>
-     <%= form.check_box :scroll_background_image, :class => "check-box" %>
-     <%= form.label :scroll_background_image, "Scroll background image", :class => "inner" %>
-
-</td>
-</tr>
-<tr>
-     <td>   <%= form.label :background_color, "Background color" %></td>
-     <td>  <div class="wrapper"><%= form.text_field :background_color, :class => "short" %><p>In html notation.</p></div><%= image_tag "color_wheel.png", :class => "icon", :onclick => "blogcastrToggleHidden('colorpicker');" -%><div id="colorpicker"></div>
-</td>
-</tr>
-<tr>
-   <td></td>
-   <td>     <%= form.submit "Save changes", :class => "submit" %></td>
-</tr>
-</table>
-        <% end %>
-<%= link_to_function "Select one of our themes", "blogcastrViewSelect('appearance-page', 'themes-view');", :class => "view" -%>
-</div>
+              <%= form.error_messages :header_tag => "h3", :header_message => "Oops!", :message => nil %>
+              <table class="wide">
+                <tr>
+                  <td><label for="current_password">Current password</label></td>
+                  <td><input id="current_password" type="password" size="30" name="current_password"><p>Your existing password.</p></td>
+                </tr>
+                <tr>
+                  <td><%= form.label :password, "New password" %></td>
+                  <td><%= form.password_field :password %><p>Your new password, must be at least 6 characters.</p></td>
+                </tr>
+                <tr>
+                  <td><%= form.label :password_confirmation, "Confirm password" %></td>
+                  <td><%= form.password_field :password_confirmation %><p>Retype your new password.</p></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td><%= form.submit "Save changes", :class => "submit" %></td>
+                </tr>
+              </table>
+            <% end %>
+            <%= link_to "Forget your password?", new_password_path, :class => "view delete" -%>
+          </div>
         </div>
-      </div>
       </div>
       <div class="last lower-left-border-squared-corner">
       </div>
