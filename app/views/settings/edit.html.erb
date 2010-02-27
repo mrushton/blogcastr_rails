@@ -309,15 +309,15 @@
               <table class="wide">
                 <tr>
                   <td><label for="current_password">Current password</label></td>
-                  <td><input id="current_password" type="password" size="30" name="current_password"><p>Your existing password.</p></td>
+                  <td><input id="current_password" class="short" type="password" size="30" name="current_password"><p>Change me!</p></td>
                 </tr>
                 <tr>
                   <td><%= form.label :password, "New password" %></td>
-                  <td><%= form.password_field :password %><p>Your new password, must be at least 6 characters.</p></td>
+                  <td><%= form.password_field :password, :class => "short" %><p>Be creative, at least 6 characters.</p></td>
                 </tr>
                 <tr>
                   <td><%= form.label :password_confirmation, "Confirm password" %></td>
-                  <td><%= form.password_field :password_confirmation %><p>Retype your new password.</p></td>
+                  <td><%= form.password_field :password_confirmation, :class => "short" %><p>Retype password.</p></td>
                 </tr>
                 <tr>
                   <td></td>
