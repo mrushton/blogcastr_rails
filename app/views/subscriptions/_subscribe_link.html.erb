@@ -1,1 +1,0 @@
-<%= button_to_remote "Subscribe", :url => (subscriptions_path :user_id => @profile_user.id), :failure => "alert('Error: Unable to subscribe to #{@profile_user.name}. Failed communicating with server.');" %>
