@@ -88,12 +88,12 @@
 
 #settings div.success h3
 {
-	background-color: green;
+	background-color: #009900;
 }
 
 #settings div.error h3
 {
-	background-color: red;
+	background-color: #990000;
 }
 
 #settings a.tab:hover

@@ -93,7 +93,7 @@ class SettingsController < ApplicationController
       err = @password_user.update_attributes(:password => params[:user][:password], :password_confirmation => params[:user][:password_confirmation])
       if err 
         flash[:settings_tab] = "password"
-        flash[:success] = "Password updated!"
+        flash[:success] = "Changes saved!"
         redirect_to settings_path 
       else
         @setting = @user.setting
@@ -107,17 +107,6 @@ class SettingsController < ApplicationController
       flash[:settings_tab] = "password"
       flash[:error] = "Current password is incorrect"
       redirect_to settings_path 
-      #MVR - below is support for using objects and not flash
-      #@password_user.errors.add_to_base("Current password is incorrect")
-      #MVR - verify other fields
-      #@password_user.password = params[:user][:password]
-      #@password_user.password_confirmation = params[:user][:password_confirmation]
-      #@password_user.valid?
-      #@setting = @user.setting
-      #@settings_tab = "password"
-      #@themes = Themes.all
-      #@username_possesive = @user.username + (@user.username =~ /.*s$/ ? "'":"'s")
-      #render :action => "edit"
     end
   end
 end
