@@ -14,7 +14,8 @@ class DashboardController < ApplicationController
     #MVR - subscription stream
     #TODO: limit to 10 and page
     @posts = Post.find_by_sql(["SELECT * FROM subscriptions, blogcasts, posts WHERE subscriptions.user_id = ? AND subscriptions.subscribed_to = blogcasts.user_id AND blogcasts.id = posts.blogcast_id ORDER BY posts.created_at DESC", @user.id]);
-
+    @likes = User.find_by_sql(["SELECT users.* FROM likes, users WHERE likes.blogcast_id = ? AND likes.user_id = users.id LIMIT 30", @blogcast.id])
+    @num_likes = @blogcast.likes.count 
 
 
 

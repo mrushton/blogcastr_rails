@@ -2,10 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title><%= @user.username %>'s Dashboard</title>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/stylesheets/blogcastr.css" media="screen"/>
     <link rel="stylesheet" href="/stylesheets/dashboard.css" media="screen"/>
-    <%= javascript_include_tag :defaults, "jquery.js", "strophe/b64.js", "strophe/md5.js", "strophe/sha1.js", "strophe/strophe.js", "strophe/plugins/strophe.pubsub.js", "dashboard.js", :media => "all" %>
-    <%= javascript_tag "var authenticity_token = \"#{form_authenticity_token}\"" %>
+    <%= javascript_include_tag :defaults, "jquery.js", "strophe/b64.js", "strophe/md5.js", "strophe/sha1.js", "strophe/strophe.js", "strophe/plugins/strophe.pubsub.js", "blogcast.js", :media => "all" %>
     <script type="text/javascript">
       jQuery.noConflict();
       var hostname = "<%= HOST %>";
@@ -13,7 +13,22 @@
       var blogcast_id = "<%= @blogcast.id %>";
       var server_timestamp = <%= Time.now.to_i %>
     </script>
+    <%= javascript_tag "var authenticity_token = \"#{form_authenticity_token}\"" %>
+    <% javascript_tag do %>
+      jQuery.noConflict();
+      var hostname = "<%= HOST %>";
+      var blogcast_id = <%= @blogcast.id %>;
+      var up_image = "<%= image_path "up.png" -%>";
+      var down_image = "<%= image_path "down.png" -%>";
+      var username = "<%= @user.username %>";
+      var server_timestamp = <%= Time.now.to_i %>;
+      var facebook_attachment = {'name':'<%= @blogcast.title-%>', 'href':'<%= username_blogcast_permalink_url(:username => @user.username, :year => @blogcast.year, :month => @blogcast.month, :day => @blogcast.day, :title => @blogcast.link_title) -%>', 'description':'By <%= @user.username -%> on <%= @blogcast.starting_at.strftime("%B %e, %Y") -%>. <%= @blogcast.description.gsub(/'/,"\\'") -%>'};
+    <% end %>
+<%- if Rails.env.production? -%> 
+    <script type="text/javascript" src="https://blogcastr.com/ejabberd/password.js"></script>
+<%- else -%>
     <script type="text/javascript" src="/ejabberd/password.js"></script>
+<%- end -%>
   </head>
   <body>
     <%= yield :layout %>

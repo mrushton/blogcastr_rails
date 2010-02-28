@@ -1,39 +1,110 @@
 <div id="wrapper">
-  <div id="header">
-    <%= link_to "<div class=\"avatar-large-rounded avatar-large-rounded-background\"></div>", profile_path(:username => @user.username), :target => "_blank" %>
-    <h1><%= @user.username %></h1>
+  <div id="header" class="small">
+    <%- form_tag username_blogcast_search_permalink_path(:username => @user.username, :year => @blogcast.year, :month => @blogcast.month, :day => @blogcast.day, :title => @blogcast.link_title) do -%>
+      <%= label_tag :query, image_tag("magnifying_glass.png") -%>
+      <%= text_field_tag :query, "Search \"#{@blogcast.title}\"", :onfocus => "if (this.value == 'Search \"#{@blogcast.title}\"') this.value = ''; jQuery('#header form').addClass('selected');", :onblur => "if (this.value == '') this.value = 'Search \"#{@blogcast.title}\"'; jQuery('#header form').removeClass('selected');" -%>
+    <%- end -%>
+    <%= link_to(image_tag("/images/logo-small.png", :border => 0, :class => "logo"), "/") %>
+    <%= image_tag "/images/beta-small.png", :class => "beta" %>
     <div id="navigation">
+<% if @user.instance_of?(BlogcastrUser) -%>
+      <%= link_to image_tag(@user.setting.avatar.url(:small))+@user.username, profile_path(:username => @user.username), :class => "first user" %>
       <%= link_to "Home", home_path %>
       <%= link_to "Settings", settings_path %>
-      <%= link_to "Sign out", sign_out_path, :method => :delete %>
+      <%= link_to "Sign out", sign_out_path, :method => "delete" %>
+<% elsif @user.instance_of?(FacebookUser) -%>
+  <%- avatar_url = @user.get_avatar_url :small -%>
+  <%- if avatar_url.nil? -%>
+    <%- avatar_url = get_facebook_avatar_url @user.facebook_id %>
+    <%- if avatar_url.nil? -%>
+      <%- avatar = "http://static.ak.facebook.com/pics/q_silhouette_logo.gif" %>
+    <%- end -%>
+  <%- end -%>
+  <%- username = @user.get_username -%>
+  <%- if username.nil? -%>
+    <%- username = get_facebook_name @user.facebook_id %>
+  <%- end -%>
+  <%- url = @user.get_url -%>
+  <%- if url.nil? -%>
+    <%- url = get_facebook_url @user.facebook_id %>
+  <%- end -%>
+      <%= link_to image_tag(avatar_url) + username, url, :class => "first user" %>
+      <%= link_to "Sign up", sign_up_path %>
+      <span onclick="FB.Connect.logout(blogcastrFacebookSignOut);">Sign out</span>
+<% elsif @user.instance_of?(TwitterUser) -%>
+      <%= link_to image_tag(@user.get_avatar_url(:small)) + @user.get_username, @user.get_url, :class => "first user" %>
+      <%= link_to "Sign up", sign_up_path %>
+      <span onclick="blogcastrTwitterSignOut();">Sign out</span>
+<% else -%>
+      <%= link_to "Sign up", sign_up_path %>
+      <%= link_to "Sign in", sign_in_path %>
+<% end -%>
     </div>
-    <%= link_to "<div class=\"avatar-small-rounded avatar-small-rounded-background\"></div>", profile_path(:username => @user.username), :target => "_blank" %>
-    <div id="clear">
+    <div class="clear">
     </div>
   </div>
   <div id="content">
     <div id="main">
-      <h2><%= @blogcast.title -%></h2>
-      <div class="background">
-        <h3 class="post-header" onclick="blogcastrToggleBlindEffect('post')">Post</h3>
-        <div id="post">
-<%- if flash[:notice] -%>
-          <div>
-            <%= flash[:notice] -%>
+      <div class="upper-left-border-squared-corner">
+      </div>
+      <div class="top-border">
+      </div>
+      <div class="upper-right-border-squared-corner">
+      </div>
+      <div class="clear">
+      </div>
+      <div id="top">
+        <div id="title">
+          <div class="side-border">
+            <div class="upper-left-border-squared-corner-gray horizontal">
+            </div>
+            <div class="left-border-gray">
+            </div>
+            <div class="lower-left-border-squared-corner-gray horizontal">
+            </div>
           </div>
-<%- end -%>
-<%- if flash[:error] -%>
-          <div>
-            <%= flash[:error] -%>
+          <h1>Dashboard</h1>
+          <div class="side-border">
+            <div class="upper-right-border-squared-corner-gray horizontal">
+            </div>
+            <div class="right-border-gray">
+            </div>
+            <div class="lower-right-border-squared-corner-gray horizontal">
+            </div>
           </div>
-<%- end -%>
-          <div class="center">
-            <ul class="menu">
-              <li class="selected text"><%= button_to_function "Text", "blogcastrPostTextMenuSelect()" -%></li>
-              <li class="selected image"><%= button_to_function "Image", "blogcastrPostImageMenuSelect()" -%></li>
-            </ul>
-          </div>
-          <% remote_form_for :text_post, :url => {:controller => :text_posts, :action => :create}, :html => {:id => "text_post_form"} do |f| %>
+        </div>
+        <p><%= link_to "\"#{@blogcast.title}\"", username_blogcast_permalink_path(:username => @user.username, :year => @blogcast.year, :month => @blogcast.month, :day => @blogcast.day, :title => @blogcast.link_title), :class => "title" -%> by <a class="user" href="<%= profile_path(:username => @user.username) -%>"><%= @user.username -%></a></span> on <span class="date"><%= @blogcast.starting_at.strftime("%B %e, %Y") -%></span>
+      
+
+        <div id="dashboard">
+<% if @dashboard_tab == "text" || flash[:dashboard_tab] == "text" || (@dashboard_tab.nil? && flash[:dashboard_tab].nil?) -%>
+          <h2 class="tab selected" onclick="blogcastrPageSelect(this, 'dashboard', 'text-page');">Text</h2>
+<% else -%>
+          <h2 class="tab" onclick="blogcastrPageSelect(this, 'dashboard', 'text-page');">Text</h2>
+<% end -%>
+<% if @dashboard_tab == "image" || flash[:dashboard_tab] == "image" -%>
+          <h2 class="tab selected" onclick="blogcastrPageSelect(this, 'dashboard', 'image-page');">Image</h2>
+<% else -%>
+          <h2 class="tab" onclick="blogcastrPageSelect(this, 'dashboard', 'image-page');">Image</h2>
+<% end -%>
+<% if @dashboard_tab == "video" || flash[:dashboard_tab] == "video" -%>
+          <h2 class="tab selected short" onclick="blogcastrPageSelect(this, 'dashboard', 'video-page');">Video</h2>
+<% else -%>
+          <h2 class="tab short" onclick="blogcastrPageSelect(this, 'dashboard', 'video-page');">Video</h2>
+<% end -%>
+<div class="clear">
+</div>
+
+
+
+
+<% if @dashboard_tab == "text" || flash[:dashboard_tab] == "text" || (@dashboard_tab.nil? && flash[:dashboard_tab].nil?) -%>
+<div id="text-page" class="page selected">
+<% else %>
+<div id="text-page" class="page">
+<% end %>
+
+          <% remote_form_for :text_post, :url => {:controller => :text_posts, :action => :create} do |f| %>
             <%= f.hidden_field :from %>
             <%= f.label :text, "Text" %>
             <br>
@@ -41,7 +112,13 @@
             <br>
             <%= f.submit "Submit" %>
           <% end %>
-          <% form_for :image_post, :url => {:controller => :image_posts, :action => :create}, :html => {:multipart => true, :class => "image hidden"} do |f| %>
+</div>
+<% if @dashboard_tab == "image" || flash[:dashboard_tab] == "image" -%>
+<div id="image-page" class="page selected">
+<% else %>
+<div id="image-page" class="page">
+<% end %>
+          <% form_for :image_post, :url => {:controller => :image_posts, :action => :create}, :html => {:multipart => true} do |f| %>
             <%= f.hidden_field :from %>
             <%= f.label :image, "Image" %>
             <br>
@@ -49,40 +126,130 @@
             <br>
             <%= f.submit "Submit" %>
           <% end %>
-          <div id="clear">
-          </div>
-        </div>
+</div>
+
       </div>
-      <div class="background">
-        <h3>Streams</h3>
-        <div id="streams-menu" class="center">
-          <ul class="menu">
-            <li class="selected comments"><%= button_to_function "Comments", "blogcastrCommentStreamMenuSelect()" -%></li>
-            <li class="subscriptions"><%= button_to_function "Subscriptions", "blogcastrSubscriptionStreamMenuSelect()" -%></li>
-          </ul>
-        </div>
-        <ol class="stream" id="comment-stream">
-<% for comment in @comments -%>
-          <%= render :partial => "comment", :object => comment -%>
-<% end %>
+
+
+</div>
+
+
+      <div class="lower-left-border-squared-corner">
+      </div>
+      <div class="bottom-border">
+      </div>
+      <div class="lower-right-border-squared-corner">
+      </div>
+      <div class="clear">
+      </div>
+      <div class="upper-left-border-squared-corner">
+      </div>
+      <div class="top-border">
+      </div>
+      <div class="upper-right-border-squared-corner">
+      </div>
+      <div class="clear">
+      </div>
+      <div id="bottom">
+        <h2>Streams</h2>
+        <h2><span class="counter"><%= @num_posts -%></span><%= @num_posts == 1 ? "Post" : "Posts" -%></h2>
+        <ol class="stream" id="public-stream">
+<% @first = 0 -%>
+<% @iter = 1 -%>
+<% for post in @posts -%>
+  <%- if (@iter == @posts.length) -%>
+    <%- @first = 1 -%>
+  <%- end -%>
+  <%- if post.instance_of?(TextPost) -%>
+          <%= render :partial => "text_post", :object => post -%>
+  <%- elsif post.instance_of?(ImagePost) -%>
+          <%= render :partial => "image_post", :object => post -%>
+  <%- elsif post.instance_of?(CommentPost) -%>
+          <%= render :partial => "comment_post", :object => post -%>
+  <%- elsif post.instance_of?(Repost) -%>
+          <%= render :partial => "repost", :object => post -%>
+  <%- end -%>
+  <% @iter = @iter + 1 -%>
+<% end -%>
         </ol>
+      </div>
+      <div class="last lower-left-border-squared-corner">
+      </div>
+      <div class="last bottom-border">
+      </div>
+      <div class="last lower-right-border-squared-corner">
+      </div>
+      <div class="clear">
       </div>
     </div>
     <div id="side">
-      <h4>Date</h4>
-      <p class="date"><%= @blogcast.starting_at.strftime("%a %m/%d/%y %I:%M %p").gsub(/ 0/,' ') %></p>
-      <div id="clear">
+      <div class="upper-left-border-rounded-corner">
       </div>
-<% if !@blogcast.tags.nil? %>
-      <h4>Tags</h4>
-      <p class="tags"><%= @blogcast.tags -%></p>
-      <div id="clear">
+      <div class="top-border-large">
       </div>
+      <div class="upper-right-border-rounded-corner">
+      </div>
+      <div class="clear">
+      </div>
+      <div class="background">
+<% if @blogcast.starting_at > Time.now -%>
+        <h4 class="first">Starts:</h4>
+<% else -%>
+        <h4 class="first">Started:</h4>
 <% end -%>
+        <p class="first date"><%= starting_at_in_words(@blogcast.starting_at) %></p>
+        <br>
+<% if !@blogcast.tags.nil? %>
+        <h4>Tags:</h4>
+        <p class="tags"><%= @blogcast.tags -%></p>
+        <br>
+<% end -%>
+<% if !@blogcast.description.nil? %>
+        <h4>Description:</h4>
+        <p><%= @blogcast.description -%></p>
+        <br>
+<% end -%>
+        <div class="clear">
+        </div>
+	<hr>
+        <div id="stats">
+          <a class="first stat" href="<%= blogcast_comments_path -%>"><span class="counter"><%= @num_comments -%></span><span class="name"><%= @num_comments == 1 ? "Comment" : "Comments" -%></span></a>
+          <h3 class="second" onclick="blogcastrCollapsibleEvent(this, 'likes');"><span class="counter"><%= @num_likes -%></span><span class="name"><%= @num_likes == 1 ? "Like" : "Likes" -%></span><%= image_tag "down.png" -%></h3>
+          <div id="likes">
+            <ul>
+<% for like in @likes -%>
+              <li>
+                <%= link_to "<div class=\"avatar-small-rounded\" style=\"background-image: url('#{like.setting.avatar.url(:small)}');\"></div>", profile_path(:username => like.username), :target => "_blank" %>
+              </li>
+<% end -%>
+           </ul>
+          </div>
+          <div class="stat third"><span class="counter"><%= @num_viewers -%></span><span class="name"><%= @num_viewers == 1 ? "Viewer" : "Viewers" -%></span></div>
+          <div class="last stat fourth"><span class="counter"><%= @num_views -%></span><span class="name"><%= @num_views == 1 ? "View" : "Views" -%></span></div>
+        </div>
+        <div class="clear">
+        </div>
+      </div>
+      <div class="lower-left-border-rounded-corner">
+      </div>
+      <div class="bottom-border-large">
+      </div>
+      <div class="lower-right-border-rounded-corner">
+      </div>
+      <div class="clear">
+      </div>
     </div>
-    <div id="clear"></div>
+  </div>
+  <div class="clear">
   </div>
   <div id="footer">
-    <p>&copy; 2009 Blogcastr</p>
+    <span>&copy; 2010 Blogcastr</span>
+    <%= link_to "About", about_path -%>
+    <a href="http://blogcastr.wordpress.com">Blog</a>
+    <a href="http://www.facebook.com/blogcastr">Facebook</a>
+    <%= link_to "FAQ", faq_path -%>
+    <%= link_to "Privacy Policy", privacy_policy_path -%>
+    <%= link_to "Terms of Service", terms_of_service_path -%>
+    <a href="http://twitter.com/blogcastr">Twitter</a>
   </div>
 </div>

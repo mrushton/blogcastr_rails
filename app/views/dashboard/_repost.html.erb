@@ -1,34 +1,33 @@
-<li class="subscription_stream_list_item" id="<%= repost.id %>">
+<li id="<%= repost.id %>">
 <% root = repost.root -%>
 <% if root.instance_of?(TextPost) -%>
-  <%= link_to "<div class=\"avatar-medium-rounded\" style=\"background-image: url('#{root.blog.user.setting.avatar.url(:medium)}');\"></div>", { :controller => "blogs", :blogname => root.blog.user.login }, :target => "_blank" %>
+  <%= link_to "<div class=\"avatar-medium-rounded\" style=\"background-image: url('#{root.blogcast.user.setting.avatar.url(:medium)}');\"></div>", blogcast_path(:username => root.blogcast.user.name), :target => "_blank" %>
   <p class=list_item_text><%= root.text %></p>
-  <p class="list_item_info">Posted by <%= link_to root.blog.user.login, { :controller => "blogs", :blogname => root.blog.user.login}, :target => "_blank" %> <%= hours_minutes_ago_helper root.created_at %> from <%= root.from %></p>
+  <p class="list_item_info">Posted by <%= link_to root.blogcast.user.name, blogcast_path(:username => root.blogcast.user.name), :target => "_blank" %> <%= hours_minutes_ago_helper root.created_at %> from <%= root.from %></p>
   <div id="clear">
   </div>
 <% elsif root.instance_of?(ImagePost) -%>
-  <%= link_to "<div class=\"avatar-medium-rounded\" style=\"background-image: url('#{root.blog.user.setting.avatar.url(:medium)}');\"></div>", { :controller => "blogs", :blogname => root.blog.user.login }, :target => "_blank" %>
+  <%= link_to "<div class=\"avatar-medium-rounded\" style=\"background-image: url('#{root.blogcast.user.setting.avatar.url(:medium)}');\"></div>", blogcast_path(:username => root.blogcast.user.name), :target => "_blank" %>
   <img class="list_item_image" src="<%= root.image.url(:default) %>"/>
-  <p class="list_item_info">Posted by <%= link_to root.blog.user.login, { :controller => "blogs", :blogname => root.blog.user.login}, :target => "_blank" %> <%= hours_minutes_ago_helper root.created_at %> from <%= root.from %></p>
+  <p class="list_item_info">Posted by <%= link_to root.blogcast.user.name, blogcast_path(:username => root.blogcast.user.name), :target => "_blank" %> <%= hours_minutes_ago_helper root.created_at %> from <%= root.from %></p>
   <div id="clear">
   </div>
 <% elsif root.instance_of?(CommentPost) -%>
   <%- comment = root.comment -%>
-  <%= link_to "<div class=\"avatar-medium-rounded\" style=\"background-image: url('#{comment.user.setting.avatar.url(:medium)}');\"></div>", { :controller => "blogs", :blogname => comment.user.login }, :target => "_blank" %>
+  <%= link_to "<div class=\"avatar-medium-rounded\" style=\"background-image: url('#{comment.user.setting.avatar.url(:medium)}');\"></div>", blogcast_path(:username => comment.user.name), :target => "_blank" %>
   <%- if comment.instance_of?(TextComment) -%>
   <p class=list_item_text><%= comment.text %></p>
   <%- elsif comment.instance_of?(ImageComment) -%>
   <img class="list_item_image" src="<%= comment.image.url(:default) %>"/>
   <%- end -%>
-  <p class="list_item_info">Commented by <%= link_to comment.user.login, { :controller => "blogs", :blogname => comment.user.login}, :target => "_blank" %> <%= hours_minutes_ago_helper comment.created_at %> from <%= comment.from %></p>
+  <p class="list_item_info">Commented by <%= link_to comment.user.name, blogcast_path(:username => comment.user.name), :target => "_blank" %> <%= hours_minutes_ago_helper comment.created_at %> from <%= comment.from %></p>
   <div id="clear">
   </div>
 <% end -%>
 <% reposted_via = reposted_via_helper repost.ancestors -%>
 <% if reposted_via.nil? -%>
-  <p class="list_item_info">Reposted by <%= link_to repost.blog.user.login, { :controller => "blogs", :blogname => repost.blog.user.login}, :target => "_blank" %> <%= hours_minutes_ago_helper repost.created_at %> from <%= repost.from %></p>
+  <p class="list_item_info">Reposted <%= hours_minutes_ago_helper repost.created_at %> from <%= repost.from %></p>
 <% else -%>
-  <p class="list_item_info">Reposted by <%= link_to repost.blog.user.login, { :controller => "blogs", :blogname => repost.blog.user.login}, :target => "_blank" %> <%= hours_minutes_ago_helper repost.created_at %> from <%= repost.from %> via <%= reposted_via %></p>
+  <p class="list_item_info">Reposted <%= hours_minutes_ago_helper repost.created_at %> from <%= repost.from %> via <%= reposted_via %></p>
 <% end -%>
-<%= link_to_remote "Repost", :url => {:controller => "reposts", :action => "create", :post_id => repost.id, :from => "Web"} %>
 </li>

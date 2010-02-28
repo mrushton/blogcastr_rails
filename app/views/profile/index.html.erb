@@ -142,7 +142,7 @@
     <%- else -%>
                 <li>
     <%- end -%>
-                  <%= link_to image_tag(like.setting.avatar.url(:small), :class => "avatar-small", :alt => "#{like.username}"), profile_path(:username => like.username), :title => "#{like.username}", :target => "_blank" %>
+                  <%= link_to image_tag(like.setting.avatar.url(:small), :class => "avatar-small", :alt => "#{like.username}"), profile_path(:username => like.username), :title => "#{like.username}" %>
                 </li>
   <%- end -%>
               </ul>
@@ -180,7 +180,7 @@
     <%- else -%>
                 <li>
     <%- end -%>
-                  <%= link_to image_tag(like.setting.avatar.url(:small), :class => "avatar-small", :alt => "#{like.username}"), profile_path(:username => like.username), :title => "#{like.username}", :target => "_blank" %>
+                  <%= link_to image_tag(like.setting.avatar.url(:small), :class => "avatar-small", :alt => "#{like.username}"), profile_path(:username => like.username), :title => "#{like.username}" %>
                 </li>
   <%- end -%>
               </ul>
@@ -251,7 +251,7 @@
               <li>
     <%- end -%>
   <%- end -%>
-                <%= link_to image_tag(subscriber.setting.avatar.url(:small), :class => "avatar-small", :alt => "#{subscriber.username}"), profile_path(:username => subscriber.username), :title => "#{subscriber.username}", :target => "_blank" %>
+                <%= link_to image_tag(subscriber.setting.avatar.url(:small), :class => "avatar-small", :alt => "#{subscriber.username}"), profile_path(:username => subscriber.username), :title => "#{subscriber.username}" %>
               </li>
   <%- i += 1 -%>
 <% end -%>
@@ -280,7 +280,7 @@
               <li>
     <%- end -%>
   <%- end -%>
-                <%= link_to image_tag(subscription.setting.avatar.url(:small), :class => "avatar-small", :alt => "#{subscription.username}"), profile_path(:username => subscription.username), :title => "#{subscription.username}", :target => "_blank" %>
+                <%= link_to image_tag(subscription.setting.avatar.url(:small), :class => "avatar-small", :alt => "#{subscription.username}"), profile_path(:username => subscription.username), :title => "#{subscription.username}" %>
               </li>
   <%- i += 1 -%>
 <% end -%>

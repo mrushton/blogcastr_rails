@@ -253,18 +253,10 @@ a:hover
 #content
 {
 	margin-left: 20px;
-	margin-top: 25px;
-	margin-right: 0px;
-	margin-bottom: 0px;
-	text-align: left;
-}
-
-#content.wide.one-column
-{
-	margin-left: 20px;
 	margin-top: 35px;
 	margin-right: 0px;
 	margin-bottom: 0px;
+	text-align: left;
 }
 
 #content.narrow.one-column
@@ -291,21 +283,19 @@ a:hover
 
 #main div.background
 {
-
+	position: relative;
 }
 
 #content.one-column #main
 {
 	width: auto;
 	float: none;
-	position: relative;
 }
 
 #content.one-column.wide #main
 {
 	width: 840px;
 	float: none;
-	position: relative;
 }
 
 #content.narrow.one-column #main form div.error, #content.narrow.one-column #main form div.errorExplanation
@@ -417,7 +407,7 @@ a:hover
 {
 	position: absolute;
 	left: -20px;
-	top: -20px;	
+	top: -30px;	
 }
 
 .side-border
