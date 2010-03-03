@@ -2,20 +2,24 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>Blogcastr Sign Up</title>
+    <title>Blogcastr sign up</title>
     <%= javascript_include_tag "sign_up.js", "jquery.js", :media => "all" %>
-    <%= stylesheet_link_tag "blogcastr.css", :media => "screen" %>
+    <%= stylesheet_link_tag "blogcastr.css", "sign-up.css", :media => "screen" %>
   </head>
   <body>
     <div id="wrapper">
       <div id="header">
+        <%- form_tag search_path :controller => "search" do -%>
+          <%= label_tag :query, image_tag("magnifying_glass.png") -%>
+          <%= text_field_tag :query, "Search Blogcastr", :onfocus => "if (this.value == 'Search Blogcastr') this.value = ''; jQuery('#header form').addClass('selected');", :onblur => "if (this.value == '') this.value = 'Search Blogcastr'; jQuery('#header form').removeClass('selected');" -%>
+        <%- end -%>
         <a href="/"><img src="/images/logo.png" alt="Blogcastr" border=0></img></a>
         <div id="navigation">
           <%= link_to "Sign up", sign_up_path, :class => "selected" %>
           <%= link_to "Sign in", sign_in_path %>
         </div>
       </div>
-      <div id="content" class="one-column">
+      <div id="content" class="one-column narrow">
         <div id="main">
           <div class="upper-left-border-squared-corner-blue">
           </div>
@@ -48,20 +52,68 @@
             <% form_for :blogcastr_user, :url => users_path do |form| %>
               <%= error_messages_for "blogcastr_user", "setting", :header_message => "Oops!", :message => nil -%>
               <input id="utc_offset" type="hidden" name="utc_offset" value="">
-              <%= form.label :email, "Email address" %>
-              <%= form.text_field :email %>
+              <%= form.label :email, "Email address", :class => "first" %>
+              <%= form.text_field :email, :autocomplete => "off" %>
+              <p>You will be sent a confirmation.</p>
               <%= form.label :username %>
-              <%= form.text_field :username %>
+              <div id="username" onclick="jQuery('#username input').focus();">
+                http://blogcastr.com/<%= form.text_field :username, :autocomplete => "off" %>
+              </div>
+              <p>This is also your url.</p>
 <% fields_for :setting do |setting| -%>
               <%= setting.label :full_name %>
-              <%= setting.text_field :full_name %>
+              <%= setting.text_field :full_name, :onblur => "if (this.value != '') jQuery('#greeting').text('Hi ' + this.value.split(' ', 1)[0] + '!');", :autocomplete => "off" %>
+<% end -%>
+<% if @setting.nil? || @setting.full_name.blank? -%>
+              <p id="greeting">What's your name?</p>
+<% else -%>
+              <p id="greeting">Hi <%= @setting.full_name.split[0] -%>!</p>
 <% end -%>
               <%= form.label :password %>
-              <%= form.password_field :password %>
+              <%= form.password_field :password, :autocomplete => "off" %>
+              <p>At least six characters.</p>
               <%= form.label :password_confirmation, "Confirm password" %>
               <%= form.password_field :password_confirmation %>
+              <p>Retype your password.</p>
+              <label for="recaptcha_response_field">Type the words below</label>
+              <script>
+                var RecaptchaOptions = {
+                  theme: 'custom',
+                  custom_theme_widget: 'recaptcha-widet'
+                };
+              </script>
+              <div id="recaptcha-widget" style="disiplay: none;">
+                <div id="recaptcha-left">
+                  <div id="recaptcha_image">
+                  </div>
+                  <input id="recaptcha_response_field" type="text" name="recaptcha_response_field"></input>
+                </div>
+                <div id="recaptcha-right">
+                  <a href="#" onclick="Recaptcha.reload(); return false;" class="top"><%= image_tag("http://api.recaptcha.net/img/clean/refresh.png") -%>Refresh</a>
+                  <div class="clear">
+                  </div>
+                  <a href="#" onclick="Recaptcha.switch_type('audio'); return false;" class="middle recaptcha_only_if_image"><%= image_tag("http://api.recaptcha.net/img/clean/audio.png") -%>Audio</a>
+                  <div class="clear">
+                  </div>
+                  <a href="#" onclick="Recaptcha.switch_type('image'); return false;" class="middle recaptcha_only_if_audio"><%= image_tag("http://api.recaptcha.net/img/clean/text.png") -%>Text</a>
+                  <div class="clear">
+                  </div>
+                  <a href="#" onclick="Recaptcha.showhelp(); return false;" class="bottom"><%= image_tag("http://api.recaptcha.net/img/clean/help.png") -%>Help</a>
+                  <div class="clear">
+                  </div>
+                  <p id="recaptcha-credit">Powered by ReCAPTCHA</p>
+                </div>
+                <div class="clear">
+                </div>
+              </div>
+              <script type="text/javascript" src="http://api.recaptcha.net/challenge?k=6Lc7igsAAAAAAArbqi3G-QsN2-gOXfawH872adv-">
+              </script>
+              <div class="right-justify">
+                <p>Are we human?</p>
+              </div>
               <%= form.submit "Start blogcasting!", :class => "button" %>
             <% end %>
+            <p class="fine-print">By clicking above you are agreeing to our <%= link_to "Terms of Service", terms_of_service_path -%> and <%= link_to "Privacy Policy", privacy_policy_path -%>.</p> 
           </div>
           <div class="lower-left-border-squared-corner-blue">
           </div>

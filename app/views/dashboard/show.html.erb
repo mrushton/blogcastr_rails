@@ -104,7 +104,7 @@
 <div id="text-page" class="page">
 <% end %>
 
-          <% remote_form_for :text_post, :url => {:controller => :text_posts, :action => :create} do |f| %>
+          <% remote_form_for :text_post, :url => {:controller => :text_posts, :action => :create}, :html => {:id => "text_post_form"} do |f| %>
             <%= f.hidden_field :from %>
             <%= f.label :text, "Text" %>
             <br>
@@ -152,8 +152,18 @@
       </div>
       <div id="bottom">
         <h2>Streams</h2>
-        <h2><span class="counter"><%= @num_posts -%></span><%= @num_posts == 1 ? "Post" : "Posts" -%></h2>
-        <ol class="stream" id="public-stream">
+
+        <div id="streams">
+          <h2 class="tab selected" onclick="blogcastrPageSelect(this, 'streams', 'posts-page');"><%= @num_posts.to_s + (@num_posts == 1 ? "Post" : "Posts") -%></h2>
+          <h2 class="tab" onclick="blogcastrPageSelect(this, 'streams', 'comments-page');"><%= @num_comments.to_s + (@num_comments == 1 ? "Comment" : "Comments") -%></h2>
+<div class="clear">
+</div>
+
+
+
+
+<div id="posts-page" class="page selected">
+        <ol id="posts-stream" class="stream">
 <% @first = 0 -%>
 <% @iter = 1 -%>
 <% for post in @posts -%>
@@ -172,6 +182,21 @@
   <% @iter = @iter + 1 -%>
 <% end -%>
         </ol>
+</div>
+<div id="comments-page" class="page">
+        <ol id="comments-stream" class="stream">
+<% @first = 0 -%>
+<% @iter = 1 -%>
+<% for comment in @comments -%>
+  <%- if (@iter == @comments.length) -%>
+    <%- @first = 1 -%>
+  <%- end -%>
+          <%= render :partial => "comment", :object => comment -%>
+  <% @iter = @iter + 1 -%>
+<% end -%>
+        </ol>
+</div>
+</div>
       </div>
       <div class="last lower-left-border-squared-corner">
       </div>

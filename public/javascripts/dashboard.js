@@ -11,27 +11,8 @@ function blogcastrOnLoad()
   //MVR - every second update timers
   setInterval(blogcastrUpdateHoursMinutesAgo, 1000);
   //MVR - event handling for exandable links
-  jQuery("h3.expandable").find("a").click(blogcastrOnExpandableHeaderLinkClick);
-  jQuery("h3.expandable").find("a").hover(blogcastrOnExpandableHeaderLinkHoverOn, blogcastrOnExpandableHeaderLinkHoverOff);
-}
-
-function blogcastrPostComment(id)
-{
-  jQuery.post("/comment_posts?comment_id=" + id + "&from=Web" + "&authenticity_token=" + encodeURIComponent(authenticity_token));
-}
-
-function blogcastrSendMucPresence()
-{
-    //MVR - nickname is always username
-    mucPresenceStanza = $pres().attrs({from: connection.jid, to: "Blogcast." + blogcast_id + "@conference." + hostname + "/dashboard"}).c("x", {xmlns: "http://jabber.org/protocol/muc"});
-    connection.send(mucPresenceStanza);
-}
-
-function blogcastrSendMucPresenceUnavailable()
-{
-    //MVR - nickname is always username
-    mucPresenceStanza = $pres().attrs({from: connection.jid, to: "Blogcast." + blogcast_id + "@conference." + hostname + "/dashboard", type: "unavailable"});
-    connection.send(mucPresenceStanza);
+  //jQuery("h3.expandable").find("a").click(blogcastrOnExpandableHeaderLinkClick);
+  //jQuery("h3.expandable").find("a").hover(blogcastrOnExpandableHeaderLinkHoverOn, blogcastrOnExpandableHeaderLinkHoverOff);
 }
 
 //TODO: need to come up with a cross browser way to do logging
@@ -63,16 +44,216 @@ function blogcastrOnConnect(status, error)
   }
   else if (status == Strophe.Status.CONNECTED)
   {
-   // console.log('----------> Strophe is connected.' );
+    console.log('----------> Strophe is connected.' );
     //MVR - register message handlers 
+    connection.addHandler(blogcastrPostCallback, null, 'message', 'groupchat', null, "blogcast." + blogcast_id + "@conference." + hostname + "/dashboard");
+    console.log('----------> Strophe is connected 1.1.' );
     connection.addHandler(blogcastrCommentCallback, null, 'message', 'chat', null, null);
-    connection.addHandler(blogcastrSubscriptionCallback, null, 'message', null, null, 'pubsub.blogcastr.com');
-    //MVR - send presence for pubsub
-    presenceStanza = $pres().attrs({from: connection.jid}).c("priority", {}).t("5");
-    connection.send(presenceStanza);
+    console.log('----------> Strophe is connected 1.2.' );
     //MVR - send presence to muc
-    blogcastrSendMucPresence();
+    mucPresenceStanza = $pres().attrs({from: connection.jid, to: "Blogcast." + blogcast_id + "@conference." + hostname + "/dashboard"}).c("x", {xmlns: "http://jabber.org/protocol/muc"});
+    connection.send(mucPresenceStanza);
+    console.log('----------> Strophe is connected 2.' );
   }
+}
+
+function blogcastrPostComment(id)
+{
+  jQuery.post("/comment_posts?comment_id=" + id + "&from=Web" + "&authenticity_token=" + encodeURIComponent(authenticity_token));
+}
+
+function blogcastrSendMucPresenceUnavailable()
+{
+    //MVR - nickname is always username
+    mucPresenceStanza = $pres().attrs({from: connection.jid, to: "Blogcast." + blogcast_id + "@conference." + hostname + "/dashboard", type: "unavailable"});
+    connection.send(mucPresenceStanza);
+}
+
+function blogcastrPostCallback(stanza)
+{
+    console.log("MVR - post callback");
+  //jQuery is used for XML parsing, Prototype has no XML support
+  //TODO: alternative could be to use a json convertor like http://www.thomasfrank.se/xml_to_json.html
+  var body = jQuery(stanza).find("body:first");
+  var type = body.find("type:first").text();
+  if (type == "textPost")
+  {
+    //parse text post
+    var id = body.find("id:first").text();
+    var timestamp = body.find("timestamp:first").text();
+    var date = body.find("date:first").text();
+    var text = body.find("text:first").text();
+    var medium = body.find("medium:first").text();
+    var user = jQuery(body).find("user:first");
+    var username = user.find("username:first").text();
+    var url = user.find("url:first").text();
+    var avatar_url = user.find("avatar_url:first").text();
+    //create new post element
+    var hours_minutes_ago_span = jQuery("<span>").addClass("date").addClass("hours_minutes_ago").attr("timestamp", timestamp).text(blogcastrHoursMinutesAgo(timestamp));
+    var avatar_img = jQuery("<img>").addClass("avatar").attr("src", avatar_url);
+    var user_a = jQuery("<a>").addClass("user").attr("href", url).append(avatar_img).append(username); 
+    var clear_div = jQuery("<div>").addClass("clear");
+    var text_p = jQuery("<p>").addClass("text").text(text);
+    var up_img = jQuery("<img>").attr("src", up_image);
+    //AS DESIGNED: some browsers don't work when adding the onclick attribute
+    var info_h4 = jQuery("<h4>").click(function() { blogcastrCollapsibleEvent(this, "TextPost:" + id + "-info"); }).append("Info").append(up_img);
+    var info_p = jQuery("<p>").addClass("info").text("Posted by " + username + " on " + date + " from " + medium);
+    var info_div = jQuery("<div>").attr("id", "TextPost:" + id + "-info").css("display", "none").append(info_p);
+    var effect_div = jQuery("<div>").addClass("effect").append(hours_minutes_ago_span).append(user_a).append(clear_div).append(text_p).append(info_h4).append(info_div);
+    var post_li = jQuery("<li>").attr("id",id).css("display", "none").append(effect_div);
+    //add post to document if not present
+    console.log("MVR - about to add");
+    if (jQuery("li[id=" + id + "]").length == 0)
+    {
+    console.log("MVR - about to add 2");
+      jQuery("ol#posts-stream:first").prepend(post_li);
+      var element = jQuery("li:first").get(0);
+      new Effect.SlideDown(element, {duration: 0.5, queue: "end"});
+    }
+  }
+  else if (type == "imagePost")
+  {
+    //parse image post
+    var id = body.find("id:first").text();
+    var timestamp = body.find("timestamp:first").text();
+    var date = body.find("date:first").text();
+    var image_url = body.find("image_url:first").text();
+    var text = body.find("text:first").text();
+    var medium = body.find("medium:first").text();
+    var user = jQuery(body).find("user:first");
+    var username = user.find("username:first").text();
+    var url = user.find("url:first").text();
+    var avatar_url = user.find("avatar_url:first").text();
+    var image_url = body.find("image_url:first").text();
+    //create new post element
+    var hours_minutes_ago_span = jQuery("<span>").addClass("date").addClass("hours_minutes_ago").attr("timestamp", timestamp).text(blogcastrHoursMinutesAgo(timestamp));
+    var avatar_img = jQuery("<img>").addClass("avatar").attr("src", avatar_url);
+    var user_a = jQuery("<a>").addClass("user").attr("href", url).append(avatar_img).append(username); 
+    var clear_div = jQuery("<div>").addClass("clear");
+    var image_img = jQuery("<img>").addClass("image").attr("src", image_url);
+    if (text != "")
+    {
+      var text_p = jQuery("<p>").addClass("text").text(text);
+    }
+    var up_img = jQuery("<img>").attr("src", up_image);
+    //AS DESIGNED: some browsers don't work when adding the onclick attribute
+    var info_h4 = jQuery("<h4>").click(function() { blogcastrCollapsibleEvent(this, "ImagePost:" + id + "-info"); }).append("Info").append(up_img);
+    var info_p = jQuery("<p>").addClass("info").text("Posted by " + username + " on " + date + " from " + medium);
+    var info_div = jQuery("<div>").attr("id", "ImagePost:" + id + "-info").css("display", "none").append(info_p);
+    if (typeof(text_p)  == "undefined")
+    {
+      var effect_div = jQuery("<div>").addClass("effect").append(hours_minutes_ago_span).append(user_a).append(clear_div).append(image_img).append(info_h4).append(info_div);
+    }
+    else
+    {
+      var effect_div = jQuery("<div>").addClass("effect").append(hours_minutes_ago_span).append(user_a).append(clear_div).append(image_img).append(text_p).append(info_h4).append(info_div);
+    }
+    var post_li = jQuery("<li>").attr("id",id).css("display", "none").append(effect_div);
+    //add post to document if not present
+    if (jQuery("li[id=" + id + "]").length == 0)
+    {
+      jQuery("#comments-stream:first").prepend(post_li);
+      var element = jQuery("li:first").get(0);
+      new Effect.SlideDown(element, {duration: 0.5, queue: "end"});
+    }
+  }
+  else if (type == "commentPost")
+  {
+    //parse comment post
+    var id = body.find("id:first").text();
+    var timestamp = body.find("timestamp:first").text();
+    var date = body.find("date:first").text();
+    var medium = body.find("medium:first").text();
+    var user = jQuery(body).find("user:first");
+    var username = user.find("username:first").text();
+    var url = user.find("url:first").text();
+    var avatar_url = user.find("avatar_url:first").text();
+    var comment = jQuery(body).find("comment:first");
+    var comment_id = comment.find("id:first").text();
+    var comment_timestamp = comment.find("timestamp:first").text();
+    var comment_date = comment.find("date:first").text();
+    var comment_text = comment.find("text:first").text();
+    var comment_medium = comment.find("medium:first").text();
+    var comment_user = jQuery(comment).find("user:first");
+    var comment_username = comment_user.find("username:first").text();
+    var comment_account = comment_user.find("account:first").text();
+    var comment_url = comment_user.find("url:first").text();
+    var comment_avatar_url = comment_user.find("avatar_url:first").text();
+    //create new post element
+    var hours_minutes_ago_span = jQuery("<span>").addClass("date").addClass("hours_minutes_ago").attr("timestamp", timestamp).text(blogcastrHoursMinutesAgo(timestamp));
+    var avatar_img = jQuery("<img>").addClass("avatar").attr("src", comment_avatar_url);
+    var user_a = jQuery("<a>").addClass("user").attr("href", url).append(avatar_img).append(comment_username); 
+    var clear_div = jQuery("<div>").addClass("clear");
+    var text_p = jQuery("<p>").addClass("text").text(comment_text);
+    var up_img = jQuery("<img>").attr("src", up_image);
+    //AS DESIGNED: some browsers don't work when adding the onclick attribute
+    var info_h4 = jQuery("<h4>").click(function() { blogcastrCollapsibleEvent(this, "TextPost:" + id + "-info"); }).append("Info").append(up_img);
+    var info_p = jQuery("<p>").addClass("info").text("Posted by " + username + " on " + date + " from " + medium);
+    if (comment_account == "FacebookUser")
+      var comment_info_p = jQuery("<p>").addClass("info").text("Commented by " + comment_username + " on " + comment_date + " from " + comment_medium + " using Facebook Connect");
+    else if (comment_account == "TwitterUser")
+      var comment_info_p = jQuery("<p>").addClass("info").text("Commented by " + comment_username + " on " + comment_date + " from " + comment_medium + " using Twitter Sign In");
+    else
+      var comment_info_p = jQuery("<p>").addClass("info").text("Commented by " + comment_username + " on " + comment_date + " from " + comment_medium);
+    var info_div = jQuery("<div>").attr("id", "TextPost:" + id + "-info").css("display", "none").append(info_p).append(comment_info_p);
+    var effect_div = jQuery("<div>").addClass("effect").append(hours_minutes_ago_span).append(user_a).append(clear_div).append(text_p).append(info_h4).append(info_div);
+    var post_li = jQuery("<li>").attr("id",id).css("display", "none").append(effect_div);
+    //add post to document if not present
+    if (jQuery("li[id=" + id + "]").length == 0)
+    {
+      jQuery("#comments-stream:first").prepend(post_li);
+      var element = jQuery("li:first").get(0);
+      new Effect.SlideDown(element, {duration: 0.5, queue: "end"});
+    }
+  }
+  else
+  {
+    var id = body.find("id:first").text();
+    var timestamp = body.find("timestamp:first").text();
+    var medium = body.find("medium:first").text();
+    var comment = body.find("comment:first");
+    var comment_type = comment.find("type:first").text();
+    if (comment_type == "textComment")
+    {
+      var comment_id = comment.find("id:first").text();
+      var comment_timestamp = comment.find("timestamp:first").text();
+      var comment_medium  = comment.find("medium:first").text();
+      var comment_text = comment.find("text:first").text();
+      var comment_user_name = comment.find("name:first").text();
+      var comment_user_account = comment.find("account:first").text();
+      var comment_user_url = comment.find("url:first").text();
+      var comment_user_avatar_url = comment.find("avatar_url:first").text();
+      //create new text comment post element
+      var avatar_a = jQuery("<a>").attr("href", comment_user_url).attr("target", "_blank");
+      if (comment_user_account == "BlogcastrUser")
+        var avatar_div = jQuery("<div>").addClass("avatar-medium-rounded").attr("style", "background-image: url('" + comment_user_avatar_url + "');");
+      else if (comment_user_account == "FacebookUser")
+        var avatar_div = jQuery("<div>").addClass("facebook-avatar-medium-rounded").attr("style", "background-image: url('" + comment_user_avatar_url + "');");
+      else if (comment_user_account == "TwitterUser")
+        var avatar_div = jQuery("<div>").addClass("twitter-avatar-medium-rounded").attr("style", "background-image: url('" + comment_user_avatar_url + "');");
+      avatar_a.append(avatar_div);
+      var text_p = jQuery("<p>").addClass("text").text(comment_text);
+      var comment_url_a = jQuery("<a>").attr("href", comment_user_url).attr("target", "_blank").text(comment_user_name);
+      var comment_hours_minutes_ago_span = jQuery("<span>").addClass("hours_minutes_ago").attr("timestamp", comment_timestamp).text(blogcastrHoursMinutesAgo(comment_timestamp));
+      var comment_info_p = jQuery("<p>").addClass("info").text("Commented by ");
+      comment_info_p.append(comment_url_a);
+      comment_info_p.append(" ");
+      comment_info_p.append(comment_hours_minutes_ago_span);
+      comment_info_p.append(" from " + comment_medium);
+      var clear_div = jQuery("<div>").addClass("clear");
+      var comment_post_hours_minutes_ago_span = jQuery("<span>").addClass("hours_minutes_ago").attr("timestamp", timestamp).text(blogcastrHoursMinutesAgo(timestamp));
+      var comment_post_info_p = jQuery("<p>").addClass("info").text("Posted ");
+      comment_post_info_p.append(comment_post_hours_minutes_ago_span);
+      comment_post_info_p.append(" from " + medium);
+      var li = jQuery("<li>").attr("id",id).append(avatar_a).append(text_p).append(comment_info_p).append(clear_div).append(comment_post_info_p);
+      //add comment to document if not present
+      //TODO: add class to list, this will break
+      if (jQuery("li[id=" + id + "]").length == 0)
+        jQuery("ol:first").prepend(li);
+    }
+    //console.log("received unknown blogcastr event type: " + type);
+  }
+  return true;
 }
 
 function blogcastrCommentCallback(stanza)
@@ -80,13 +261,11 @@ function blogcastrCommentCallback(stanza)
   //Prototype has no XML support using jQuery
   //TODO: alternative could be to use a json convertor like http://www.thomasfrank.se/xml_to_json.html
   //TODO: from needs to be parsed better or included in message
-   console.log("received blogcastr event type: ");
   var from = jQuery(stanza).attr("from");
   var body = jQuery(stanza).find("body:first");
   var type = body.find("type:first").text();
   if (type == "comment")
   {
-   console.log("received blogcastr event type comment ");
     var id = body.find("id:first").text();
     var timestamp = body.find("timestamp:first").text();
     var text = body.find("text:first").text();
@@ -116,9 +295,9 @@ function blogcastrCommentCallback(stanza)
     var post_a = jQuery("<a>").attr("onclick", "blogcastrPostComment(" + id + "); return false;").attr("href", "#").text("Post");
     var li = jQuery("<li>").addClass("comment_stream_list_item").attr("id",id).append(avatar_a).append(text_p).append(clear_div).append(info_p).append(post_a);
     //add comment to document if not present
-    if (jQuery("li.comment_stream_list_item[id=" + id + "]").length == 0)
-  { console.log("received blogcastr event type comment ");
-      jQuery("ol#comment-stream:first").prepend(li);
+//    if (jQuery("li.comment_stream_list_item[id=" + id + "]").length == 0)
+  {
+      jQuery("ol#comments-stream:first").prepend(li);
   }}
   else
   {
@@ -163,93 +342,6 @@ function blogcastrCommentCallback(stanza)
       }
     });*/
   return true;
-}
-
-function blogcastrSubscriptionCallback(stanza)
-{
-  //Prototype has no XML support so using jQuery
-  //TODO: alternative could be to use a json convertor like http://www.thomasfrank.se/xml_to_json.html
-  var from = jQuery(stanza).find("items:first").attr("node");
-  //var events = jQuery(stanza).find("event[xmlns='http://jabber.org/protocol/pubsub#event']:first").find("items[node='" + nodename + "']:first").find("event[xmlns='http://blogcastr.com']")
-  var events = jQuery(stanza).find("event[xmlns='http://jabber.org/protocol/pubsub#event']:first").find("event[xmlns='http://blogcastr.com']")
-    .each(function ()
-    {
-      var type = jQuery(this).find("type:first").text();
-      if (type == null)
-        console.log("blogcastr event type not defined");
-
-//MVR - here I need to work with four types... text posts, image posts, comment posts, and reposts
-//best place to start.... probably comment posts and then at least that piece of stuf will be working
-
-      if (type == "textPost")
-      {
-        var id = jQuery(this).find("id:first").text();
-        var date = jQuery(this).find("date:first").text();
-        var text = jQuery(this).find("text:first").text();
-        //create new comment element
-        var p1 = jQuery("<p>").addClass("list_item_text").text(text);
-        var p2 = jQuery("<p>").addClass("list_item_info").text("Posted by " + from + " on " + date);
-        var li = jQuery("<li>").attr("id",id).append(p1).append(p2);
-        //add comment to document if not present
-        var post = jQuery("li[id='" + id + "']");
-        if (jQuery("li.subscription_stream_list_item[id=" + id + "]").length == 0)
-          jQuery("ol#subscription_stream_list:first").prepend(li);
-      }
-      else if (type == "imagePost")
-      {
-        var id = jQuery(this).find("id:first").text();
-        var date = jQuery(this).find("date:first").text();
-        var image_url = jQuery(this).find("image_url:first").text();
-        //create new comment element
-        var img = jQuery("<img>").attr("src",image_url);
-        var p = jQuery("<p>").addClass("list_item_info").text("Posted by " + from + " on " + date);
-        var li = jQuery("<li>").append(img).append(p).attr("id",id);
-        //add comment to document if not present
-        if (jQuery("li.subscription_stream_list_item[id=" + id + "]").length == 0)
-          jQuery("ol#subscription_stream_list:first").prepend(li);
-      }
-      else
-      {
-     //   console.log("received unknown blogcastr event type: " + type);
-      }
-    });
-  return true;
-}
-
-function blogcastrPostTextMenuSelect()
-{
-  jQuery("#post").find("li.selected").removeClass("selected");
-  jQuery("#post").find("li.text").addClass("selected");
-  //MVR - hide all forms and then display the text form
-  jQuery("#post").find("form").addClass("hidden");
-  jQuery("#post").find("form.text").removeClass("hidden");
-}
-
-function blogcastrPostImageMenuSelect()
-{
-  jQuery("#post").find("li.selected").removeClass("selected");
-  jQuery("#post").find("li.image").addClass("selected");
-  //MVR - hide all forms and then display the image form
-  jQuery("#post").find("form").addClass("hidden");
-  jQuery("#post").find("form.image").removeClass("hidden");
-}
-
-function blogcastrCommentStreamMenuSelect()
-{
-  jQuery("#streams-menu").find("li.selected").removeClass("selected");
-  jQuery("#streams-menu").find("li.comments").addClass("selected");
-  //MVR - hide all streams and then display the comment stream
-  jQuery(".stream").addClass("hidden");
-  jQuery("#comment-stream").removeClass("hidden");
-}
-
-function blogcastrSubscriptionStreamMenuSelect()
-{
-  jQuery("#streams-menu").find("li.selected").removeClass("selected");
-  jQuery("#streams-menu").find("li.subscriptions").addClass("selected");
-  //MVR - hide all streams and then display the comment stream
-  jQuery(".stream").addClass("hidden");
-  jQuery("#subscription-stream").removeClass("hidden");
 }
 
 Strophe.log = function(log, msg)

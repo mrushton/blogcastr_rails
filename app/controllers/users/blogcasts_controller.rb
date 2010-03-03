@@ -191,6 +191,8 @@ class Users::BlogcastsController < ApplicationController
           end
           #MVR - subscribers
           @num_subscribers = @blogcast_user.subscribers.count
+          #MVR - subscriptions
+          @num_subscriptions = @blogcast_user.subscriptions.count
           #MVR - blogcasts
           @num_blogcasts = @blogcast_user.blogcasts.count
           #MVR - subscriptions

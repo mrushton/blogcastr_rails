@@ -40,6 +40,7 @@ Rails::Initializer.run do |config|
   config.gem "memcache-client", :lib => "memcache"
   config.gem "thrift"
   config.gem "twitter"
+  config.gem "ambethia-recaptcha", :lib => "recaptcha/rails", :source => "http://gems.github.com"
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named

@@ -2,15 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>Blogcastr Sign In</title>
+    <title>Blogcastr sign in</title>
+    <%= javascript_include_tag "jquery.js", :media => "all" %>
     <%= stylesheet_link_tag "blogcastr.css", :media => "screen" %>
   </head>
   <body>
     <div id="wrapper">
       <div id="header">
         <%- form_tag search_path :controller => "search" do -%>
-          <%= label_tag(:query, image_tag("magnifying_glass.png")) %>
-          <%= text_field_tag :query, "Search Blogcastr", :onfocus => "this.value = '';", :onblur => "this.value = 'Search Blogcastr';"  %>
+          <%= label_tag :query, image_tag("magnifying_glass.png") -%>
+          <%= text_field_tag :query, "Search Blogcastr", :onfocus => "if (this.value == 'Search Blogcastr') this.value = ''; jQuery('#header form').addClass('selected');", :onblur => "if (this.value == '') this.value = 'Search Blogcastr'; jQuery('#header form').removeClass('selected');" -%>
         <%- end -%>
         <a href="/"><img src="/images/logo.png" alt="Blogcastr"></img></a>
         <div id="navigation">
@@ -18,7 +19,7 @@
           <%= link_to "Sign in", sign_in_path, :class => "selected" %>
         </div>
       </div>
-      <div id="content" class="one-column">
+      <div id="content" class="one-column narrow">
         <div id="main">
           <div class="upper-left-border-squared-corner-blue">
           </div>
@@ -58,12 +59,12 @@
                 <h2><%= flash[:info] -%></h2>            
               </div>            
 <%- end -%>
-              <%= label_tag :user_name, "Username or email address" %>
+              <%= label_tag :user_name, "Username or email address", :class => "first" %>
               <%= text_field_tag :user_name %>
-              <%= label_tag :password %>
+              <%= label_tag :password, "Password", :class => "tall" %>
               <%= password_field_tag :password %>
               <div class="right-justify">
-                <%= link_to "forget your password?", new_password_path %>
+                <%= link_to "Forget your password?", new_password_path, :class => "delete" %>
               </div>
               <%= submit_tag "Submit", :class => "button" %>
             <% end %>

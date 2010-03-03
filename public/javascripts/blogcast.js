@@ -246,16 +246,6 @@ function blogcastrPostCallback(stanza)
   return true;
 }
 
-function pubsubSubscribeCallback(stanza)
-{
-//  var error = $(stanza).getElementsByTagName("error");
-
-//  if(error.length != 0)
-//  {
-//    console.log("Failed to subscribe to node");
-//  }
-}
-
 Strophe.log = function(log,msg)
 {
 //  console.log(msg);

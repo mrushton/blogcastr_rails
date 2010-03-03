@@ -11,6 +11,15 @@ class Clearance::UsersController < ApplicationController
     @blogcastr_user = BlogcastrUser.new(params[:blogcastr_user])
     #MVR - create setting
     @setting = Setting.new(params[:setting])
+    #MVR - verify the recaptcha
+    if !verify_recaptcha :private_key => "6Lc7igsAAAAAADE0g3jbIf8YWU6fpYJppSFa3iBt"
+      @blogcastr_user.valid?
+      #AS DESIGNED - valid? clears all errors so add it here 
+      @blogcastr_user.errors.add_to_base("Humanness check failed")
+      @setting.valid?
+      render :template => 'users/new'
+      return
+    end
     #MVR - attempt to determine the time zone
     utc_offset = params[:utc_offset]
     if !utc_offset.nil?
