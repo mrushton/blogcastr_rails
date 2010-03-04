@@ -2,8 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>Blogcastr forget password</title>
-    <%= javascript_include_tag "jquery.js", :media => "all" %>
+    <title>Blogcastr update password</title>
     <%= stylesheet_link_tag "blogcastr.css", :media => "screen" %>
   </head>
   <body>
@@ -39,7 +38,7 @@
                 <div class="lower-left-border-squared-corner-gray">
                 </div>
               </div>
-              <h1>Forget your password?</h1>
+              <h1>Update your password</h1>
               <div class="side-border">
                 <div class="upper-right-border-squared-corner-gray">
                 </div>
@@ -49,21 +48,16 @@
                 </div>
               </div>
             </div>
-            <% form_for :password, :url => passwords_path do |form| %>
-<%- if !flash[:error].nil? -%>
-              <div class="error">
-                <h2><%= flash[:error] -%></h2>
-              </div>            
-<%- elsif !flash[:info].nil? -%>
-              <div class="info">
-                <h2><%= flash[:info] -%></h2>            
-              </div>            
-<%- end -%>
-            <%= form.label :email, "Please enter your email address", :class => "first" %>
-            <%= form.text_field :email %>
-            <p>You will be sent instructions on how to reset your password.</p>
-            <%= form.submit "Submit", :class => "button" %>
-          <% end %>
+            <% form_for(:user, :url => user_password_path(@user, :token => @user.confirmation_token), :html => { :method => :put }) do |form| %>
+              <%= form.error_messages :header_message => "Oops!", :message => nil %>
+              <%= form.label :password, "Choose password", :class => "first" %>
+              <%= form.password_field :password %>
+              <p>At least six characters.</p>
+              <%= form.label :password_confirmation, "Confirm password" %>
+              <%= form.password_field :password_confirmation %>
+              <p>Don't forget it!</p>
+              <%= form.submit "Save password", :class => "button" %>
+            <% end %>
           </div>
           <div class="lower-left-border-squared-corner-blue">
           </div>
