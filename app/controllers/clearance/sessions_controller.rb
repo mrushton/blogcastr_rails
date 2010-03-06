@@ -7,7 +7,7 @@ class Clearance::SessionsController < ApplicationController
   end
 
   def create
-    @user = BlogcastrUser.authenticate(params[:user_name], params[:password])
+    @user = BlogcastrUser.authenticate(params[:username], params[:password])
     if @user.nil?
       flash[:error] = "Oops! Invalid username/email address or password."
       redirect_to sign_in_path

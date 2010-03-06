@@ -59,7 +59,7 @@ class ImagePostsController < ApplicationController
     end
     respond_to do |format|
       format.js
-      format.html {flash[:notice] = "Image post posted successfully"; redirect_to :back}
+      format.html {flash[:success] = "Image post posted successfully"; redirect_to :back}
       format.xml {render :xml =>@image_post.to_xml, :status => :created, :location => @image_post}
       format.json {render :json => @image_post.to_json, :status => :created, :location => @image_post}
     end

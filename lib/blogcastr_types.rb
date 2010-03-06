@@ -102,6 +102,32 @@ module Thrift
 
     end
 
+    class AudioPost
+      include ::Thrift::Struct
+      ID = 1
+      DATE = 2
+      TIMESTAMP = 3
+      MEDIUM = 4
+      AUDIO_URL = 5
+      TEXT = 6
+
+      ::Thrift::Struct.field_accessor self, :id, :date, :timestamp, :medium, :audio_url, :text
+      FIELDS = {
+        ID => {:type => ::Thrift::Types::I32, :name => 'id'},
+        DATE => {:type => ::Thrift::Types::STRING, :name => 'date'},
+        TIMESTAMP => {:type => ::Thrift::Types::I32, :name => 'timestamp'},
+        MEDIUM => {:type => ::Thrift::Types::STRING, :name => 'medium'},
+        AUDIO_URL => {:type => ::Thrift::Types::STRING, :name => 'audio_url'},
+        TEXT => {:type => ::Thrift::Types::STRING, :name => 'text'}
+      }
+
+      def struct_fields; FIELDS; end
+
+      def validate
+      end
+
+    end
+
     class CommentPost
       include ::Thrift::Struct
       ID = 1

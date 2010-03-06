@@ -1,0 +1,28 @@
+<li id="<%= audio_post.id %>">
+<%- if @first == 1 -%>
+  <div class="first effect">
+<%- else -%>
+  <div class="effect">
+<%- end -%>
+    <%= hours_minutes_ago_helper audio_post.created_at %>
+    <a href="<%= profile_path(:username => audio_post.user.username) -%>" class="user"><%= image_tag(audio_post.user.setting.avatar.url(:small), :class => "avatar") -%> <%= audio_post.user.username -%></a>
+    <div class="clear">
+    </div>
+    <div id="AudioPost:<%= audio_post.id -%>-player" class="player">
+    </div>
+    <script type="text/javascript">
+      var swf_object = new SWFObject("/player-viral.swf", "player", "400", "24", "9");
+      swf_object.addParam("allowfullscreen", "false");
+      swf_object.addParam("allowscriptaccess", "always");
+      swf_object.addVariable("file", "<%= audio_post.audio.url(:original, false) -%>");
+      swf_object.write("AudioPost:<%= audio_post.id -%>-player");
+    </script> 
+<% if !audio_post.text.nil? -%>
+    <p class="text"><%= audio_post.text %></p>
+<% end -%>
+    <h4 onclick="blogcastrCollapsibleEvent(this, 'AudioPost:<%= audio_post.id -%>-info');">Info<%= image_tag "up.png" -%></h4>
+    <div id="AudioPost:<%= audio_post.id -%>-info" style="display: none;">
+      <p class="info">Posted by <%= audio_post.user.username -%> on <%= audio_post.created_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/,' ') %> from <%= audio_post.from %></p>
+    </div>
+  </div>
+</li>

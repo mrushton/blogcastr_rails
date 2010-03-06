@@ -119,14 +119,16 @@ ActionController::Routing::Routes.draw do |map|
     blogcasts.resources :text_posts, :controller => "text_posts", :only => [:create, :destroy]
     #MVR - image posts
     blogcasts.resources :image_posts, :controller => "image_posts", :only => [:create, :destroy]
+    #MVR - audio posts
+    blogcasts.resources :audio_posts, :controller => "audio_posts", :only => [:create, :destroy]
+    #MVR - video posts
+    blogcasts.resources :video_posts, :controller => "video_posts", :only => [:create, :destroy]
     #MVR - comment posts
     blogcasts.resources :comment_posts, :controller => "comment_posts", :only => [:create, :destroy]
     #MVR - reposts
     blogcasts.resources :reposts, :controller => "reposts", :only => [:create, :destroy]
-    #MVR - text comments
+    #MVR - comments
     blogcasts.resources :comments, :controller => "comments", :only => [:create]
-    #MVR - image comments
-    blogcasts.resources :image_comments, :controller => "image_comments", :only => [:create]
     #MVR - likes 
     blogcasts.resources :likes, :controller => "likes", :only => [:create, :destroy]
     #MVR - email notifications 

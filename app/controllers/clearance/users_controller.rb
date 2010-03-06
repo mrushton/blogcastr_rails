@@ -9,6 +9,9 @@ class Clearance::UsersController < ApplicationController
 
   def create
     @blogcastr_user = BlogcastrUser.new(params[:blogcastr_user])
+    #MVR - make username lowercase
+    #TODO: could add a database field to support multi-case usernames if desired
+    #@blogcastr_user.username = @blogcastr_user.username.downcase
     #MVR - create setting
     @setting = Setting.new(params[:setting])
     #MVR - verify the recaptcha

@@ -87,10 +87,15 @@
 <% else -%>
           <h2 class="tab" onclick="blogcastrPageSelect(this, 'dashboard', 'image-page');">Image</h2>
 <% end -%>
+<% if @dashboard_tab == "audio" || flash[:dashboard_tab] == "audio" -%>
+          <h2 class="tab selected" onclick="blogcastrPageSelect(this, 'dashboard', 'audio-page');">Audio</h2>
+<% else -%>
+          <h2 class="tab" onclick="blogcastrPageSelect(this, 'dashboard', 'audio-page');">Audio</h2>
+<% end -%>
 <% if @dashboard_tab == "video" || flash[:dashboard_tab] == "video" -%>
           <h2 class="tab selected short" onclick="blogcastrPageSelect(this, 'dashboard', 'video-page');">Video</h2>
 <% else -%>
-          <h2 class="tab short" onclick="blogcastrPageSelect(this, 'dashboard', 'video-page');">Video</h2>
+          <h2 class="tab last" onclick="blogcastrPageSelect(this, 'dashboard', 'video-page');">Video</h2>
 <% end -%>
 <div class="clear">
 </div>
@@ -104,13 +109,17 @@
 <div id="text-page" class="page">
 <% end %>
 
-          <% remote_form_for :text_post, :url => {:controller => :text_posts, :action => :create}, :html => {:id => "text_post_form"} do |f| %>
-            <%= f.hidden_field :from %>
-            <%= f.label :text, "Text" %>
-            <br>
-            <%= f.text_area :text, :size => "50x10" %>
-            <br>
-            <%= f.submit "Submit" %>
+          <% remote_form_for :text_post, :url => {:controller => :text_posts, :action => :create}, :html => {:id => "text-post-form"} do |form| %>
+            <%= form.hidden_field :from %>
+            <%= form.text_area :text, :onfocus => "jQuery(this).addClass('selected');", :onblur => "if (this.value == '') jQuery(this).removeClass('selected')" %>
+            <div class="submit">
+              <%= image_tag "ajax-loader.gif", :id => "text-post-loading", :style => "display: none;" -%>
+              <%= image_tag "tick.png", :id => "text-post-success", :style => "display: none;" -%>
+              <%= image_tag "cross.png", :id => "text-post-error", :style => "display: none;" -%>
+              <%= form.submit "Post", :onclick => "jQuery('#text-post-loading').show();", :class => "button" %>
+            </div>
+            <div class="clear">
+            </div>
           <% end %>
 </div>
 <% if @dashboard_tab == "image" || flash[:dashboard_tab] == "image" -%>
@@ -120,14 +129,27 @@
 <% end %>
           <% form_for :image_post, :url => {:controller => :image_posts, :action => :create}, :html => {:multipart => true} do |f| %>
             <%= f.hidden_field :from %>
-            <%= f.label :image, "Image" %>
-            <br>
             <%= f.file_field :image %>
-            <br>
-            <%= f.submit "Submit" %>
+            <%= f.submit "Post", :class => "button" %>
+            <div class="clear">
+            </div>
           <% end %>
 </div>
 
+<% if @dashboard_tab == "audio" || flash[:dashboard_tab] == "audio" -%>
+<div id="audio-page" class="page selected">
+<% else %>
+<div id="audio-page" class="page">
+<% end %>
+          <% form_for :audio_post, :url => {:controller => :audio_posts, :action => :create}, :html => {:multipart => true} do |f| %>
+            <%= f.hidden_field :from %>
+            <%= f.file_field :audio %>
+            <%= f.text_field :text %>
+            <%= f.submit "Post", :class => "button" %>
+            <div class="clear">
+            </div>
+          <% end %>
+</div>
       </div>
 
 

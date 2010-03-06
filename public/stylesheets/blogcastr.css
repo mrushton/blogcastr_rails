@@ -702,6 +702,14 @@ a:hover
 	margin-bottom: 3px;
 }
 
+#bottom ol li div.player
+{
+	margin-left: 60px;
+	margin-top: 3px;
+	margin-right: 60px;
+	margin-bottom: 3px;
+}
+
 #bottom ol li h4
 {
 	margin-left: 1px;

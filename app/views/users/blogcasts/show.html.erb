@@ -169,6 +169,8 @@
           <%= render :partial => "text_post", :object => post -%>
   <%- elsif post.instance_of?(ImagePost) -%>
           <%= render :partial => "image_post", :object => post -%>
+  <%- elsif post.instance_of?(AudioPost) -%>
+          <%= render :partial => "audio_post", :object => post -%>
   <%- elsif post.instance_of?(CommentPost) -%>
           <%= render :partial => "comment_post", :object => post -%>
   <%- elsif post.instance_of?(Repost) -%>

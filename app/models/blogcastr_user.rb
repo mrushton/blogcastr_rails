@@ -9,7 +9,7 @@ class BlogcastrUser < User
 
   #MVR - added username support
   def self.authenticate(email, password)
-    return nil unless user = find(:first, :conditions => ["username = ? OR email = ?", email.to_s.downcase, email.to_s.downcase])
+    return nil unless user = find(:first, :conditions => ["LOWER(username) = ? OR LOWER(email) = ?", email.to_s.downcase, email.to_s.downcase])
     return user if user.authenticated?(password)
   end
 

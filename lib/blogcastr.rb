@@ -162,6 +162,21 @@ require 'blogcastr_types'
             raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'send_image_post_to_muc_room failed: unknown result')
           end
 
+          def send_audio_post_to_muc_room(username, host_name, room, from, audio_post)
+            send_send_audio_post_to_muc_room(username, host_name, room, from, audio_post)
+            return recv_send_audio_post_to_muc_room()
+          end
+
+          def send_send_audio_post_to_muc_room(username, host_name, room, from, audio_post)
+            send_message('send_audio_post_to_muc_room', Send_audio_post_to_muc_room_args, :username => username, :host_name => host_name, :room => room, :from => from, :audio_post => audio_post)
+          end
+
+          def recv_send_audio_post_to_muc_room()
+            result = receive_message(Send_audio_post_to_muc_room_result)
+            return result.success unless result.success.nil?
+            raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'send_audio_post_to_muc_room failed: unknown result')
+          end
+
           def send_comment_post_to_muc_room(username, host_name, room, comment_post_from, comment_post, comment_from, comment)
             send_send_comment_post_to_muc_room(username, host_name, room, comment_post_from, comment_post, comment_from, comment)
             return recv_send_comment_post_to_muc_room()
@@ -325,6 +340,13 @@ require 'blogcastr_types'
             result = Send_image_post_to_muc_room_result.new()
             result.success = @handler.send_image_post_to_muc_room(args.username, args.host_name, args.room, args.from, args.image_post)
             write_result(result, oprot, 'send_image_post_to_muc_room', seqid)
+          end
+
+          def process_send_audio_post_to_muc_room(seqid, iprot, oprot)
+            args = read_args(iprot, Send_audio_post_to_muc_room_args)
+            result = Send_audio_post_to_muc_room_result.new()
+            result.success = @handler.send_audio_post_to_muc_room(args.username, args.host_name, args.room, args.from, args.audio_post)
+            write_result(result, oprot, 'send_audio_post_to_muc_room', seqid)
           end
 
           def process_send_comment_post_to_muc_room(seqid, iprot, oprot)
@@ -710,6 +732,46 @@ require 'blogcastr_types'
         end
 
         class Send_image_post_to_muc_room_result
+          include ::Thrift::Struct
+          SUCCESS = 0
+
+          ::Thrift::Struct.field_accessor self, :success
+          FIELDS = {
+            SUCCESS => {:type => ::Thrift::Types::I32, :name => 'success'}
+          }
+
+          def struct_fields; FIELDS; end
+
+          def validate
+          end
+
+        end
+
+        class Send_audio_post_to_muc_room_args
+          include ::Thrift::Struct
+          USERNAME = 1
+          HOST_NAME = 2
+          ROOM = 3
+          FROM = 4
+          AUDIO_POST = 5
+
+          ::Thrift::Struct.field_accessor self, :username, :host_name, :room, :from, :audio_post
+          FIELDS = {
+            USERNAME => {:type => ::Thrift::Types::STRING, :name => 'username'},
+            HOST_NAME => {:type => ::Thrift::Types::STRING, :name => 'host_name'},
+            ROOM => {:type => ::Thrift::Types::STRING, :name => 'room'},
+            FROM => {:type => ::Thrift::Types::STRUCT, :name => 'from', :class => Thrift::User},
+            AUDIO_POST => {:type => ::Thrift::Types::STRUCT, :name => 'audio_post', :class => Thrift::AudioPost}
+          }
+
+          def struct_fields; FIELDS; end
+
+          def validate
+          end
+
+        end
+
+        class Send_audio_post_to_muc_room_result
           include ::Thrift::Struct
           SUCCESS = 0
 

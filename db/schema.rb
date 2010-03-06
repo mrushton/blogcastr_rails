@@ -50,22 +50,6 @@ ActiveRecord::Schema.define(:version => 20100218034011) do
     t.datetime "updated_at"
   end
 
-  create_table "posts", :force => true do |t|
-    t.string   "type",               :null => false
-    t.integer  "user_id",            :null => false
-    t.integer  "blogcast_id",        :null => false
-    t.string   "from",               :null => false
-    t.string   "text"
-    t.string   "image_file_name"
-    t.string   "image_content_type"
-    t.integer  "image_file_size"
-    t.datetime "image_updated_at"
-    t.integer  "comment_id"
-    t.integer  "parent_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "settings", :force => true do |t|
     t.integer  "user_id",                                                       :null => false
     t.string   "full_name"

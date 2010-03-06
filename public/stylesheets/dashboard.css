@@ -78,76 +78,17 @@
 	width: 189px; 
 }
 
-#comment p
+#dashboard h2.tab.last
 {
-	margin-left: 3px;
-	font-size: 0.85em;
+	margin-right: 0px; 
 }
 
-#comment p.first
-{
-	margin-top: 5px;
-}
-
-#sign-up
-{
-	text-align: center;
-}
-
-#sign-up a
-{
-	margin-top: 10px;
-	margin-right: 1px;
-	margin-bottom: 10px;
-	padding: 0px;
-	display: inline-block;
-	width: 150px;
-	height: 32px;
-	line-height: 32px;
-	color: #000000;
-	background-color: #efc02d;
-	background-image: url('/images/fade.png');
-	background-repeat: repeat-x;
-	text-decoration: none;
-	text-align: center;
-	font-weight: bold;
-	font-size: .85em;
-}
-
-#sign-up a:hover
-{
-	background-color: #d79400;
-	text-decoration: none;
-}
-
-#sign-up a:visited
-{
-	color: #000000;
-	text-decoration: none;
-}
-
-#comment p.connect
-{
-	margin-top: 0px;
-	padding-left: 20px;
-	padding-right: 20px;
-	width: 160px;
-	display: inline-block;
-	font-weight: normal;
-	text-align: center;
-}
-
-#comment img
-{
-	margin-top: 5px;
-}
-
-#comment form
+#dashboard form
 {
 	margin-top: 3px;
 }
 
-#comment form textarea
+#dashboard form textarea
 {
 	padding: 5px;
 	width: 560px;
@@ -162,12 +103,31 @@
 	resize: none;
 }
 
-#comment form textarea.selected
+#dashboard form input#image_post_image 
+{
+	width: 572px;
+}
+
+#dashboard form textarea.selected
 {
 	background-image: none;
 }
 
-#comment form input 
+#dashboard form div.submit
+{
+	float: right;
+}
+
+#dashboard form div.submit img
+{
+}
+
+#dashboard form div.submit img.selected
+{
+	display: inline-block;
+}
+
+#dashboard form input.button 
 {
 	margin-top: 3px;
 	width: 125px;
@@ -176,14 +136,13 @@
 	border-width: 1px;
 	border-color: #000000;
 	border-color: #4e606f;
-	float: right;
 	font-size: 1.15em;
 	font-weight: bold;
 	font-size: 0.75em;
 	cursor: pointer;
 }
 
-#comment form input:hover
+#dashboard form input.button:hover
 {
 	background-color: #a3a3a3;
 }

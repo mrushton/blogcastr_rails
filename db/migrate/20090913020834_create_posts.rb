@@ -12,6 +12,11 @@ class CreatePosts < ActiveRecord::Migration
       t.string :image_content_type
       t.integer :image_file_size
       t.datetime :image_updated_at
+      #MVR - audio posts
+      t.string :audio_file_name
+      t.string :audio_content_type
+      t.integer :audio_file_size
+      t.datetime :audio_updated_at
       #MVR - comment posts
       t.integer :comment_id
       #MVR - reposts

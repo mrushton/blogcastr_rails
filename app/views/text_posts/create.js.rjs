@@ -1,1 +1,14 @@
-page[:text_post_form].reset
+page["text-post-form"].reset
+#MVR - add background prompt back
+#AS DESIGNED: reset will remove focus of element
+page["text_post_text"].remove_class_name("selected")
+#MVR - remove any selected images, should only be loading image
+page.select("form#text-post-form div.submit img").each do |element|
+  element.hide
+end
+#MVR - show success
+page["text-post-success"].show
+#MVR - hide success after three seconds
+page.delay(3) do
+  page["text-post-success"].hide
+end
