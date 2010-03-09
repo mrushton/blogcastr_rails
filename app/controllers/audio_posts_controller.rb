@@ -15,10 +15,36 @@ class AudioPostsController < ApplicationController
     end
     #MVR - find blogcast
     @blogcast = @user.blogcasts.find(params[:blogcast_id]) 
+    #MVR - save the original file for post processing
+    if !params[:audio_post].nil? && !params[:audio_post][:audio].nil?
+      audio_file = params[:audio_post][:audio]
+    else
+      audio_file = nil
+    end
+    if audio_file.is_a?(Tempfile)
+      #AS DESIGNED: don't use temp file because they get destroyed when the app terminates
+      extension = File.extname(audio_file.original_filename)
+      #AS DESIGNED: would like to use post id to keep it simple but paperclip deletes the file by the time the object is saved
+      audio_post_process_file_name = sprintf("/tmp/%s.%d.%d.%d%s", File.basename(audio_file.original_filename, extension), $$, Time.now, rand(4294967296), extension)
+      audio_post_process_file = File.new(audio_post_process_file_name, "wb+")
+      buffer = ""
+      while audio_file.read(8192, buffer) do
+        audio_post_process_file.write(buffer)
+      end
+      audio_post_process_file.close
+      audio_file.rewind
+    else
+      audio_post_process_file_name = nil 
+    end
     @audio_post = AudioPost.new(params[:audio_post])
     @audio_post.user_id = @user.id
     @audio_post.blogcast_id = @blogcast.id
+    @audio_post.audio_post_process_file_name = audio_post_process_file_name
     if !@audio_post.save
+      #MVR - remove post processing file
+      if !audio_post_process_file_name.nil?
+        FileUtils.rm_f(audio_post_process_file_name)
+      end
       respond_to do |format|
         format.js {@error = "Unable to save audio post"; render :action => "error"}
         format.html {flash[:error] = "Unable to save audio post"; redirect_to :back}
@@ -46,6 +72,10 @@ class AudioPostsController < ApplicationController
       err = thrift_client.send_audio_post_to_muc_room(@user.username, HOST, "Blogcast."+@blogcast.id.to_s, thrift_user, thrift_audio_post)
       thrift_client_close
     rescue
+      #MVR - remove post processing file
+      if !audio_post_process_file_name.nil?
+        FileUtils.rm_f(audio_post_process_file_name)
+      end
       @audio_post.errors.add_to_base "Unable to send audio post to muc room"
       @audio_post.destroy
       respond_to do |format|

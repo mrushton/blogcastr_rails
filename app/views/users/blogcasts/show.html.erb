@@ -176,7 +176,7 @@
   <%- elsif post.instance_of?(Repost) -%>
           <%= render :partial => "repost", :object => post -%>
   <%- end -%>
-  <% @iter = @iter + 1 -%>
+  <% @iter = @iter + 1; break;-%>
 <% end -%>
         </ol>
       </div>

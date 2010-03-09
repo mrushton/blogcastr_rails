@@ -17,6 +17,8 @@ class CreatePosts < ActiveRecord::Migration
       t.string :audio_content_type
       t.integer :audio_file_size
       t.datetime :audio_updated_at
+      #MVR - temporary file used for post processing of audio
+      t.string :audio_post_process_file_name
       #MVR - comment posts
       t.integer :comment_id
       #MVR - reposts

@@ -42,6 +42,7 @@ module Paperclip
       @whiny             = options[:whiny_thumbnails] || options[:whiny]
       @convert_options   = options[:convert_options] || {}
       @processors        = options[:processors] || [:thumbnail]
+      @post_process      = options[:post_process]
       @options           = options
       @queued_for_delete = []
       @queued_for_write  = {}
@@ -76,7 +77,7 @@ module Paperclip
 
       return nil if uploaded_file.nil?
 
-      @queued_for_write[:original]   = uploaded_file.to_tempfile
+      @queued_for_write[:original] = uploaded_file.to_tempfile
       instance_write(:file_name,       uploaded_file.original_filename.strip.gsub(/[^A-Za-z\d\.\-_]+/, '_'))
       instance_write(:content_type,    uploaded_file.content_type.to_s.strip)
       instance_write(:file_size,       uploaded_file.size.to_i)

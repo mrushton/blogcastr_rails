@@ -1,6 +1,13 @@
 module Paperclip
   module Storage
 
+    def flush_post_process #:nodoc:
+      @queued_for_post_process.each do |path|
+        tmp = Tempfile.new(path)
+        FileUtils.cp(path, tmp.path)
+        @queued_for_post_process = []
+      end
+    end
     # The default place to store attachments is in the filesystem. Files on the local
     # filesystem can be very easily served by Apache without requiring a hit to your app.
     # They also can be processed more easily after they've been saved, as they're just

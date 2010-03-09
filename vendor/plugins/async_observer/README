@@ -1,0 +1,27 @@
+This is Async Observer -- a Rails plugin that provides deep integration with
+Beanstalk.
+
+For more information, see http://async-observer.rubyforge.org/.
+
+For more information on Beanstalk, see its home page at
+http://xph.us/software/beanstalkd/.
+
+
+Worker Options:
+-d                                : daemonize
+--pid [path to pidfile]           : drop a pid file to a path
+-e [test,production,development]  : set the rails environment
+
+Example Usage:
+
+start 3 workers
+  ./vendor/plugins/async_observer/bin/worker -d --pid log/worker1.pid -e production
+  ./vendor/plugins/async_observer/bin/worker -d --pid log/worker2.pid -e production
+  ./vendor/plugins/async_observer/bin/worker -d --pid log/worker3.pid -e production
+
+kill one
+  kill -s INT `cat log/worker1.pid`
+
+Remember kill a worker will cause it to go into a shutdown phase.
+Run the above again to kill immediately, but remember all jobs in
+the workers queue is lost at that point...
