@@ -1,3 +1,7 @@
+var can_play_audio = false;
+var can_play_mp3 = false;
+var can_play_ogg = false;
+
 function blogcastrOnLoad()
 {
   //MVR - create a BOSH connection with Strophe
@@ -7,6 +11,22 @@ function blogcastrOnLoad()
     connection.connect(hostname,"",onConnect);
   else
     connection.connect(username + "@" + hostname, password, onConnect);
+  //MVR - detect audio and video support 
+  var audio = jQuery("<audio>")[0];
+  if (audio.canPlayType != null)
+  {
+    if (audio.canPlayType("audio/mpeg") == "maybe" || audio.canPlayType("audio/mpeg") == "probably")
+      can_play_mp3 = true;
+    if (audio.canPlayType("audio/ogg") == "maybe" || audio.canPlayType("audio/ogg") == "probably")
+      can_play_ogg = true;
+    if (can_play_mp3 == true || can_play_ogg == true)
+      can_play_audio = true;
+  }
+  //MVR - show html5 or flash player
+  if (can_play_audio == true)
+    jQuery("div.player.audio div.html5").show();
+  else
+    jQuery("div.player.audio div.flash").show();
   //MVR - determine clock offset
   //TODO: we could do much better but since we are only going for sub-minute synchronization it's not a big deal 
   var client_date = new Date;
@@ -149,24 +169,31 @@ function blogcastrPostCallback(stanza)
   }
   else if (type == "audioPost")
   {
-    //parse image post
+//alert("audio post");
+    //parse audio post
     var id = body.find("id:first").text();
     var timestamp = body.find("timestamp:first").text();
     var date = body.find("date:first").text();
-    var image_url = body.find("image_url:first").text();
     var text = body.find("text:first").text();
     var medium = body.find("medium:first").text();
     var user = jQuery(body).find("user:first");
     var username = user.find("username:first").text();
     var url = user.find("url:first").text();
     var avatar_url = user.find("avatar_url:first").text();
-    var image_url = body.find("image_url:first").text();
     //create new post element
     var hours_minutes_ago_span = jQuery("<span>").addClass("date").addClass("hours_minutes_ago").attr("timestamp", timestamp).text(blogcastrHoursMinutesAgo(timestamp));
     var avatar_img = jQuery("<img>").addClass("avatar").attr("src", avatar_url);
     var user_a = jQuery("<a>").addClass("user").attr("href", url).append(avatar_img).append(username); 
     var clear_div = jQuery("<div>").addClass("clear");
-    var player_div = jQuery("<div>").attr("id", "AudioPost:" + id  + "-player").addClass("player");
+    var player_div = jQuery("<div>").addClass("player loading");
+
+
+    var loading_img = jQuery("<img>").attr("src", ajax_loader_image);
+    var loading_p = jQuery("<p>").text("Encoding audio sit tight!");
+    player_div.append(loading_img).append(loading_p);
+
+
+
     if (text != "")
     {
       var text_p = jQuery("<p>").addClass("text").text(text);
@@ -178,26 +205,29 @@ function blogcastrPostCallback(stanza)
     var info_div = jQuery("<div>").attr("id", "ImagePost:" + id + "-info").css("display", "none").append(info_p);
     if (typeof(text_p)  == "undefined")
     {
-      var effect_div = jQuery("<div>").addClass("effect").append(hours_minutes_ago_span).append(user_a).append(clear_div).append(image_img).append(info_h4).append(info_div);
+      var effect_div = jQuery("<div>").addClass("effect").append(hours_minutes_ago_span).append(user_a).append(clear_div).append(player_div).append(info_h4).append(info_div);
     }
     else
     {
-      var effect_div = jQuery("<div>").addClass("effect").append(hours_minutes_ago_span).append(user_a).append(clear_div).append(image_img).append(text_p).append(info_h4).append(info_div);
+      var effect_div = jQuery("<div>").addClass("effect").append(hours_minutes_ago_span).append(user_a).append(clear_div).append(player_div).append(text_p).append(info_h4).append(info_div);
     }
     var post_li = jQuery("<li>").attr("id",id).css("display", "none").append(effect_div);
     //add post to document if not present
     if (jQuery("li[id=" + id + "]").length == 0)
     {
       jQuery("ol:first").prepend(post_li);
-      //create flash object  
-      var swf_object = new SWFObject("/player-viral.swf", "player", "400", "24", "9");
-      swf_object.addParam("allowfullscreen", "false");
-      swf_object.addParam("allowscriptaccess", "always");
-      swf_object.addVariable("file", url);
-      swf_object.write("AudioPost:" + id  + "-player");
       var element = jQuery("li:first").get(0);
       new Effect.SlideDown(element, {duration: 0.5, queue: "end"});
     }
+  }
+  else if (type == "audioMedia")
+  {
+//alert("audio media");
+    //parse audio media
+    var id = body.find("id:first").text();
+    var mp3_url = body.find("mp3_url:first").text();
+    var ogg_url = body.find("ogg_url:first").text();
+
   }
   else if (type == "commentPost")
   {

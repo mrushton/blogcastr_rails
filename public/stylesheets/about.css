@@ -1,0 +1,136 @@
+div#main h2
+{
+	margin-top: 10px;
+	margin-bottom: 0px;
+	font-size: 1.35em;
+}
+
+div#main p
+{
+	margin-top: 10px;
+	font-size: 1.0em;
+}
+
+div#main p.first
+{
+	margin-top: 0px;
+}
+
+div#main p.follow
+{
+	line-height: 32px;
+	font-weight: bold;
+}
+
+div#main p.follow a 
+{
+	margin-left: 10px;
+}
+
+div#main p.follow a.feedback 
+{
+	margin-left: 0px;
+	color: gray;
+}
+
+div#main p.follow img
+{
+	border: none;
+	position: relative;
+	top: 8px;
+}
+
+#sign-up
+{
+	margin-left: 3px;
+	margin-bottom: 3px;
+	padding-left: 50px;
+	padding-top: 10px;
+	padding-right: 50px;
+	padding-bottom: 10px;
+	float: right;
+	background-color: #e5e5e5; 
+}
+
+#sign-up h3
+{
+	margin: 0px;
+}
+
+#sign-up a
+{
+	margin-top: 8px;
+	border: solid;
+	border-width: 2px;
+	border-color: #000000;
+	position: relative;
+	left: -2px;
+	width: 100%;
+	display: block;
+	text-align: center;
+	background-color: #efc02d;
+	color: #000000;
+	font-weight: bold;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+}
+
+#sign-up a:hover
+{
+	background-color: #d79400;
+	text-decoration: none;
+}
+
+div.employee
+{
+	margin-top: 8px;
+	width: 812px;
+	position: relative;
+	background-color: #e5e5e5; 
+}
+
+div.employee.first
+{
+	margin-top: 0px;
+}
+
+div.employee img.person 
+{
+	float: left;
+}
+
+div.employee div.right
+{
+	padding-left: 9px;
+	padding-top: 9px;
+	padding-right: 9px;
+	width: 623px; 
+	float: left;
+}
+
+div.employee h3
+{
+	margin: 0px;
+	font-size: 1.25em;
+}
+
+div#main div.employee p
+{
+	margin-left: 9px;
+	margin-top: 3px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	font-size: 0.85em;
+}
+
+div.employee div.contact
+{
+	position: absolute;
+	top: 139px; 
+}
+
+div.employee div.contact a img
+{
+	border: none;
+}
+

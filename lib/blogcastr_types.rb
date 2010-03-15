@@ -108,17 +108,35 @@ module Thrift
       DATE = 2
       TIMESTAMP = 3
       MEDIUM = 4
-      AUDIO_URL = 5
-      TEXT = 6
+      TEXT = 5
 
-      ::Thrift::Struct.field_accessor self, :id, :date, :timestamp, :medium, :audio_url, :text
+      ::Thrift::Struct.field_accessor self, :id, :date, :timestamp, :medium, :text
       FIELDS = {
         ID => {:type => ::Thrift::Types::I32, :name => 'id'},
         DATE => {:type => ::Thrift::Types::STRING, :name => 'date'},
         TIMESTAMP => {:type => ::Thrift::Types::I32, :name => 'timestamp'},
         MEDIUM => {:type => ::Thrift::Types::STRING, :name => 'medium'},
-        AUDIO_URL => {:type => ::Thrift::Types::STRING, :name => 'audio_url'},
         TEXT => {:type => ::Thrift::Types::STRING, :name => 'text'}
+      }
+
+      def struct_fields; FIELDS; end
+
+      def validate
+      end
+
+    end
+
+    class AudioMedia
+      include ::Thrift::Struct
+      ID = 1
+      MP3_URL = 2
+      OGG_URL = 3
+
+      ::Thrift::Struct.field_accessor self, :id, :mp3_url, :ogg_url
+      FIELDS = {
+        ID => {:type => ::Thrift::Types::I32, :name => 'id'},
+        MP3_URL => {:type => ::Thrift::Types::STRING, :name => 'mp3_url'},
+        OGG_URL => {:type => ::Thrift::Types::STRING, :name => 'ogg_url'}
       }
 
       def struct_fields; FIELDS; end

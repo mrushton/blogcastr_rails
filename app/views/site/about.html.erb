@@ -1,0 +1,140 @@
+<div id="wrapper">
+  <div id="header" class="simall">
+    <%- form_tag search_path :controller => "search" do -%>
+      <%= label_tag :query, image_tag("magnifying_glass.png") -%>
+      <%= text_field_tag :query, "Search Blogcastr", :onfocus => "if (this.value == 'Search Blogcastr') this.value = ''; jQuery('#header form').addClass('selected');", :onblur => "if (this.value == '') this.value = 'Search Blogcastr'; jQuery('#header form').removeClass('selected');" -%>
+    <%- end -%>
+    <%= link_to(image_tag("/images/logo.png", :class => "logo"), "/") %>
+    <div id="navigation">
+<% if @user.instance_of?(BlogcastrUser) -%>
+      <%= link_to image_tag(@user.setting.avatar.url(:small))+@user.username, profile_path(:username => @user.username), :class => "first user" %>
+      <%= link_to "Home", home_path %>
+      <%= link_to "Settings", settings_path %>
+      <%= link_to "Sign out", sign_out_path, :method => "delete" %>
+<% elsif @user.instance_of?(FacebookUser) -%>
+  <%- avatar_url = @user.get_avatar_url :small -%>
+  <%- if avatar_url.nil? -%>
+    <%- avatar_url = get_facebook_avatar_url @user.facebook_id %>
+    <%- if avatar_url.nil? -%>
+      <%- avatar = "http://static.ak.facebook.com/pics/q_silhouette_logo.gif" %>
+    <%- end -%>
+  <%- end -%>
+  <%- username = @user.get_username -%>
+  <%- if username.nil? -%>
+    <%- username = get_facebook_name @user.facebook_id %>
+  <%- end -%>
+  <%- url = @user.get_url -%>
+  <%- if url.nil? -%>
+    <%- url = get_facebook_url @user.facebook_id %>
+  <%- end -%>
+      <%= link_to image_tag(avatar_url) + username, url, :class => "first user" %>
+      <%= link_to "Sign up", sign_up_path %>
+      <span onclick="FB.Connect.logout(blogcastrFacebookSignOut);">Sign out</span>
+<% elsif @user.instance_of?(TwitterUser) -%>
+      <%= link_to image_tag(@user.get_avatar_url(:small)) + @user.get_username, @user.get_url, :class => "first user" %>
+      <%= link_to "Sign up", sign_up_path %>
+      <span onclick="blogcastrTwitterSignOut();">Sign out</span>
+<% else -%>
+      <%= link_to "Sign up", sign_up_path %>
+      <%= link_to "Sign in", sign_in_path %>
+<% end -%>
+    </div>
+    <div class="clear">
+    </div>
+  </div>
+  <div id="content" class="wide one-column">
+    <div id="main">
+      <div class="upper-left-border-squared-corner">
+      </div>
+      <div class="top-border">
+      </div>
+      <div class="upper-right-border-squared-corner">
+      </div>
+      <div class="clear">
+      </div>
+      <div class="background">
+        <div id="title">
+          <div class="side-border">
+            <div class="upper-left-border-squared-corner-gray">
+            </div>
+            <div class="left-border-gray">
+            </div>
+            <div class="lower-left-border-squared-corner-gray">
+            </div>
+          </div>
+          <h1>About</h1>
+          <div class="side-border">
+            <div class="upper-right-border-squared-corner-gray">
+            </div>
+            <div class="right-border-gray">
+            </div>
+            <div class="lower-right-border-squared-corner-gray">
+            </div>
+          </div>
+        </div>
+        <div id="sign-up">
+          <h3>Broadcast your blog live!</h3> 
+          <%= link_to "Sign up today!", sign_up_path -%>
+        </div>
+        <p class="first">Firs sdff t paragraph. sfs sdfsdf ffdsf sffsd sfsdf First paragraph. First paragraph. First paragraph. First paragraph. First paragraph. First paragraph. First paragraph.fsdf First paragraph. First paragraph. First paragraph. First paragraph. First paragraph. First paragraph. First paragraph. First paragraph. First paragraph. First paragraph. First paragraph. First paragraph.  </p>
+        <p>Second paragraph.Second paragraph.Second paragraph.Second paragraph.Second paragraph.Second paragraph.Second paragraph.Second paragraph.Second paragraph.Second paragraph.Second paragraph.Second paragraph.Second paragraph.Second paragraph.Second paragraph.Second paragraph.Second paragraph.Second paragraph.Second paragraph.Second paragraph.  </p>
+        <p class="follow">Follow us or give us your <%= link_to "feedback", "http://getsatisfaction.com/blogcastr", :class => "feedback" -%>! <%= link_to image_tag("facebook.png"), "http://www.facebook.com/blogcastr" -%> <%= link_to image_tag("twitter.png"), "http://twitter.com/blogcastr" -%> <%= link_to image_tag("wordpress.png"), "http://blogcastr.wordpress.com" -%></p>
+        <div class="clear">
+        </div>
+        <h2>The Blogcastr Team</h2>
+        <div class="employee first">
+          <%= image_tag "kyle-rushton.png", :class => "person" -%>
+          <div class="right">
+            <h3>Kyle Rushton, Co-founder and CEO</h3>
+            <p>This is abouThis is about Kyle.This is about Kyle.This is about Kyle.This is about Kyle.This is about Kyle.This is about Kyle.This is about Kyle.This is about Kyle.This is about Kyle.This is about Kyle.This is about Kyle.This is about Kyle.This is about Kyle.This is about Kyle.This is about Kyle.t Kyle.</p>
+            <div class="contact">
+              <%= link_to image_tag("blogcastr-icon.png"), profile_path(:username => "krushtown") -%>
+              <%= link_to image_tag("email.png"), "mailto:krushton@blogcastr.com" -%>
+              <%= link_to image_tag("facebook.png"), "http://www.facebook.com/krushton" -%>
+              <%= link_to image_tag("twitter.png"), "http://twitter.com/krushtown" -%>
+              <%= link_to image_tag("tumblr.png"), "http://krushtown.tumblr.com" -%>
+            </div>
+          </div>
+          <div class="clear">
+          </div>
+        </div>
+        <div class="employee">
+          <%= image_tag "matt-rushton.png", :class => "person" -%>
+          <div class="right">
+            <h3>Matt Rushton, Co-founder and CTO</h3>
+            <p>This is abouThis is about Matt.This is about Matt.This is about Matt.This is about Matt.This is about Matt.This is about Matt.This is about Matt.This is about Matt.This is about Matt.This is about Matt.This is about Matt.This is about Matt.This is about Matt.This is about Matt.This is about Matt.t Matt.</p>
+            <div class="contact">
+              <%= link_to image_tag("blogcastr-icon.png"), profile_path(:username => "mrushton") -%>
+              <%= link_to image_tag("email.png"), "mailto:mrushton@blogcastr.com" -%>
+              <%= link_to image_tag("facebook.png"), "http://www.facebook.com/mrushton" -%>
+              <%= link_to image_tag("twitter.png"), "http://twitter.com/mrushton7" -%>
+              <%= link_to image_tag("wordpress.png"), "http://mrushton.wordpress.com" -%>
+            </div>
+          </div>
+          <div class="clear">
+          </div>
+        </div>
+      </div>
+      <div class="last lower-left-border-squared-corner">
+      </div>
+      <div class="last bottom-border">
+      </div>
+      <div class="last lower-right-border-squared-corner">
+      </div>
+      <div class="clear">
+      </div>
+    </div>
+  </div>
+  <div class="clear">
+  </div>
+  <div id="footer">
+    <span>&copy; 2010 Blogcastr</span>
+    <%= link_to "About", about_path, :class => "selected" -%>
+    <a href="http://blogcastr.wordpress.com">Blog</a>
+    <a href="http://www.facebook.com/blogcastr">Facebook</a>
+    <%= link_to "FAQ", faq_path -%>
+    <%= link_to "Privacy Policy", privacy_policy_path -%>
+    <%= link_to "Terms of Service", terms_of_service_path -%>
+    <a href="http://twitter.com/blogcastr">Twitter</a>
+  </div>
+</div>

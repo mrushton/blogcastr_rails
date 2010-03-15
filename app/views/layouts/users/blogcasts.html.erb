@@ -53,6 +53,7 @@
       var blogcast_id = <%= @blogcast.id %>;
       var up_image = "<%= image_path "up.png" -%>";
       var down_image = "<%= image_path "down.png" -%>";
+      var ajax_loader_image = "<%= image_path "ajax-loader.gif" -%>";
 <% if @user.instance_of?(BlogcastrUser) -%>
       var username = "<%= @user.username %>";
 <% else -%>

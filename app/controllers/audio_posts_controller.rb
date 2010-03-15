@@ -64,7 +64,6 @@ class AudioPostsController < ApplicationController
       thrift_audio_post.date = @audio_post.created_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/, ' ')
       thrift_audio_post.timestamp = @audio_post.created_at.to_i
       thrift_audio_post.medium = @audio_post.from
-      thrift_audio_post.audio_url = @audio_post.audio.url(:default)
       if (!@audio_post.text.blank?)
         thrift_audio_post.text = @audio_post.text
       end

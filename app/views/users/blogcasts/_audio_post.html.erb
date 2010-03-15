@@ -8,18 +8,17 @@
     <a href="<%= profile_path(:username => audio_post.user.username) -%>" class="user"><%= image_tag(audio_post.user.setting.avatar.url(:small), :class => "avatar") -%> <%= audio_post.user.username -%></a>
     <div class="clear">
     </div>
-    <audio controls="controls">
-      <source src="<%= audio_post.audio.url(:original, false) -%>" type="audio/mpeg"></source>
-      <div id="AudioPost:<%= audio_post.id -%>-player" class="player">
-        <script type="text/javascript">
-          var swf_object = new SWFObject("/player-viral.swf", "player", "400", "24", "9");
-          swf_object.addParam("allowfullscreen", "false");
-          swf_object.addParam("allowscriptaccess", "always");
-          swf_object.addVariable("file", "<%= audio_post.audio.url(:original, false) -%>");
-          swf_object.write("AudioPost:<%= audio_post.id -%>-player");
-        </script>
+    <div class="player audio">
+      <div class="html5" style="display: none;">
+        <audio controls="controls">
+          <source src="<%= audio_post.audio.url(:mp3) -%>" type="audio/mpeg"></source>
+          <source src="<%= audio_post.audio.url(:ogg) -%>" type="audio/ogg"></source>
+        </audio>
       </div>
-    </audio> 
+      <div class="flash" style="display: none;">
+        <embed id="player" width="450" height="24" flashvars="file= <%= audio_post.audio.url(:mp3, false) -%>" allowscriptaccess="always" allowfullscreen="false" quality="high" name="player" style="" src="/flash/player-viral.swf" type="application/x-shockwave-flash"/>
+      </div>
+    </div>
 <% if !audio_post.text.nil? -%>
     <p class="text"><%= audio_post.text %></p>
 <% end -%>

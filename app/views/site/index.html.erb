@@ -37,22 +37,7 @@
   </div>
   <div id="content">
     <h2>Broadcast your blog live. <%= link_to "Sign up", sign_up_path %> today.</h2>
-
-<div id='preview'></div>
-<script type='text/javascript' src='javascripts/swfobject.js'></script>
-<script type='text/javascript'>
-var s1 = new SWFObject('player-viral.swf','player','400','24','9');
-s1.addParam('allowfullscreen','true');
-s1.addParam('allowscriptaccess','always');
-s1.addVariable('file','test.mp3');
-s1.write('preview');
-</script> 
-
   </div>
-
-<audio src="test.mp3" controls="controls">
-Your browser does not support the audio element.
-</audio>
   <div id="footer">
     <span>&copy; 2010 Blogcastr</span>
     <%= link_to "About", about_path -%>

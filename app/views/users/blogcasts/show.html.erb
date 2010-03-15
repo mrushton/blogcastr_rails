@@ -176,7 +176,7 @@
   <%- elsif post.instance_of?(Repost) -%>
           <%= render :partial => "repost", :object => post -%>
   <%- end -%>
-  <% @iter = @iter + 1; break;-%>
+  <% @iter = @iter + 1 -%>
 <% end -%>
         </ol>
       </div>
@@ -224,12 +224,38 @@
           <h3 class="second" onclick="blogcastrCollapsibleEvent(this, 'likes');"><span class="counter"><%= @num_likes -%></span><span class="name"><%= @num_likes == 1 ? "Like" : "Likes" -%></span><%= image_tag "down.png" -%></h3>
           <div id="likes">
             <ul>
+<% i = 0 -%>
 <% for like in @likes -%>
+  <%- if ((i%8) == 0) -%>
+    <%- if (i < 8) -%>
+              <li class="first top">
+    <%- else -%>
               <li>
-                <%= link_to "<div class=\"avatar-small-rounded\" style=\"background-image: url('#{like.setting.avatar.url(:small)}');\"></div>", profile_path(:username => like.username), :target => "_blank" %>
+    <%- end -%>
+  <%- else -%>
+    <%- if (i < 8) -%>
+              <li class="top">
+    <%- else -%>
+              <li>
+    <%- end -%>
+  <%- end -%>
+                <%= link_to image_tag(like.setting.avatar.url(:small), :class => "avatar-small", :alt => "#{like.username}"), profile_path(:username => like.username), :title => "#{like.username}" %>
               </li>
 <% end -%>
-           </ul>
+            </ul>
+<% if (@user.instance_of?(BlogcastrUser) && @user != @blogcast.user) -%>
+            <div id="like">
+  <%- if @like.nil? -%>
+              <%= link_to_remote image_tag("heart_add.png") + "<p>Like</p>", :url => blogcast_likes_path(:blogcast_id => @blogcast.id), :failure => "alert('Error: Failed communicating with server. Unable to like \"#{@blogcast.title}\"');", :html => {:class => "like"} %>
+  <%- else -%>
+              <%= link_to_remote image_tag("heart_delete.png") + "<p>Unlike</p>", :url => blogcast_like_path(:blogcast_id => @blogcast.id, :id => @like.id), :method => "delete", :failure => "alert('Error: Failed communicating with server. Unable to unlike \"#{@blogcast.title}\"');", :html => {:class => "like"} %>
+  <%- end -%>
+              <div class="clear">
+              </div>
+            </div>
+<%- end -%>
+            <div class="clear">
+            </div>
           </div>
           <div class="stat third"><span class="counter"><%= @num_viewers -%></span><span class="name"><%= @num_viewers == 1 ? "Viewer" : "Viewers" -%></span></div>
           <div class="last stat fourth"><span class="counter"><%= @num_views -%></span><span class="name"><%= @num_views == 1 ? "View" : "Views" -%></span></div>

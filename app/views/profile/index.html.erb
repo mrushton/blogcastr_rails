@@ -231,7 +231,7 @@
         <div id="stats">
           <a class="stat first" href="<%= username_blogcasts_path :username => @profile_user.username -%>"><span class="counter"><%= @num_blogcasts -%></span><span class="name"><%= @num_blogcasts == 1 ? "Blogcast" : "Blogcasts" -%></span></a>
           <a class="stat second" href="<%= username_comments_path :username => @profile_user.username -%>"><span class="counter"><%= @num_comments -%></span><span class="name"><%= @num_comments == 1 ? "Comment" : "Comments" -%></span></a>
-          <a class="stat third" href="<%= username_likes_path :username => @profile_user.username -%>"><span class="counter"><%= @num_likes -%></span><span class="name"><%= @num_like == 1 ? "Like" : "Likes" -%></span></a>
+          <a class="stat third" href="<%= username_likes_path :username => @profile_user.username -%>"><span class="counter"><%= @num_likes -%></span><span class="name"><%= @num_likes == 1 ? "Like" : "Likes" -%></span></a>
           <a class="stat fourth" href="<%= username_posts_path :username => @profile_user.username -%>"><span class="counter"><%= @num_posts -%></span><span class="name"><%= @num_posts == 1 ? "Post" : "Posts" -%></span></a>
           <h3 class="fifth" onclick="blogcastrCollapsibleEvent(this, 'subscribers');"><span class="counter"><%= @num_subscribers -%></span><span class="name"><%= @num_subscribers == 1 ? "Subscriber" : "Subscribers" -%></span><%= image_tag "down.png" -%></h3>
           <div id="subscribers">

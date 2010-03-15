@@ -13,6 +13,7 @@ class DashboardController < ApplicationController
     end
     @text_post = TextPost.new(:from => "Web")
     @image_post = ImagePost.new(:from => "Web")
+    @audio_post = AudioPost.new(:from => "Web")
     #MVR - post stream 
     @posts = @blogcast.posts.find(:all, :order => "created_at DESC") 
     @num_posts = @posts.size

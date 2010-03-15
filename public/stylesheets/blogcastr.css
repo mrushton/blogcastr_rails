@@ -1166,6 +1166,11 @@ input.tab
 	text-decoration: none;
 }
 
+#footer a.selected
+{
+	text-decoration: underline;
+}
+
 #footer a:hover
 {
 	text-decoration: underline;

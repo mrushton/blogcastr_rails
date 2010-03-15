@@ -214,3 +214,33 @@
 {
 	background-color: #a3a3a3;
 }
+
+#side a.like
+{
+	text-decoration: none;
+	color: #787878;
+	line-height: 25px;
+	float: right;
+}
+
+#side a.like:hover
+{
+	text-decoration: underline;
+}
+
+#side a.like img
+{
+	margin-top: 5px;
+	margin-right: 3px;
+	margin-bottom: 4px;
+	float: left;
+	border: none;
+}
+
+#side a.like p
+{
+	margin: 0px;
+	vertical-align: top;
+	font-size: 0.85em;
+	font-weight: bold;
+}
