@@ -14,6 +14,7 @@
           <%= text_field_tag :query, "Search Blogcastr", :onfocus => "if (this.value == 'Search Blogcastr') this.value = ''; jQuery('#header form').addClass('selected');", :onblur => "if (this.value == '') this.value = 'Search Blogcastr'; jQuery('#header form').removeClass('selected');" -%>
         <%- end -%>
         <a href="/"><img src="/images/logo.png" alt="Blogcastr" border=0></img></a>
+        <%= image_tag "/images/beta.png", :class => "beta" %>
         <div id="navigation">
           <%= link_to "Sign up", sign_up_path, :class => "selected" %>
           <%= link_to "Sign in", sign_in_path %>

@@ -1,26 +1,38 @@
 <div id="wrapper">
   <div id="header">
-    <a href="/"><img src="/images/logo.png" alt="Blogcastr" border=0></img></a>
+    <%- form_tag search_path :controller => "search" do -%>
+      <%= label_tag :query, image_tag("magnifying_glass.png") -%>
+      <%= text_field_tag :query, "Search Blogcastr", :onfocus => "if (this.value == 'Search Blogcastr') this.value = ''; jQuery('#header form').addClass('selected');", :onblur => "if (this.value == '') this.value = 'Search Blogcastr'; jQuery('#header form').removeClass('selected');" -%>
+    <%- end -%>
+    <%= link_to(image_tag("/images/logo.png", :class => "logo"), "/") %>
+    <%= image_tag "/images/beta.png", :class => "beta" %>
     <div id="navigation">
 <% if @user.instance_of?(BlogcastrUser) -%>
-      <%= link_to image_tag(@user.setting.avatar.url(:small))+@user.username, profile_path(:username => @user.username), :class => "first" %>
+      <%= link_to image_tag(@user.setting.avatar.url(:small))+@user.username, profile_path(:username => @user.username), :class => "first user" %>
       <%= link_to "Home", home_path %>
       <%= link_to "Settings", settings_path %>
       <%= link_to "Sign out", sign_out_path, :method => "delete" %>
 <% elsif @user.instance_of?(FacebookUser) -%>
-  <%- avatar = @user.get_avatar_url :small %>
-  <%- if avatar.nil? -%>
-      <%- avatar = get_facebook_avatar_url @user.facebook_id %>
+  <%- avatar_url = @user.get_avatar_url :small -%>
+  <%- if avatar_url.nil? -%>
+    <%- avatar_url = get_facebook_avatar_url @user.facebook_id %>
+    <%- if avatar_url.nil? -%>
+      <%- avatar = "http://static.ak.facebook.com/pics/q_silhouette_logo.gif" %>
+    <%- end -%>
   <%- end -%>
-  <%- if avatar.nil? -%>
-      <%= link_to image_tag("http://static.ak.facebook.com/pics/q_silhouette_logo.gif") + @user.get_username, @user.get_url, :class => "first" %>
-  <%- else -%>
-      <%= link_to image_tag(avatar) + @user.get_username, @user.get_url, :class => "first" %>
+  <%- username = @user.get_username -%>
+  <%- if username.nil? -%>
+    <%- username = get_facebook_name @user.facebook_id %>
   <%- end -%>
+  <%- url = @user.get_url -%>
+  <%- if url.nil? -%>
+    <%- url = get_facebook_url @user.facebook_id %>
+  <%- end -%>
+      <%= link_to image_tag(avatar_url) + username, url, :class => "first user" %>
       <%= link_to "Sign up", sign_up_path %>
       <span onclick="FB.Connect.logout(blogcastrFacebookSignOut);">Sign out</span>
 <% elsif @user.instance_of?(TwitterUser) -%>
-      <%= link_to image_tag(@user.get_avatar_url(:small)) + @user.get_username, @user.get_url, :class => "first" %>
+      <%= link_to image_tag(@user.get_avatar_url(:small)) + @user.get_username, @user.get_url, :class => "first user" %>
       <%= link_to "Sign up", sign_up_path %>
       <span onclick="blogcastrTwitterSignOut();">Sign out</span>
 <% else -%>
@@ -30,13 +42,26 @@
     </div>
     <div class="clear">
     </div>
-    <% form_tag search_path, :onSubmit => "blogcastrValidateSearchForm();" do %>
-      <%= text_field_tag :query, params[:query], :placeholder => "Search" %>
-      <%= submit_tag "Submit" %>
-    <% end %>
   </div>
   <div id="content">
-    <h2>Broadcast your blog live. <%= link_to "Sign up", sign_up_path %> today.</h2>
+    <div id="motto">
+    </div>
+    <div id="left">
+      <div id="top">
+        <% form_tag :method => "get" do %>
+          <%= label_tag :username, "Pick a username and join Blogcastr!" %>
+          <div id="username" onclick="jQuery('#username input').focus();">
+            http://blogcastr.com/<%= text_field_tag :username %>
+          </div>
+        <% end %>
+      </div>
+      <div id="bottom">
+      </div>
+    </div>
+    <div id="right">
+    </div>
+    <div class="clear">
+    </div>
   </div>
   <div id="footer">
     <span>&copy; 2010 Blogcastr</span>

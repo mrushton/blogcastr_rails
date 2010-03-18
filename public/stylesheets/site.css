@@ -1,0 +1,47 @@
+#content
+{
+	margin-left: 0px;
+	position: relative;
+}
+
+#motto
+{
+	width: 516px;
+	height: 70px;
+	position: absolute;
+	left: 172px;
+	top: -20px;
+	background-image: url("../images/motto.png");
+	z-index: 2;
+}
+
+#left
+{
+	width: 506px;
+	float: left;
+}
+
+#top
+{
+	width: 506px;
+	height: 206px;
+	background-image: url("../images/left-top-background.png");
+}
+
+#bottom
+{
+	margin-top: 4px;
+	padding: 0px;
+	width: 506px;
+	height: 160px;
+	background-image: url("../images/left-bottom-background.png");
+}
+
+#right
+{
+	margin-left: 4px;
+	width: 350px;
+	height: 370px;
+	float: left;
+	background-image: url("../images/right-background.png");
+}

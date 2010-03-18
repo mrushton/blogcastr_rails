@@ -1,5 +1,5 @@
 <div id="wrapper" class="user three-column">
-  <div id="header">
+  <div id="header" class="small">
     <%- form_tag username_blogcast_search_permalink_path(:username => @blogcast_user.username, :year => @blogcast.year, :month => @blogcast.month, :day => @blogcast.day, :title => @blogcast.link_title) do -%>
       <%= label_tag :query, image_tag("magnifying_glass.png") -%>
       <%= text_field_tag :query, "Search \"#{@blogcast.title}\"", :onfocus => "if (this.value == 'Search \"#{@blogcast.title}\"') this.value = ''; jQuery('#header form').addClass('selected');", :onblur => "if (this.value == '') this.value = 'Search \"#{@blogcast.title}\"'; jQuery('#header form').removeClass('selected');" -%>

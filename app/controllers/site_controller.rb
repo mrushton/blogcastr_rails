@@ -5,5 +5,6 @@ class SiteController < ApplicationController
 
   def about
     @user = current_user
+    render :layout => "about"
   end
 end

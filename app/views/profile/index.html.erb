@@ -1,7 +1,7 @@
 <div id="alert" style="display: none;">
 </div>
 <div id="wrapper" class="user">
-  <div id="header">
+  <div id="header" class="small">
     <%- form_tag user_search_path(:username => @profile_user.username, :controller => "search") do -%>
       <%= label_tag :query, image_tag("magnifying_glass.png") -%>
       <%= text_field_tag :query, "Search #{@profile_username_possesive} Blogcastr", :onfocus => "if (this.value == 'Search #{@profile_username_possesive_escaped} Blogcastr') this.value = ''; jQuery('#header form').addClass('selected');", :onblur => "if (this.value == '') this.value = 'Search #{@profile_username_possesive_escaped} Blogcastr'; jQuery('#header form').removeClass('selected');" -%>
