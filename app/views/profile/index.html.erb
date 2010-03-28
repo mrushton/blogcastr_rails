@@ -54,7 +54,7 @@
             <%= link_to image_tag(@profile_user.setting.avatar.url(:large), :class => "avatar"), @profile_user.setting.avatar.url(:original) %>
         </div>
         <div id="right">
-          <h1><%= @profile_user.username -%>'s<br>Blogcastr</h1>
+          <h1><%= @profile_username_possesive -%><br>Blogcastr</h1>
 <% if !@profile_user.setting.motto.nil? -%>
           <p class="motto"><%= @profile_user.setting.motto -%></p>
 <% end -%>
@@ -144,6 +144,7 @@
     <%- end -%>
                   <%= link_to image_tag(like.setting.avatar.url(:small), :class => "avatar-small", :alt => "#{like.username}"), profile_path(:username => like.username), :title => "#{like.username}" %>
                 </li>
+    <%- i = i + 1 -%>
   <%- end -%>
               </ul>
             </div>
@@ -182,6 +183,7 @@
     <%- end -%>
                   <%= link_to image_tag(like.setting.avatar.url(:small), :class => "avatar-small", :alt => "#{like.username}"), profile_path(:username => like.username), :title => "#{like.username}" %>
                 </li>
+    <%- i = i + 1 -%>
   <%- end -%>
               </ul>
             </div>

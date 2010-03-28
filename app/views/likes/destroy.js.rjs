@@ -1,6 +1,6 @@
-page.replace_html "like", :partial => "like_link"
-page.replace_html "success-notice", :partial => "unlike_success_notice"
-page.visual_effect :slide_down, "success-notice", :duration => 0.5
-page.delay(2) do
-  page.visual_effect :slide_up, "success-notice", :duration => 0.5
+page.replace_html "like-link", :partial => "add_like_link"
+page.replace_html "alert", :partial => "delete_like_alert"
+page.visual_effect :slide_down, "alert", :duration => 0.5
+page.delay(3) do
+  page.visual_effect :slide_up, "alert", :duration => 0.5
 end

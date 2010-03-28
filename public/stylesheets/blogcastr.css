@@ -882,6 +882,7 @@ a:hover
 
 #stats
 {
+	text-align: right;
 	-moz-user-select: none;
 	-webkit-user-select: none;
 }

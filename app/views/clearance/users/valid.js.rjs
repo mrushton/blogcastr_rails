@@ -1,0 +1,8 @@
+page << "var val = jQuery('#blogcastr_user_username').val();"
+page << "if (val == \"" + @username + "\")"
+page << "{"
+page.select('#username img').each do |element|
+  element.hide
+end
+page.show 'username-valid'
+page << "}"

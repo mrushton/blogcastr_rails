@@ -1,3 +1,5 @@
+<div id="alert" style="display: none;">
+</div>
 <div id="wrapper" class="user three-column">
   <div id="header" class="small">
     <%- form_tag username_blogcast_search_permalink_path(:username => @blogcast_user.username, :year => @blogcast.year, :month => @blogcast.month, :day => @blogcast.day, :title => @blogcast.link_title) do -%>
@@ -110,8 +112,26 @@
             </div>
           </div>
         </div>
-        <p>By <a class="user" href="<%= profile_path(:username => @blogcast_user.username) -%>"><%= @blogcast_user.username -%></a></span> on <span class="date"><%= @blogcast.starting_at.strftime("%B %e, %Y") -%></span>
-<% if @user != @blogcast_user -%>
+        <div class="social">
+          <p>Share with friends and followers</p>
+          <%= link_to_function image_tag("facebook-small.png"), "FB.Connect.streamPublish('', facebook_attachment)" -%>
+<%- tweet = "Checking out \"" + @blogcast.title + "\" by " + @blogcast_user.username + " on " + @blogcast.starting_at.strftime("%m/%d/%y").gsub(/0?(\d+)\/0?(\d+)\/(\d{2})/, '\1/\2/\3') + " - " + username_blogcast_permalink_url + " #blogcastr" -%>
+          <%= link_to_function image_tag("twitter-small.png"), "blogcastrTwitterShare('#{tweet}')" -%>
+<% if (@user.instance_of?(BlogcastrUser) && @user != @blogcast.user) -%>
+          <span>|</span>
+          <span id="like-link">
+  <%- if @like.nil? -%>
+            <%= link_to_remote "Like", :url => blogcast_likes_path(:blogcast_id => @blogcast.id), :failure => "alert('Error: Failed communicating with server. Unable to like \"#{@blogcast.title}\"');", :html => {:class => "like add"}, :condition => "remote_request == false", :before => "remote_request = true", :complete => "setTimeout('remote_request = false', 3500)" %>
+  <%- else -%>
+            <%= link_to_remote "Unlike", :url => blogcast_like_path(:blogcast_id => @blogcast.id, :id => @like.id), :method => "delete", :failure => "alert('Error: Failed communicating with server. Unable to unlike \"#{@blogcast.title}\"');", :html => {:class => "like delete"}, :condition => "remote_request == false", :before => "remote_request = true", :complete => "setTimeout('remote_request = false', 3500)" %>
+  <%- end -%>
+          </span>
+<%- end -%>
+        </div>
+        <p>By <a class="user" href="<%= profile_path(:username => @blogcast_user.username) -%>"><%= @blogcast_user.username -%></a></span> on <span class="date"><%= @blogcast.starting_at.strftime("%B %e, %Y") -%></span></p>
+          <div class="clear">
+          </div>
+<% if @user != @blogcast_user || 1 -%>
         <h2 onclick="blogcastrCollapsibleEvent(this, 'comment');">Comment<%= image_tag "down.png" -%></h2>
         <div id="comment">
   <%- if signed_in? -%>
@@ -221,42 +241,39 @@
 	<hr>
         <div id="stats">
           <a class="first stat" href="<%= username_blogcast_comments_permalink_path :username => @blogcast_user.username -%>"><span class="counter"><%= @num_comments -%></span><span class="name"><%= @num_comments == 1 ? "Comment" : "Comments" -%></span></a>
+<% if @num_likes == 0 -%>
+          <div class="stat second"><span class="counter">0</span><span class="name">Likes</span></div>
+<% else -%>
           <h3 class="second" onclick="blogcastrCollapsibleEvent(this, 'likes');"><span class="counter"><%= @num_likes -%></span><span class="name"><%= @num_likes == 1 ? "Like" : "Likes" -%></span><%= image_tag "down.png" -%></h3>
           <div id="likes">
             <ul>
-<% i = 0 -%>
-<% for like in @likes -%>
-  <%- if ((i%8) == 0) -%>
-    <%- if (i < 8) -%>
+  <%- i = 0 -%>
+  <%- for like in @likes -%>
+    <%- if ((i%8) == 0) -%>
+      <%- if (i < 8) -%>
               <li class="first top">
-    <%- else -%>
+      <%- else -%>
               <li>
-    <%- end -%>
-  <%- else -%>
-    <%- if (i < 8) -%>
+      <%- end -%>
+    <%- else -%>
+      <%- if (i < 8) -%>
               <li class="top">
-    <%- else -%>
+      <%- else -%>
               <li>
+      <%- end -%>
     <%- end -%>
-  <%- end -%>
                 <%= link_to image_tag(like.setting.avatar.url(:small), :class => "avatar-small", :alt => "#{like.username}"), profile_path(:username => like.username), :title => "#{like.username}" %>
               </li>
-<% end -%>
+    <%- i = i + 1 -%>
+  <% end -%>
             </ul>
-<% if (@user.instance_of?(BlogcastrUser) && @user != @blogcast.user) -%>
-            <div id="like">
-  <%- if @like.nil? -%>
-              <%= link_to_remote image_tag("heart_add.png") + "<p>Like</p>", :url => blogcast_likes_path(:blogcast_id => @blogcast.id), :failure => "alert('Error: Failed communicating with server. Unable to like \"#{@blogcast.title}\"');", :html => {:class => "like"} %>
-  <%- else -%>
-              <%= link_to_remote image_tag("heart_delete.png") + "<p>Unlike</p>", :url => blogcast_like_path(:blogcast_id => @blogcast.id, :id => @like.id), :method => "delete", :failure => "alert('Error: Failed communicating with server. Unable to unlike \"#{@blogcast.title}\"');", :html => {:class => "like"} %>
-  <%- end -%>
-              <div class="clear">
-              </div>
-            </div>
-<%- end -%>
             <div class="clear">
             </div>
+  <%- if @num_likes > 21 -%>
+            <%= link_to "More", username_blogcast_likes_permalink_path, :class => "more" -%>
+  <%- end -%>
           </div>
+<% end -%>
           <div class="stat third"><span class="counter"><%= @num_viewers -%></span><span class="name"><%= @num_viewers == 1 ? "Viewer" : "Viewers" -%></span></div>
           <div class="last stat fourth"><span class="counter"><%= @num_views -%></span><span class="name"><%= @num_views == 1 ? "View" : "Views" -%></span></div>
         </div>

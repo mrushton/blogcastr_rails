@@ -201,7 +201,6 @@
 	height: 28px;
 	border: solid;
 	border-width: 1px;
-	border-color: #000000;
 	border-color: #4e606f;
 	float: right;
 	font-size: 1.15em;
@@ -215,32 +214,64 @@
 	background-color: #a3a3a3;
 }
 
-#side a.like
+#top div.social
 {
-	text-decoration: none;
-	color: #787878;
-	line-height: 25px;
-	float: right;
+	margin-top: 3px;
+	position: absolute;
+	right: 14px;
 }
 
-#side a.like:hover
-{
-	text-decoration: underline;
-}
-
-#side a.like img
-{
-	margin-top: 5px;
-	margin-right: 3px;
-	margin-bottom: 4px;
-	float: left;
-	border: none;
-}
-
-#side a.like p
+#top div.social p
 {
 	margin: 0px;
-	vertical-align: top;
-	font-size: 0.85em;
-	font-weight: bold;
+	display: inline;
+	color: #787878;
+	font-size: 0.6em;
+	font-style: italic;
+	font-weight: normal;
+}
+
+#top div.social img
+{
+	border: none;
+	vertical-align: -15%;
+}
+
+#top div.social a.like
+{
+	margin: 0px;
+	padding-top: 1px;
+	padding-left: 21px;
+	padding-right: 3px;
+	padding-bottom: 1px;
+	text-decoration: none;
+	background-color: #ebebeb;
+	background-repeat: no-repeat;
+	background-position: 3px 1px;
+	color: #000000;
+	font-size: 14px;
+	font-weight: normal;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+}
+
+#top div.social a.like.add
+{
+	background-image: url("../images/heart_add.png");
+}
+
+#top div.social a.like.delete
+{
+	background-image: url("../images/heart_delete.png");
+}
+
+#top div.social a.like:hover
+{
+	background-color: #a3a3a3;
+	text-decoration: none;
+}
+
+#top div.social a.like img
+{
+	margin-right: 3px;
 }

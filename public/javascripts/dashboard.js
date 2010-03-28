@@ -57,11 +57,6 @@ function blogcastrOnConnect(status, error)
   }
 }
 
-function blogcastrPostComment(id)
-{
-  jQuery.post("/comment_posts?comment_id=" + id + "&from=Web" + "&authenticity_token=" + encodeURIComponent(authenticity_token));
-}
-
 function blogcastrSendMucPresenceUnavailable()
 {
     //MVR - nickname is always username
@@ -260,12 +255,59 @@ function blogcastrCommentCallback(stanza)
 {
   //Prototype has no XML support using jQuery
   //TODO: alternative could be to use a json convertor like http://www.thomasfrank.se/xml_to_json.html
-  //TODO: from needs to be parsed better or included in message
-  var from = jQuery(stanza).attr("from");
   var body = jQuery(stanza).find("body:first");
   var type = body.find("type:first").text();
   if (type == "comment")
   {
+    //parse comment
+    var id = body.find("id:first").text();
+    var timestamp = body.find("timestamp:first").text();
+    var date = body.find("date:first").text();
+    var user = body.find("user:first");
+    var username = user.find("username:first").text();
+    var account = user.find("account:first").text();
+    var url = user.find("url:first").text();
+    var avatar_url = user.find("avatar_url:first").text();
+    var medium = body.find("medium:first").text();
+    //create new post element
+    var hours_minutes_ago_span = jQuery("<span>").addClass("date").addClass("hours_minutes_ago").attr("timestamp", timestamp).text(blogcastrHoursMinutesAgo(timestamp));
+    var avatar_img = jQuery("<img>").addClass("avatar").attr("src", comment_avatar_url);
+    var user_a = jQuery("<a>").addClass("user").attr("href", url).append(avatar_img).append(comment_username); 
+    var clear_div = jQuery("<div>").addClass("clear");
+    var text_p = jQuery("<p>").addClass("text").text(comment_text);
+    var up_img = jQuery("<img>").attr("src", up_image);
+    //AS DESIGNED: some browsers don't work when adding the onclick attribute
+    var info_h4 = jQuery("<h4>").click(function() { blogcastrCollapsibleEvent(this, "TextPost:" + id + "-info"); }).append("Info").append(up_img);
+    var info_p = jQuery("<p>").addClass("info").text("Posted by " + username + " on " + date + " from " + medium);
+    if (comment_account == "FacebookUser")
+      var comment_info_p = jQuery("<p>").addClass("info").text("Commented by " + comment_username + " on " + comment_date + " from " + comment_medium + " using Facebook Connect");
+    else if (comment_account == "TwitterUser")
+      var comment_info_p = jQuery("<p>").addClass("info").text("Commented by " + comment_username + " on " + comment_date + " from " + comment_medium + " using Twitter Sign In");
+    else
+      var comment_info_p = jQuery("<p>").addClass("info").text("Commented by " + comment_username + " on " + comment_date + " from " + comment_medium);
+    var info_div = jQuery("<div>").attr("id", "TextPost:" + id + "-info").css("display", "none").append(info_p).append(comment_info_p);
+    var effect_div = jQuery("<div>").addClass("effect").append(hours_minutes_ago_span).append(user_a).append(clear_div).append(text_p).append(info_h4).append(info_div);
+    var post_li = jQuery("<li>").attr("id",id).css("display", "none").append(effect_div);
+    //add post to document if not present
+    if (jQuery("li[id=" + id + "]").length == 0)
+    {
+      jQuery("#comments-stream:first").prepend(post_li);
+      var element = jQuery("li:first").get(0);
+      new Effect.SlideDown(element, {duration: 0.5, queue: "end"});
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
     var id = body.find("id:first").text();
     var timestamp = body.find("timestamp:first").text();
     var text = body.find("text:first").text();

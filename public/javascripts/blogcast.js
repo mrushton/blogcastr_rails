@@ -1,6 +1,7 @@
 var can_play_audio = false;
 var can_play_mp3 = false;
 var can_play_ogg = false;
+var remote_request = false;
 
 function blogcastrOnLoad()
 {
@@ -336,6 +337,11 @@ Strophe.log = function(log,msg)
 function blogcastrPrintStanza(stanza)
 {
 //  var string = (new XMLSerializer()).serializeToString(stanza);
+}
+
+function blogcastrTwitterShare(status)
+{
+  window.open("http://twitter.com/home?status=" + encodeURIComponent(status), null, "location=0, status=0, width=800, height=400");
 }
 
 window.addEventListener("load",blogcastrOnLoad,false);

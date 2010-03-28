@@ -5,7 +5,10 @@
     <title>Blogcastr</title>
     <%= stylesheet_link_tag "blogcastr", :media => "screen" %>
     <%= stylesheet_link_tag "site", :media => "screen" %>
-    <%= javascript_include_tag :defaults, "jquery.js", :media => "all" %>
+    <%= javascript_include_tag :defaults, "jquery.js", "jquery.hoverIntent.minified.js", "site.js", :media => "all" %>
+    <script type="text/javascript">
+      jQuery.noConflict();
+    </script>
   </head>
   <body>
     <%= yield :layout %>

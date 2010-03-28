@@ -48,17 +48,69 @@
     </div>
     <div id="left">
       <div id="top">
-        <% form_tag :method => "get" do %>
-          <%= label_tag :username, "Pick a username and join Blogcastr!" %>
+        <% form_for :blogcastr_user, :url => new_user_path, :html => {:method => "get"} do |form| %>
+          <%= form.label :username, "Pick a username and join Blogcastr!" %>
           <div id="username" onclick="jQuery('#username input').focus();">
-            http://blogcastr.com/<%= text_field_tag :username %>
+            <%= image_tag "ajax-loader.gif", :id => "username-loading", :style => "display: none;" -%>
+            <%= image_tag "tick.png", :id => "username-valid", :style => "display: none;" -%>
+            <%= image_tag "cross.png", :id => "username-invalid", :style => "display: none;" -%>
+            <span>http://blogcastr.com/</span><%= form.text_field :username, :autocomplete => "off" -%>
+            <div class="clear">
+            </div>
+          </div>
+          <%= form.submit "Sign up now!", :class => "button" %>
+        <% end %>
+        <%= observe_field "blogcastr_user_username", :url => valid_user_path, :frequency => 0.5, :with => "blogcastr_user[username]", :before => "jQuery('#username img').hide(); jQuery('#username-loading').show();", :condition => "blogcastrCheckUsername()" -%>
+      </div>
+      <div id="bottom">
+        <% form_tag search_path, :method => "get" do %>
+          <%= label_tag :bottom_query, "Search Blogcastr" %>
+          <div class="wrapper">
+            <%= submit_tag "Search", :class => "button" %>
+            <%= text_field_tag :bottom_query, nil, :name => "query" -%>
+            <div class="clear">
+            </div>
           </div>
         <% end %>
       </div>
-      <div id="bottom">
-      </div>
     </div>
+<%- @num_featured = 3 -%>
     <div id="right">
+      <div id="left-arrow" class="arrow" style="display: none;" onclick="blogcastrAnimateFeaturedRight();">
+      </div>
+      <div id="right-arrow" class="arrow" style="display: none;" onclick="blogcastrAnimateFeaturedLeft();">
+      </div>
+      <div class="wrapper">
+        <ul id="featured-list" style="width: <%= @num_featured*340-%>px;">
+<% for featured_user in @featured_users -%>
+          <li>
+            <h2>Featured user:</h2>
+            <div class="user">
+              <%= link_to image_tag(featured_user.setting.avatar.url(:large), :class => "avatar"), profile_path(:username => featured_user.username) -%>
+              <div class="wrapper">
+                <%= link_to featured_user.username, profile_path(:username => featured_user.username), :class => "username" -%>
+                <h4 class="first">Name:</h4>
+                <p class="first"><%= featured_user.setting.full_name -%></p> 
+                <br>
+                <h4>Location:</h4>
+                <p><%= featured_user.setting.location -%></p> 
+                <hr>
+                <div class="stats">
+  <%- num_blogcasts = featured_user.blogcasts.count -%>
+                  <%= link_to "<span class=\"counter\">" + num_blogcasts.to_s + "</span><span class=\"name\">" + (num_blogcasts == 1 ? "Blogcast" : "Blogcasts" ) + "</span>", username_blogcasts_path(:username => featured_user.username), :class => "stat first" -%>
+  <%- num_subscribers = featured_user.subscribers.count -%>
+                  <%= link_to "<span class=\"counter\">" + num_subscribers.to_s + "</span><span class=\"name\">" + (num_subscribers == 1 ? "Subscriber" : "Subscribers" ) + "</span>", username_subscribers_path(:username => featured_user.username), :class => "stat second" -%>
+  <%- num_subscriptions = featured_user.subscriptions.count -%>
+                  <%= link_to "<span class=\"counter\">" + num_subscriptions.to_s + "</span><span class=\"name\">" + (num_subscriptions == 1 ? "Subscription" : "Subscriptions" ) + "</span>", username_subscriptions_path(:username => featured_user.username), :class => "stat third" -%>
+                </div>
+              </div>
+              <div class="clear">
+              </div>
+            </div>
+          </li>
+<% end -%>
+        </ul>
+      </div>
     </div>
     <div class="clear">
     </div>

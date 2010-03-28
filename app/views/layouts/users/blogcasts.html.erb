@@ -60,7 +60,11 @@
       var username;
 <% end -%>
       var server_timestamp = <%= Time.now.to_i %>;
-      var facebook_attachment = {'name':'<%= @blogcast.title-%>', 'href':'<%= username_blogcast_permalink_url(:username => @blogcast_user.username, :year => @blogcast.year, :month => @blogcast.month, :day => @blogcast.day, :title => @blogcast.link_title) -%>', 'description':'By <%= @blogcast_user.username -%> on <%= @blogcast.starting_at.strftime("%B %e, %Y") -%>. <%= @blogcast.description.gsub(/'/,"\\'") -%>'};
+<%- if Rails.env.production? -%> 
+      var facebook_attachment = {'name':'<%= @blogcast.title-%>', 'href':'<%= username_blogcast_permalink_url(:username => @blogcast_user.username, :year => @blogcast.year, :month => @blogcast.month, :day => @blogcast.day, :title => @blogcast.link_title) -%>', 'description':'<%= @blogcast.description.gsub(/'/, "\\\\'") -%>', 'properties':{'By':{'text':'<%= @blogcast_user.username -%>', 'href':'<%= profile_url :username => @blogcast_user.username -%>'},'On':'<%= @blogcast.starting_at.strftime("%B %e, %Y") -%>'}, 'media':[{'type':'image', 'src':'http://blogcastr.com/images/blogcastr-icon.png', 'href':'<%= root_url -%>'}]};
+<% else %>
+      var facebook_attachment = {'name':'<%= @blogcast.title-%>', 'href':'<%= username_blogcast_permalink_url(:username => @blogcast_user.username, :year => @blogcast.year, :month => @blogcast.month, :day => @blogcast.day, :title => @blogcast.link_title) -%>', 'description':'<%= @blogcast.description.gsub(/'/, "\\\\'") -%>', 'properties':{'By':{'text':'<%= @blogcast_user.username -%>', 'href':'<%= profile_url :username => @blogcast_user.username -%>'},'On':'<%= @blogcast.starting_at.strftime("%B %e, %Y") -%>'}, 'media':[{'type':'image', 'src':'http://sandbox.blogcastr.com/images/blogcastr-icon.png', 'href':'<%= root_url -%>'}]};
+<% end %>
     <% end %>
 <% if @user.instance_of?(BlogcastrUser) -%>
   <%- if Rails.env.production? -%> 

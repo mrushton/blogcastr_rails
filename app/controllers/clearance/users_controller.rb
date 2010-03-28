@@ -75,6 +75,25 @@ class Clearance::UsersController < ApplicationController
   def destroy
   end
 
+  def valid
+    if (!params[:blogcastr_user].nil?)
+      @username = params[:blogcastr_user][:username]
+    end
+    #MVR - check if username is valid
+    if (@username.nil? || @username.length < 4 || @username.length > 15 || @username !~ /^[\w_]*$/)
+      render :action => "invalid"
+      return
+    end
+    #MVR - case insensitive
+    @user = BlogcastrUser.find(:first, :conditions => ["LOWER(username) = ?", @username.downcase])
+    #MVR - if user does not already exist it is valid
+    if @user.nil?
+      render :action => "valid"
+    else
+      render :action => "invalid"
+    end
+  end
+
   private
 
   def redirect_to_home
