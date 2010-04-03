@@ -1,0 +1,9 @@
+#MVR - show success
+page["twitter-oauth-loading"].hide
+page["twitter-oauth-success"].show
+#MVR - replace with twitter sign in after three seconds 
+page.delay(3) do
+  page.assign("disconnecting_twitter_account", false)
+  page["twitter-oauth-success"].hide
+  page.replace_html "twitter-oauth", :partial => "twitter_sign_in"
+end

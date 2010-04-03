@@ -7,12 +7,15 @@
     <%= stylesheet_link_tag "setting", :media => "screen" %>
     <%= stylesheet_link_tag "farbtastic.css", :media => "screen" %>
     <%= javascript_include_tag :defaults, "jquery.js", "settings.js", "farbtastic.js", :media => "all" %>
+    <%= javascript_tag "var authenticity_token = \"#{form_authenticity_token}\"" %>
     <% javascript_tag do %>
       jQuery.noConflict();
     <% end %>
   </head>
   <body>
     <%= yield :layout %>
+    <%= fb_connect_javascript_tag %>
+    <%= init_fb_connect %>
     <script type="text/javascript">
       var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
       document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));

@@ -102,6 +102,7 @@
 	width: 406px;
 	float: left;
 	border-collapse: collapse;
+	line-height: 12px;
 }
 
 #settings table.wide
@@ -305,4 +306,31 @@
 #colorpicker.farbtastic
 {
 	position: absolute;
+}
+
+#settings img.connect
+{
+	border: none;
+	vertical-align: bottom;
+}
+
+#settings img.avatar
+{
+	float: left;
+}
+
+#settings span.username
+{
+	margin-left: 3px;
+}
+
+#settings a.disconnect
+{
+	color: #ff2600; 
+	font-size: 0.65em;
+}
+
+#settings img.status
+{
+	vertical-align: middle;
 }

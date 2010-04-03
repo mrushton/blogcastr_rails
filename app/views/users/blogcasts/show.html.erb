@@ -115,15 +115,15 @@
         <div class="social">
           <p>Share with friends and followers</p>
           <%= link_to_function image_tag("facebook-small.png"), "FB.Connect.streamPublish('', facebook_attachment)" -%>
-<%- tweet = "Checking out \"" + @blogcast.title + "\" by " + @blogcast_user.username + " on " + @blogcast.starting_at.strftime("%m/%d/%y").gsub(/0?(\d+)\/0?(\d+)\/(\d{2})/, '\1/\2/\3') + " - " + username_blogcast_permalink_url + " #blogcastr" -%>
+<%- tweet = "Checking out \"" + @blogcast.title + "\" by " + @blogcast_user.username + " - " + username_blogcast_permalink_url + " #blogcastr" -%>
           <%= link_to_function image_tag("twitter-small.png"), "blogcastrTwitterShare('#{tweet}')" -%>
 <% if (@user.instance_of?(BlogcastrUser) && @user != @blogcast.user) -%>
           <span>|</span>
           <span id="like-link">
   <%- if @like.nil? -%>
-            <%= link_to_remote "Like", :url => blogcast_likes_path(:blogcast_id => @blogcast.id), :failure => "alert('Error: Failed communicating with server. Unable to like \"#{@blogcast.title}\"');", :html => {:class => "like add"}, :condition => "remote_request == false", :before => "remote_request = true", :complete => "setTimeout('remote_request = false', 3500)" %>
+            <%= link_to_remote "Like", :url => blogcast_likes_path(:blogcast_id => @blogcast.id), :failure => "alert('Error: Failed communicating with server. Unable to like \"#{@blogcast.title}\".');", :html => {:class => "like add"}, :condition => "remote_request == false", :before => "remote_request = true", :complete => "setTimeout('remote_request = false', 3500)" %>
   <%- else -%>
-            <%= link_to_remote "Unlike", :url => blogcast_like_path(:blogcast_id => @blogcast.id, :id => @like.id), :method => "delete", :failure => "alert('Error: Failed communicating with server. Unable to unlike \"#{@blogcast.title}\"');", :html => {:class => "like delete"}, :condition => "remote_request == false", :before => "remote_request = true", :complete => "setTimeout('remote_request = false', 3500)" %>
+            <%= link_to_remote "Unlike", :url => blogcast_like_path(:blogcast_id => @blogcast.id, :id => @like.id), :method => "delete", :failure => "alert('Error: Failed communicating with server. Unable to unlike \"#{@blogcast.title}\".');", :html => {:class => "like delete"}, :condition => "remote_request == false", :before => "remote_request = true", :complete => "setTimeout('remote_request = false', 3500)" %>
   <%- end -%>
           </span>
 <%- end -%>

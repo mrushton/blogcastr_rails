@@ -13,6 +13,9 @@ class ClearanceCreateUsers < ActiveRecord::Migration
       t.boolean :email_confirmed, :default => false, :null => false
       #MVR - Facebook
       t.integer :facebook_id
+      t.string :facebook_session_key
+      t.boolean :has_facebook_publish_stream
+      t.boolean :has_facebook_create_event
       #MVR - Twitter
       t.integer :twitter_id
       t.string :twitter_access_token 

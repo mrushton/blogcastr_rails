@@ -137,12 +137,18 @@ ActionController::Routing::Routes.draw do |map|
     #MVR - sms notifications 
     blogcasts.resources :sms_notifications, :controller => "sms_blogcast_notifications", :only => [:create, :destroy]
   end
+  #MVR - Facebook connect
+  map.resource :facebook_connect, :controller => "facebook_connect", :only => [:create, :destroy]
   #MVR - Facebook sessions
   map.resource :facebook_session, :controller => "facebook_sessions", :only => [:create, :destroy]
-  #MVR - Twitter sessions
-  map.twitter_oauth_start "twitter_oauth_init", :controller => "twitter_sessions", :action => "init"
-  map.twitter_oauth_callback "twitter_oauth_callback", :controller => "twitter_sessions", :action => "create"
-  map.resource :twitter_session, :controller => "twitter_sessions", :only => [:destroy]
+  #MVR - Twitter sign in
+  map.resource :twitter_sign_in, :controller => "twitter_sign_in", :only => [:destroy]
+  map.twitter_sign_in "twitter_sign_in", :controller => "twitter_sign_in", :action => "init"
+  map.twitter_sign_in_callback "twitter_sign_in_callback", :controller => "twitter_sign_in", :action => "create"
+  #MVR - Twitter oauth 
+  map.resource :twitter_oauth, :controller => "twitter_oauth", :only => [:destroy]
+  map.twitter_oauth "twitter_oauth", :controller => "twitter_oauth", :action => "init"
+  map.twitter_oauth_callback "twitter_oauth_callback", :controller => "twitter_oauth", :action => "create"
   #MVR - ejabberd
   map.ejabberd "ejabberd/:action.:format", :controller => "ejabberd"
   #MVR - profile

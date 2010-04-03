@@ -1,0 +1,5 @@
+#MVR - show failure 
+page["facebook-connect-loading"].hide
+page["facebook-connect-error"].show
+page.assign("disconnecting_facebook_account", false)
+page.alert('Error: Unable to disconnect Facebook account.')

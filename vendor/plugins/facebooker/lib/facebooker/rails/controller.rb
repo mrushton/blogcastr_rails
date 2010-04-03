@@ -131,7 +131,6 @@ module Facebooker
 
       def secure_with_cookies!
           parsed = {}
-          
           fb_cookie_names.each { |key| parsed[key[fb_cookie_prefix.size,key.size]] = cookies[key] }
  
           #returning gracefully if the cookies aren't set or have expired

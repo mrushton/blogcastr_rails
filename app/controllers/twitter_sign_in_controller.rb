@@ -1,21 +1,16 @@
-class TwitterSessionsController < ApplicationController
+class TwitterSignInController < ApplicationController
   def init
     #MVR - get a request token from Twitter and redirect
-    #MVR - sign in flow is slightly different
-    if params[:sign_in] == true
-      oauth_client = Twitter::OAuth.new(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET, :sign_in => true)
-    else
-      oauth_client = Twitter::OAuth.new(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET)
-    end
+    oauth_client = Twitter::OAuth.new(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET, :sign_in => true)
     begin
       #TODO: better way of setting domain?
       if Rails.env.production?
-        oauth_client.set_callback_url("http://blogcastr.com" + twitter_oauth_callback_path)
+        oauth_client.set_callback_url("http://blogcastr.com" + twitter_sign_in_callback_path)
       else
-        oauth_client.set_callback_url("http://sandbox.blogcastr.com" + twitter_oauth_callback_path)
+        oauth_client.set_callback_url("http://sandbox.blogcastr.com" + twitter_sign_in_callback_path)
       end
     rescue 
-      render :nothing => true
+      render :action => "failure"
       return
     end
     session['rtoken'] = oauth_client.request_token.token
@@ -30,29 +25,21 @@ class TwitterSessionsController < ApplicationController
     session['rsecret'] = nil
     twitter_user = Twitter::Base.new(oauth_client)
     twitter_profile = twitter_user.verify_credentials
-    #MVR - a user may be connecting their Twitter accounts and already logged in
-    user = current_user
-    if user.nil?
-      user = TwitterUser.find_or_create_by_twitter_id(twitter_profile.id)
-      sign_in(user)
-    else
-      user.twitter_id = twitter_profile.id
-    end
+    #MVR - create or find the Twitter user and sign them in 
+    user = TwitterUser.find_or_create_by_twitter_id(twitter_profile.id)
     user.twitter_access_token = oauth_client.access_token.token
     user.twitter_token_secret = oauth_client.access_token.secret
-    user.save
+    if !user.save
+      render :action => "failure"
+      return
+    end
+    sign_in(user)
   end
 
   def destroy
-    if params[:sign_out] == true
-      #MVR - clear Blogcastr cookies
-      sign_out
-      redirect_to_back_or_default(url_after_destroy)
-    else
-      user = current_user
-      user.twitter_id = nil 
-      user.save
-    end
+    #MVR - clear cookies
+    sign_out
+    redirect_to_back_or_default(sign_in_path)
   end
 
   private

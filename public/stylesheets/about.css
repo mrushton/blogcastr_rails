@@ -41,8 +41,7 @@ div#main p.follow a.feedback
 div#main p.follow img
 {
 	border: none;
-	position: relative;
-	top: 8px;
+	vertical-align: middle;
 }
 
 #sign-up

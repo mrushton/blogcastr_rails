@@ -62,9 +62,9 @@
           <h2 class="tab short" onclick="blogcastrPageSelect(this, 'settings', 'blogcast-page');">Blogcasts</h2>
 <% end -%>
 <% if @settings_tab == "connect" || flash[:settings_tab] == "connect" -%>
-          <h2 class="tab short selected" onclick="blogcastrPageSelect(this, 'settings', '');">Connect</h2>
+          <h2 class="tab short selected" onclick="blogcastrPageSelect(this, 'settings', 'connect-page');">Connect</h2>
 <% else -%>
-          <h2 class="tab short" onclick="blogcastrPageSelect(this, 'settings', '');">Connect</h2>
+          <h2 class="tab short" onclick="blogcastrPageSelect(this, 'settings', 'connect-page');">Connect</h2>
 <% end -%>
 <% if @settings_tab == "email" || flash[:settings_tab] == "email" -%>
           <h2 class="tab short selected" onclick="blogcastrPageSelect(this, 'settings', '');">Email</h2>
@@ -282,6 +282,103 @@
               <%= link_to_function "Select one of our themes", "blogcastrViewSelect('appearance-page', 'themes-view');", :class => "view" -%>
             </div>
           </div>
+
+
+
+
+
+<% if @settings_tab == "connect" || flash[:settings_tab] == "connect" -%>
+          <div id="connect-page" class="page selected">
+<% else -%>
+          <div id="connect-page" class="page">
+<% end -%>
+            <% form_for :setting, (@connect_setting.nil?)?@setting:@connect_setting, :url => connect_settings_path do |form| %>
+<% if flash[:settings_tab] == "connect" -%>
+  <%- if !flash[:error].nil? -%>
+              <div class="alert error">
+                <h3><%= flash[:error] -%></h3>
+              </div>            
+  <%- elsif !flash[:info].nil? -%>
+              <div class="alert info">
+                <h3><%= flash[:info] -%></h3>            
+              </div>            
+  <%- elsif !flash[:success].nil? -%>
+              <div class="alert success">
+                <div class="effect">
+                  <h3><%= flash[:success] -%></h3>
+                </div>
+              </div>            
+  <%- end -%>
+<%- end -%>
+              <%= form.error_messages :header_tag => "h3", :header_message => "Oops!", :message => nil %>
+              <table class="wide">
+                <tr>
+                  <td><label for="facebook-connect">Facebook</label></td>
+                  <td>
+                    <div id="facebook-connect">
+<%- if @user.facebook_id.nil? -%>
+                      <%= link_to_function image_tag("http://static.ak.fbcdn.net/images/fbconnect/login-buttons/connect_light_medium_long.gif", :class => "connect"), "FB.Connect.requireSession(blogcastrFacebookExtendedPermissions)" -%>
+                      <p>Connect your Facebook account</p>
+<% else -%>
+                      <%= image_tag @user.get_facebook_avatar_url(:small), :class => "avatar" -%>
+                      <span class="username"><%= @user.get_facebook_username -%></span>
+                      <div class="clear">
+                      </div>
+                      <%= form.check_box :post_blogcasts_to_facebook, :class => "check-box" %>
+                      <%= form.label :post_blogcasts_to_facebook, "Post your new blogcasts to Facebook", :class => "inner" %>
+                      <br>
+                      <%= form.check_box :create_blogcast_facebook_events, :class => "check-box" %>
+                      <%= form.label :create_blogcast_facebook_events, "Create Facebook events for your new blogcasts", :class => "inner" %>
+  <%- if @user.has_facebook_publish_stream != true || @user.has_facebook_create_event != true || @user.facebook_session_key.nil? -%>
+                      <br>
+                      <%= link_to_function "Add extended permissions to your Facebook account", "blogcastrFacebookExtendedPermissions()" -%>
+  <% end -%>
+                      <br>
+                      <%= link_to_remote "Disconnect your Facebook account", :url => facebook_connect_path, :method => "delete", :failure => "alert('Error: Failed communicating with server. Unable to disconnect Facebook account.');", :html => {:class => "disconnect"}, :condition => "disconnecting_facebook_account == false", :before => "jQuery('#facebook-connect img.status').hide(); disconnecting_facebook_account = true; jQuery('#facebook-connect-loading').show();" %>
+                      <%= image_tag "ajax-loader.gif", :id => "facebook-connect-loading", :class => "status", :style => "display: none;" -%>
+                      <%= image_tag "tick.png", :id => "facebook-connect-success", :class => "status", :style => "display: none;" -%>
+                      <%= image_tag "cross.png", :id => "facebook-connect-error", :class => "status", :style => "display: none;" -%>
+<% end -%>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><label for="twitter-oauth">Twitter</label></td>
+                  <td>
+                    <div id="twitter-oauth">
+<%- if @user.twitter_id.nil? -%>
+                    <%= link_to_function image_tag("Sign-in-with-Twitter-darker.png", :class => "connect"), "blogcastrTwitterOauth()" -%>
+                    <p>Connect your Twitter account</p>
+<% else -%>
+                      <%= image_tag @user.get_twitter_avatar_url, :class => "avatar" -%>
+                      <span class="username"><%= @user.get_twitter_username -%></span>
+                      <div class="clear">
+                      </div>
+                      <%= form.check_box :tweet_blogcasts, :class => "check-box" %>
+                      <%= form.label :tweet_blogcasts, "Tweet your new blogcasts", :class => "inner" %>
+                      <br>
+                      <%= link_to_remote "Disconnect your Twitter account", :url => twitter_oauth_path, :method => "delete", :failure => "alert('Error: Failed communicating with server. Unable to disconnect Twitter account.');", :html => {:class => "disconnect"}, :condition => "disconnecting_twitter_account == false", :before => "jQuery('#twitter-connect img.status').hide(); disconnecting_twitter_account = true; jQuery('#twitter-oauth-loading').show();" %>
+                      <%= image_tag "ajax-loader.gif", :id => "twitter-oauth-loading", :class => "status", :style => "display: none;" -%>
+                      <%= image_tag "tick.png", :id => "twitter-oauth-success", :class => "status", :style => "display: none;" -%>
+                      <%= image_tag "cross.png", :id => "twitter-oauth-error", :class => "status", :style => "display: none;" -%>
+<% end -%>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td><%= form.submit "Save changes", :class => "submit" %></td>
+                </tr>
+              </table>
+            <% end %>
+          </div>
+
+
+
+
+
+
+
 <% if @settings_tab == "password" || flash[:settings_tab] == "password" -%>
           <div id="password-page" class="page selected">
 <% else -%>

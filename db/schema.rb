@@ -50,8 +50,29 @@ ActiveRecord::Schema.define(:version => 20100218034011) do
     t.datetime "updated_at"
   end
 
+  create_table "posts", :force => true do |t|
+    t.string   "type",                         :null => false
+    t.integer  "user_id",                      :null => false
+    t.integer  "blogcast_id",                  :null => false
+    t.string   "from",                         :null => false
+    t.string   "text"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+    t.string   "audio_file_name"
+    t.string   "audio_content_type"
+    t.integer  "audio_file_size"
+    t.datetime "audio_updated_at"
+    t.string   "audio_post_process_file_name"
+    t.integer  "comment_id"
+    t.integer  "parent_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "settings", :force => true do |t|
-    t.integer  "user_id",                                                       :null => false
+    t.integer  "user_id",                                                         :null => false
     t.string   "full_name"
     t.string   "motto"
     t.string   "location"
@@ -62,19 +83,22 @@ ActiveRecord::Schema.define(:version => 20100218034011) do
     t.string   "avatar_content_type"
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
-    t.integer  "theme_id",                                   :default => 1,     :null => false
-    t.boolean  "use_background_image",                       :default => false, :null => false
+    t.integer  "theme_id",                                     :default => 1,     :null => false
+    t.boolean  "use_background_image",                         :default => false, :null => false
     t.string   "background_image_file_name"
     t.string   "background_image_content_type"
     t.integer  "background_image_file_size"
     t.datetime "background_image_updated_at"
     t.boolean  "tile_background_image"
     t.boolean  "scroll_background_image"
-    t.string   "background_color",              :limit => 7
+    t.string   "background_color",                :limit => 7
     t.boolean  "mobile_confirmed"
-    t.string   "mobile_confirmation_token",     :limit => 5
+    t.string   "mobile_confirmation_token",       :limit => 5
     t.string   "mobile_number"
     t.string   "carrier"
+    t.boolean  "post_blogcasts_to_facebook"
+    t.boolean  "create_blogcast_facebook_events"
+    t.boolean  "tweet_blogcasts"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -110,16 +134,19 @@ ActiveRecord::Schema.define(:version => 20100218034011) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "type",                                                   :null => false
-    t.string   "username",             :limit => 15
+    t.string   "type",                                                          :null => false
+    t.string   "username",                    :limit => 15
     t.string   "email"
-    t.string   "encrypted_password",   :limit => 128
-    t.string   "salt",                 :limit => 128
-    t.string   "confirmation_token",   :limit => 128
-    t.string   "remember_token",       :limit => 128
-    t.string   "authentication_token", :limit => 128
-    t.boolean  "email_confirmed",                     :default => false, :null => false
+    t.string   "encrypted_password",          :limit => 128
+    t.string   "salt",                        :limit => 128
+    t.string   "confirmation_token",          :limit => 128
+    t.string   "remember_token",              :limit => 128
+    t.string   "authentication_token",        :limit => 128
+    t.boolean  "email_confirmed",                            :default => false, :null => false
     t.integer  "facebook_id"
+    t.string   "facebook_session_key"
+    t.boolean  "has_facebook_publish_stream"
+    t.boolean  "has_facebook_create_event"
     t.integer  "twitter_id"
     t.string   "twitter_access_token"
     t.string   "twitter_token_secret"

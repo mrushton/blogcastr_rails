@@ -25,6 +25,9 @@ class CreateSettings < ActiveRecord::Migration
       t.string :mobile_confirmation_token, :limit => 5
       t.string :mobile_number
       t.string :carrier
+      t.boolean :post_blogcasts_to_facebook
+      t.boolean :create_blogcast_facebook_events
+      t.boolean :tweet_blogcasts
       t.timestamps
     end
   end

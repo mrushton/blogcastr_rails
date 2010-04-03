@@ -82,7 +82,24 @@ class SettingsController < ApplicationController
     end
   end
 
-  #MVR - update a user's password
+  def connect
+    @user = current_user
+    @setting = @user.setting
+    #MVR - make a copy of the setting object
+    @connect_setting = Marshal.load(Marshal.dump(@setting))
+    err = @connect_setting.update_attributes(:post_blogcasts_to_facebook => params[:setting][:post_blogcasts_to_facebook], :create_blogcast_facebook_events => params[:setting][:create_blogcast_facebook_events], :tweet_blogcasts => params[:setting][:tweet_blogcasts])
+    if err 
+      flash[:settings_tab] = "connect"
+      flash[:success] = "Changes saved!"
+      redirect_to settings_path 
+    else
+      @settings_tab = "connect"
+      @themes = Theme.all
+      @username_possesive = @user.username + (@user.username =~ /.*s$/ ? "'":"'s")
+      render :action => "edit"
+    end
+  end
+
   def password 
     @user = current_user
     #MVR - check current password

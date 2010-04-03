@@ -140,7 +140,7 @@ function blogcastrCheckTwitterSignIn()
 function blogcastrTwitterSignIn()
 {
   //MVR - open window 
-  twitter_sign_in_window = window.open("/twitter_oauth_init", "Twitter Sign In", "location=0, status=0, width=800, height=400");
+  twitter_sign_in_window = window.open("/twitter_oauth_init?sign_in=true", "Twitter Sign In", "location=0, status=0, width=800, height=400");
   //MVR - check twitter sign in window every 1 second 
   twitter_sign_in_interval = setInterval(blogcastrCheckTwitterSignIn, 1000);
 }
