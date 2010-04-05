@@ -6,7 +6,7 @@ class FacebookSessionsController < ApplicationController
     if facebook_session
       #TODO: exception handling
       #MVR - try and find the user otherwise create a new one
-      @user = User.find_by_facebook_id(facebook_session.user.id)
+      @user = FacebookUser.find_by_facebook_id(facebook_session.user.id)
       if @user.nil?
         #TODO: calling create does not work?
         @user = FacebookUser.new

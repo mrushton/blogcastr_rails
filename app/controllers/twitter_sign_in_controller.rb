@@ -29,7 +29,7 @@ class TwitterSignInController < ApplicationController
     user = TwitterUser.find_or_create_by_twitter_id(twitter_profile.id)
     user.twitter_access_token = oauth_client.access_token.token
     user.twitter_token_secret = oauth_client.access_token.secret
-    if !user.save
+    if !user.save(false)
       render :action => "failure"
       return
     end

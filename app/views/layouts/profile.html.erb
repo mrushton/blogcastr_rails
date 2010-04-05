@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title><%= @profile_username_possesive %> Blogcastr</title>
+    <title><%= @title %></title>
     <%= stylesheet_link_tag "blogcastr", :media => "screen" %>
     <%= stylesheet_link_tag "profile", :media => "screen" %>
     <%= auto_discovery_link_tag(:rss, username_blogcasts_url(:username => @profile_user.username, :format => "rss"), {:title => "#{@profile_username_possesive} blogcasts"}) %>

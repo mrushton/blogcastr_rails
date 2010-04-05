@@ -470,6 +470,11 @@ a:hover
 	font-weight: bolder;
 }
 
+#title h1.image
+{
+	padding-left: 46px;
+}
+
 #title h1 img.avatar
 {
 	width: 44px;
@@ -477,9 +482,21 @@ a:hover
 	position: absolute;
 	left: 6px;
 	top: 6px;
+	border: none;
 }
 
 #main div.background
+{
+	padding-left: 14px;
+	padding-top: 29px;
+	padding-right: 14px;
+	padding-bottom: 4px;
+	width: 572px; 
+	position: relative;
+	background-image: url("../images/background-border-main.png");
+}
+
+#content.one-column.narrow #main div.background
 {
 	padding-left: 40px;
 	padding-top: 25px;
@@ -514,6 +531,13 @@ a:hover
 	padding-bottom: 4px;
 	width: 572px;
 	background-image: url("../images/background-border-main.png");
+}
+
+#main h2
+{
+	margin: 0px;
+	color: #676664;
+	font-size: 1.8em;
 }
 
 #bottom h2
@@ -989,7 +1013,7 @@ a:hover
 	text-decoration: none;
 }
 
-div#stats a.first, div.stats a.first
+#side div#stats a.first, div.stats a.first
 {
 	background-color: #1ca5e5;
 }
@@ -1180,6 +1204,147 @@ input.tab
 #footer a:active
 {
 	text-decoration: underline;
+}
+
+ol
+{
+	margin: 0px;
+	padding: 0px;
+	list-style: none;
+}
+
+li.user
+{
+	padding-top: 2px;
+	padding-bottom: 2px;
+	border-top: solid;
+	border-width: 1px;
+	border-color: #a4a4a4;
+}
+
+li.user.first
+{
+	border: none;
+}
+
+li.user div.spacer
+{
+	padding-left: 10px;
+	padding-top: 3px;
+	padding-right: 10px;
+	padding-bottom: 3px;
+	position: relative;
+}
+
+li.user div.spacer:hover
+{
+	background-color: #e6e4e5;
+}
+
+li.user img.avatar
+{
+	border: none;
+	width: 53px;
+	height: 53px;
+	float: left;
+	vertical-align: bottom;
+}
+
+li.user a.username
+{
+	margin-left: 10px;
+	color: #00a7ee;
+	font-weight: bold;
+	font-size: 1.0em;
+}
+
+li.user span.details
+{
+	margin-left: 10px;
+	font-size: 0.85em;
+}
+
+li.user div.stats
+{
+	position: absolute;
+	top: 3px;
+	right: 10px;
+	z-index: 1;
+}
+
+li.user a.stat
+{
+	margin-top: 1px;
+	padding-left: 2px;
+	padding-right: 2px;
+	width: 160px;
+	height: 17px;
+	display: block;
+	position: relative;
+	color: #000000;
+	border: none;
+	text-decoration: none;
+	font-weight: bold;
+	line-height: 17px;
+	font-size: 0.70em;
+	text-align: left;
+	cursor: pointer;
+	background-color: #99d9f6;
+}
+
+li.user a.stat.first
+{
+	margin-top: 0px;
+}
+
+li.user a.stat:hover
+{
+	background-color: #0097e0;
+}
+
+li.user a.stat span.name
+{
+	position: absolute;
+	left: 70px;
+}
+
+#paginate
+{
+	margin-top: 10px;
+	text-align: center;
+	line-height: 30px;
+}
+
+#paginate span.info
+{
+}
+
+#paginate a.button
+{
+	line-height: 30px;
+	width: 100px;
+	color: #686463;
+	background-color: #ebebeb;
+	font-weight: bold;
+}
+
+#paginate a.button:hover
+{
+	color: #000000;
+	background-color: #a3a3a3;
+	text-decoration: none;
+}
+
+#paginate a.back
+{
+	position: absolute;
+	left: 14px;
+}
+
+#paginate a.next
+{
+	position: absolute;
+	right: 14px;
 }
 
 div.upper-left-border-squared-corner

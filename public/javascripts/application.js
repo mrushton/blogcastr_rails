@@ -127,12 +127,17 @@ function blogcastrCheckTwitterSignIn()
   else
   {
     //MVR - check if we are signed in or not
-    var ret = jQuery(twitter_sign_in_window.document.body).find("span[id=twitter_sign_in]").text();
+    var ret = jQuery(twitter_sign_in_window.document.body).find("#twitter-sign-in").text();
     if (ret == "success")
     {
       twitter_sign_in_window.close();
       //AS DESIGNED: reload page
       window.location.reload();
+    }
+    else if (ret == "failure")
+    {
+      twitter_sign_in_window.close();
+      alert('Error: failed to connect Twitter account.');
     }
   }
 }
@@ -140,14 +145,14 @@ function blogcastrCheckTwitterSignIn()
 function blogcastrTwitterSignIn()
 {
   //MVR - open window 
-  twitter_sign_in_window = window.open("/twitter_oauth_init?sign_in=true", "Twitter Sign In", "location=0, status=0, width=800, height=400");
+  twitter_sign_in_window = window.open("/twitter_sign_in", "Twitter Sign In", "location=0, status=0, width=800, height=400");
   //MVR - check twitter sign in window every 1 second 
   twitter_sign_in_interval = setInterval(blogcastrCheckTwitterSignIn, 1000);
 }
 
 function blogcastrTwitterSignOut()
 {
-  jQuery.post("/twitter_session", {authenticity_token: authenticity_token, _method: "delete"}, blogcastrTwitterSignOutCallback);
+  jQuery.post("/twitter_sign_in", {authenticity_token: authenticity_token, _method: "delete"}, blogcastrTwitterSignOutCallback);
 }
 
 function blogcastrToggleBlindEffect(id)
