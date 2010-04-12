@@ -143,6 +143,7 @@ ActiveRecord::Schema.define(:version => 20100218034011) do
     t.string   "remember_token",              :limit => 128
     t.string   "authentication_token",        :limit => 128
     t.boolean  "email_confirmed",                            :default => false, :null => false
+    t.boolean  "is_featured"
     t.integer  "facebook_id"
     t.string   "facebook_session_key"
     t.boolean  "has_facebook_publish_stream"

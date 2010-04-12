@@ -58,7 +58,7 @@
             <div class="lower-left-border-squared-corner-gray">
             </div>
           </div>
-          <h1 class="image"><%= link_to image_tag(@profile_user.setting.avatar.url(:medium), :class => "avatar"), profile_path(:username => @profile_user.username) -%><%= @profile_user_username_possesive -%> subscribers</h1>
+          <h1 class="image"><%= link_to image_tag(@profile_user.setting.avatar.url(:medium), :class => "avatar"), profile_path(:username => @profile_user.username) -%><%= @profile_user_username_possesive -%> comments</h1>
           <div class="side-border">
             <div class="upper-right-border-squared-corner-gray">
             </div>
@@ -68,50 +68,66 @@
             </div>
           </div>
         </div>
-        <h2><span class="counter"><%= @num_subscribers -%></span> <%= @num_subscribers == 1 ? "Subscriber" : "Subscribers" -%></h2>
+        <h2><span class="counter"><%= @num_comments -%></span> <%= @num_comments == 1 ? "Comment" : "Comments" -%></h2>
         <ol>
 <%- i = 0 -%>
-<% for subscriber in @paginated_subscribers -%>
+<% for comment in @paginated_comments -%>
   <%- if i == 0 -%>
-          <li class="user first">
+          <li class="comment first">
   <%- else -%>
-          <li class="user">
+          <li class="comment">
   <%- end -%>
   <%- i = i + 1 -%>
-            <div class="spacer">
-              <%= link_to image_tag(subscriber.setting.avatar.url(:medium), :class => "avatar"), profile_path(subscriber.username) -%>
-              <%= link_to subscriber.username, profile_path(subscriber.username), :class => "username" -%>
-              <br>
-  <%- if !subscriber.setting.location.blank? -%>
-              <span class="details"><%= subscriber.setting.full_name -%> | <%= subscriber.setting.location -%></span>
-  <%- else -%>
-              <span class="details"><%= subscriber.setting.full_name -%></span>
-  <%- end -%>
-              <div class="clear">
-              </div>
-              <div class="stats">
-  <%- num_blogcasts = subscriber.blogcasts.count -%>
-  <%- num_subscribers = subscriber.subscribers.count -%>
-  <%- num_subscriptions = subscriber.subscriptions.count -%>
-                <a class="stat first" href="<%= username_blogcasts_path :username => subscriber.username -%>"><span class="counter"><%= num_blogcasts -%></span><span class="name"><%= num_blogcasts == 1 ? "Blogcast" : "Blogcasts" -%></span></a>
-                <a class="stat" href="<%= username_subscriptions_path :username => subscriber.username -%>"><span class="counter"><%= num_subscribers -%></span><span class="name"><%= num_subscribers == 1 ? "Subscriber" : "Subscribers" -%></span></a>
-                <a class="stat" href="<%= username_subscriptions_path :username => subscriber.username -%>"><span class="counter"><%= num_subscriptions -%></span><span class="name"><%= num_subscriptions == 1 ? "Subscription" : "Subscriptions" -%></span></a>
-              </div>
-            </div>
+
+
+
+
+    <%= hours_minutes_ago_helper comment.created_at %>
+<% comment_user = comment.user -%>
+<% if comment.user.instance_of?(BlogcastrUser) -%>
+    <a href="<%= profile_path(:username => comment_user.username) -%>" class="user"><%= image_tag(comment_user.setting.avatar.url(:small), :class => "avatar") -%><%= comment_user.username -%></a>
+<% else -%>
+    <a href="<%= comment_user.get_url -%>" class="user"><%= image_tag(comment_user.get_avatar_url(:small), :class => "avatar") -%><%= comment_user.get_username -%></a>
+<% end -%>
+    <div class="clear">
+    </div>
+    <p class="text"><%= comment.text %></p>
+    <h4 onclick="blogcastrCollapsibleEvent(this, 'Comment:<%= comment.id -%>-info');">Info<%= image_tag "up.png" -%></h4>
+    <div id="Comment:<%= comment.id -%>-info" style="display: none;">
+<% if comment.user.instance_of?(FacebookUser) -%>
+      <p class="info">Commented by <%= comment_user.get_username -%> on <%= comment.created_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/,' ') %> from <%= comment.from %> using Facebook Connect</p>
+<% elsif comment.user.instance_of?(TwitterUser) -%>
+      <p class="info">Commented by <%= comment_user.get_username -%> on <%= comment.created_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/,' ') %> from <%= comment.from %> using Twitter Sign In</p>
+<% else -%>
+      <p class="info">Commented by <%= comment_user.username -%> on <%= comment.created_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/,' ') %> from <%= comment.from %></p>
+<% end -%>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
           </li>
 <% end -%>
         </ol>
-<% if @num_first_subscriber <= @num_subscribers -%>
+<% if @num_first_comment <= @num_comments -%>
         <div id="paginate">
   <%- if !@previous_page.nil? -%>
-          <%= link_to "Back", username_subscribers_path(:username => @profile_user.username, :page => @previous_page, :id => @id), :class => "button back" %>
+          <%= link_to "Back", username_comments_path(:username => @profile_user.username, :page => @previous_page, :id => @id), :class => "button back" %>
   <%- end -%>
-          <span class="paginate"><strong><%= @num_first_subscriber -%>-<%= @num_last_subscriber -%></strong> of <strong><%= @num_paginated_subscribers -%></strong></span>
+          <span class="paginate"><strong><%= @num_first_comment -%>-<%= @num_last_comment -%></strong> of <strong><%= @num_paginated_comments -%></strong></span>
   <%- if !@next_page.nil? -%>
-          <%= link_to "Next", username_subscribers_path(:username => @profile_user.username, :page => @next_page, :id => @id), :class => "button next" %>
+          <%= link_to "Next", username_comments_path(:username => @profile_user.username, :page => @next_page, :id => @id), :class => "button next" %>
   <%- end -%>
-<% end -%>
         </div>
+<% end -%>
       </div>
       <div class="last lower-left-border-squared-corner">
       </div>

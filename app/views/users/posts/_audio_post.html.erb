@@ -1,0 +1,30 @@
+<li id="<%= audio_post.id %>" class="post">
+<%- if @first == 1 -%>
+  <div class="first effect">
+<%- else -%>
+  <div class="effect">
+<%- end -%>
+    <%= hours_minutes_ago_helper audio_post.created_at %>
+    <a href="<%= profile_path(:username => audio_post.user.username) -%>" class="user"><%= image_tag(audio_post.user.setting.avatar.url(:small), :class => "avatar") -%> <%= audio_post.user.username -%></a>
+    <div class="clear">
+    </div>
+    <div class="player audio">
+      <div class="html5" style="display: none;">
+        <audio controls="controls">
+          <source src="<%= audio_post.audio.url(:mp3) -%>" type="audio/mpeg"></source>
+          <source src="<%= audio_post.audio.url(:ogg) -%>" type="audio/ogg"></source>
+        </audio>
+      </div>
+      <div class="flash" style="display: none;">
+        <embed id="player" width="450" height="24" flashvars="file= <%= audio_post.audio.url(:mp3, false) -%>" allowscriptaccess="always" allowfullscreen="false" quality="high" name="player" style="" src="/flash/player-viral.swf" type="application/x-shockwave-flash"/>
+      </div>
+    </div>
+<% if !audio_post.text.nil? -%>
+    <p class="text"><%= audio_post.text %></p>
+<% end -%>
+    <h4 onclick="blogcastrCollapsibleEvent(this, 'AudioPost:<%= audio_post.id -%>-info');">Info<%= image_tag "up.png" -%></h4>
+    <div id="AudioPost:<%= audio_post.id -%>-info" style="display: none;">
+      <p class="info">Posted by <%= audio_post.user.username -%> on <%= audio_post.created_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/,' ') %> from <%= audio_post.from %></p>
+    </div>
+  </div>
+</li>

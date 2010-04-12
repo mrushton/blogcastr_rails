@@ -58,7 +58,7 @@
             <div class="lower-left-border-squared-corner-gray">
             </div>
           </div>
-          <h1 class="image"><%= link_to image_tag(@profile_user.setting.avatar.url(:medium), :class => "avatar"), profile_path(:username => @profile_user.username) -%><%= @profile_user_username_possesive -%> subscribers</h1>
+          <h1 class="image"><%= link_to image_tag(@profile_user.setting.avatar.url(:medium), :class => "avatar"), profile_path(:username => @profile_user.username) -%><%= @profile_user_username_possesive -%> likes</h1>
           <div class="side-border">
             <div class="upper-right-border-squared-corner-gray">
             </div>
@@ -68,50 +68,84 @@
             </div>
           </div>
         </div>
-        <h2><span class="counter"><%= @num_subscribers -%></span> <%= @num_subscribers == 1 ? "Subscriber" : "Subscribers" -%></h2>
+        <h2><span class="counter"><%= @num_paginated_likes -%></span> <%= @num_paginated_likes == 1 ? "Like" : "Likes" -%></h2>
         <ol>
 <%- i = 0 -%>
-<% for subscriber in @paginated_subscribers -%>
+<% for like in @paginated_likes -%>
   <%- if i == 0 -%>
-          <li class="user first">
+          <li class="blogcast first">
   <%- else -%>
-          <li class="user">
+          <li class="blogcast">
   <%- end -%>
   <%- i = i + 1 -%>
-            <div class="spacer">
-              <%= link_to image_tag(subscriber.setting.avatar.url(:medium), :class => "avatar"), profile_path(subscriber.username) -%>
-              <%= link_to subscriber.username, profile_path(subscriber.username), :class => "username" -%>
-              <br>
-  <%- if !subscriber.setting.location.blank? -%>
-              <span class="details"><%= subscriber.setting.full_name -%> | <%= subscriber.setting.location -%></span>
-  <%- else -%>
-              <span class="details"><%= subscriber.setting.full_name -%></span>
-  <%- end -%>
-              <div class="clear">
-              </div>
-              <div class="stats">
-  <%- num_blogcasts = subscriber.blogcasts.count -%>
-  <%- num_subscribers = subscriber.subscribers.count -%>
-  <%- num_subscriptions = subscriber.subscriptions.count -%>
-                <a class="stat first" href="<%= username_blogcasts_path :username => subscriber.username -%>"><span class="counter"><%= num_blogcasts -%></span><span class="name"><%= num_blogcasts == 1 ? "Blogcast" : "Blogcasts" -%></span></a>
-                <a class="stat" href="<%= username_subscriptions_path :username => subscriber.username -%>"><span class="counter"><%= num_subscribers -%></span><span class="name"><%= num_subscribers == 1 ? "Subscriber" : "Subscribers" -%></span></a>
-                <a class="stat" href="<%= username_subscriptions_path :username => subscriber.username -%>"><span class="counter"><%= num_subscriptions -%></span><span class="name"><%= num_subscriptions == 1 ? "Subscription" : "Subscriptions" -%></span></a>
-              </div>
+
+
+
+
+
+            <h3><%= link_to like.title, username_blogcast_permalink_path(:username => like.user.username, :year => like.year, :month => like.month, :day => like.day, :title => like.link_title) -%></h3>
+            <p class="date"><%= like.starting_at.strftime("%a %b %d, %Y %I:%M %p").gsub(/ 0/,' ') %></p>
+            <div class="clear">
             </div>
+            <p class="tags"><%= like.tags -%></p>
+            <p class="description"><%= like.description -%></p>
+  <%- num_likes = like.likes.count -%>
+            <h4 class="three first selected" onclick="blogcastrCollapsibleEvent(this, 'blogcast-<%= like.id -%>-likes');"><%= num_likes.to_s + ((num_likes == 1) ? " Like" : " Likes") -%><%= image_tag "down.png" -%></h4>
+  <%- num_posts = like.posts.count -%>
+            <a class="tab" href="<%= username_blogcast_posts_permalink_path(:username => like.user.username, :year => like.year, :month => like.month, :day => like.day, :title => like.link_title) -%>"><h4 class="three"><%= num_posts.to_s + ((num_posts == 1) ? " Post" : " Posts") -%></h4></a>
+  <%- num_comments = like.comments.count -%>
+            <a class="tab" href="<%= username_blogcast_comments_permalink_path(:username => like.user.username, :year => like.year, :month => like.month, :day => like.day, :title => like.link_title) -%>"><h4 class="three"><%= num_comments.to_s + ((num_comments == 1) ? " Comment" : " Comments") -%></h4></a>
+            <div class="clear">
+            </div>
+            <div id="blogcast-<%= like.id -%>-likes">
+              <ul>
+  <%- likes = User.find_by_sql(["SELECT users.* FROM likes, users WHERE likes.blogcast_id = ? AND likes.user_id = users.id LIMIT 30", like.id]) -%>
+  <%- i = 0 -%>
+  <%- for like in likes -%>
+    <%- if i == 0 -%>
+                <li class="first">
+    <%- else -%>
+                <li>
+    <%- end -%>
+                  <%= link_to image_tag(like.setting.avatar.url(:small), :class => "avatar-small", :alt => "#{like.username}"), profile_path(:username => like.username), :title => "#{like.username}" %>
+                </li>
+    <%- i = i + 1 -%>
+  <%- end -%>
+              </ul>
+            </div>
+            <div class="clear">
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           </li>
 <% end -%>
         </ol>
-<% if @num_first_subscriber <= @num_subscribers -%>
+<% if @num_first_like <= @num_paginated_likes -%>
         <div id="paginate">
   <%- if !@previous_page.nil? -%>
-          <%= link_to "Back", username_subscribers_path(:username => @profile_user.username, :page => @previous_page, :id => @id), :class => "button back" %>
+          <%= link_to "Back", username_likes_path(:username => @profile_user.username, :page => @previous_page, :id => @id), :class => "button back" %>
   <%- end -%>
-          <span class="paginate"><strong><%= @num_first_subscriber -%>-<%= @num_last_subscriber -%></strong> of <strong><%= @num_paginated_subscribers -%></strong></span>
+          <span class="paginate"><strong><%= @num_first_like -%>-<%= @num_last_like -%></strong> of <strong><%= @num_paginated_likes -%></strong></span>
   <%- if !@next_page.nil? -%>
-          <%= link_to "Next", username_subscribers_path(:username => @profile_user.username, :page => @next_page, :id => @id), :class => "button next" %>
+          <%= link_to "Next", username_likes_path(:username => @profile_user.username, :page => @next_page, :id => @id), :class => "button next" %>
   <%- end -%>
-<% end -%>
         </div>
+<% end -%>
       </div>
       <div class="last lower-left-border-squared-corner">
       </div>

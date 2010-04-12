@@ -1,7 +1,7 @@
 class SiteController < ApplicationController
   def index
     @user = current_user
-    @featured_users = User.find_by_sql("SELECT * FROM users WHERE username == 'mrushton' OR username == 'krushtown' OR username == 'techstars'")
+    @featured_users = User.find(:all, :conditions => "is_featured = 't'")
   end
 
   def about

@@ -1,3 +1,15 @@
+#main h2
+{
+	margin-right: 1px;
+	color: #000000;
+	font-size: 1.0em;
+}
+
+#main h2.last
+{
+	margin-right: 0px;
+}
+
 #title h1
 {
 	padding-left: 46px;

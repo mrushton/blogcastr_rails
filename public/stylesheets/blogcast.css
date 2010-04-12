@@ -37,7 +37,7 @@
 	border: none;
 }
 
-#top p
+#top p, div.background p
 {
 	margin-top: 3px;
 	margin-bottom: 3px;
@@ -45,7 +45,7 @@
 	font-weight: bold;
 }
 
-#top p a.user
+#top p a.user, div.background p a.user
 {
 	color: #00A7EE;
 }
@@ -64,7 +64,7 @@
 	float: left;
 }
 
-#top p span.date
+#top p span.date, div.background p span.date
 {
 	color: #d79400;
 }
@@ -103,6 +103,11 @@
 	position: absolute;
 	left: 557px;
 	top: 11px;
+}
+
+div.background a.blogcast-title
+{
+	color: #000000;
 }
 
 #comment p

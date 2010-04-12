@@ -92,7 +92,7 @@
       </div>
       <div class="clear">
       </div>
-      <div id="top">
+      <div class="background">
         <div id="title">
           <div class="side-border">
             <div class="upper-left-border-squared-corner-gray horizontal">
@@ -102,7 +102,7 @@
             <div class="lower-left-border-squared-corner-gray horizontal">
             </div>
           </div>
-          <h1><%= @blogcast.title -%></h1>
+          <h1>Comments</h1>
           <div class="side-border">
             <div class="upper-right-border-squared-corner-gray horizontal">
             </div>
@@ -112,99 +112,84 @@
             </div>
           </div>
         </div>
-        <div class="social">
-          <p>Share with friends and followers</p>
-          <%= link_to_function image_tag("facebook-small.png"), "FB.Connect.streamPublish('', facebook_attachment)" -%>
-<%- tweet = "Checking out \"" + @blogcast.title + "\" by " + @blogcast_user.username + " - " + username_blogcast_permalink_url + " #blogcastr" -%>
-          <%= link_to_function image_tag("twitter-small.png"), "blogcastrTwitterShare('#{tweet}')" -%>
-<% if (@user.instance_of?(BlogcastrUser) && @user != @blogcast.user) -%>
-          <span>|</span>
-          <span id="like-link">
-  <%- if @like.nil? -%>
-            <%= link_to_remote "Like", :url => blogcast_likes_path(:blogcast_id => @blogcast.id), :failure => "alert('Error: Failed communicating with server. Unable to like \"#{@blogcast.title}\".');", :html => {:class => "like add"}, :condition => "remote_request == false", :before => "remote_request = true", :complete => "setTimeout('remote_request = false', 3500)" %>
+        <p>"<%= link_to @blogcast.title, username_blogcast_permalink_path, :class => "blogcast-title" -%>" by <a class="user" href="<%= profile_path(:username => @blogcast_user.username) -%>"><%= @blogcast_user.username -%></a></span> on <span class="date"><%= @blogcast.starting_at.strftime("%B %e, %Y") -%></span></p>
+        <h2><span class="counter"><%= @num_comments -%></span> <%= @num_comments == 1 ? "Comment" : "Comments" -%></h2>
+
+
+
+        <ol>
+<%- i = 0 -%>
+<% for comment in @paginated_comments -%>
+  <%- if i == 0 -%>
+          <li class="comment first">
   <%- else -%>
-            <%= link_to_remote "Unlike", :url => blogcast_like_path(:blogcast_id => @blogcast.id, :id => @like.id), :method => "delete", :failure => "alert('Error: Failed communicating with server. Unable to unlike \"#{@blogcast.title}\".');", :html => {:class => "like delete"}, :condition => "remote_request == false", :before => "remote_request = true", :complete => "setTimeout('remote_request = false', 3500)" %>
+          <li class="comment">
   <%- end -%>
-          </span>
-<%- end -%>
-        </div>
-        <p>By <a class="user" href="<%= profile_path(:username => @blogcast_user.username) -%>"><%= @blogcast_user.username -%></a></span> on <span class="date"><%= @blogcast.starting_at.strftime("%B %e, %Y") -%></span></p>
-          <div class="clear">
-          </div>
-<% if @user != @blogcast_user || 1 -%>
-        <h2 onclick="blogcastrCollapsibleEvent(this, 'comment');">Comment<%= image_tag "down.png" -%></h2>
-        <div id="comment">
-  <%- if signed_in? -%>
-          <% remote_form_for :comment, :url => blogcast_comments_path(:blogcast_id => @blogcast.id), :html => { :id => "comment_form", :method => "post"}, :complete => "$('comment_form').reset();" do |f| -%>
-            <input id="jid" type="hidden" value="" name="jid"/>
-            <%= f.hidden_field :from %>
-            <%= f.text_area :text, :onfocus => "jQuery(this).addClass('selected');", :onblur => "if (this.value == '') jQuery(this).removeClass('selected')" %>
-            <%= f.submit "Post" %>
-          <%- end -%>
-          <div class="clear">
-          </div>
-  <%- else -%>
-          <p class="first">To comment on "<%= @blogcast.title -%>" sign up or sign in.</p>
-          <div id="sign-up">
-            <%= link_to "Sign up!", sign_up_path -%>
-            <%= link_to "Sign in!", sign_in_path -%>
-            <div class="clear">
-            </div>
-          </div>
-          <p class="connect">Or connect with Facebook or Twitter.</p>
-          <a href="#" onclick="FB.Connect.requireSession(blogcastrFacebookSignIn); return false;"><img id="facebook_connect_image" src="http://static.ak.fbcdn.net/images/fbconnect/login-buttons/connect_light_medium_long.gif" alt="Facebook connect" /></a>
-          <a href="#" onclick="blogcastrTwitterSignIn(); return false;"><img id="twitter_sign_in_image" src="/images/Sign-in-with-Twitter-darker.png" alt="Twitter sign in" /></a>
-          <div class="clear">
-          </div>
+  <%- i = i + 1 -%>
+
+
+
+
+    <%= hours_minutes_ago_helper comment.created_at %>
+<% comment_user = comment.user -%>
+<% if comment.user.instance_of?(BlogcastrUser) -%>
+    <a href="<%= profile_path(:username => comment_user.username) -%>" class="user"><%= image_tag(comment_user.setting.avatar.url(:small), :class => "avatar") -%><%= comment_user.username -%></a>
+<% else -%>
+    <a href="<%= comment_user.get_url -%>" class="user"><%= image_tag(comment_user.get_avatar_url(:small), :class => "avatar") -%><%= comment_user.get_username -%></a>
+<% end -%>
+    <div class="clear">
+    </div>
+    <p class="text"><%= comment.text %></p>
+    <h4 onclick="blogcastrCollapsibleEvent(this, 'Comment:<%= comment.id -%>-info');">Info<%= image_tag "up.png" -%></h4>
+    <div id="Comment:<%= comment.id -%>-info" style="display: none;">
+<% if comment.user.instance_of?(FacebookUser) -%>
+      <p class="info">Commented by <%= comment_user.get_username -%> on <%= comment.created_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/,' ') %> from <%= comment.from %> using Facebook Connect</p>
+<% elsif comment.user.instance_of?(TwitterUser) -%>
+      <p class="info">Commented by <%= comment_user.get_username -%> on <%= comment.created_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/,' ') %> from <%= comment.from %> using Twitter Sign In</p>
+<% else -%>
+      <p class="info">Commented by <%= comment_user.username -%> on <%= comment.created_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/,' ') %> from <%= comment.from %></p>
+<% end -%>
+
+
+
+
+
+
+
+
+
+
+
+          </li>
+<% end -%>
+        </ol>
+<% if @num_first_comment <= @num_comments -%>
+        <div id="paginate">
+  <%- if !@previous_page.nil? -%>
+          <%= link_to "Back", username_blogcast_comments_permalink_path(:username => @blogcast_user.username, :page => @previous_page, :id => @id), :class => "button back" %>
+  <%- end -%>
+          <span class="paginate"><strong><%= @num_first_comment -%>-<%= @num_last_comment -%></strong> of <strong><%= @num_paginated_comments -%></strong></span>
+  <%- if !@next_page.nil? -%>
+          <%= link_to "Next", username_blogcast_comments_permalink_path(:username => @blogcast_user.username, :page => @next_page, :id => @id), :class => "button next" %>
   <%- end -%>
         </div>
 <% end -%>
+
+
+
+
+
+
+
+
+
+
       </div>
       <div class="lower-left-border-squared-corner">
       </div>
       <div class="bottom-border">
       </div>
       <div class="lower-right-border-squared-corner">
-      </div>
-      <div class="clear">
-      </div>
-      <div class="upper-left-border-squared-corner">
-      </div>
-      <div class="top-border">
-      </div>
-      <div class="upper-right-border-squared-corner">
-      </div>
-      <div class="clear">
-      </div>
-      <div id="bottom">
-        <h2><span class="counter"><%= @num_posts -%></span><%= @num_posts == 1 ? "Post" : "Posts" -%></h2>
-        <ol class="stream" id="public-stream">
-<% @first = 0 -%>
-<% @iter = 1 -%>
-<% for post in @posts -%>
-  <%- if (@iter == @posts.length) -%>
-    <%- @first = 1 -%>
-  <%- end -%>
-  <%- if post.instance_of?(TextPost) -%>
-          <%= render :partial => "text_post", :object => post -%>
-  <%- elsif post.instance_of?(ImagePost) -%>
-          <%= render :partial => "image_post", :object => post -%>
-  <%- elsif post.instance_of?(AudioPost) -%>
-          <%= render :partial => "audio_post", :object => post -%>
-  <%- elsif post.instance_of?(CommentPost) -%>
-          <%= render :partial => "comment_post", :object => post -%>
-  <%- elsif post.instance_of?(Repost) -%>
-          <%= render :partial => "repost", :object => post -%>
-  <%- end -%>
-  <% @iter = @iter + 1 -%>
-<% end -%>
-        </ol>
-      </div>
-      <div class="last lower-left-border-squared-corner">
-      </div>
-      <div class="last bottom-border">
-      </div>
-      <div class="last lower-right-border-squared-corner">
       </div>
       <div class="clear">
       </div>
@@ -274,8 +259,7 @@
   <%- end -%>
           </div>
 <% end -%>
-          <div class="stat third"><span id="num-viewers" class="counter"><%= @num_viewers -%></span><span id="viewers" class="name"><%= @num_viewers == 1 ? "Viewer" : "Viewers" -%></span></div>
-          <%= periodically_call_remote :url => blogcast_update_num_viewers_path(:blogcast_id => @blogcast.id), :frequency => 30 -%>
+          <div class="stat third"><span class="counter"><%= @num_viewers -%></span><span class="name"><%= @num_viewers == 1 ? "Viewer" : "Viewers" -%></span></div>
           <div class="last stat fourth"><span class="counter"><%= @num_views -%></span><span class="name"><%= @num_views == 1 ? "View" : "Views" -%></span></div>
         </div>
 <% if @user.instance_of?(BlogcastrUser) -%>

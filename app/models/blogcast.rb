@@ -15,16 +15,28 @@ class Blogcast < ActiveRecord::Base
     end
   end
 
-  def get_username
-    username
+  def get_num_viewers
+    num_viewers = CACHE.get("Blogcast:" + id.to_s + "-num_viewers") 
+    unless num_viewers 
+      num_viewers = thrift_client.get_num_muc_room_occupants("blogcast." + id.to_s)
+      CACHE.set("Blogcast:" + id.to_s + "-num_viewers", num_viewers, 30.seconds)
+    end
+    num_viewers
   end
 
-  def get_url
-    #MVR - it looks like objects don't get helpers so can't use blogast_path
-    "/" + username 
+  #TODO: fix me!
+  def thrift_client
+    return @thrift_client if defined?(@thrift_client)
+    @thrift_socket = Thrift::Socket.new("localhost", 9090)
+    #TODO: investigate multiple transports 
+    @thrift_transport = Thrift::BufferedTransport.new(@thrift_socket)
+    @thrift_transport.open
+    @thrift_protocol = Thrift::BinaryProtocol.new(@thrift_transport)
+    @thrift_client = Thrift::Blogcastr::Client.new(@thrift_protocol)
   end
 
-  def get_avatar_url(size)
-    setting.avatar.url(size)
+  def thrift_client_close
+    @thrift_transport.close if defined?(@thrift_transport)
   end
+
 end

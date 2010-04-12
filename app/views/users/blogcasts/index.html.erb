@@ -40,7 +40,6 @@
   </div>
   <div id="content">
     <div id="main">
-      <div id="spacer">
       <div class="upper-left-border-squared-corner">
       </div>
       <div class="top-border">
@@ -49,149 +48,104 @@
       </div>
       <div class="clear">
       </div>
-      <div id="top">
-        <div id="left">
-            <%= link_to image_tag(@profile_user.setting.avatar.url(:large), :class => "avatar"), @profile_user.setting.avatar.url(:original) %>
-        </div>
-        <div id="right">
-          <h1><%= @profile_username_possesive -%><br>Blogcastr</h1>
-<% if !@profile_user.setting.motto.nil? -%>
-          <p class="motto"><%= @profile_user.setting.motto -%></p>
-<% end -%>
-          <hr>
-<% if @user.instance_of?(BlogcastrUser) -%>
-  <%- if @user.id == @profile_user.id -%> 
-          <p>Welcome to your Blogcastr!</p>
-          <div class="navigation">
-            <%= link_to "Home", home_path -%>
-            <%= link_to "Settings", settings_path -%>
-            <div class="clear">
+      <div class="background">
+        <div id="title">
+          <div class="side-border">
+            <div class="upper-left-border-squared-corner-gray">
+            </div>
+            <div class="left-border-gray">
+            </div>
+            <div class="lower-left-border-squared-corner-gray">
             </div>
           </div>
+          <h1 class="image"><%= link_to image_tag(@profile_user.setting.avatar.url(:medium), :class => "avatar"), profile_path(:username => @profile_user.username) -%><%= @profile_user_username_possesive -%> blogcasts</h1>
+          <div class="side-border">
+            <div class="upper-right-border-squared-corner-gray">
+            </div>
+            <div class="right-border-gray">
+            </div>
+            <div class="lower-right-border-squared-corner-gray">
+            </div>
+          </div>
+        </div>
+        <h2><span class="counter"><%= @num_blogcasts -%></span> <%= @num_blogcasts == 1 ? "Blogcast" : "Blogcasts" -%></h2>
+        <ol>
+<%- i = 0 -%>
+<% for blogcast in @paginated_blogcasts -%>
+  <%- if i == 0 -%>
+          <li class="blogcast first">
   <%- else -%>
-          <p>Subscribe to or message <%= @profile_user.username -%>.</p>
-          <div class="subscribe">
-            <div id="subscription-button">
-    <%- if @subscription.nil? -%>
-              <%= button_to_remote "Subscribe!", :url => subscriptions_path(:user_id => @profile_user.id), :failure => "alert('Error communicating with server, unable to subscribe to #{@profile_user.username}');", :id => "subscription-button", :condition => "remote_request == false", :before => "remote_request = true", :complete => "setTimeout('remote_request = false', 3500)" -%>
-    <%- else -%>
-            <%= button_to_remote "Unsubscribe", :url => subscription_path(:id => @subscription.id), :method => "delete", :failure => "alert('Error communicating with server, unable to unsubscribe from #{@profile_user.username}');", :id => "subscription-button", :condition => "remote_request == false", :before => "remote_request = true", :complete => "setTimeout('remote_request = false', 3500)" -%>
-    <%- end -%>
-            </div>
-            <%= link_to "Message!", sign_in_path, :class => "last" -%>
-            <div class="clear">
-            </div>
-          </div>
+          <li class="blogcast">
   <%- end -%>
-<% else -%>
-          <p>To subscribe to or message <%= @profile_user.username -%> sign up or sign in.</p>
-          <div class="sign-up">
-            <%= link_to "Sign up!", sign_up_path -%>
-            <%= link_to "Sign in!", sign_in_path -%>
+  <%- i = i + 1 -%>
+
+
+
+
+
+            <h3><%= link_to blogcast.title, username_blogcast_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%></h3>
+            <p class="date"><%= blogcast.starting_at.strftime("%a %b %d, %Y %I:%M %p").gsub(/ 0/,' ') %></p>
             <div class="clear">
             </div>
-          </div>
+            <p class="tags"><%= blogcast.tags -%></p>
+            <p class="description"><%= blogcast.description -%></p>
+  <%- num_likes = blogcast.likes.count -%>
+            <h4 class="three first selected" onclick="blogcastrCollapsibleEvent(this, 'blogcast-<%= blogcast.id -%>-likes');"><%= num_likes.to_s + ((num_likes == 1) ? " Like" : " Likes") -%><%= image_tag "down.png" -%></h4>
+  <%- num_posts = blogcast.posts.count -%>
+            <a class="tab" href="<%= username_blogcast_posts_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%>"><h4 class="three"><%= num_posts.to_s + ((num_posts == 1) ? " Post" : " Posts") -%></h4></a>
+  <%- num_comments = blogcast.comments.count -%>
+            <a class="tab" href="<%= username_blogcast_comments_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%>"><h4 class="three"><%= num_comments.to_s + ((num_comments == 1) ? " Comment" : " Comments") -%></h4></a>
+            <div class="clear">
+            </div>
+            <div id="blogcast-<%= blogcast.id -%>-likes">
+              <ul>
+  <%- likes = User.find_by_sql(["SELECT users.* FROM likes, users WHERE likes.blogcast_id = ? AND likes.user_id = users.id LIMIT 30", blogcast.id]) -%>
+  <%- i = 0 -%>
+  <%- for like in likes -%>
+    <%- if i == 0 -%>
+                <li class="first">
+    <%- else -%>
+                <li>
+    <%- end -%>
+                  <%= link_to image_tag(like.setting.avatar.url(:small), :class => "avatar-small", :alt => "#{like.username}"), profile_path(:username => like.username), :title => "#{like.username}" %>
+                </li>
+    <%- i = i + 1 -%>
+  <%- end -%>
+              </ul>
+            </div>
+            <div class="clear">
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          </li>
+<% end -%>
+        </ol>
+<% if @num_first_blogcast <= @num_blogcasts -%>
+        <div id="paginate">
+  <%- if !@previous_page.nil? -%>
+          <%= link_to "Back", username_blogcasts_path(:username => @profile_user.username, :page => @previous_page, :id => @id), :class => "button back" %>
+  <%- end -%>
+          <span class="paginate"><strong><%= @num_first_blogcast -%>-<%= @num_last_blogcast -%></strong> of <strong><%= @num_paginated_blogcasts -%></strong></span>
+  <%- if !@next_page.nil? -%>
+          <%= link_to "Next", username_blogcasts_path(:username => @profile_user.username, :page => @next_page, :id => @id), :class => "button next" %>
+  <%- end -%>
 <% end -%>
         </div>
-        <div class="clear">
-        </div>
-      </div>
-      <div class="lower-left-border-squared-corner">
-      </div>
-      <div class="bottom-border">
-      </div>
-      <div class="lower-right-border-squared-corner">
-      </div>
-      <div class="clear">
-      </div>
-      </div>
-      <div class="upper-left-border-squared-corner">
-      </div>
-      <div class="top-border">
-      </div>
-      <div class="upper-right-border-squared-corner">
-      </div>
-      <div class="clear">
-      </div>
-      <div id="bottom">
-        <h2><span class="counter"><%= @blogcasts -%></span><%= @blogcasts == 1 ? "Upcoming blogcast" : "Upcoming blogcasts" -%></h2>
-        <ol>
-<% for blogcast in @blogcasts -%>
-          <li class="blogcast">
-            <h3><%= link_to blogcast.title, username_blogcast_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%></h3>
-            <p class="date"><%= blogcast.starting_at.strftime("%a %b %d, %Y %I:%M %p").gsub(/ 0/,' ') %></p>
-            <div class="clear">
-            </div>
-            <p class="tags"><%= blogcast.tags -%></p>
-            <p class="description"><%= blogcast.description -%></p>
-  <%- num_likes = blogcast.likes.count -%>
-            <h4 class="three first selected" onclick="blogcastrCollapsibleEvent(this, 'blogcast-<%= blogcast.id -%>-likes');"><%= num_likes.to_s + ((num_likes == 1) ? " Like" : " Likes") -%><%= image_tag "down.png" -%></h4>
-  <%- num_posts = blogcast.posts.count -%>
-            <a class="tab" href="<%= username_blogcast_posts_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%>"><h4 class="three"><%= num_posts.to_s + ((num_posts == 1) ? " Post" : " Posts") -%></h4></a>
-  <%- num_comments = blogcast.comments.count -%>
-            <a class="tab" href="<%= username_blogcast_comments_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%>"><h4 class="three"><%= num_comments.to_s + ((num_comments == 1) ? " Comment" : " Comments") -%></h4></a>
-            <div class="clear">
-            </div>
-            <div id="blogcast-<%= blogcast.id -%>-likes">
-              <ul>
-  <%- likes = User.find_by_sql(["SELECT users.* FROM likes, users WHERE likes.blogcast_id = ? AND likes.user_id = users.id LIMIT 30", blogcast.id]) -%>
-  <%- i = 0 -%>
-  <%- for like in likes -%>
-    <%- if i == 0 -%>
-                <li class="first">
-    <%- else -%>
-                <li>
-    <%- end -%>
-                  <%= link_to image_tag(like.setting.avatar.url(:small), :class => "avatar-small", :alt => "#{like.username}"), profile_path(:username => like.username), :title => "#{like.username}" %>
-                </li>
-    <%- i = i + 1 -%>
-  <%- end -%>
-              </ul>
-            </div>
-            <div class="clear">
-            </div>
-          </li>
-<% end %>
-        </ol>
-        <h2><span class="counter"><%= @num_blogcasts -%></span><%= @num_blogcasts == 1 ? "Recent blogcast" : "Recent blogcasts" -%></h2>
-        <ol>
-<% for blogcast in @blogcasts -%>
-          <li class="blogcast">
-            <h3><%= link_to blogcast.title, username_blogcast_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%></h3>
-            <p class="date"><%= blogcast.starting_at.strftime("%a %b %d, %Y %I:%M %p").gsub(/ 0/,' ') %></p>
-            <div class="clear">
-            </div>
-            <p class="tags"><%= blogcast.tags -%></p>
-            <p class="description"><%= blogcast.description -%></p>
-  <%- num_likes = blogcast.likes.count -%>
-            <h4 class="three first selected" onclick="blogcastrCollapsibleEvent(this, 'blogcast-<%= blogcast.id -%>-likes');"><%= num_likes.to_s + ((num_likes == 1) ? " Like" : " Likes") -%><%= image_tag "down.png" -%></h4>
-  <%- num_posts = blogcast.posts.count -%>
-            <a class="tab" href="<%= username_blogcast_posts_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%>"><h4 class="three"><%= num_posts.to_s + ((num_posts == 1) ? " Post" : " Posts") -%></h4></a>
-  <%- num_comments = blogcast.comments.count -%>
-            <a class="tab" href="<%= username_blogcast_comments_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%>"><h4 class="three"><%= num_comments.to_s + ((num_comments == 1) ? " Comment" : " Comments") -%></h4></a>
-            <div class="clear">
-            </div>
-            <div id="blogcast-<%= blogcast.id -%>-likes">
-              <ul>
-  <%- likes = User.find_by_sql(["SELECT users.* FROM likes, users WHERE likes.blogcast_id = ? AND likes.user_id = users.id LIMIT 30", blogcast.id]) -%>
-  <%- i = 0 -%>
-  <%- for like in likes -%>
-    <%- if i == 0 -%>
-                <li class="first">
-    <%- else -%>
-                <li>
-    <%- end -%>
-                  <%= link_to image_tag(like.setting.avatar.url(:small), :class => "avatar-small", :alt => "#{like.username}"), profile_path(:username => like.username), :title => "#{like.username}" %>
-                </li>
-    <%- i = i + 1 -%>
-  <%- end -%>
-              </ul>
-            </div>
-            <div class="clear">
-            </div>
-          </li>
-<% end %>
-        </ol>
       </div>
       <div class="last lower-left-border-squared-corner">
       </div>
@@ -244,7 +198,7 @@
     <%- if (i < 8) -%>
               <li class="first top">
     <%- else -%>
-              <li>
+              <li class="first">
     <%- end -%>
   <%- else -%>
     <%- if (i < 8) -%>
@@ -273,7 +227,7 @@
     <%- if (i < 8) -%>
               <li class="first top">
     <%- else -%>
-              <li>
+              <li class="first">
     <%- end -%>
   <%- else -%>
     <%- if (i < 8) -%>
@@ -284,7 +238,7 @@
   <%- end -%>
                 <%= link_to image_tag(subscription.setting.avatar.url(:small), :class => "avatar-small", :alt => "#{subscription.username}"), profile_path(:username => subscription.username), :title => "#{subscription.username}" %>
               </li>
-  <%- i += 1 -%>
+  <%- i = i + 1 -%>
 <% end -%>
               <div class="clear">
               </div>

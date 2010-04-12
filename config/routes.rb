@@ -64,8 +64,8 @@ ActionController::Routing::Routes.draw do |map|
   #MVR - user blogcast
   map.username_blogcast_permalink ":username/:year/:month/:day/:title.:format", :controller => "users/blogcasts", :action => "show", :format => nil, :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
   map.username_blogcast_posts_permalink ":username/:year/:month/:day/:title/posts.:format", :controller => "users/blogcasts", :action => "show", :format => nil, :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
-  map.username_blogcast_comments_permalink ":username/:year/:month/:day/:title/posts.:format", :controller => "users/blogcasts", :action => "show", :format => nil, :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
-  map.username_blogcast_likes_permalink ":username/:year/:month/:day/:title/likes.:format", :controller => "users/blogcasts", :action => "show", :format => nil, :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
+  map.username_blogcast_comments_permalink ":username/:year/:month/:day/:title/comments.:format", :controller => "users/blogcasts/comments", :action => "index", :format => nil, :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
+  map.username_blogcast_likes_permalink ":username/:year/:month/:day/:title/likes.:format", :controller => "users/blogcasts/likes", :format => nil, :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
   map.username_blogcast_search_permalink ":username/:year/:month/:day/:title/search", :controller => "search", :action => "blogcasts", :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
   #MVR - user likes 
   map.username_likes ":username/likes.:format", :controller => "users/likes", :format => nil
@@ -136,6 +136,8 @@ ActionController::Routing::Routes.draw do |map|
     blogcasts.resources :email_notifications, :controller => "email_blogcast_notifications", :only => [:create, :destroy]
     #MVR - sms notifications 
     blogcasts.resources :sms_notifications, :controller => "sms_blogcast_notifications", :only => [:create, :destroy]
+    #MVR - update num viewers
+    blogcasts.update_num_viewers "update_num_viewers", :controller => "viewers", :action => "update_num_viewers"
   end
   #MVR - Facebook connect
   map.resource :facebook_connect, :controller => "facebook_connect", :only => [:create, :destroy]

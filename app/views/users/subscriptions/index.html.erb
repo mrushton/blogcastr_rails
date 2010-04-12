@@ -58,7 +58,7 @@
             <div class="lower-left-border-squared-corner-gray">
             </div>
           </div>
-          <h1 class="image"><%= link_to image_tag(@profile_user.setting.avatar.url(:medium), :class => "avatar"), profile_path(:username => @profile_user.username) -%><%= @profile_user_username_possesive -%> subscribers</h1>
+          <h1 class="image"><%= link_to image_tag(@profile_user.setting.avatar.url(:medium), :class => "avatar"), profile_path(:username => @profile_user.username) -%><%= @profile_user_username_possesive -%> subscriptions</h1>
           <div class="side-border">
             <div class="upper-right-border-squared-corner-gray">
             </div>
@@ -68,10 +68,10 @@
             </div>
           </div>
         </div>
-        <h2><span class="counter"><%= @num_subscribers -%></span> <%= @num_subscribers == 1 ? "Subscriber" : "Subscribers" -%></h2>
+        <h2><span class="counter"><%= @num_paginated_subscriptions -%></span> <%= @num_paginated_subscriptions == 1 ? "Subscription" : "Subscriptions" -%></h2>
         <ol>
 <%- i = 0 -%>
-<% for subscriber in @paginated_subscribers -%>
+<% for subscription in @paginated_subscriptions -%>
   <%- if i == 0 -%>
           <li class="user first">
   <%- else -%>
@@ -79,36 +79,36 @@
   <%- end -%>
   <%- i = i + 1 -%>
             <div class="spacer">
-              <%= link_to image_tag(subscriber.setting.avatar.url(:medium), :class => "avatar"), profile_path(subscriber.username) -%>
-              <%= link_to subscriber.username, profile_path(subscriber.username), :class => "username" -%>
+              <%= link_to image_tag(subscription.setting.avatar.url(:medium), :class => "avatar"), profile_path(subscription.username) -%>
+              <%= link_to subscription.username, profile_path(subscription.username), :class => "username" -%>
               <br>
-  <%- if !subscriber.setting.location.blank? -%>
-              <span class="details"><%= subscriber.setting.full_name -%> | <%= subscriber.setting.location -%></span>
+  <%- if !subscription.setting.location.blank? -%>
+              <span class="details"><%= subscription.setting.full_name -%> | <%= subscription.setting.location -%></span>
   <%- else -%>
-              <span class="details"><%= subscriber.setting.full_name -%></span>
+              <span class="details"><%= subscription.setting.full_name -%></span>
   <%- end -%>
               <div class="clear">
               </div>
               <div class="stats">
-  <%- num_blogcasts = subscriber.blogcasts.count -%>
-  <%- num_subscribers = subscriber.subscribers.count -%>
-  <%- num_subscriptions = subscriber.subscriptions.count -%>
-                <a class="stat first" href="<%= username_blogcasts_path :username => subscriber.username -%>"><span class="counter"><%= num_blogcasts -%></span><span class="name"><%= num_blogcasts == 1 ? "Blogcast" : "Blogcasts" -%></span></a>
-                <a class="stat" href="<%= username_subscriptions_path :username => subscriber.username -%>"><span class="counter"><%= num_subscribers -%></span><span class="name"><%= num_subscribers == 1 ? "Subscriber" : "Subscribers" -%></span></a>
-                <a class="stat" href="<%= username_subscriptions_path :username => subscriber.username -%>"><span class="counter"><%= num_subscriptions -%></span><span class="name"><%= num_subscriptions == 1 ? "Subscription" : "Subscriptions" -%></span></a>
+  <%- num_blogcasts = subscription.blogcasts.count -%>
+  <%- num_subscribers = subscription.subscribers.count -%>
+  <%- num_subscriptions = subscription.subscriptions.count -%>
+                <a class="stat first" href="<%= username_blogcasts_path :username => subscription.username -%>"><span class="counter"><%= num_blogcasts -%></span><span class="name"><%= num_blogcasts == 1 ? "Blogcast" : "Blogcasts" -%></span></a>
+                <a class="stat" href="<%= username_subscribers_path :username => subscription.username -%>"><span class="counter"><%= num_subscribers -%></span><span class="name"><%= num_subscribers == 1 ? "Subscriber" : "Subscribers" -%></span></a>
+                <a class="stat" href="<%= username_subscriptions_path :username => subscription.username -%>"><span class="counter"><%= num_subscriptions -%></span><span class="name"><%= num_subscriptions == 1 ? "Subscription" : "Subscriptions" -%></span></a>
               </div>
             </div>
           </li>
 <% end -%>
         </ol>
-<% if @num_first_subscriber <= @num_subscribers -%>
+<% if @num_first_subscription <= @num_subscriptions -%>
         <div id="paginate">
   <%- if !@previous_page.nil? -%>
-          <%= link_to "Back", username_subscribers_path(:username => @profile_user.username, :page => @previous_page, :id => @id), :class => "button back" %>
+          <%= link_to "Back", username_subscriptions_path(:username => @profile_user.username, :page => @previous_page, :id => @id), :class => "button back" %>
   <%- end -%>
-          <span class="paginate"><strong><%= @num_first_subscriber -%>-<%= @num_last_subscriber -%></strong> of <strong><%= @num_paginated_subscribers -%></strong></span>
+          <span class="paginate"><strong><%= @num_first_subscription -%>-<%= @num_last_subscription -%></strong> of <strong><%= @num_paginated_subscriptions -%></strong></span>
   <%- if !@next_page.nil? -%>
-          <%= link_to "Next", username_subscribers_path(:username => @profile_user.username, :page => @next_page, :id => @id), :class => "button next" %>
+          <%= link_to "Next", username_subscriptions_path(:username => @profile_user.username, :page => @next_page, :id => @id), :class => "button next" %>
   <%- end -%>
 <% end -%>
         </div>

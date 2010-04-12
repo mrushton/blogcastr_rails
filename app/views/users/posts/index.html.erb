@@ -58,7 +58,7 @@
             <div class="lower-left-border-squared-corner-gray">
             </div>
           </div>
-          <h1 class="image"><%= link_to image_tag(@profile_user.setting.avatar.url(:medium), :class => "avatar"), profile_path(:username => @profile_user.username) -%><%= @profile_user_username_possesive -%> subscribers</h1>
+          <h1 class="image"><%= link_to image_tag(@profile_user.setting.avatar.url(:medium), :class => "avatar"), profile_path(:username => @profile_user.username) -%><%= @profile_user_username_possesive -%> posts</h1>
           <div class="side-border">
             <div class="upper-right-border-squared-corner-gray">
             </div>
@@ -68,47 +68,36 @@
             </div>
           </div>
         </div>
-        <h2><span class="counter"><%= @num_subscribers -%></span> <%= @num_subscribers == 1 ? "Subscriber" : "Subscribers" -%></h2>
-        <ol>
-<%- i = 0 -%>
-<% for subscriber in @paginated_subscribers -%>
-  <%- if i == 0 -%>
-          <li class="user first">
-  <%- else -%>
-          <li class="user">
+        <h2><span class="counter"><%= @num_paginated_posts -%></span> <%= @num_posts == 1 ? "Post" : "Posts" -%></h2>
+        <ol class="stream" id="public-stream">
+<% @first = 0 -%>
+<% @iter = 1 -%>
+<% for post in @paginated_posts -%>
+  <%- if (@iter == @paginated_posts.length) -%>
+    <%- @first = 1 -%>
   <%- end -%>
-  <%- i = i + 1 -%>
-            <div class="spacer">
-              <%= link_to image_tag(subscriber.setting.avatar.url(:medium), :class => "avatar"), profile_path(subscriber.username) -%>
-              <%= link_to subscriber.username, profile_path(subscriber.username), :class => "username" -%>
-              <br>
-  <%- if !subscriber.setting.location.blank? -%>
-              <span class="details"><%= subscriber.setting.full_name -%> | <%= subscriber.setting.location -%></span>
-  <%- else -%>
-              <span class="details"><%= subscriber.setting.full_name -%></span>
+  <%- if post.instance_of?(TextPost) -%>
+          <%= render :partial => "text_post", :object => post -%>
+  <%- elsif post.instance_of?(ImagePost) -%>
+          <%= render :partial => "image_post", :object => post -%>
+  <%- elsif post.instance_of?(AudioPost) -%>
+          <%= render :partial => "audio_post", :object => post -%>
+  <%- elsif post.instance_of?(CommentPost) -%>
+          <%= render :partial => "comment_post", :object => post -%>
+  <%- elsif post.instance_of?(Repost) -%>
+          <%= render :partial => "repost", :object => post -%>
   <%- end -%>
-              <div class="clear">
-              </div>
-              <div class="stats">
-  <%- num_blogcasts = subscriber.blogcasts.count -%>
-  <%- num_subscribers = subscriber.subscribers.count -%>
-  <%- num_subscriptions = subscriber.subscriptions.count -%>
-                <a class="stat first" href="<%= username_blogcasts_path :username => subscriber.username -%>"><span class="counter"><%= num_blogcasts -%></span><span class="name"><%= num_blogcasts == 1 ? "Blogcast" : "Blogcasts" -%></span></a>
-                <a class="stat" href="<%= username_subscriptions_path :username => subscriber.username -%>"><span class="counter"><%= num_subscribers -%></span><span class="name"><%= num_subscribers == 1 ? "Subscriber" : "Subscribers" -%></span></a>
-                <a class="stat" href="<%= username_subscriptions_path :username => subscriber.username -%>"><span class="counter"><%= num_subscriptions -%></span><span class="name"><%= num_subscriptions == 1 ? "Subscription" : "Subscriptions" -%></span></a>
-              </div>
-            </div>
-          </li>
+  <% @iter = @iter + 1 -%>
 <% end -%>
         </ol>
-<% if @num_first_subscriber <= @num_subscribers -%>
+<% if @num_first_post <= @num_posts -%>
         <div id="paginate">
   <%- if !@previous_page.nil? -%>
-          <%= link_to "Back", username_subscribers_path(:username => @profile_user.username, :page => @previous_page, :id => @id), :class => "button back" %>
+          <%= link_to "Back", username_posts_path(:username => @profile_user.username, :page => @previous_page, :id => @id), :class => "button back" %>
   <%- end -%>
-          <span class="paginate"><strong><%= @num_first_subscriber -%>-<%= @num_last_subscriber -%></strong> of <strong><%= @num_paginated_subscribers -%></strong></span>
+          <span class="paginate"><strong><%= @num_first_post -%>-<%= @num_last_post -%></strong> of <strong><%= @num_paginated_posts -%></strong></span>
   <%- if !@next_page.nil? -%>
-          <%= link_to "Next", username_subscribers_path(:username => @profile_user.username, :page => @next_page, :id => @id), :class => "button next" %>
+          <%= link_to "Next", username_posts_path(:username => @profile_user.username, :page => @next_page, :id => @id), :class => "button next" %>
   <%- end -%>
 <% end -%>
         </div>

@@ -1,4 +1,4 @@
-class Users::CommentsController < ApplicationController
+class Users::PostsController < ApplicationController
   before_filter :set_time_zone
 
   def index
@@ -43,19 +43,19 @@ class Users::CommentsController < ApplicationController
       @id = params[:id].to_i
     end
     if @id.blank?
-      @paginated_comments = Comment.paginate_by_sql(["SELECT * FROM comments WHERE user_id = ?", @profile_user.id], :page => @page, :per_page => 10)
-      @id = Comment.maximum(:id, :conditions => ["user_id = ?", @profile_user.id])
+      @paginated_posts = Post.paginate_by_sql(["SELECT * FROM posts WHERE user_id = ?", @profile_user.id], :page => @page, :per_page => 10)
+      @id = Post.maximum(:id, :conditions => ["user_id = ?", @profile_user.id])
     else
-      @paginated_comments = Comment.paginate_by_sql(["SELECT * FROM comments WHERE user_id = ? AND id <= ?", @profile_user.id, @id], :page => @page, :per_page => 10)
+      @paginated_posts = Post.paginate_by_sql(["SELECT * FROM posts WHERE user_id = ? AND id <= ?", @profile_user.id, @id], :page => @page, :per_page => 10)
     end
-    @num_paginated_comments = Comment.count(:conditions => ["user_id = ? AND id <= ?", @profile_user.id, @id])
-    if @page * 10 < @num_paginated_comments
+    @num_paginated_posts = Post.count(:conditions => ["user_id = ? AND id <= ?", @profile_user.id, @id])
+    if @page * 10 < @num_paginated_posts
       @next_page = @page + 1
     end
-    @num_first_comment = ((@page - 1) * 10) + 1
-    @num_last_comment = @page * 10 
-    if @num_last_comment > @num_paginated_comments
-      @num_last_comment = @num_paginated_comments
+    @num_first_post = ((@page - 1) * 10) + 1
+    @num_last_post = @page * 10 
+    if @num_last_post > @num_paginated_posts
+      @num_last_post = @num_paginated_posts
     end
     #MVR - posts
     @num_posts = @profile_user.posts.count
