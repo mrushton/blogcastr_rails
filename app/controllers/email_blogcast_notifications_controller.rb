@@ -29,6 +29,7 @@ class EmailBlogcastNotificationsController < ApplicationController
     @email_blogcast_notification = EmailBlogcastNotification.new
     @email_blogcast_notification.user_id = user.id
     @email_blogcast_notification.blogcast_id = @blogcast.id
+    @email_blogcast_notification.delivered_by = "email"
     @email_blogcast_notification.save
     #TODO: handle error
   end

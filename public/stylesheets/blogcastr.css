@@ -1098,32 +1098,32 @@ a:hover
 	-webkit-user-select: none;
 }
 
-#email-notifications, #sms-notifications, #email-notification, #sms-notification
+#email-notifications, #sms-notifications, #email-reminder, #sms-reminder
 {
 	margin-left: 0px;
 	margin-top: 5px;
 }
 
-#side a.notification
+#side a.notification, #side a.reminder
 {
 	vertical-align: top;
 	text-decoration: none;
 	color: #787878;
 }
 
-#side a.notification:hover
+#side a.notification:hover, #side a.reminder:hover
 {
 	text-decoration: underline;
 }
 
-#side a.notification img
+#side a.notification img, #side a.reminder img
 {
 	margin-right: 5px;
 	float: left;
 	border: none;
 }
 
-#side a.notification p
+#side a.notification p, #side a.reminder p
 {
 	margin: 0px;
 	vertical-align: top;

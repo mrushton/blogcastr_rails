@@ -18,6 +18,10 @@ CACHE = MemCache.new("localhost:11211")
 TWITTER_CONSUMER_KEY = "RyfjiSOXSXxyHkZjv4TsZA"
 TWITTER_CONSUMER_SECRET = "jvTlEHNiyBa3gvWMoIgSWGtpvFY9A0x7G3NeeH5w"
 
+#TODO - move login and api key to a config file
+BITLY_LOGIN = "blogcastr"
+BITLY_API_KEY = "R_deffaec06227125a4192cbe432799546"
+
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence over those specified here.
   # Application configuration should go into files in config/initializers

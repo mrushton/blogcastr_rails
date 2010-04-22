@@ -1,0 +1,2 @@
+class EmailBlogcastReminder < BlogcastReminder 
+end

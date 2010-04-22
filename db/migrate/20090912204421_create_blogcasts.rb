@@ -10,6 +10,7 @@ class CreateBlogcasts < ActiveRecord::Migration
       t.integer :day, :null => false
       t.integer :month, :null => false
       t.string :link_title, :null => false
+      t.string :short_url
       t.datetime :starting_at, :null => false
       #MVR - keep track of view via counter cache
       #TODO: add more where appropriate

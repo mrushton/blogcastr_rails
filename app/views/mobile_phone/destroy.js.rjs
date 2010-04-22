@@ -1,0 +1,10 @@
+#MVR - show success
+page["remove-mobile-phone-loading"].hide
+page["remove-mobile-phone-success"].show
+#MVR - replace mobile phone confirmation form in 3 seconds 
+page.delay(3) do
+  page.assign("removing_mobile_phone", false)
+  page["remove-mobile-phone-success"].hide
+  page.replace_html "mobile-phone-link", :partial => "mobile_phone_link"
+  page.replace_html "mobile-phone-confirm", :partial => "add_mobile_phone"
+end

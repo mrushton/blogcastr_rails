@@ -13,3 +13,8 @@ Theme.create(:title => "Gallery of Maps", :background_image_file_name => "IMG_18
 Theme.create(:title => "Piazza del Campidoglio", :background_image_file_name => "IMG_1495.JPG", :background_image_content_type => "image/jpeg", :tile_background_image => false, :scroll_background_image => false, :thumbnail_file_name => "IMG_1495.JPG", :thumbnail_content_type => "image/jpeg", :thumbnail_file_size => 1000, :created_at => Time.now, :updated_at => Time.now)
 Theme.create(:title => "Pebbles", :background_image_file_name => "IMG_4610.JPG", :background_image_content_type => "image/jpeg", :tile_background_image => true, :scroll_background_image => true, :thumbnail_file_name => "IMG_4610.JPG", :thumbnail_content_type => "image/jpeg", :thumbnail_file_size => 1000, :created_at => Time.now, :updated_at => Time.now)
 Theme.create(:title => "Happy Cactus", :background_image_file_name => "IMG_4781.JPG", :background_image_content_type => "image/jpeg", :tile_background_image => true, :scroll_background_image => true, :thumbnail_file_name => "IMG_4781.JPG", :thumbnail_content_type => "image/jpeg", :thumbnail_file_size => 1000, :created_at => Time.now, :updated_at => Time.now)
+#MVR - mobile phone carriers
+MobilePhoneCarrier.create(:name => "AT&T", :sms_email_host => "txt.att.net")
+MobilePhoneCarrier.create(:name => "Sprint", :sms_email_host => "tmomail.net")
+MobilePhoneCarrier.create(:name => "T-Mobile", :sms_email_host => "tmomail.net")
+MobilePhoneCarrier.create(:name => "Verizon", :sms_email_host => "vtext.com")

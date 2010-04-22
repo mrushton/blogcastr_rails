@@ -30,6 +30,12 @@
 	width: 115px;
 }
 
+#settings h2.tab.small
+{
+	font-size: 0.7em;
+	line-height: 15px;
+}
+
 #settings div.errorExplanation
 {
 	margin-left: auto;
@@ -101,6 +107,11 @@
 #settings div.success h3
 {
 	background-color: #009900;
+}
+
+#settings div.info h3
+{
+	background-color: #e5db3b;
 }
 
 #settings div.error h3
@@ -188,6 +199,11 @@
 #settings input.short
 {
 	width: 200px;
+}
+
+#settings input.tiny
+{
+	width: 35px;
 }
 
 #settings input.check-box
@@ -297,8 +313,8 @@
 
 #settings a.view
 {
+	display: inline-block;
 	margin-top: 15px;
-	display: block;
 	color: #0097E0;
 	font-size: 0.85em;
 }
@@ -336,7 +352,7 @@
 	margin-left: 3px;
 }
 
-#settings a.disconnect
+#settings a.disconnect, #settings a.remove
 {
 	color: #ff2600; 
 	font-size: 0.65em;

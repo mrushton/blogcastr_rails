@@ -7,6 +7,7 @@ class SettingsController < ApplicationController
     @setting = Setting.find_or_create_by_user_id(@user.id)
     @username_possesive = @user.username + (@user.username =~ /.*s$/ ? "'":"'s")
     @themes = Theme.all
+    @mobile_phone_carriers = MobilePhoneCarrier.find(:all).map {|m| [m.name, m.id]}
   end
 
   def update
@@ -46,19 +47,21 @@ class SettingsController < ApplicationController
     @user = current_user
     #MVR - setting object is guaranteed to exist
     @setting = @user.setting
-    #MVR - make a copy of the setting object
-    @appearance_setting = Marshal.load(Marshal.dump(@setting))
     #MVR - are we using a theme or custom background?
     if params[:setting][:use_background_image] == "1"
+      #MVR - make a copy of the setting object
+      @custom_background_setting = Marshal.load(Marshal.dump(@setting))
       #MVR - background is the only optional argument
       if params[:setting][:background_image].nil?
         #MVR - the paperclip attachment gets set on assignment
-        err = @appearance_setting.update_attributes(:use_background_image => params[:setting][:use_background_image], :tile_background_image => params[:setting][:tile_background_image], :scroll_background_image => params[:setting][:scroll_background_image], :background_color => params[:setting][:background_color])
+        err = @custom_background_setting.update_attributes(:use_background_image => params[:setting][:use_background_image], :tile_background_image => params[:setting][:tile_background_image], :scroll_background_image => params[:setting][:scroll_background_image], :background_color => params[:setting][:background_color])
       else
-        err = @appearance_setting.update_attributes(:use_background_image => params[:setting][:use_background_image], :tile_background_image => params[:setting][:tile_background_image], :scroll_background_image => params[:setting][:scroll_background_image], :background_color => params[:setting][:background_color], :background_image => params[:setting][:background_image])
+        err = @custom_background_setting.update_attributes(:use_background_image => params[:setting][:use_background_image], :tile_background_image => params[:setting][:tile_background_image], :scroll_background_image => params[:setting][:scroll_background_image], :background_color => params[:setting][:background_color], :background_image => params[:setting][:background_image])
       end
     else
-        err = @appearance_setting.update_attributes(:use_background_image => params[:setting][:use_background_image], :theme_id => params[:setting][:theme_id])
+      #MVR - make a copy of the setting object
+      @theme_setting = Marshal.load(Marshal.dump(@setting))
+      err = @theme_setting.update_attributes(:use_background_image => params[:setting][:use_background_image], :theme_id => params[:setting][:theme_id])
     end
     if err 
       flash[:settings_tab] = "appearance"
@@ -76,8 +79,9 @@ class SettingsController < ApplicationController
       else
         @appearance_view = "themes"
       end
-      @themes = Theme.all
       @username_possesive = @user.username + (@user.username =~ /.*s$/ ? "'":"'s")
+      @themes = Theme.all
+      @mobile_phone_carriers = MobilePhoneCarrier.find(:all).map {|m| [m.name, m.id]}
       render :action => "edit"
     end
   end
@@ -94,8 +98,35 @@ class SettingsController < ApplicationController
       redirect_to settings_path 
     else
       @settings_tab = "connect"
-      @themes = Theme.all
       @username_possesive = @user.username + (@user.username =~ /.*s$/ ? "'":"'s")
+      @themes = Theme.all
+      @mobile_phone_carriers = MobilePhoneCarrier.find(:all).map {|m| [m.name, m.id]}
+      render :action => "edit"
+    end
+  end
+
+  def notifications
+    @user = current_user
+    #MVR - setting object is guaranteed to exist
+    @setting = @user.setting
+    #MVR - make a copy of the setting object
+    @notifications_setting = Marshal.load(Marshal.dump(@setting))
+    #MVR - all sms specific arguments are optional
+    if params[:setting][:mobile_phone_confirmed] == "t"
+      err = @notifications_setting.update_attributes(:send_message_email_notifications => params[:setting][:send_message_email_notifications], :send_message_sms_notifications => params[:setting][:send_message_sms_notifications], :send_subscriber_email_notifications => params[:setting][:send_subscriber_email_notifications], :send_subscriber_sms_notifications => params[:setting][:send_subscriber_sms_notifications], :send_subscription_blogcast_email_notifications => params[:setting][:send_subscription_blogcast_email_notifications], :send_subscription_blogcast_sms_notifications => params[:setting][:send_subscription_blogcast_sms_notifications], :send_blogcast_email_reminders => params[:setting][:send_blogcast_email_reminders], :send_blogcast_sms_reminders => params[:setting][:send_blogcast_sms_reminders], :email_reminder_time_before => params[:setting][:email_reminder_time_before], :email_reminder_units => params[:setting][:email_reminder_units], :sms_reminder_time_before => params[:setting][:sms_reminder_time_before], :sms_reminder_units => params[:setting][:sms_reminder_units])
+    else
+      err = @notifications_setting.update_attributes(:send_message_email_notifications => params[:setting][:send_message_email_notifications], :send_subscriber_email_notifications => params[:setting][:send_subscriber_email_notifications], :send_subscription_blogcast_email_notifications => params[:setting][:send_subscription_blogcast_email_notifications], :send_blogcast_email_reminders => params[:setting][:send_blogcast_email_reminders], :email_reminder_time_before => params[:setting][:email_reminder_time_before], :email_reminder_units => params[:setting][:email_reminder_units])
+    end
+    if err 
+      flash[:settings_tab] = "notifications"
+      flash[:notifications_view] = "settings"
+      flash[:success] = "Changes saved!"
+      redirect_to settings_path 
+    else
+      @settings_tab = "notifications"
+      @username_possesive = @user.username + (@user.username =~ /.*s$/ ? "'":"'s")
+      @themes = Theme.all
+      @mobile_phone_carriers = MobilePhoneCarrier.find(:all).map {|m| [m.name, m.id]}
       render :action => "edit"
     end
   end
@@ -117,6 +148,7 @@ class SettingsController < ApplicationController
         @settings_tab = "password"
         @themes = Theme.all
         @username_possesive = @user.username + (@user.username =~ /.*s$/ ? "'":"'s")
+        @mobile_phone_carriers = MobilePhoneCarrier.find(:all).map {|m| [m.name, m.id]}
         render :action => "edit"
       end
     else

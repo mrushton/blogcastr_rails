@@ -102,10 +102,10 @@ ActionController::Routing::Routes.draw do |map|
   map.settings "settings", :controller => "settings", :action => "edit"
   map.account_settings "settings/account", :controller => "settings", :action => "account", :conditions => {:method => :post}
   map.appearance_settings "settings/appearance", :controller => "settings", :action => "appearance", :conditions => {:method => :post}
-  map.blogcast_settings "settings/blogcasts", :controller => "settings", :action => "blogcasts", :conditions => {:method => :post}
+  map.blogcasts_settings "settings/blogcasts", :controller => "settings", :action => "blogcasts", :conditions => {:method => :post}
   map.connect_settings "settings/connect", :controller => "settings", :action => "connect", :conditions => {:method => :post}
   map.email_settings "settings/email", :controller => "settings", :action => "email", :conditions => {:method => :post}
-  map.notification_settings "settings/notifications", :controller => "settings", :action => "notifications", :conditions => {:method => :post}
+  map.notifications_settings "settings/notifications", :controller => "settings", :action => "notifications", :conditions => {:method => :post}
   map.password_settings "settings/password", :controller => "settings", :action => "password", :conditions => {:method => :post}
   #MVR - subscriptions
   map.resources :subscriptions, :controller => "subscriptions", :only => [:index, :create, :destroy]
@@ -132,10 +132,10 @@ ActionController::Routing::Routes.draw do |map|
     blogcasts.resources :comments, :controller => "comments", :only => [:create]
     #MVR - likes 
     blogcasts.resources :likes, :controller => "likes", :only => [:create, :destroy]
-    #MVR - email notifications 
-    blogcasts.resources :email_notifications, :controller => "email_blogcast_notifications", :only => [:create, :destroy]
-    #MVR - sms notifications 
-    blogcasts.resources :sms_notifications, :controller => "sms_blogcast_notifications", :only => [:create, :destroy]
+    #MVR - email reminders 
+    blogcasts.resources :email_reminders, :controller => "email_blogcast_reminders", :only => [:create, :destroy]
+    #MVR - sms reminders 
+    blogcasts.resources :sms_reminders, :controller => "sms_blogcast_reminders", :only => [:create, :destroy]
     #MVR - update num viewers
     blogcasts.update_num_viewers "update_num_viewers", :controller => "viewers", :action => "update_num_viewers"
   end
@@ -151,6 +151,9 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :twitter_oauth, :controller => "twitter_oauth", :only => [:destroy]
   map.twitter_oauth "twitter_oauth", :controller => "twitter_oauth", :action => "init"
   map.twitter_oauth_callback "twitter_oauth_callback", :controller => "twitter_oauth", :action => "create"
+  #MVR - mobile phone
+  map.resource :mobile_phone, :controller => "mobile_phone", :only => [:create, :destroy]
+  map.confirm_mobile_phone "mobile_phone/confirm", :controller => "mobile_phone", :action => "confirm"
   #MVR - ejabberd
   map.ejabberd "ejabberd/:action.:format", :controller => "ejabberd"
   #MVR - profile

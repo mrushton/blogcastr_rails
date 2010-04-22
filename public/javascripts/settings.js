@@ -1,5 +1,6 @@
 disconnecting_facebook_account = false;
 disconnecting_twitter_account = false;
+removing_mobile_phone = false;
 
 function blogcastrOnLoad()
 {

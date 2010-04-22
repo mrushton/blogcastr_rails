@@ -115,7 +115,10 @@
         <div class="social">
           <p>Share with friends and followers</p>
           <%= link_to_function image_tag("facebook-small.png"), "FB.Connect.streamPublish('', facebook_attachment)" -%>
-<%- tweet = "Checking out \"" + @blogcast.title + "\" by " + @blogcast_user.username + " - " + username_blogcast_permalink_url + " #blogcastr" -%>
+<%- tweet = "Viewing \"" + @blogcast.title + "\" by " + @blogcast_user.username + "." -%>
+<%- if !@blogcast.short_url.nil? -%>
+  <%- tweet = tweet + " " + @blogcast.short_url -%>
+<%- end -%>
           <%= link_to_function image_tag("twitter-small.png"), "blogcastrTwitterShare('#{tweet}')" -%>
 <% if (@user.instance_of?(BlogcastrUser) && @user != @blogcast.user) -%>
           <span>|</span>
@@ -281,21 +284,21 @@
 <% if @user.instance_of?(BlogcastrUser) -%>
   <%- if @user != @blogcast_user -%>
         <hr>
-        <div id="email-notification">
-    <%- if @email_blogcast_notification.nil? -%>
-          <%= link_to_remote image_tag("email_add.png") + "<p>Email notification for \"#{@blogcast.title}\"</p>", :url => blogcast_email_notifications_path(:blogcast_id => @blogcast.id), :failure => "alert('Error communicating with server, failed to create email notification for \\\"#{@blogcast.title}\\\"');", :html => {:class => "notification"}, :method => "post" %>
+        <div id="email-reminder">
+    <%- if @email_blogcast_reminder.nil? -%>
+          <%= link_to_remote image_tag("email_add.png") + "<p>Email reminder for \"#{@blogcast.title}\"</p>", :url => blogcast_email_reminders_path(:blogcast_id => @blogcast.id), :failure => "alert('Error communicating with server, failed to create email reminder for \\\"#{@blogcast.title}\\\"');", :html => {:class => "reminder"}, :method => "post" %>
     <%- else -%>
-          <%= link_to_remote image_tag("email_delete.png") + "<p>Email notification for \"#{@blogcast.title}\"</p>", :url => blogcast_email_notification_path(:blogcast_id => @blogcast.id, :id => @email_blogcast_notification.id), :failure => "alert('Error communicating with server, failed to create email notification for \\\"#{@blogcast.title}\\\"');", :html => {:class => "notification"}, :method => "delete" %>
+          <%= link_to_remote image_tag("email_delete.png") + "<p>Email reminder for \"#{@blogcast.title}\"</p>", :url => blogcast_email_reminder_path(:blogcast_id => @blogcast.id, :id => @email_blogcast_reminder.id), :failure => "alert('Error communicating with server, failed to create email reminder for \\\"#{@blogcast.title}\\\"');", :html => {:class => "reminder"}, :method => "delete" %>
     <%- end -%>
         </div>
         <div class="clear">
         </div>
-    <%- if @user.setting.mobile_confirmed == true -%>
-        <div id="sms-notification">
+    <%- if @user.setting.mobile_phone_confirmed == true -%>
+        <div id="sms-reminder">
       <%- if @sms_blogcast_notification.nil? -%>
-          <%= link_to_remote image_tag("phone_add.png") + "<p>SMS notification for \"#{@blogcast.title}\"</p>", :url => blogcast_sms_notifications_path(:blogcast_id => @blogcast.id), :failure => "alert('Error communicating with server, failed to create sms notification for \"#{@blogcast.title}\"');", :html => {:class => "notification"}, :method => "post" %>
+          <%= link_to_remote image_tag("phone_add.png") + "<p>SMS reminder for \"#{@blogcast.title}\"</p>", :url => blogcast_sms_reminders_path(:blogcast_id => @blogcast.id), :failure => "alert('Error communicating with server, failed to create sms reminder for \"#{@blogcast.title}\"');", :html => {:class => "reminder"}, :method => "post" %>
       <%- else -%>
-          <%= link_to_remote image_tag("phone_delete.png") + "<p>SMS notification for \"#{@blogcast.title}\"</p>", :url => blogcast_sms_notification_path(:blogcast_id => @blogcast.id, :id => @sms_blogcast_notification.id), :failure => "alert('Error communicating with server, failed to create sms notification for \"#{@blogcast.title}\"');", :html => {:class => "notification"}, :method => "delete" %>
+          <%= link_to_remote image_tag("phone_delete.png") + "<p>SMS reminder for \"#{@blogcast.title}\"</p>", :url => blogcast_sms_reminder_path(:blogcast_id => @blogcast.id, :id => @sms_blogcast_reminder.id), :failure => "alert('Error communicating with server, failed to create sms reminder for \"#{@blogcast.title}\"');", :html => {:class => "reminder"}, :method => "delete" %>
       <%- end -%>
         </div>
         <div class="clear">

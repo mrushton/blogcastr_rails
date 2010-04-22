@@ -1,0 +1,22 @@
+<% form_for :setting, @mobile_phone_setting, :url => mobile_phone_path do |form| %>
+  <table class="wide">
+    <tr>
+      <td><%= form.label :mobile_phone_carrier_id, "Carrier" -%></td>
+      <td>
+        <%= form.select :mobile_phone_carrier_id, @mobile_phone_carriers %>
+        <p>Your mobile phone carrier.</p>
+      </td>
+    </tr>
+    <tr>
+      <td><%= form.label :mobile_phone_number, "Phone number" -%></td>
+      <td>
+        <%= form.text_field :mobile_phone_number, :size => "10", :maxlength => "10", :class => "short" -%>
+        <p>10 digit mobile phone number (e.g. 6175550100).</p> 
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><%= form.submit "Add phone", :class => "submit" %></td>
+    </tr>
+  </table>
+<% end %>

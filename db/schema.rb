@@ -9,12 +9,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100218034011) do
+ActiveRecord::Schema.define(:version => 20100420062028) do
 
   create_table "blogcast_notifications", :force => true do |t|
-    t.string   "type",        :null => false
-    t.integer  "user_id",     :null => false
-    t.integer  "blogcast_id", :null => false
+    t.string   "type",         :null => false
+    t.integer  "user_id",      :null => false
+    t.integer  "blogcast_id",  :null => false
+    t.string   "delivered_by", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "blogcast_reminders", :force => true do |t|
+    t.string   "type",         :null => false
+    t.integer  "user_id",      :null => false
+    t.integer  "blogcast_id",  :null => false
+    t.string   "delivered_by", :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -28,6 +38,7 @@ ActiveRecord::Schema.define(:version => 20100218034011) do
     t.integer  "day",                        :null => false
     t.integer  "month",                      :null => false
     t.string   "link_title",                 :null => false
+    t.string   "short_url"
     t.datetime "starting_at",                :null => false
     t.integer  "views_count", :default => 0
     t.datetime "created_at"
@@ -46,6 +57,13 @@ ActiveRecord::Schema.define(:version => 20100218034011) do
   create_table "likes", :force => true do |t|
     t.integer  "user_id",     :null => false
     t.integer  "blogcast_id", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "mobile_phone_carriers", :force => true do |t|
+    t.string   "name",           :null => false
+    t.string   "sms_email_host", :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -71,8 +89,24 @@ ActiveRecord::Schema.define(:version => 20100218034011) do
     t.datetime "updated_at"
   end
 
+  create_table "sent_blogcast_reminders", :force => true do |t|
+    t.integer  "user_id",      :null => false
+    t.integer  "blogcast_id",  :null => false
+    t.string   "delivered_by", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "sent_notifications", :force => true do |t|
+    t.integer  "user_id",      :null => false
+    t.integer  "blogcast_id",  :null => false
+    t.string   "delivered_by", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "settings", :force => true do |t|
-    t.integer  "user_id",                                                         :null => false
+    t.integer  "user_id",                                                                           :null => false
     t.string   "full_name"
     t.string   "motto"
     t.string   "location"
@@ -83,22 +117,35 @@ ActiveRecord::Schema.define(:version => 20100218034011) do
     t.string   "avatar_content_type"
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
-    t.integer  "theme_id",                                     :default => 1,     :null => false
-    t.boolean  "use_background_image",                         :default => false, :null => false
+    t.integer  "theme_id",                                                     :default => 1,       :null => false
+    t.boolean  "use_background_image",                                         :default => false,   :null => false
     t.string   "background_image_file_name"
     t.string   "background_image_content_type"
     t.integer  "background_image_file_size"
     t.datetime "background_image_updated_at"
     t.boolean  "tile_background_image"
     t.boolean  "scroll_background_image"
-    t.string   "background_color",                :limit => 7
-    t.boolean  "mobile_confirmed"
-    t.string   "mobile_confirmation_token",       :limit => 5
-    t.string   "mobile_number"
-    t.string   "carrier"
+    t.string   "background_color",                               :limit => 7
+    t.boolean  "mobile_phone_confirmed"
+    t.boolean  "mobile_phone_confirmation_sent"
+    t.string   "mobile_phone_confirmation_token",                :limit => 5
+    t.string   "mobile_phone_number",                            :limit => 10
+    t.integer  "mobile_phone_carrier_id"
     t.boolean  "post_blogcasts_to_facebook"
     t.boolean  "create_blogcast_facebook_events"
     t.boolean  "tweet_blogcasts"
+    t.boolean  "send_message_email_notifications"
+    t.boolean  "send_message_sms_notifications"
+    t.boolean  "send_subscriber_email_notifications"
+    t.boolean  "send_subscriber_sms_notifications"
+    t.boolean  "send_subscription_blogcast_email_notifications"
+    t.boolean  "send_subscription_blogcast_sms_notifications"
+    t.boolean  "send_blogcast_email_reminders"
+    t.boolean  "send_blogcast_sms_reminders"
+    t.string   "email_reminder_units",                                         :default => "days",  :null => false
+    t.integer  "email_reminder_time_before",                                   :default => 1,       :null => false
+    t.string   "sms_reminder_units",                                           :default => "hours", :null => false
+    t.integer  "sms_reminder_time_before",                                     :default => 1,       :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

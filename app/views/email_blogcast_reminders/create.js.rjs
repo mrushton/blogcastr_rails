@@ -1,0 +1,1 @@
+page.replace_html "email-reminder", :partial => "delete_email_reminder"

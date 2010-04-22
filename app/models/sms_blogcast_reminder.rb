@@ -1,0 +1,2 @@
+class SmsBlogcastReminder < BlogcastReminder 
+end

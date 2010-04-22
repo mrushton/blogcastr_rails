@@ -4,6 +4,8 @@ class CreateBlogcastNotifications < ActiveRecord::Migration
       t.string :type, :null => false
       t.integer :user_id, :null => false
       t.integer :blogcast_id, :null => false
+      #AS DESIGNED - either 'email' or 'sms', needed to make query for notifications
+      t.string :delivered_by, :null => false
       t.timestamps
     end
   end

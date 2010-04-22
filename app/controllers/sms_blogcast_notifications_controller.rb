@@ -29,6 +29,7 @@ class SmsBlogcastNotificationsController < ApplicationController
     @sms_blogcast_notification = SmsBlogcastNotification.new
     @sms_blogcast_notification.user_id = user.id
     @sms_blogcast_notification.blogcast_id = @blogcast.id
+    @sms_blogcast_notification.delivered_by = "sms"
     @sms_blogcast_notification.save
     #TODO: handle error
   end

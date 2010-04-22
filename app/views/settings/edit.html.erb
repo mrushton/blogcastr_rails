@@ -72,9 +72,9 @@
           <h2 class="tab short" onclick="blogcastrPageSelect(this, 'settings', '');">Email</h2>
 <% end -%>
 <% if @settings_tab == "notifications" || flash[:settings_tab] == "notifications" -%>
-          <h2 class="tab short selected" onclick="blogcastrPageSelect(this, 'settings', '');">Notifications</h2>
+          <h2 class="tab short small selected" onclick="blogcastrPageSelect(this, 'settings', 'notifications-page');">Notifications / Reminders</h2>
 <% else -%>
-          <h2 class="tab short" onclick="blogcastrPageSelect(this, 'settings', '');">Notifications</h2>
+          <h2 class="tab short small" onclick="blogcastrPageSelect(this, 'settings', 'notifications-page');">Notifications / Reminders</h2>
 <% end -%>
 <% if @settings_tab == "password" || flash[:settings_tab] == "password" -%>
           <h2 class="tab short last selected" onclick="blogcastrPageSelect(this, 'settings', 'password-page');">Password</h2>
@@ -145,8 +145,8 @@
               </table>
               <div class="clear">
               </div>
-              <%= link_to "Delete your account", goodbye_path, :class => "view delete" -%>
             <% end %>
+            <%= link_to "Delete your account", goodbye_path, :class => "view delete" -%>
           </div>
 <% if @settings_tab == "appearance" || flash[:settings_tab] == "appearance" -%>
           <div id="appearance-page" class="page selected">
@@ -158,7 +158,7 @@
 <% else -%>
             <div id="themes-view" class="view">
 <% end -%>
-              <% form_for :setting, (@appearance_setting.nil?)?@setting:@appearance_setting, :url => appearance_settings_path do |form| %>
+              <% form_for :setting, (@theme_setting.nil?)?@setting:@theme_setting, :url => appearance_settings_path do |form| %>
 <% if flash[:settings_tab] == "appearance" && flash[:appearance_view] == "themes" -%>
   <%- if !flash[:error].nil? -%>
                 <div class="alert error">
@@ -226,7 +226,7 @@
 <% else -%>
             <div id="custom-background-view" class="view">
 <% end -%>
-              <% form_for :setting, (@appearance_setting.nil?)?@setting:@appearance_setting, :url => appearance_settings_path, :html => {:multipart => true} do |form| %>
+              <% form_for :setting, (@custom_background_setting.nil?)?@setting:@custom_background_setting, :url => appearance_settings_path, :html => {:multipart => true} do |form| %>
 <% if flash[:settings_tab] == "appearance" && flash[:appearance_view] == "custom-background" -%>
   <%- if !flash[:error].nil? -%>
                 <div class="alert error">
@@ -309,16 +309,16 @@
                 </div>
               </div>            
   <%- end -%>
-<%- end -%>
+<% end -%>
               <%= form.error_messages :header_tag => "h3", :header_message => "Oops!", :message => nil %>
               <table class="wide">
                 <tr>
-                  <td><label for="facebook-connect">Facebook</label></td>
+                  <td><span>Facebook</span></td>
                   <td>
                     <div id="facebook-connect">
-<%- if @user.facebook_id.nil? -%>
+<% if @user.facebook_id.nil? -%>
                       <%= link_to_function image_tag("http://static.ak.fbcdn.net/images/fbconnect/login-buttons/connect_light_medium_long.gif", :class => "connect"), "FB.Connect.requireSession(blogcastrFacebookExtendedPermissions)" -%>
-                      <p>Connect your Facebook account</p>
+                      <p>Connect your Facebook account.</p>
 <% else -%>
                       <%= image_tag @user.get_facebook_avatar_url(:small), :class => "avatar" -%>
                       <span class="username"><%= @user.get_facebook_username -%></span>
@@ -343,12 +343,12 @@
                   </td>
                 </tr>
                 <tr>
-                  <td><label for="twitter-oauth">Twitter</label></td>
+                  <td><span>Twitter</span></td>
                   <td>
                     <div id="twitter-oauth">
-<%- if @user.twitter_id.nil? -%>
+<% if @user.twitter_id.nil? -%>
                     <%= link_to_function image_tag("Sign-in-with-Twitter-darker.png", :class => "connect"), "blogcastrTwitterOauth()" -%>
-                    <p>Connect your Twitter account</p>
+                    <p>Connect your Twitter account.</p>
 <% else -%>
                       <%= image_tag @user.get_twitter_avatar_url, :class => "avatar" -%>
                       <span class="username"><%= @user.get_twitter_username -%></span>
@@ -365,13 +365,277 @@
                     </div>
                   </td>
                 </tr>
+<% if !@user.twitter_id.nil? || !@user.facebook_id.nil? -%>
+                <tr>
+                  <td></td>
+                  <td><%= form.submit "Save changes", :class => "submit" %></td>
+                </tr>
+<% end %>
+              </table>
+            <% end %>
+          </div>
+
+
+
+
+
+
+<% if @settings_tab == "notifications" || flash[:settings_tab] == "notifications" -%>
+          <div id="notifications-page" class="page selected">
+<% else -%>
+          <div id="notifications-page" class="page">
+<% end -%>
+<% if @notifications_view != "mobile-phone" && flash[:notifications_view] != "mobile-phone" -%>
+            <div id="settings-view" class="view selected">
+<% else -%>
+            <div id="settings-view" class="view">
+<% end -%>
+            <% form_for :setting, (@notifications_setting.nil?)?@setting:@notifications_setting, :url => notifications_settings_path do |form| %>
+<% if flash[:settings_tab] == "notifications" && flash[:notifications_view] == "settings" -%>
+  <%- if !flash[:error].nil? -%>
+              <div class="alert error">
+                <h3><%= flash[:error] -%></h3>
+              </div>            
+  <%- elsif !flash[:info].nil? -%>
+              <div class="alert info">
+                <h3><%= flash[:info] -%></h3>            
+              </div>            
+  <%- elsif !flash[:success].nil? -%>
+              <div class="alert success">
+                <div class="effect">
+                  <h3><%= flash[:success] -%></h3>
+                </div>
+              </div>            
+  <%- end -%>
+<%- end -%>
+              <%= form.error_messages :header_tag => "h3", :header_message => "Oops!", :message => nil %>
+              <%= form.hidden_field :mobile_phone_confirmed -%>
+              <table class="wide">
+                <tr>
+                  <td><span>Messages</span></td>
+                  <td>
+                      <%= form.check_box :send_message_email_notifications, :class => "check-box" %>
+                      <%= form.label :send_message_email_notifications, "Notify me by email about new messages", :class => "inner" %>
+<%- if @setting.mobile_phone_confirmed -%>
+                      <br>
+                      <%= form.check_box :send_message_sms_notifications, :class => "check-box" %>
+                      <%= form.label :send_message_sms_notifications, "Notify me by SMS about new messages", :class => "inner" %>
+<%- end -%>
+                  </td>
+                </tr>
+                <tr>
+                  <td><span>Subscribers</span></td>
+                  <td>
+                      <%= form.check_box :send_subscriber_email_notifications, :class => "check-box" %>
+                      <%= form.label :send_subscriber_email_notifications, "Notify me by email about new subscribers", :class => "inner" %>
+<%- if @setting.mobile_phone_confirmed -%>
+                      <br>
+                      <%= form.check_box :send_subscriber_sms_notifications, :class => "check-box" %>
+                      <%= form.label :send_subscriber_blogcast_sms_notifications, "Notify me by SMS about new subscribers", :class => "inner" %>
+<%- end -%>
+                  </td>
+                </tr>
+                <tr>
+                  <td><span>Subscription blogcasts</span></td>
+                  <td>
+                      <%= form.check_box :send_subscription_blogcast_email_notifications, :class => "check-box" %>
+                      <%= form.label :send_subscription_blogcast_email_notifications, "Notify me by email about my subscriptions' blogcasts", :class => "inner" %>
+<%- if @setting.mobile_phone_confirmed -%>
+                      <br>
+                      <%= form.check_box :send_subscription_blogcast_sms_notifications, :class => "check-box" %>
+                      <%= form.label :send_subscription_blogcast_sms_notifications, "Notify me by SMS about my subscriptions' blogcasts", :class => "inner" %>
+<%- end -%>
+                  </td>
+                </tr>
+                <tr>
+                  <td><span>Blogcast reminders</span></td>
+                  <td>
+                      <%= form.check_box :send_blogcast_email_reminders, :class => "check-box" %>
+                      <%= form.label :send_blogcast_email_reminders, "Remind me by email about my upcoming blogcasts", :class => "inner" %>
+<%- if @setting.mobile_phone_confirmed -%>
+                      <br>
+                      <%= form.check_box :send_blogcast_sms_reminders, :class => "check-box" %>
+                      <%= form.label :send_blogcast_sms_reminders, "Remind me by SMS about my upcoming blogcasts", :class => "inner" %>
+<%- end -%>
+                  </td>
+                </tr>
+                <tr>
+                  <td><span>Send reminders when</span></td>
+                  <td>
+                    <%= form.text_field :email_reminder_time_before, :size => "3", :maxlength => "3", :class => "tiny" -%>
+                    <%= form.select :email_reminder_units, %w{minutes hours days} %>
+                    <p>Amount of time before a blogcast starts to send an email reminder.</p> 
+<%- if @setting.mobile_phone_confirmed -%>
+                    <%= form.text_field :sms_reminder_time_before, :size => "3", :maxlength => "3", :class => "tiny" -%>
+                    <%= form.select :sms_reminder_units, %w{minutes hours days} %>
+                    <p>Amount of time before a blogcast starts to send an SMS reminder.</p> 
+<%- end -%>
+                  </td>
+                </tr>
                 <tr>
                   <td></td>
                   <td><%= form.submit "Save changes", :class => "submit" %></td>
                 </tr>
               </table>
             <% end %>
+<%- if @setting.mobile_phone_confirmed -%>
+            <%= link_to_function "View your mobile phone", "blogcastrViewSelect('notifications-page', 'mobile-phone-view');", :class => "view" -%>
+<%- elsif @setting.mobile_phone_confirmation_sent -%>
+           <div id="mobile-phone-link">
+            <%= link_to_function "Confirm your mobile phone", "blogcastrViewSelect('notifications-page', 'mobile-phone-view');", :class => "view" -%>
+           </div>
+<%- else -%>
+            <%= link_to_function "Add a mobile phone for SMS notifications", "blogcastrViewSelect('notifications-page', 'mobile-phone-view');", :class => "view" -%>
+<%- end -%>
           </div>
+<% if @notifications_view == "mobile-phone" || flash[:notifications_view] == "mobile-phone" -%>
+            <div id="mobile-phone-view" class="view selected">
+<% else -%>
+            <div id="mobile-phone-view" class="view">
+<% end -%>
+
+
+
+<%- if @setting.mobile_phone_confirmed -%>
+            <% form_tag mobile_phone_path, :method => "delete" do %>
+<% if flash[:settings_tab] == "notifications" && flash[:notifications_view] == "mobile-phone" -%>
+  <%- if !flash[:error].nil? -%>
+              <div class="alert error">
+                <h3><%= flash[:error] -%></h3>
+              </div>            
+  <%- elsif !flash[:info].nil? -%>
+              <div class="alert info">
+                <h3><%= flash[:info] -%></h3>            
+              </div>            
+  <%- elsif !flash[:success].nil? -%>
+              <div class="alert success">
+                <div class="effect">
+                  <h3><%= flash[:success] -%></h3>
+                </div>
+              </div>            
+  <%- end -%>
+<% end -%>
+              <table class="wide">
+                <tr>
+                  <td><span>Carrier<span></td>
+                  <td><span><%= @setting.mobile_phone_carrier.name -%></span></td>
+                </tr>
+                <tr>
+                  <td><span>Phone number<span></td>
+                  <td><span><%= @setting.mobile_phone_number -%></span></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td><%= submit_tag "Remove phone", :class => "submit" %></td>
+                </tr>
+              </table>
+            <% end %>
+<%- elsif @setting.mobile_phone_confirmation_sent -%>
+           <div id="mobile-phone-confirm">
+            <% form_tag confirm_mobile_phone_path do %>
+<% if flash[:settings_tab] == "notifications" && flash[:notifications_view] == "mobile-phone" -%>
+  <%- if !flash[:error].nil? -%>
+              <div class="alert error">
+                <h3><%= flash[:error] -%></h3>
+              </div>            
+  <%- elsif !flash[:info].nil? -%>
+              <div class="alert info">
+                <h3><%= flash[:info] -%></h3>            
+              </div>            
+  <%- elsif !flash[:success].nil? -%>
+              <div class="alert success">
+                <div class="effect">
+                  <h3><%= flash[:success] -%></h3>
+                </div>
+              </div>            
+  <%- end -%>
+<% end -%>
+              <table class="wide">
+                <tr>
+                  <td><%= label_tag :mobile_phone_confirmation_token, "Confirmation token" -%></td>
+                  <td>
+                      <%= text_field_tag :mobile_phone_confirmation_token, "", :size => 5, :maxlength => 5, :class => "short" %>
+                      <p>Enter the confirmation token sent to your mobile phone.</p>
+                      <%= link_to_remote "Remove your phone", :url => mobile_phone_path, :method => "delete", :failure => "alert('Error: Failed communicating with server. Unable to remove phone.');", :html => {:class => "remove"}, :condition => "removing_mobile_phone == false", :before => "jQuery('#mobile-phone-confirm img.status').hide(); removing_mobile_phone = true; jQuery('#remove-mobile-phone-loading').show();" %>
+                      <%= image_tag "ajax-loader.gif", :id => "remove-mobile-phone-loading", :class => "status", :style => "display: none;" -%>
+                      <%= image_tag "tick.png", :id => "remove-mobile-phone-success", :class => "status", :style => "display: none;" -%>
+                      <%= image_tag "cross.png", :id => "remove-mobile-phone-error", :class => "status", :style => "display: none;" -%>
+                  </td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td><%= submit_tag "Confirm phone", :class => "submit" %></td>
+                </tr>
+              </table>
+            <% end %>
+          </div>
+<%- else -%>
+            <% form_for :setting, (@mobile_phone_setting.nil?)?@setting:@mobile_phone_setting, :url => mobile_phone_path do |form| %>
+<% if flash[:settings_tab] == "notifications" && flash[:notifications_view] == "mobile-phone" -%>
+  <%- if !flash[:error].nil? -%>
+              <div class="alert error">
+                <h3><%= flash[:error] -%></h3>
+              </div>            
+  <%- elsif !flash[:info].nil? -%>
+              <div class="alert info">
+                <h3><%= flash[:info] -%></h3>            
+              </div>            
+  <%- elsif !flash[:success].nil? -%>
+              <div class="alert success">
+                <div class="effect">
+                  <h3><%= flash[:success] -%></h3>
+                </div>
+              </div>            
+  <%- end -%>
+<% end -%>
+              <%= form.error_messages :header_tag => "h3", :header_message => "Oops!", :message => nil %>
+              <table class="wide">
+                <tr>
+                  <td><%= form.label :mobile_phone_carrier_id, "Carrier" -%></td>
+                  <td>
+                      <%= form.select :mobile_phone_carrier_id, @mobile_phone_carriers %>
+                      <p>Your mobile phone carrier.</p>
+<% if @setting.mobile_phone_confirmed -%>
+<% end -%>
+                  </td>
+                </tr>
+                <tr>
+                  <td><%= form.label :mobile_phone_number, "Phone number" -%></td>
+                  <td>
+                    <%= form.text_field :mobile_phone_number, :size => "10", :maxlength => "10", :class => "short" -%>
+                    <p>10 digit mobile phone number (e.g. 6175550100).</p> 
+<% if @setting.mobile_phone_confirmed -%>
+<% end -%>
+                  </td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td><%= form.submit "Add phone", :class => "submit" %></td>
+                </tr>
+              </table>
+            <% end %>
+<%- end -%>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <%= link_to_function "Back to notifications and reminders settings", "blogcastrViewSelect('notifications-page', 'settings-view');", :class => "view" -%>
+
+            </div>
+        </div>
 
 
 
