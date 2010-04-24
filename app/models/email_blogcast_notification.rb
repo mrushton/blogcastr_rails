@@ -1,2 +1,0 @@
-class EmailBlogcastNotification < BlogcastNotification 
-end

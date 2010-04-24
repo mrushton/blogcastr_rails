@@ -1,2 +1,0 @@
-class SmsBlogcastNotification < BlogcastNotification 
-end

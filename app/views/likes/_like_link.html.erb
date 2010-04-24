@@ -1,1 +1,0 @@
-<%= button_to_remote "Like", :url => (blogcast_likes_path :blogcast_id => @blogcast.id), :failure => "alert('Error: Unable to like blogcast #{@blogcast.title}. Failed communicating with server.');" %>
