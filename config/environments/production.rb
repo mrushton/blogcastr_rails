@@ -33,6 +33,7 @@ config.action_mailer.smtp_settings = {
   :user_name => "mrushton@blogcastr.com",
   :password => "hkbcfjiP7"
 }
+config.action_mailer.default_url_options = {:host => "blogcastr.com"}
 
 # Enable threaded mode
 # config.threadsafe!

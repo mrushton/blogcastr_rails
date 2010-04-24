@@ -4,7 +4,7 @@ class CreateBlogcastReminders < ActiveRecord::Migration
       t.string :type, :null => false
       t.integer :user_id, :null => false
       t.integer :blogcast_id, :null => false
-      #AS DESIGNED - either 'email' or 'sms', needed to make query for reminders 
+      #AS DESIGNED - either 'email' or 'sms' makes certain queries easier
       t.string :delivered_by, :null => false
       t.timestamps
     end

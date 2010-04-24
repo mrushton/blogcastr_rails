@@ -1,0 +1,2 @@
+class SentSmsSubscriptionNotification < SentSubscriptionNotification
+end

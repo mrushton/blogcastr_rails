@@ -9,16 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100420062028) do
-
-  create_table "blogcast_notifications", :force => true do |t|
-    t.string   "type",         :null => false
-    t.integer  "user_id",      :null => false
-    t.integer  "blogcast_id",  :null => false
-    t.string   "delivered_by", :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
+ActiveRecord::Schema.define(:version => 20100422064302) do
 
   create_table "blogcast_reminders", :force => true do |t|
     t.string   "type",         :null => false
@@ -90,6 +81,7 @@ ActiveRecord::Schema.define(:version => 20100420062028) do
   end
 
   create_table "sent_blogcast_reminders", :force => true do |t|
+    t.string   "type",         :null => false
     t.integer  "user_id",      :null => false
     t.integer  "blogcast_id",  :null => false
     t.string   "delivered_by", :null => false
@@ -97,10 +89,11 @@ ActiveRecord::Schema.define(:version => 20100420062028) do
     t.datetime "updated_at"
   end
 
-  create_table "sent_notifications", :force => true do |t|
-    t.integer  "user_id",      :null => false
-    t.integer  "blogcast_id",  :null => false
-    t.string   "delivered_by", :null => false
+  create_table "sent_subscription_notifications", :force => true do |t|
+    t.string   "type",          :null => false
+    t.integer  "user_id",       :null => false
+    t.integer  "subscribed_to", :null => false
+    t.string   "delivered_by",  :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -176,6 +169,7 @@ ActiveRecord::Schema.define(:version => 20100420062028) do
     t.string   "type",            :null => false
     t.integer  "user_id",         :null => false
     t.integer  "notifying_about", :null => false
+    t.string   "delivered_by",    :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

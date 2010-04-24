@@ -1,0 +1,2 @@
+class SentSmsBlogcastReminder < SentBlogcastReminder
+end

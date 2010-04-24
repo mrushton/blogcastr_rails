@@ -15,7 +15,6 @@ config.action_controller.perform_caching             = false
 
 # Don't care if the mailer can't send
 config.action_mailer.raise_delivery_errors = false
-
 #MVR - mail relay
 #TODO: use alternate relay for development
 config.action_mailer.smtp_settings = {
@@ -26,6 +25,7 @@ config.action_mailer.smtp_settings = {
   :user_name => "mrushton@blogcastr.com",
   :password => "hkbcfjiP7"
 }
+config.action_mailer.default_url_options = {:host => "sandbox.blogcastr.com"}
 
 #MVR - connect to beanstalkd
 config.after_initialize do
@@ -34,4 +34,4 @@ config.after_initialize do
 end
 
 #MVR - define the host we are running on 
-HOST = "localhost"
+HOST = "sandbox.blogcastr.com"
