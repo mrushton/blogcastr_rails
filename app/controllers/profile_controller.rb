@@ -15,10 +15,10 @@ class ProfileController < ApplicationController
       @subscription = @user.subscriptions.find(:first, :conditions => {:subscribed_to => @profile_user.id})
     end
     #MVR - upcoming blogcasts
-    @upcoming_blogcasts = @profile_user.blogcasts.find(:all, :conditions => ["starting_at > ?", Time.zone.now], :limit => 3)
+    @upcoming_blogcasts = @profile_user.blogcasts.find(:all, :conditions => ["starting_at > ?", Time.zone.now], :order => "starting_at", :limit => 3)
     @num_upcoming_blogcasts = Blogcast.count(:conditions => ["user_id = ? AND starting_at > ?", @profile_user.id, Time.zone.now])
     #MVR - recent blogcasts
-    @recent_blogcasts = @profile_user.blogcasts.find(:all, :conditions => ["starting_at < ? AND starting_at > ?", Time.zone.now, 1.month.ago], :limit => 3)
+    @recent_blogcasts = @profile_user.blogcasts.find(:all, :conditions => ["starting_at < ? AND starting_at > ?", Time.zone.now, 1.month.ago], :order => "starting_at", :limit => 3)
     @num_recent_blogcasts = Blogcast.count(:conditions => ["user_id = ? AND starting_at < ? AND starting_at > ?", @profile_user.id, Time.zone.now, 1.month.ago])
     #MVR - blogcasts
     @num_blogcasts = @profile_user.blogcasts.count

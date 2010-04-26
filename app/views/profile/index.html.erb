@@ -114,80 +114,80 @@
       <div class="clear">
       </div>
       <div id="bottom">
-        <h2><span class="counter"><%= @num_upcoming_blogcasts -%></span><%= @num_upcoming_blogcasts == 1 ? "Upcoming blogcast" : "Upcoming blogcasts" -%></h2>
+        <h2>Upcoming blogcasts</h2>
+<%- if @num_upcoming_blogcasts == 0 -%>
+        <div class="none">
+          <%= @profile_user.username -%> has no upcoming blogcasts.
+        </div>
+<%- else -%>
         <ol>
-<% for blogcast in @upcoming_blogcasts -%>
-          <li class="blogcast">
-            <h3><%= link_to blogcast.title, username_blogcast_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%></h3>
-            <p class="date"><%= blogcast.starting_at.strftime("%a %b %d, %Y %I:%M %p").gsub(/ 0/,' ') %></p>
-            <div class="clear">
-            </div>
-            <p class="tags"><%= blogcast.tags -%></p>
-            <p class="description"><%= blogcast.description -%></p>
-  <%- num_likes = blogcast.likes.count -%>
-            <h4 class="three first selected" onclick="blogcastrCollapsibleEvent(this, 'blogcast-<%= blogcast.id -%>-likes');"><%= num_likes.to_s + ((num_likes == 1) ? " Like" : " Likes") -%><%= image_tag "down.png" -%></h4>
-  <%- num_posts = blogcast.posts.count -%>
-            <a class="tab" href="<%= username_blogcast_posts_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%>"><h4 class="three"><%= num_posts.to_s + ((num_posts == 1) ? " Post" : " Posts") -%></h4></a>
-  <%- num_comments = blogcast.comments.count -%>
-            <a class="tab" href="<%= username_blogcast_comments_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%>"><h4 class="three"><%= num_comments.to_s + ((num_comments == 1) ? " Comment" : " Comments") -%></h4></a>
-            <div class="clear">
-            </div>
-            <div id="blogcast-<%= blogcast.id -%>-likes">
-              <ul>
-  <%- likes = User.find_by_sql(["SELECT users.* FROM likes, users WHERE likes.blogcast_id = ? AND likes.user_id = users.id LIMIT 30", blogcast.id]) -%>
   <%- i = 0 -%>
-  <%- for like in likes -%>
+  <% for blogcast in @upcoming_blogcasts -%>
     <%- if i == 0 -%>
-                <li class="first">
+          <li class="blogcast first">
     <%- else -%>
-                <li>
+          <li class="blogcast">
     <%- end -%>
-                  <%= link_to image_tag(like.setting.avatar.url(:small), :class => "avatar-small", :alt => "#{like.username}"), profile_path(:username => like.username), :title => "#{like.username}" %>
-                </li>
     <%- i = i + 1 -%>
-  <%- end -%>
-              </ul>
-            </div>
-            <div class="clear">
+            <div class="spacer">
+              <h3><%= link_to blogcast.title, username_blogcast_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%></h3>
+              <div class="info">
+                <span class="date"><%= blogcast.starting_at.strftime("%a %b %d, %Y %I:%M %p").gsub(/ 0/,' ') %></span>
+    <%- if !blogcast.tags.nil? -%>
+                | <span class="tags"><%= blogcast.tags -%></span>
+    <%- end -%>
+              </div>
+    <%- if !blogcast.description.nil? -%>
+              <p class="description"><%= blogcast.description -%></p>
+    <%- end -%>
+    <%- num_posts = blogcast.posts.count -%>
+              <div class="stat first" href="<%= username_blogcast_posts_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%>"><%= num_posts.to_s + ((num_posts == 1) ? " Post" : " Posts") -%></div>
+    <%- num_comments = blogcast.comments.count -%>
+              <div class="stat" href="<%= username_blogcast_comments_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%>"><%= num_comments.to_s + ((num_comments == 1) ? " Comment" : " Comments") -%></div>
+    <%- num_likes = blogcast.likes.count -%>
+              <div class="stat" href="<%= username_blogcast_likes_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%>"><%= num_likes.to_s + ((num_likes == 1) ? " Like" : " Likes") -%></div>
+              <div class="clear">
+              </div>
             </div>
           </li>
-<% end %>
+  <% end %>
         </ol>
-        <h2><span class="counter"><%= @num_recent_blogcasts -%></span><%= @num_recent_blogcasts == 1 ? "Recent blogcast" : "Recent blogcasts" -%></h2>
+<% end %>
+<%- if @num_upcoming_blogcasts > 3 -%>
+  <%- num_more = @num_upcoming_blogcasts - 3 -%>
+        <%= link_to num_more.to_s + " More", username_upcoming_blogcasts_path(:username => @profile_user.username), :class => "more" %>
+        <div class="clear">
+        </div>
+<%- end -%>
+        <h2>Recent blogcasts</h2>
         <ol>
+<%- i = 0 -%>
 <% for blogcast in @recent_blogcasts -%>
+  <%- if i == 0 -%>
+          <li class="blogcast first">
+  <%- else -%>
           <li class="blogcast">
-            <h3><%= link_to blogcast.title, username_blogcast_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%></h3>
-            <p class="date"><%= blogcast.starting_at.strftime("%a %b %d, %Y %I:%M %p").gsub(/ 0/,' ') %></p>
-            <div class="clear">
-            </div>
-            <p class="tags"><%= blogcast.tags -%></p>
-            <p class="description"><%= blogcast.description -%></p>
-  <%- num_likes = blogcast.likes.count -%>
-            <h4 class="three first selected" onclick="blogcastrCollapsibleEvent(this, 'blogcast-<%= blogcast.id -%>-likes');"><%= num_likes.to_s + ((num_likes == 1) ? " Like" : " Likes") -%><%= image_tag "down.png" -%></h4>
-  <%- num_posts = blogcast.posts.count -%>
-            <a class="tab" href="<%= username_blogcast_posts_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%>"><h4 class="three"><%= num_posts.to_s + ((num_posts == 1) ? " Post" : " Posts") -%></h4></a>
-  <%- num_comments = blogcast.comments.count -%>
-            <a class="tab" href="<%= username_blogcast_comments_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%>"><h4 class="three"><%= num_comments.to_s + ((num_comments == 1) ? " Comment" : " Comments") -%></h4></a>
-            <div class="clear">
-            </div>
-            <div id="blogcast-<%= blogcast.id -%>-likes">
-              <ul>
-  <%- likes = User.find_by_sql(["SELECT users.* FROM likes, users WHERE likes.blogcast_id = ? AND likes.user_id = users.id LIMIT 30", blogcast.id]) -%>
-  <%- i = 0 -%>
-  <%- for like in likes -%>
-    <%- if i == 0 -%>
-                <li class="first">
-    <%- else -%>
-                <li>
-    <%- end -%>
-                  <%= link_to image_tag(like.setting.avatar.url(:small), :class => "avatar-small", :alt => "#{like.username}"), profile_path(:username => like.username), :title => "#{like.username}" %>
-                </li>
-    <%- i = i + 1 -%>
   <%- end -%>
-              </ul>
-            </div>
-            <div class="clear">
+  <%- i = i + 1 -%>
+            <div class="spacer">
+              <h3><%= link_to blogcast.title, username_blogcast_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%></h3>
+              <div class="info">
+                <span class="date"><%= blogcast.starting_at.strftime("%a %b %d, %Y %I:%M %p").gsub(/ 0/,' ') %></span>
+  <%- if !blogcast.tags.nil? -%>
+                | <span class="tags"><%= blogcast.tags -%></span>
+  <%- end -%>
+              </div>
+  <%- if !blogcast.description.nil? -%>
+              <p class="description"><%= blogcast.description -%></p>
+  <%- end -%>
+  <%- num_posts = blogcast.posts.count -%>
+              <div class="stat first" href="<%= username_blogcast_posts_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%>"><%= num_posts.to_s + ((num_posts == 1) ? " Post" : " Posts") -%></div>
+  <%- num_comments = blogcast.comments.count -%>
+              <div class="stat" href="<%= username_blogcast_comments_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%>"><%= num_comments.to_s + ((num_comments == 1) ? " Comment" : " Comments") -%></div>
+  <%- num_likes = blogcast.likes.count -%>
+              <div class="stat" href="<%= username_blogcast_likes_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%>"><%= num_likes.to_s + ((num_likes == 1) ? " Like" : " Likes") -%></div>
+              <div class="clear">
+              </div>
             </div>
           </li>
 <% end %>
@@ -227,15 +227,15 @@
 <% end -%>
 <% if !@profile_user.setting.web.nil? && @profile_user.setting.web != "" %>
         <h4>Web:</h4>
-        <a class="web" href="<%= url_for @profile_user.setting.web =~ /^http:\/\// ? @profile_user.setting.web : "http://"+@profile_user.setting.web %>"><%= @profile_user.setting.web.length > 27 ? (@profile_user.setting.web[0,23] + "...") : @profile_user.setting.web -%></a>
+        <a class="web" href="<%= url_for @profile_user.setting.web =~ /^http:\/\// ? @profile_user.setting.web : "http://"+@profile_user.setting.web %>"><%= @profile_user.setting.web.length > 25 ? (@profile_user.setting.web[0,22] + "...") : @profile_user.setting.web -%></a>
 <% end -%>
         <hr>
         <div id="stats">
-          <a class="stat first" href="<%= username_blogcasts_path :username => @profile_user.username -%>"><span class="counter"><%= @num_blogcasts -%></span><span class="name"><%= @num_blogcasts == 1 ? "Blogcast" : "Blogcasts" -%></span></a>
-          <a class="stat second" href="<%= username_comments_path :username => @profile_user.username -%>"><span class="counter"><%= @num_comments -%></span><span class="name"><%= @num_comments == 1 ? "Comment" : "Comments" -%></span></a>
-          <a class="stat third" href="<%= username_likes_path :username => @profile_user.username -%>"><span class="counter"><%= @num_likes -%></span><span class="name"><%= @num_likes == 1 ? "Like" : "Likes" -%></span></a>
-          <a class="stat fourth" href="<%= username_posts_path :username => @profile_user.username -%>"><span class="counter"><%= @num_posts -%></span><span class="name"><%= @num_posts == 1 ? "Post" : "Posts" -%></span></a>
-          <h3 class="fifth" onclick="blogcastrCollapsibleEvent(this, 'subscribers');"><span class="counter"><%= @num_subscribers -%></span><span class="name"><%= @num_subscribers == 1 ? "Subscriber" : "Subscribers" -%></span><%= image_tag "down.png" -%></h3>
+          <a class="stat" href="<%= username_blogcasts_path :username => @profile_user.username -%>"><span class="counter"><%= @num_blogcasts -%></span><span class="name"><%= @num_blogcasts == 1 ? "Blogcast" : "Blogcasts" -%></span></a>
+          <a class="stat" href="<%= username_comments_path :username => @profile_user.username -%>"><span class="counter"><%= @num_comments -%></span><span class="name"><%= @num_comments == 1 ? "Comment" : "Comments" -%></span></a>
+          <a class="stat" href="<%= username_likes_path :username => @profile_user.username -%>"><span class="counter"><%= @num_likes -%></span><span class="name"><%= @num_likes == 1 ? "Like" : "Likes" -%></span></a>
+          <a class="stat" href="<%= username_posts_path :username => @profile_user.username -%>"><span class="counter"><%= @num_posts -%></span><span class="name"><%= @num_posts == 1 ? "Post" : "Posts" -%></span></a>
+          <h3 class="stat" onclick="blogcastrCollapsibleEvent(this, 'subscribers');"><span class="counter"><%= @num_subscribers -%></span><span class="name"><%= @num_subscribers == 1 ? "Subscriber" : "Subscribers" -%></span><%= image_tag "down.png" -%></h3>
           <div id="subscribers">
             <ul>
 <% i = 0 -%>
@@ -264,7 +264,7 @@
 <% end -%>
             </ul>
           </div>
-          <h3 class="sixth" onclick="blogcastrCollapsibleEvent(this, 'subscriptions')"><span class="counter"><%= @num_subscriptions -%></span> <span class="name"><%= @num_subscriptions == 1 ? "Subscription" : "Subscriptions" -%></span><%= image_tag "down.png" -%></h3>
+          <h3 class="stat" onclick="blogcastrCollapsibleEvent(this, 'subscriptions')"><span class="counter"><%= @num_subscriptions -%></span> <span class="name"><%= @num_subscriptions == 1 ? "Subscription" : "Subscriptions" -%></span><%= image_tag "down.png" -%></h3>
           <div id="subscriptions">
             <ul>
 <% i = 0 -%>

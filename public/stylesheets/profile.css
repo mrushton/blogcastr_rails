@@ -5,7 +5,7 @@
 
 #spacer
 {
-	min-height: 196px; 
+	min-height: 200px; 
 }
 
 #left
@@ -34,18 +34,8 @@
 	padding-right: 14px;
 	padding-top: 4px;
 	padding-bottom: 4px;
-	width: 386px;
+	width: 383px;
 	float: left;
-}
-
-#right #wave
-{
-	float: right;
-	width: 35px;
-	height: 35px;
-	opacity: 0.5;
-	-moz-opactiy: 0.5;
-	filter: alpha(opacity=50);
 }
 
 #right h1
@@ -57,7 +47,7 @@
 
 #right p.motto
 {
-	margin-left: 6px;
+	margin-left: 0px;
 	margin-top: 6px;
 	margin-right: 0px;
 	margin-bottom: 3px;
@@ -82,8 +72,7 @@
 	margin-right: 0px;
 	margin-bottom: 0px;
 	line-height: 17px;
-	font-size: 0.8em;
-	font-weight: bold;
+	font-size: 0.9em;
 }
 
 #right div.sign-up, #right div.subscribe, #right div.navigation

@@ -257,7 +257,7 @@
         </div>
         <div class="clear">
         </div>
-    <%- if @user.setting.mobile_confirmed == true -%>
+    <%- if @user.setting.mobile_phone_confirmed == true -%>
         <div id="sms-notifications">
       <%- if @sms_user_notification.nil? -%>
           <%= link_to_remote image_tag("phone_add.png") + "<p>SMS notifications for #{@profile_username_possesive} blogcasts</p>", :url => username_sms_notifications_path(:username => @profile_user.username), :failure => "alert('Error communicating with server, failed to create sms notifications for #{@profile_user.username}');", :html => {:class => "notification"}, :method => "post", :condition => "remote_request == false", :before => "remote_request = true", :complete => "setTimeout('remote_request = false', 3500)" %>

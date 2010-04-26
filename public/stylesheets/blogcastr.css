@@ -531,6 +531,7 @@ a:hover
 	padding-right: 14px;
 	padding-bottom: 4px;
 	width: 572px;
+	position: relative;
 	background-image: url("../images/background-border-main.png");
 }
 
@@ -545,16 +546,11 @@ a:hover
 {
 	margin-top: 0px;
 	margin-bottom: 0px;
+	padding-left: 5px;
 	font-size: 1.75em;
 	font-weight: bold;
 	line-height: 35px;
-}
-
-#bottom h2 span.counter
-{
-	margin-right: 5px;
-	color: #0097e0; 
-	font-size: 1.1em;
+	background-color: #F2F2F2;
 }
 
 #bottom ol
@@ -562,107 +558,6 @@ a:hover
 	margin: 0px;
 	padding: 0px;
 	list-style-type: none;	
-}
-
-#bottom li.blogcast
-{
-	margin-top: 0px;
-	margin-bottom: 10px;
-	padding: 1px;
-	border: solid;
-	border-width: 1px;
-	border-color: #59636f;
-	background-color: #ebebeb;
-}
-
-#bottom li.blogcast a 
-{
-	color: black;
-	font-size: 1.0em;
-}
-
-#bottom li.blogcast h3
-{
-	margin: 0px;
-	float: left;
-	color: black;
-	font-size: 0.95em;
-	line-height: 14px;
-}
-
-#bottom li.blogcast p.date
-{
-	margin: 0px;
-	float: right;
-	color: #d79400;
-	font-size: 0.85em;
-	font-weight: bold;
-	line-height: 12px;
-}
-
-#bottom li.blogcast p.tags
-{
-	margin: 0px;
-	margin-left: 5px;
-	margin-top: 5px;
-	color: gray;
-	font-size: 0.85em;
-	font-style: italic;
-}
-
-#bottom li.blogcast p.description
-{
-	margin: 0px;
-	margin-left: 5px;
-	color: black;
-	font-size: 0.85em;
-}
-
-#bottom li.blogcast h4.three
-{
-	margin-left: 1px;
-	margin-top: 3px;
-	margin-right: 0px;
-	margin-bottom: 0px;
-	width: 189px;
-	height: 17px;
-	position: relative;
-	float: left;
-	background-color: #99d9f6;
-	text-align: center;
-	font-size: 0.85em;
-	line-height: 17px;
-}
-
-#bottom li.blogcast h4.first
-{
-	margin-left: 0px;
-	width: 188px;
-}
-
-#bottom li.blogcast h4.selected
-{
-	background-color: #1ca5e5;
-}
-
-#bottom li.blogcast h4:hover
-{
-	background-color: #0097e0;
-	cursor: pointer;
-}
-
-#bottom li.blogcast h4 img
-{
-	position: absolute;
-	width: 6px;
-	height: 6px;
-	left: 173px;
-	top: 5px;
-}
-
-#bottom li.blogcast a.tab:hover
-{
-	text-decoration: none;
 }
 
 #bottom ol li div.effect
@@ -696,16 +591,6 @@ a:hover
 	margin-right: 3px;
 	border: none;
 	float: left;
-}
-
-#bottom ol li span.date
-{
-	margin-top: 1px;
-	margin-right: 3px;
-	float: right;
-	color: #d79400;
-	font-weight: bold;
-	font-size: 0.9em;
 }
 
 #bottom ol li p.text
@@ -782,6 +667,21 @@ a:hover
 	font-size: 0.75em;
 }
 
+#bottom a.more
+{
+	margin-bottom: 3px;
+	color: #5f5e5f;
+	font-weight: bold;
+	font-size: 1.0em;
+	text-decoration: none;
+	float: right;
+}
+
+#bottom a.more:hover
+{
+	text-decoration: underline;
+}
+
 #side
 {
 	width: 235px;
@@ -822,7 +722,7 @@ a:hover
 	margin-bottom: 0px;
 	display: inline-block;	
 	color: #00a7ee;
-	font-size: 0.8em;
+	font-size: 0.85em;
 }
 
 #left-side h4
@@ -841,9 +741,8 @@ a:hover
 
 #side p
 {
-	font-size: 0.8em;
+	font-size: 0.85em;
 	display: inline;
-	font-weight: bold;
 }
 
 #left-side p
@@ -878,9 +777,8 @@ a:hover
 #side a.web
 {
 	display: inline;
-	font-size: .8em;
-	font-weight: bold;
-	color: #787878;
+	font-size: 0.85em;
+	color: #5f5e5f;
 	text-decoration: none;
 }
 
@@ -968,7 +866,7 @@ a:hover
 	-webkit-user-select: none;
 }
 
-#stats h3:hover, #stats a.stat:hover, div.stats a.stat:hover
+#stats h3.stat:hover, #stats a.stat:hover, div.stats a.stat:hover
 {
 	background-color: #0097e0;
 	text-decoration: none;
@@ -991,7 +889,7 @@ a:hover
 {
 	position: absolute;
 	left: 50px;
-	letter-spacing: -.01em;
+	letter-spacing: -0.01em;
 	font-weight: bolder;
 }
 
@@ -1014,32 +912,7 @@ a:hover
 	text-decoration: none;
 }
 
-#side div#stats a.first, div.stats a.first
-{
-	background-color: #1ca5e5;
-}
-
-#stats .second, div.stats .second
-{
-	background-color: #3aafe8;
-}
-
-#stats .third, div.stats .third
-{
-	background-color: #52b9ec;
-}
-
-#stats .fourth, div.stats .fourth
-{
-	background-color: #67c2ee;
-}
-
-#stats .fifth, div.stats .fifth
-{
-	background-color: #7bcbf1;
-}
-
-#stats .sixth, div.stats .sixth
+#stats a.stat, div.stats a.stat, #side h3.stat
 {
 	background-color: #99d9f6;
 }
@@ -1207,6 +1080,14 @@ input.tab
 	text-decoration: underline;
 }
 
+div.none
+{
+	margin-left: 10px;
+	margin-top: 3px;
+	margin-right: 10px;
+	margin-bottom: 3px;
+}
+
 ol
 {
 	margin: 0px;
@@ -1311,13 +1192,30 @@ li.user a.stat span.name
 
 li.blogcast
 {
-	margin-top: 0px;
-	margin-bottom: 10px;
-	padding: 1px;
-	border: solid;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	border-top: solid;
 	border-width: 1px;
-	border-color: #59636f;
-	background-color: #ebebeb;
+	border-color: #a4a4a4;
+}
+
+li.blogcast.first
+{
+	border: none;
+}
+
+li.blogcast div.spacer
+{
+	padding-left: 10px;
+	padding-top: 3px;
+	padding-right: 10px;
+	padding-bottom: 3px;
+	position: relative;
+}
+
+li.blogcast div.spacer:hover
+{
+	background-color: #e6e4e5;
 }
 
 li.blogcast a 
@@ -1329,68 +1227,61 @@ li.blogcast a
 li.blogcast h3
 {
 	margin: 0px;
-	float: left;
 	color: black;
-	font-size: 0.95em;
+	font-size: 1.0em;
 	line-height: 14px;
 }
 
-li.blogcast p.date
+li.blogcast div.info
 {
-	margin: 0px;
-	float: right;
-	color: #d79400;
-	font-size: 0.85em;
-	font-weight: bold;
+	margin-top: 3px;
+	font-size: 0.75em;
 	line-height: 12px;
 }
 
-li.blogcast p.tags
+li.blogcast span.date
 {
-	margin: 0px;
-	margin-left: 5px;
-	margin-top: 5px;
+	color: #d79400;
+}
+
+li.blogcast span.tags
+{
 	color: gray;
-	font-size: 0.85em;
 	font-style: italic;
 }
 
 li.blogcast p.description
 {
-	margin: 0px;
-	margin-left: 5px;
-	color: black;
+	margin-top: 3px;
+	margin-bottom: 0px;
+	color: #000000;
 	font-size: 0.85em;
 }
 
-li.blogcast h4.three
+li.blogcast div.stat
 {
 	margin-left: 1px;
 	margin-top: 3px;
 	margin-right: 0px;
 	margin-bottom: 0px;
-	width: 189px;
+	width: 183px;
 	height: 17px;
 	position: relative;
 	float: left;
 	background-color: #99d9f6;
 	text-align: center;
-	font-size: 0.85em;
+	font-size: 0.75em;
+	font-weight: bold;
 	line-height: 17px;
 }
 
-li.blogcast h4.first
+li.blogcast div.stat.first
 {
 	margin-left: 0px;
-	width: 188px;
+	width: 184px;
 }
 
-li.blogcast h4.selected
-{
-	background-color: #1ca5e5;
-}
-
-li.blogcast h4:hover
+li.blogcast div.stat:hover
 {
 	background-color: #0097e0;
 	cursor: pointer;
