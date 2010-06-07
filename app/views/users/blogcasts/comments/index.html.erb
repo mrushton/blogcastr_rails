@@ -211,11 +211,6 @@
 <% end -%>
         <p class="first date"><%= starting_at_in_words(@blogcast.starting_at) %></p>
         <br>
-<% if !@blogcast.tags.nil? %>
-        <h4>Tags:</h4>
-        <p class="tags"><%= @blogcast.tags -%></p>
-        <br>
-<% end -%>
 <% if !@blogcast.description.nil? %>
         <h4>Description:</h4>
         <p><%= @blogcast.description -%></p>

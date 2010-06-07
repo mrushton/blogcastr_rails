@@ -2447,7 +2447,6 @@ Strophe.Connection.prototype = {
                 }
             }
         }
-
         if (Strophe.getNodeFromJid(this.jid) === null &&
             do_sasl_anonymous) {
             this._changeConnectStatus(Strophe.Status.AUTHENTICATING, null);

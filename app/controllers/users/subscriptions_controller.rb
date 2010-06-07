@@ -43,11 +43,11 @@ class Users::SubscriptionsController < ApplicationController
     end
     if @id.blank?
       @paginated_subscriptions = User.paginate_by_sql(["SELECT users.* FROM subscriptions, users WHERE subscriptions.user_id = ? AND subscriptions.subscribed_to = users.id", @profile_user.id], :page => @page, :per_page => 10)
-      @id = Subscription.maximum(:id, :conditions => ["subscribed_to = ?", @profile_user.id])
+      @id = Subscription.maximum(:id, :conditions => ["user_id = ?", @profile_user.id])
     else
       @paginated_subscriptions = User.paginate_by_sql(["SELECT users.* FROM subscriptions, users WHERE subscriptions.user_id = ? AND subscriptions.subscribed_to = users.id AND subscriptions.id <= ?", @profile_user.id, @id], :page => @page, :per_page => 10)
     end
-    @num_paginated_subscriptions = Subscription.count(:conditions => ["id <= ? AND subscribed_to = ?", @id, @profile_user.id])
+    @num_paginated_subscriptions = Subscription.count(:conditions => ["id <= ? AND user_id = ?", @id, @profile_user.id])
     if @page * 10 < @num_paginated_subscriptions
       @next_page = @page + 1
     end

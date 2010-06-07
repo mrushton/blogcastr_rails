@@ -1,4 +1,5 @@
 class ImagePostsController < ApplicationController
+  before_filter :set_time_zone
   before_filter do |controller|
     if controller.request.format.html?
       controller.authenticate
@@ -32,14 +33,14 @@ class ImagePostsController < ApplicationController
       thrift_user.username = @user.username
       thrift_user.account = "Blogcastr"
       thrift_user.url = profile_path :username => @user.username
-      thrift_user.avatar_url = @user.setting.avatar.url(:small)
+      thrift_user.avatar_url = @user.setting.avatar.url(:medium)
       thrift_image_post = Thrift::ImagePost.new
       thrift_image_post.id = @image_post.id
       thrift_image_post.date = @image_post.created_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/, ' ')
       thrift_image_post.timestamp = @image_post.created_at.to_i
       thrift_image_post.medium = @image_post.from
       thrift_image_post.image_url = @image_post.image.url(:default)
-      if (!@image_post.text.nil? && @image_post.text != "")
+      if !@image_post.text.blank?
         thrift_image_post.text = @image_post.text
       end
       #MVR - send image post to muc room

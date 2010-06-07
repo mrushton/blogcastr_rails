@@ -15,12 +15,6 @@ class Users::PostsController < ApplicationController
         return
       end
     end
-
-
-
-
-
-    
     #MVR - blogcasts
     @num_blogcasts = @profile_user.blogcasts.count
     #MVR - comments
@@ -43,14 +37,17 @@ class Users::PostsController < ApplicationController
       @id = params[:id].to_i
     end
     if @id.blank?
-      @paginated_posts = Post.paginate_by_sql(["SELECT * FROM posts WHERE user_id = ?", @profile_user.id], :page => @page, :per_page => 10)
+      @paginated_posts = Post.paginate_by_sql(["SELECT * FROM posts WHERE user_id = ? ORDER BY id DESC", @profile_user.id], :page => @page, :per_page => 10)
       @id = Post.maximum(:id, :conditions => ["user_id = ?", @profile_user.id])
     else
-      @paginated_posts = Post.paginate_by_sql(["SELECT * FROM posts WHERE user_id = ? AND id <= ?", @profile_user.id, @id], :page => @page, :per_page => 10)
+      @paginated_posts = Post.paginate_by_sql(["SELECT * FROM posts WHERE user_id = ? AND id <= ? ORDER BY id DESC", @profile_user.id, @id], :page => @page, :per_page => 10)
     end
     @num_paginated_posts = Post.count(:conditions => ["user_id = ? AND id <= ?", @profile_user.id, @id])
     if @page * 10 < @num_paginated_posts
       @next_page = @page + 1
+    end
+    if @page > 1 
+       @previous_page = @page - 1
     end
     @num_first_post = ((@page - 1) * 10) + 1
     @num_last_post = @page * 10 

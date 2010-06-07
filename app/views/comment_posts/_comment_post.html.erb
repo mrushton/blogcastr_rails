@@ -1,0 +1,47 @@
+<% comment = comment_post.comment -%>
+<% comment_user = comment.user -%>
+<% if i == 0 -%>
+<li id="Post:<%= comment_post.id %>" class="post first">
+<% else -%>
+<li id="Post:<%= comment_post.id %>" class="post">
+<% end -%>
+  <div class="spacer">
+<% if comment_user.instance_of?(BlogcastrUser) -%>
+    <%= link_to image_tag(comment_post.user.setting.avatar(:medium), :class => "avatar"), profile_path(:username => comment_post.user.username) -%>
+    <div class="right">
+      <%= link_to comment_user.username, profile_path(:username => comment_user.username), :class => "username" -%>
+<% else -%>
+    <%= link_to image_tag(comment_user.get_avatar_url(:medium), :class => "avatar"), comment_user.get_url -%>
+    <div class="right">
+      <%= link_to comment_user.get_username, comment_user.get_url, :class => "username" -%>
+<% end -%>
+      <%= time_ago_helper comment_post.created_at %>
+      <p class="text"><%= comment.text %></p>
+      <div class="info-collapsible" onclick="blogcastrCollapsibleEvent(this, 'CommentPost:<%= comment_post.id -%>-info');">Info<%= image_tag "up.png" -%></div>
+      <div id="CommentPost:<%= comment_post.id -%>-info" class="info" style="display: none;">
+<% if defined?(blogcast) -%>
+        <span class="info">Posted by <%= link_to comment_post.user.username, profile_path(comment_post.user.username), :class => "username" -%> on <span class="date"><%= comment_post.created_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/,' ') %></span> under "<%= link_to blogcast.title, user_blogcast_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title), :class => "blogcast" -%>" from <%= comment_post.from -%></span>
+  <%- if comment.user.instance_of?(FacebookUser) -%>
+        <span class="info">Commented by <%= link_to comment_user.get_username, comment_user.get_url, :class => "username" -%> on <%= comment.created_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/,' ') %> from <%= comment.from %> using Facebook Connect</p>
+  <%- elsif comment.user.instance_of?(TwitterUser) -%>
+        <span class="info">Commented by <%= comment_user.get_username -%> on <%= comment.created_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/,' ') %> from <%= comment.from %> using Twitter Sign In</p>
+  <%- else -%>
+        <span class="info">Commented by <%= comment_user.username -%> on <%= comment.created_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/,' ') %> from <%= comment.from %></p>
+  <%- end -%>
+<% else -%>
+        <span class="info">Posted by <%= link_to comment_post.user.username, profile_path(comment_post.user.username), :class => "username" -%> on <span class="date"><%= comment_post.created_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/,' ') %></span> from <%= comment_post.from %></span>
+        <br>
+  <%- if comment.user.instance_of?(FacebookUser) -%>
+        <span class="info">Commented by <%= link_to comment_user.get_username, comment_user.get_url, :class => "username" -%> on <span class="date"><%= comment.created_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/,' ') %></span> from <%= comment.from %> using Facebook Connect</span>
+  <%- elsif comment.user.instance_of?(TwitterUser) -%>
+        <span class="info">Commented by <%= link_to comment_user.get_username, comment_user.get_url, :class => "username" -%> on <span class="date"><%= comment.created_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/,' ') %></span> from <%= comment.from %> using Twitter Sign In</span>
+  <%- else -%>
+        <span class="info">Commented by <%= link_to comment_user.username, profile_path(comment_user.username), :class => "username" -%> on <span class="date"><%= comment.created_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/,' ') %></span> from <%= comment.from %></span>
+  <%- end -%>
+<% end -%>
+      </div>
+    </div>
+    <div class="clear">
+    </div>
+  </div>
+</li>

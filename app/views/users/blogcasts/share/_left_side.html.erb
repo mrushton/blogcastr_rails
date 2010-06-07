@@ -1,0 +1,38 @@
+<div id="left-side">
+  <div class="upper-left-border-rounded-corner">
+  </div>
+  <div class="top-border-large">
+  </div>
+  <div class="upper-right-border-rounded-corner">
+  </div>
+  <div class="clear">
+  </div>
+  <div class="background">
+    <%= link_to image_tag(@blogcast_user.setting.avatar.url(:large), :class => "avatar"), profile_path(:username => @blogcast_user.username) %>
+    <hr>
+    <div class="section first">
+      <span class="name">Name:</span>
+      <%= @blogcast_user.setting.full_name %>
+    </div>
+<% if !@blogcast_user.setting.location.nil? && @blogcast_user.setting.location != "" %>
+    <div class="section">
+      <span class="name">Location:</span>
+      <%= @blogcast_user.setting.location %>
+    </div>
+<% end -%>
+    <hr>
+    <div class="stats">
+      <a class="first stat" href="<%= username_blogcasts_path :username => @blogcast_user.username -%>"><span class="counter"><%= @num_blogcasts -%></span><span class="name"><%= @num_blogcasts == 1 ? "Blogcast" : "Blogcasts" -%></span></a>
+      <a class="second stat" href="<%= username_subscribers_path :username => @blogcast_user.username -%>"><span class="counter"><%= @num_subscribers -%></span><span class="name"><%= @num_subscribers == 1 ? "Subscriber" : "Subscribers" -%></span></a>
+      <a class="last third stat" href="<%= username_subscriptions_path :username => @blogcast_user.username -%>"><span class="counter"><%= @num_subscriptions -%></span><span class="name"><%= @num_subscriptions == 1 ? "Subscription" : "Subscriptions" -%></span></a>
+    </div>
+  </div>
+  <div class="last lower-left-border-rounded-corner">
+  </div>
+  <div class="last bottom-border-large">
+  </div>
+  <div class="last lower-right-border-rounded-corner">
+  </div>
+  <div class="clear">
+  </div>
+</div>

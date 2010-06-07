@@ -17,10 +17,6 @@ class BlogcastrUser < User
     username
   end
 
-  def get_url
-    profile_path :username => username 
-  end
-
   def get_facebook_username
     name = CACHE.get("SELECTnameFROMuserWHEREuid=" + facebook_id.to_s) 
     unless name
@@ -68,6 +64,10 @@ class BlogcastrUser < User
       CACHE.set(twitter_id.to_s + "-profile_image_url", profile_image_url, 1.day)
     end
     profile_image_url
+  end
+
+  def possesive_username
+    username + (username =~ /.*s$/ ? "'":"'s")
   end
 
   protected

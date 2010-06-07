@@ -1,0 +1,46 @@
+<%- if i == 0 -%>
+<li class="blogcast first">
+<%- else -%>
+<li class="blogcast">
+<%- end -%>
+<%- i = i + 1 -%>
+  <div class="spacer">
+    <div class="date">
+      <div class="calender">
+        <div class="month"><%= blogcast.starting_at.strftime("%b") -%></div>
+        <div class="day"><%= blogcast.starting_at.day -%></div>
+      </div>
+      <div class="time"><%= blogcast.starting_at.strftime("%I:%M %p").gsub(/^0/,"") -%></div>
+    </div>
+    <div class="right">
+      <%= link_to blogcast.title, username_blogcast_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title), :class => "title" -%>
+      <div class="details">
+        <span class="date detail first"><%= time_helper(blogcast.starting_at) -%></span>
+<%- tags = BlogcastTag.find_by_sql(["SELECT * FROM blogcast_tags, tags WHERE blogcast_tags.blogcast_id = ? AND blogcast_tags.tag_id = tags.id", blogcast.id]) -%>
+<%- if tags.length > 0 -%>
+  <%- i = 0 -%>
+        <span class="tags detail">
+  <%- for tag in tags -%>
+    <%- if i != 0 -%>
+,
+    <%- end -%>
+          <%= link_to tag.name, user_tagged_blogcasts_path(:username => @profile_user.username, :tag => tag.name), :class => "tag" -%>
+    <%- i = i + 1 -%>
+  <%- end -%>
+        </span>
+<%- end -%>
+      </div>
+<%- if !blogcast.description.nil? -%>
+      <p class="description"><%= blogcast.description -%></p>
+<%- end -%>
+<%- num_posts = blogcast.posts.count -%>
+      <%= link_to num_posts.to_s + ((num_posts == 1) ? " Post" : " Posts"), username_blogcast_posts_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title), :class => "stat first" -%>
+<%- num_comments = blogcast.comments.count -%>
+      <%= link_to num_comments.to_s + ((num_comments == 1) ? " Comment" : " Comments"), username_blogcast_comments_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title), :class => "stat" -%>
+<%- num_likes = blogcast.likes.count -%>
+      <%= link_to num_likes.to_s + ((num_likes == 1) ? " Like" : " Likes"), username_blogcast_likes_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title), :class => "stat" -%>
+    </div>
+    <div class="clear">
+    </div>
+  </div>
+</li>

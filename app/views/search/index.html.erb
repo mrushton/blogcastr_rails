@@ -1,22 +1,473 @@
-<% form_tag search_path, :onSubmit => "blogcastrValidateForm();" do %>
-  <%= text_field_tag :query, params[:query] %>
-  <%= radio_button_tag :type, "Blogcasts", true %>
-  <%= radio_button_tag :type, "Posts" %>
-  <%= radio_button_tag :type, "Comments" %>
-  <%= submit_tag "Submit" %>
-<% end %>
-<% if params[:query].nil? -%>
-  showing no results
-<% else %>
-  <%- if params[:type] == "Blogcasts" -%>
-  <%- elsif params[:type] == "Comments" -%>
-  <%- else -%>
-      <ol>
-    <%- for blogcast in @blogcasts.results -%>
-        <li class="blogcast">
-    <%= blogcast.title -%>
-        </li>
+<div id="wrapper">
+  <div id="header">
+    <%- form_tag search_path :controller => "search" do -%>
+      <%= label_tag :query, image_tag("magnifying_glass.png") -%>
+      <%= text_field_tag :query, "Search Blogcastr", :onfocus => "if (this.value == 'Search Blogcastr') this.value = ''; jQuery('#header form').addClass('selected');", :onblur => "if (this.value == '') this.value = 'Search Blogcastr'; jQuery('#header form').removeClass('selected');" -%>
     <%- end -%>
-      </ol>
+    <%= link_to(image_tag("/images/logo.png", :class => "logo"), "/") %>
+    <%= image_tag "/images/beta.png", :class => "beta" %>
+    <div id="navigation">
+<% if @user.instance_of?(BlogcastrUser) -%>
+      <%= link_to image_tag(@user.setting.avatar.url(:small))+@user.username, profile_path(:username => @user.username), :class => "first user" %>
+      <%= link_to "Home", home_path %>
+      <%= link_to "Settings", settings_path %>
+      <%= link_to "Sign out", sign_out_path, :method => "delete" %>
+<% elsif @user.instance_of?(FacebookUser) -%>
+  <%- avatar_url = @user.get_avatar_url :small -%>
+  <%- if avatar_url.nil? -%>
+    <%- avatar_url = get_facebook_avatar_url @user.facebook_id %>
+    <%- if avatar_url.nil? -%>
+      <%- avatar = "http://static.ak.facebook.com/pics/q_silhouette_logo.gif" %>
+    <%- end -%>
+  <%- end -%>
+  <%- username = @user.get_username -%>
+  <%- if username.nil? -%>
+    <%- username = get_facebook_name @user.facebook_id %>
+  <%- end -%>
+  <%- url = @user.get_url -%>
+  <%- if url.nil? -%>
+    <%- url = get_facebook_url @user.facebook_id %>
+  <%- end -%>
+      <%= link_to image_tag(avatar_url) + username, url, :class => "first user" %>
+      <%= link_to "Sign up", sign_up_path %>
+      <span onclick="FB.Connect.logout(blogcastrFacebookSignOut);">Sign out</span>
+<% elsif @user.instance_of?(TwitterUser) -%>
+      <%= link_to image_tag(@user.get_avatar_url(:small)) + @user.get_username, @user.get_url, :class => "first user" %>
+      <%= link_to "Sign up", sign_up_path %>
+      <span onclick="blogcastrTwitterSignOut();">Sign out</span>
+<% else -%>
+      <%= link_to "Sign up", sign_up_path %>
+      <%= link_to "Sign in", sign_in_path %>
+<% end -%>
+    </div>
+    <div class="clear">
+    </div>
+  </div>
+  <div id="content" class="one-column wide">
+    <div id="main">
+      <div class="upper-left-border-squared-corner">
+      </div>
+      <div class="top-border">
+      </div>
+      <div class="upper-right-border-squared-corner">
+      </div>
+      <div class="clear">
+      </div>
+      <div class="background">
+        <div id="title">
+          <div class="side-border">
+            <div class="upper-left-border-squared-corner-gray">
+            </div>
+            <div class="left-border-gray">
+            </div>
+            <div class="lower-left-border-squared-corner-gray">
+            </div>
+          </div>
+          <h1 class="image"><%= image_tag "avatar-medium.png", :class => "avatar" -%>Search Blogcastr</h1>
+          <div class="side-border">
+            <div class="upper-right-border-squared-corner-gray">
+            </div>
+            <div class="right-border-gray">
+            </div>
+            <div class="lower-right-border-squared-corner-gray">
+            </div>
+          </div>
+        </div>
+        <div id="left">
+          <% form_tag search_path, :method => "get", :class => "search" do %>
+            <div class="wrapper">
+<% if !params[:results].blank? -%>
+              <%= hidden_field_tag :results, params[:results] -%>
+<% end -%>
+<% if !params[:order].blank? -%>
+              <%= hidden_field_tag :order, params[:order] -%>
+<% end -%>
+<% if !params[:time].blank? -%>
+              <%= hidden_field_tag :time, params[:time] -%>
+<% end -%>
+<% if !params[:field].blank? -%>
+              <%= hidden_field_tag :field, params[:field] -%>
+<% end -%>
+              <%= submit_tag "Search", :onsubmit => "blogcastrValidateForm();", :class => "button" %>
+              <%= text_field_tag :query, params[:query], :autocomplete => "off" -%>
+              <div class="clear">
+              </div>
+            </div>
+          <% end %>
+          <div class="order-by">
+            Order by:
+<% if params[:results] != "posts" && params[:results] != "comments" -%>
+  <%- if params[:order_by] == "most_relevant" -%>
+            <%= link_to_function "Most relevant", "blogcastrOverlayEvent('order-by-overlay')", :class => "drop-down popup" -%>
+            <div id="order-by-overlay" class="overlay" style="display: none;">
+              <div class="arrow">
+              </div>
+              <div class="overlay-background">
+    <%- @query_params_order[:order_by] = "most_recent" -%>
+                <%= link_to "Most recent", search_path(@query_params_order) -%>
+    <%- @query_params_order[:order_by] = "starting_at" -%>
+                <%= link_to "Starting at", search_path(@query_params_order) -%>
+    <%- @query_params_order[:order_by] = "most_relevant" -%>
+                <%= link_to "Most relevant", search_path(@query_params_order), :class => "selected" -%>
+              </div>
+            </div>
+  <%- elsif params[:order_by] == "starting_at" -%>
+            <%= link_to_function "Starting at", "blogcastrOverlayEvent('order-by-overlay')", :class => "drop-down popup" -%>
+            <div id="order-by-overlay" class="overlay" style="display: none;">
+              <div class="arrow">
+              </div>
+              <div class="overlay-background">
+    <%- @query_params_order[:order_by] = "most_recent" -%>
+                <%= link_to "Most recent", search_path(@query_params_order) -%>
+    <%- @query_params_order[:order_by] = "starting_at" -%>
+                <%= link_to "Starting at", search_path(@query_params_order), :class => "selected" -%>
+    <%- @query_params_order[:order_by] = "most_relevant" -%>
+                <%= link_to "Most relevant", search_path(@query_params_order) -%>
+              </div>
+            </div>
+  <%- else -%>
+            <%= link_to_function "Most recent", "blogcastrOverlayEvent('order-by-overlay')", :class => "drop-down popup" -%>
+            <div id="order-by-overlay" class="overlay" style="display: none;">
+              <div class="arrow">
+              </div>
+              <div class="overlay-background">
+    <%- @query_params_order[:order_by] = "most_recent" -%>
+                <%= link_to "Most recent", search_path(@query_params_order), :class => "selected" -%>
+    <%- @query_params_order[:order_by] = "starting_at" -%>
+                <%= link_to "Starting at", search_path(@query_params_order) -%>
+    <%- @query_params_order[:order_by] = "most_relevant" -%>
+                <%= link_to "Most relevant", search_path(@query_params_order) -%>
+              </div>
+            </div>
+  <%- end -%>
+<% else -%>
+  <%- if params[:order_by] == "most_relevant" -%>
+            <%= link_to_function "Most relevant", "blogcastrOverlayEvent('order-by-overlay')", :class => "drop-down popup" -%>
+            <div id="order-by-overlay" class="overlay" style="display: none;">
+              <div class="arrow">
+              </div>
+              <div class="overlay-background">
+    <%- @query_params_order[:order_by] = "most_recent" -%>
+                <%= link_to "Most recent", search_path(@query_params_order) -%>
+    <%- @query_params_order[:order_by] = "most_relevant" -%>
+                <%= link_to "Most relevant", search_path(@query_params_order), :class => "selected" -%>
+              </div>
+            </div>
+  <%- else -%>
+            <%= link_to_function "Most recent", "blogcastrOverlayEvent('order-by-overlay')", :class => "drop-down popup" -%>
+            <div id="order-by-overlay" class="overlay" style="display: none;">
+              <div class="arrow">
+              </div>
+              <div class="overlay-background">
+    <%- @query_params_order[:order_by] = "most_recent" -%>
+                <%= link_to "Most recent", search_path(@query_params_order), :class => "selected" -%>
+    <%- @query_params_order[:order_by] = "most_relevant" -%>
+                <%= link_to "Most relevant", search_path(@query_params_order) -%>
+              </div>
+            </div>
   <%- end -%>
 <% end -%>
+          </div>
+  <%- if !@num_results.nil? -%>
+          <div class="num-results"><%= @num_results -%> <%= @num_results == 1 ? "Result" : "Results" -%> for "<%= params[:query] -%>"</div> 
+  <%- end -%>
+          <div class="clear">
+          </div>
+          <div class="tabs">
+<% @query_params_results[:results] = "blogcasts" -%>
+<% if params[:results] != "posts" && params[:results] != "comments" -%>
+            <%= link_to "Blogcasts", search_path(@query_params_results), :class => "tab first selected" -%>
+<% else -%>
+            <%= link_to "Blogcasts", search_path(@query_params_results), :class => "tab first" -%>
+<% end -%>
+<% @query_params_results[:results] = "posts" -%>
+<% if params[:results] == "posts" -%>
+            <%= link_to "Posts", search_path(@query_params_results), :class => "tab selected" -%>
+<% else -%>
+            <%= link_to "Posts", search_path(@query_params_results), :class => "tab" -%>
+<% end -%>
+<% @query_params_results[:results] = "comments" -%>
+<% if params[:results] == "comments" -%>
+            <%= link_to "Comments", search_path(@query_params_results), :class => "tab last selected" -%>
+<% else -%>
+            <%= link_to "Comments", search_path(@query_params_results), :class => "tab last" -%>
+<% end -%>
+          </div>
+<% if params[:results] == "posts" -%>
+  <%- if params[:query].blank? -%>
+          <div class="box">
+            <h3 class="search-tip">Search tip</h3>
+            <p>Enter your search criteria above and use the filters on the right to narrow the results.</p>
+          </div>
+  <%- elsif @num_results > 0 -%>
+          <ol class="blogcasts">
+    <%- i = @posts.results.length -%>
+    <%- for post in @posts.results -%>
+      <%- if post.instance_of?(TextPost) -%>
+            <%= render :partial => "/share/text_post", :object => post, :locals => {:i => i - 1, :blogcast => post.blogcast} -%>
+      <%- elsif post.instance_of?(ImagePost) -%>
+            <%= render :partial => "/share/image_post", :object => post, :locals => {:i => i - 1, :blogcast => post.blogcast} -%>
+      <%- elsif post.instance_of?(AudioPost) -%>
+            <%= render :partial => "/share/audio_post", :object => post, :locals => {:i => i - 1, :blogcast => post.blogcast} -%>
+      <%- elsif post.instance_of?(CommentPost) -%>
+            <%= render :partial => "/share/comment_post", :object => post, :locals => {:i => i - 1, :blogcast => post.blogcast} -%>
+      <%- end -%>
+      <%- i = i - 1 -%>
+    <%- end -%>
+          </ol>
+  <%- else -%>
+          <div class="box">
+            <h3 class="search-tip">Search tip</h3>
+            <p>Enter your search criteria above and use the filters on the right to narrow the results.</p>
+          </div>
+  <%- end -%>
+<%- elsif params[:results] == "comments" -%>
+  <%- if params[:query].blank? -%>
+          <div class="box">
+            <h3 class="search-tip">Search tip</h3>
+            <p>Enter your search criteria above and use the filters on the right to narrow the results.</p>
+          </div>
+  <%- elsif @num_results > 0 -%>
+          <ol class="comments">
+    <%- i = @comments.results.length -%>
+    <%- for comment in @comments.results -%>
+            <%= render :partial => "/share/comment", :object => comment, :locals => {:i => i - 1, :blogcast => comment.blogcast} -%>
+      <%- i = i - 1 -%>
+    <%- end -%>
+          </ol>
+  <%- else -%>
+          <div class="box">
+            <h3 class="search-tip">Search tip</h3>
+            <p>Enter your search criteria above and use the filters on the right to narrow the results.</p>
+          </div>
+  <%- end -%>
+<%- else -%>
+  <%- if params[:query].blank? -%>
+          <div class="box">
+            <h3 class="search-tip">Search tip</h3>
+            <p>Enter your search criteria above and use the filters on the right to narrow the results.</p>
+          </div>
+  <%- elsif @num_results > 0 -%>
+    <%- i = @blogcasts.results.length -%>
+          <ol class="blogcasts">
+    <%- for blogcast in @blogcasts.results -%>
+            <%= render :partial => "/share/blogcast", :locals => {:blogcast => blogcast, :i => i - 1} -%>
+      <%- i = i - 1 -%>
+    <%- end -%>
+          </ol>
+  <%- else -%>
+          <div class="box">
+            <h3 class="search-tip">Search tip</h3>
+            <p>Enter your search criteria above and use the filters on the right to narrow the results.</p>
+          </div>
+  <%- end -%>
+<%- end -%>
+<% if !params[:query].blank? && @num_first_result <= @num_results -%>
+          <div id="paginate">
+  <%- if !@previous_page.nil? -%>
+   <%- @query_params_paginate[:page] = @previous_page -%>
+            <%= link_to "« Back", search_path(@query_params_paginate), :class => "back" %>
+  <%- end -%>
+            <%= @num_first_result -%>-<%= @num_last_result -%> of <%= @num_results -%>
+  <%- if !@next_page.nil? -%>
+   <%- @query_params_paginate[:page] = @next_page -%>
+            <%= link_to "Next »", search_path(@query_params_paginate), :class => "next" %>
+  <%- end -%>
+          </div>
+<% end -%>
+        </div>
+        <div id="right">
+          <h3>Filter search</h3>
+          <h4 class="time">Time</h4>
+          <div>
+<% @query_params_time[:time] = "all" -%>
+<% if params[:time].blank? || params[:time] == "all" -%>
+            <%= link_to "All", search_path(@query_params_time), :class => "selected" -%>
+<% else -%>
+            <%= link_to "All", search_path(@query_params_time) -%>
+<% end -%>
+          </div>
+<% if params[:results] == "posts" || params[:results] == "comments" -%>
+          <div>
+  <%- @query_params_time[:time] = "last_24_hours" -%>
+  <%- if params[:time] == "last_24_hours" -%>
+            <%= link_to "Last 24 hours", search_path(@query_params_time), :class => "selected" -%>
+  <%- else -%>
+            <%= link_to "Last 24 hours", search_path(@query_params_time) -%>
+  <%- end -%>
+          </div>
+          <div>
+  <%- @query_params_time[:time] = "last_7_days" -%>
+  <%- if params[:time] == "last_7_days" -%>
+            <%= link_to "Last 7 days", search_path(@query_params_time), :class => "selected" -%>
+  <%- else -%>
+            <%= link_to "Last 7 days", search_path(@query_params_time) -%>
+  <%- end -%>
+          </div>
+          <div>
+  <%- @query_params_time[:time] = "last_30_days" -%>
+  <%- if params[:time] == "last_30_days" -%>
+            <%= link_to "Last 30 days", search_path(@query_params_time), :class => "selected" -%>
+  <%- else -%>
+            <%= link_to "Last 30 days", search_path(@query_params_time) -%>
+  <%- end -%>
+          </div>
+<% else -%>
+  <%- upcoming = (params[:time] == "next_24_hours" || params[:time] == "next_7_days" || params[:time] == "next_30_days" || params[:time] == "upcoming") ? 1 : 0 -%>
+          <div>
+  <%- if upcoming == 1 -%>
+            <%= link_to_function "Upcoming", "blogcastrCollapsibleEvent2(this, 'upcoming')", :class => "collapsible down" -%>
+  <%- else -%>
+            <%= link_to_function "Upcoming", "blogcastrCollapsibleEvent2(this, 'upcoming')", :class => "collapsible up" -%>
+  <%- end -%>
+          </div>
+  <%- if upcoming == 1 -%>
+          <div id="upcoming" class="details">
+  <%- else -%>
+          <div id="upcoming" class="details" style="display: none;">
+  <%- end -%>
+            <div>
+  <%- @query_params_time[:time] = "upcoming" -%>
+  <%- if params[:time] == "upcoming" -%>
+              <%= link_to "All", search_path(@query_params_time), :class => "detail selected" -%>
+  <%- else -%>
+
+              <%= link_to "All", search_path(@query_params_time), :class => "detail" -%>
+  <%- end -%>
+            </div>
+            <div>
+  <%- @query_params_time[:time] = "next_24_hours" -%>
+  <%- if params[:time] == "next_24_hours" -%>
+              <%= link_to "Next 24 hours", search_path(@query_params_time), :class => "detail selected" -%>
+  <%- else -%>
+              <%= link_to "Next 24 hours", search_path(@query_params_time), :class => "detail" -%>
+  <%- end -%>
+            </div>
+            <div>
+  <%- @query_params_time[:time] = "next_7_days" -%>
+  <%- if params[:time] == "next_7_days" -%>
+              <%= link_to "Next 7 days", search_path(@query_params_time), :class => "detail selected" -%>
+  <%- else -%>
+              <%= link_to "Next 7 days", search_path(@query_params_time), :class => "detail" -%>
+  <%- end -%>
+            </div>
+            <div>
+  <%- @query_params_time[:time] = "next_30_days" -%>
+  <%- if params[:time] == "next_30_days" -%>
+              <%= link_to "Next 30 days", search_path(@query_params_time), :class => "detail selected" -%>
+  <%- else -%>
+
+              <%= link_to "Next 30 days", search_path(@query_params_time), :class => "detail" -%>
+  <%- end -%>
+            </div>
+          </div>
+  <%- past = (params[:time] == "last_24_hours" || params[:time] == "last_7_days" || params[:time] == "last_30_days" || params[:time] == "past") ? 1 : 0 -%>
+          <div>
+  <%- if past == 1 -%>
+            <%= link_to_function "Past", "blogcastrCollapsibleEvent2(this, 'past')", :class => "collapsible down" -%>
+  <%- else -%>
+            <%= link_to_function "Past", "blogcastrCollapsibleEvent2(this, 'past')", :class => "collapsible up" -%>
+  <%- end -%>
+          </div>
+  <%- if past == 1 -%>
+          <div id="past" class="details">
+  <%- else -%>
+          <div id="past" class="details" style="display: none;">
+  <%- end -%>
+            <div>
+  <%- @query_params_time[:time] = "past" -%>
+  <%- if params[:time] == "past" -%>
+              <%= link_to "All", search_path(@query_params_time), :class => "detail selected" -%>
+  <%- else -%>
+              <%= link_to "All", search_path(@query_params_time), :class => "detail" -%>
+  <%- end -%>
+            </div>
+            <div>
+  <%- @query_params_time[:time] = "last_24_hours" -%>
+  <%- if params[:time] == "last_24_hours" -%>
+              <%= link_to "Last 24 hours", search_path(@query_params_time), :class => "detail selected" -%>
+  <%- else -%>
+              <%= link_to "Last 24 hours", search_path(@query_params_time), :class => "detail" -%>
+  <%- end -%>
+            </div>
+            <div>
+  <%- @query_params_time[:time] = "last_7_days" -%>
+  <%- if params[:time] == "last_7_days" -%>
+              <%= link_to "Last 7 days", search_path(@query_params_time), :class => "detail selected" -%>
+  <%- else -%>
+              <%= link_to "Last 7 days", search_path(@query_params_time), :class => "detail" -%>
+  <%- end -%>
+            </div>
+            <div>
+  <%- @query_params_time[:time] = "last_30_days" -%>
+  <%- if params[:time] == "last_30_days" -%>
+              <%= link_to "Last 30 days", search_path(@query_params_time), :class => "detail selected" -%>
+  <%- else -%>
+              <%= link_to "Last 30 days", search_path(@query_params_time), :class => "detail" -%>
+  <%- end -%>
+            </div>
+          </div>
+<% end -%>
+<% if params[:results] != "posts" && params[:results] != "comments" -%>
+          <hr>
+          <h4 class="field">Field</h4>
+          <div>
+  <%- @query_params_field[:field] = "all" -%>
+  <%- if params[:field].blank? || params[:field] == "all" -%>
+              <%= link_to "All", search_path(@query_params_field), :class => "selected" -%>
+  <%- else -%>
+              <%= link_to "All", search_path(@query_params_field) -%>
+  <%- end -%>
+          </div>
+          <div>
+  <%- @query_params_field[:field] = "title" -%>
+  <%- if params[:field] == "title" -%>
+              <%= link_to "Title", search_path(@query_params_field), :class => "selected" -%>
+  <%- else -%>
+              <%= link_to "Title", search_path(@query_params_field) -%>
+  <%- end -%>
+          </div>
+          <div>
+  <%- @query_params_field[:field] = "tags" -%>
+  <%- if params[:field] == "tags" -%>
+              <%= link_to "Tags", search_path(@query_params_field), :class => "selected" -%>
+  <%- else -%>
+              <%= link_to "Tags", search_path(@query_params_field) -%>
+  <%- end -%>
+          </div>
+          <div>
+  <%- @query_params_field[:field] = "description" -%>
+  <%- if params[:field] == "description" -%>
+              <%= link_to "Description", search_path(@query_params_field), :class => "selected" -%>
+  <%- else -%>
+              <%= link_to "Description", search_path(@query_params_field) -%>
+  <%- end -%>
+          </div>
+<% end -%>
+        </div>
+        <div class="clear">
+        </div>
+      </div>
+      <div class="last lower-left-border-squared-corner">
+      </div>
+      <div class="last bottom-border">
+      </div>
+      <div class="last lower-right-border-squared-corner">
+      </div>
+      <div class="clear">
+      </div>
+    </div>
+  </div>
+  <div class="clear">
+  </div>
+  <div id="footer">
+    <span>&copy; 2010 Blogcastr</span>
+    <%= link_to "About", about_path -%>
+    <%= link_to "Blog", "http://blogcastr.wordpress.com" -%>
+    <%= link_to "Facebook", "http://www.facebook.com/blogcastr" -%>
+    <%= link_to "FAQ", faq_path -%>
+    <%= link_to "Privacy Policy", privacy_policy_path -%>
+    <%= link_to "Terms of Service", terms_of_service_path -%>
+    <%= link_to "Twitter", "http://twitter.com/blogcastr" -%>
+  </div>
+</div>

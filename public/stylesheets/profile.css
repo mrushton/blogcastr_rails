@@ -186,36 +186,3 @@
 	font-size: 1.15em;
 	font-variant: Gill Sans, Helvetica, sans-serif;
 }
-
-#side a.rss
-{
-	margin-left: 0px;
-	margin-top: 5px;
-	display: block;
-	vertical-align: top;
-	text-decoration: none;
-	color: #787878;
-}
-
-#side a.rss:hover
-{
-	text-decoration: underline;
-}
-
-#side a.rss img
-{
-	margin-right: 5px;
-	float: left;
-	border: none;
-}
-
-#side a.rss p
-{
-	margin: 0px;
-	width: 186px;
-	font-style: italic;
-	font-size: 0.65em;
-	font-weight: normal;
-	line-height: 16px;
-	display: inline;
-}

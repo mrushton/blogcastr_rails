@@ -1,0 +1,178 @@
+<div id="alert" style="display: none;">
+</div>
+<div id="wrapper" class="user">
+  <div id="header" class="small">
+    <%- form_tag user_search_path(:username => @profile_user.username, :controller => "search") do -%>
+      <%= label_tag :query, image_tag("magnifying_glass.png") -%>
+      <%= text_field_tag :query, "Search #{@profile_username_possesive} Blogcastr", :onfocus => "if (this.value == 'Search #{@profile_username_possesive_escaped} Blogcastr') this.value = ''; jQuery('#header form').addClass('selected');", :onblur => "if (this.value == '') this.value = 'Search #{@profile_username_possesive_escaped} Blogcastr'; jQuery('#header form').removeClass('selected');" -%>
+    <%- end -%>
+    <%= link_to(image_tag("/images/logo-small.png", :class => "logo"), "/") %>
+    <%= image_tag "/images/beta-small.png", :class => "beta" %>
+    <div id="navigation">
+<% if @user.instance_of?(BlogcastrUser) -%>
+      <%= link_to image_tag(@user.setting.avatar.url(:small)) + @user.username, profile_path(:username => @user.username), :class => "user" %>
+      <%= link_to "Home", home_path %>
+      <%= link_to "Settings", settings_path %>
+      <%= link_to "Sign out", sign_out_path, :method => "delete" %>
+<% elsif @user.instance_of?(FacebookUser) -%>
+  <%- avatar = @user.get_avatar_url :small %>
+  <%- if avatar.nil? -%>
+      <%- avatar = get_facebook_avatar_url @user.facebook_id %>
+  <%- end -%>
+  <%- if avatar.nil? -%>
+      <%= link_to image_tag("http://static.ak.facebook.com/pics/q_silhouette_logo.gif") + @user.get_username, @user.get_url, :class => "first" %>
+  <%- else -%>
+      <%= link_to image_tag(avatar) + @user.get_username, @user.get_url, :class => "first user" %>
+  <%- end -%>
+      <%= link_to "Sign up", sign_up_path %>
+      <span class="button" onclick="FB.Connect.logout(blogcastrFacebookSignOut);">Sign out</span>
+<% elsif @user.instance_of?(TwitterUser) -%>
+      <%= link_to image_tag(@user.get_avatar_url(:small)) + @user.get_username, @user.get_url, :class => "first user" %>
+      <%= link_to "Sign up", sign_up_path %>
+      <span onclick="blogcastrTwitterSignOut();">Sign out</span>
+<% else -%>
+      <%= link_to "Sign up", sign_up_path %>
+      <%= link_to "Sign in", sign_in_path %>
+<% end -%>
+    </div>
+    <div class="clear">
+    </div>
+  </div>
+  <div id="content">
+    <div id="main">
+      <div id="spacer">
+      <div class="upper-left-border-squared-corner">
+      </div>
+      <div class="top-border">
+      </div>
+      <div class="upper-right-border-squared-corner">
+      </div>
+      <div class="clear">
+      </div>
+      <div id="top">
+        <div id="left">
+            <%= link_to image_tag(@profile_user.setting.avatar.url(:large), :class => "avatar"), @profile_user.setting.avatar.url(:original) %>
+        </div>
+        <div id="right">
+          <h1><%= @profile_username_possesive -%><br>Blogcastr</h1>
+<% if !@profile_user.setting.motto.nil? -%>
+          <p class="motto"><%= @profile_user.setting.motto -%></p>
+<% end -%>
+          <hr>
+<% if @user.instance_of?(BlogcastrUser) -%>
+  <%- if @user.id == @profile_user.id -%> 
+          <p>Welcome to your Blogcastr!</p>
+          <div class="navigation">
+            <%= link_to "Home", home_path -%>
+            <%= link_to "Settings", settings_path -%>
+            <div class="clear">
+            </div>
+          </div>
+  <%- else -%>
+    <%- if @subscription.nil? -%>
+          <p>Subscribe to <%= @profile_user.username -%>.</p>
+          <div class="subscribe">
+            <div id="subscription-button">
+              <%= button_to_remote "Subscribe!", :url => subscriptions_path(:user_id => @profile_user.id), :failure => "alert('Error communicating with server, unable to subscribe to #{@profile_user.username}');", :id => "subscription-button", :condition => "remote_request == false", :before => "remote_request = true", :complete => "setTimeout('remote_request = false', 3500)" -%>
+    <%- else -%>
+          <p>You are subscribed to <%= @profile_user.username -%>.</p>
+          <div class="subscribe">
+            <div id="subscription-button">
+            <%= button_to_remote "Unsubscribe", :url => subscription_path(:id => @subscription.id), :method => "delete", :failure => "alert('Error communicating with server, unable to unsubscribe from #{@profile_user.username}');", :id => "subscription-button", :condition => "remote_request == false", :before => "remote_request = true", :complete => "setTimeout('remote_request = false', 3500)" -%>
+    <%- end -%>
+            </div>
+            <%= link_to "Message!", sign_in_path, :class => "last" -%>
+            <div class="clear">
+            </div>
+          </div>
+  <%- end -%>
+<% else -%>
+          <p>To subscribe to <%= @profile_user.username -%> sign up or sign in.</p>
+          <div class="sign-up">
+            <%= link_to "Sign up!", sign_up_path -%>
+            <%= link_to "Sign in!", sign_in_path -%>
+            <div class="clear">
+            </div>
+          </div>
+<% end -%>
+        </div>
+        <div class="clear">
+        </div>
+      </div>
+      <div class="lower-left-border-squared-corner">
+      </div>
+      <div class="bottom-border">
+      </div>
+      <div class="lower-right-border-squared-corner">
+      </div>
+      <div class="clear">
+      </div>
+      </div>
+      <div class="upper-left-border-squared-corner">
+      </div>
+      <div class="top-border">
+      </div>
+      <div class="upper-right-border-squared-corner">
+      </div>
+      <div class="clear">
+      </div>
+      <div id="bottom">
+        <h2 class="first">Upcoming blogcasts</h2>
+<%- if @num_upcoming_blogcasts == 0 -%>
+        <div class="none">
+          <%= @profile_user.username -%> has no upcoming blogcasts.
+        </div>
+<%- else -%>
+        <ol>
+  <%- i = @upcoming_blogcasts.length -%>
+  <% for blogcast in @upcoming_blogcasts -%>
+          <%= render :partial => "/blogcasts/blogcast", :locals => {:blogcast => blogcast, :i => i - 1} -%>
+    <%- i = i - 1 -%>
+  <% end %>
+        </ol>
+<% end %>
+<%- if @num_upcoming_blogcasts > 3 -%>
+  <%- num_more = @num_upcoming_blogcasts - 3 -%>
+        <%= link_to num_more.to_s + " More", username_upcoming_blogcasts_path(:username => @profile_user.username), :class => "more" %>
+        <div class="clear">
+        </div>
+<%- end -%>
+        <h2>Recent blogcasts</h2>
+<%- if @num_recent_blogcasts == 0 -%>
+        <div class="none">
+          <%= @profile_user.username -%> has no recent blogcasts.
+        </div>
+<%- else -%>
+        <ol>
+  <%- i = @recent_blogcasts.length -%>
+  <% for blogcast in @recent_blogcasts -%>
+          <%= render :partial => "/blogcasts/blogcast", :locals => {:blogcast => blogcast, :i => i - 1} -%>
+    <%- i = i - 1 -%>
+  <% end %>
+        </ol>
+<%- end -%>
+      </div>
+      <div class="last lower-left-border-squared-corner">
+      </div>
+      <div class="last bottom-border">
+      </div>
+      <div class="last lower-right-border-squared-corner">
+      </div>
+      <div class="clear">
+      </div>
+    </div>
+    <%= render :partial => "/users/share/side" -%>
+    <div class="clear">
+    </div>
+  </div>
+  <div id="footer">
+    <span>&copy; 2010 Blogcastr</span>
+    <%= link_to "About", about_path -%>
+    <a href="http://blogcastr.wordpress.com">Blog</a>
+    <a href="http://www.facebook.com/blogcastr">Facebook</a>
+    <%= link_to "FAQ", faq_path -%>
+    <%= link_to "Privacy Policy", privacy_policy_path -%>
+    <%= link_to "Terms of Service", terms_of_service_path -%>
+    <a href="http://twitter.com/blogcastr">Twitter</a>
+  </div>
+</div>

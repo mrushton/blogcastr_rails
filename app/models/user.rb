@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
   has_many :subscriptions
   has_many :subscribers, :class_name => "Subscription", :foreign_key => "subscribed_to" 
   has_many :likes
+  has_many :tags
   has_many :user_notifications
   has_many :blogcast_notifications
 

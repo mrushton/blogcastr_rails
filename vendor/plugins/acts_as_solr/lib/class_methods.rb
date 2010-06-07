@@ -160,7 +160,8 @@ module ActsAsSolr #:nodoc:
       if options[:scores] and options[:results_format] == :objects
         add_scores(result, data) 
       end
-      SearchResults.new :docs => result, :total => data.total_hits
+      #MVR - added query time
+      SearchResults.new :docs => result, :total => data.total_hits, :query_time => data.data['responseHeader']['QTime']
     end
 
     def find_multi_search_objects(data, options)

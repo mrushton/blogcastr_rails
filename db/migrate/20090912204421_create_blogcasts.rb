@@ -3,8 +3,6 @@ class CreateBlogcasts < ActiveRecord::Migration
     create_table :blogcasts do |t|
       t.integer :user_id, :null => false
       t.string :title, :null => false
-      #TODO: find a way to search through the tags
-      t.string :tags
       t.string :description
       t.integer :year, :null => false
       t.integer :day, :null => false

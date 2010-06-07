@@ -29,7 +29,6 @@ module ActsAsSolr #:nodoc:
           query_options[:filter_queries] = replace_types([*options[:facets][:browse]].collect{|k| "#{k.sub!(/ *: */,"_facet:")}"}) if options[:facets][:browse]
           query_options[:facets][:queries] = replace_types(options[:facets][:query].collect{|k| "#{k.sub!(/ *: */,"_t:")}"}) if options[:facets][:query]
           
-          
           if options[:facets][:dates]
             query_options[:date_facets] = {}
             # if options[:facets][:dates][:fields] exists then :start, :end, and :gap must be there
@@ -70,15 +69,19 @@ module ActsAsSolr #:nodoc:
         end
         
         query_options[:field_list] = [field_list, 'score']
-        query = "(#{query.gsub(/ *: */,"_t:")}) #{models}"
+
+        #MVR - fixed substitution bug to query with dates
+        configuration[:solr_fields].each do |name, _options|
+          query = query.gsub(/#{name}:/,"#{name}_t:")
+        end
+        query = "(#{query}) #{models}"
+
         order = options[:order].split(/\s*,\s*/).collect{|e| e.gsub(/\s+/,'_t ').gsub(/\bscore_t\b/, 'score')  }.join(',') if options[:order] 
         query_options[:query] = replace_types([query])[0] # TODO adjust replace_types to work with String or Array  
-
         if options[:order]
           # TODO: set the sort parameter instead of the old ;order. style.
           query_options[:query] << ';' << replace_types([order], false)[0]
         end
-        
         ActsAsSolr::Post.execute(Solr::Request::Standard.new(query_options))
       rescue
         raise "There was a problem executing your search: #{$!} in #{$!.backtrace.first}"

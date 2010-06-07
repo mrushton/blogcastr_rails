@@ -127,10 +127,11 @@
 <% else %>
 <div id="image-page" class="page">
 <% end %>
-          <% form_for :image_post, :url => {:controller => :image_posts, :action => :create}, :html => {:multipart => true} do |f| %>
-            <%= f.hidden_field :from %>
-            <%= f.file_field :image %>
-            <%= f.submit "Post", :class => "button" %>
+          <% form_for :image_post, :url => {:controller => :image_posts, :action => :create}, :html => {:multipart => true} do |form| %>
+            <%= form.hidden_field :from %>
+            <%= form.file_field :image %>
+            <%= form.text_area :text, :onfocus => "jQuery(this).addClass('selected');", :onblur => "if (this.value == '') jQuery(this).removeClass('selected')" %>
+            <%= form.submit "Post", :class => "button" %>
             <div class="clear">
             </div>
           <% end %>
@@ -186,35 +187,27 @@
 
 <div id="posts-page" class="page selected">
         <ol id="posts-stream" class="stream">
-<% @first = 0 -%>
-<% @iter = 1 -%>
+<% i = @num_posts -%>
 <% for post in @posts -%>
-  <%- if (@iter == @posts.length) -%>
-    <%- @first = 1 -%>
-  <%- end -%>
   <%- if post.instance_of?(TextPost) -%>
-          <%= render :partial => "text_post", :object => post -%>
+          <%= render :partial => "/text_posts/text_post", :object => post, :locals => {:i => i} -%>
   <%- elsif post.instance_of?(ImagePost) -%>
-          <%= render :partial => "image_post", :object => post -%>
+          <%= render :partial => "/image_posts/image_post", :object => post, :locals => {:i => i} -%>
   <%- elsif post.instance_of?(CommentPost) -%>
-          <%= render :partial => "comment_post", :object => post -%>
+          <%= render :partial => "/comment_posts/comment_post", :object => post, :locals => {:i => i} -%>
   <%- elsif post.instance_of?(Repost) -%>
           <%= render :partial => "repost", :object => post -%>
   <%- end -%>
-  <% @iter = @iter + 1 -%>
+  <% i = i - 1 -%>
 <% end -%>
         </ol>
 </div>
 <div id="comments-page" class="page">
         <ol id="comments-stream" class="stream">
-<% @first = 0 -%>
-<% @iter = 1 -%>
+<% i = @num_comments -%>
 <% for comment in @comments -%>
-  <%- if (@iter == @comments.length) -%>
-    <%- @first = 1 -%>
-  <%- end -%>
-          <%= render :partial => "comment", :object => comment -%>
-  <% @iter = @iter + 1 -%>
+  <%= render :partial => "/comments/comment", :object => comment, :locals => {:i => i} -%>
+  <% i = i - 1 -%>
 <% end -%>
         </ol>
 </div>
@@ -246,11 +239,6 @@
 <% end -%>
         <p class="first date"><%= starting_at_in_words(@blogcast.starting_at) %></p>
         <br>
-<% if !@blogcast.tags.nil? %>
-        <h4>Tags:</h4>
-        <p class="tags"><%= @blogcast.tags -%></p>
-        <br>
-<% end -%>
 <% if !@blogcast.description.nil? %>
         <h4>Description:</h4>
         <p><%= @blogcast.description -%></p>

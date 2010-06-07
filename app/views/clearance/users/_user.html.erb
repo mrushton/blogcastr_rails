@@ -1,0 +1,29 @@
+<%- if i == 0 -%>
+<li class="user first">
+<%- else -%>
+<li class="user">
+<%- end -%>
+<%- i = i + 1 -%>
+  <div class="spacer">
+    <%= link_to image_tag(user.setting.avatar.url(:medium), :class => "avatar"), profile_path(user.username) -%>
+    <div class="right">
+      <%= link_to user.username, profile_path(user.username), :class => "username" -%>
+      <div class="details">
+        <%= user.setting.full_name -%>
+<%- if !user.setting.location.blank? -%>
+        <span class="location"><%= user.setting.location -%></span>
+<%- end -%>
+      </div>
+    </div>
+    <div class="clear">
+    </div>
+    <div class="stats">
+<%- num_blogcasts = user.blogcasts.count -%>
+      <a class="stat first" href="<%= username_blogcasts_path :username => user.username -%>"><span class="counter"><%= num_blogcasts -%></span><span class="name"><%= num_blogcasts == 1 ? "Blogcast" : "Blogcasts" -%></span></a>
+<%- num_subscribers = user.subscribers.count -%>
+      <a class="stat" href="<%= username_subscribers_path :username => user.username -%>"><span class="counter"><%= num_subscribers -%></span><span class="name"><%= num_subscribers == 1 ? "Subscriber" : "Subscribers" -%></span></a>
+<%- num_subscriptions = user.subscriptions.count -%>
+      <a class="stat" href="<%= username_subscriptions_path :username => user.username -%>"><span class="counter"><%= num_subscriptions -%></span><span class="name"><%= num_subscriptions == 1 ? "Subscription" : "Subscriptions" -%></span></a>
+    </div>
+  </div>
+</li>

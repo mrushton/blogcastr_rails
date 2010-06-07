@@ -1,4 +1,5 @@
 class CommentsController < ApplicationController
+  before_filter :set_time_zone
   before_filter do |controller|
     if controller.params[:authentication_token].nil?
       controller.authenticate
@@ -32,7 +33,7 @@ class CommentsController < ApplicationController
       if @user.instance_of?(BlogcastrUser)
         thrift_user.username = @user.username
         thrift_user.url = profile_path :username => @user.username
-        thrift_user.avatar_url = @user.setting.avatar.url :small
+        thrift_user.avatar_url = @user.setting.avatar.url :medium
       else
         thrift_user.username = @user.get_username
         thrift_user.url = @user.get_url

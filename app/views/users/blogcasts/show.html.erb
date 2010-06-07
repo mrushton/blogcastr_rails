@@ -46,43 +46,7 @@
     </div>
   </div>
   <div id="content" class="three-column">
-    <div id="left-side">
-      <div class="upper-left-border-rounded-corner">
-      </div>
-      <div class="top-border-large">
-      </div>
-      <div class="upper-right-border-rounded-corner">
-      </div>
-      <div class="clear">
-      </div>
-      <div class="background">
-        <%= link_to image_tag(@blogcast_user.setting.avatar.url(:large), :class => "avatar"), profile_path(:username => @blogcast_user.username) %>
-        <hr>
-        <h4 class="first">Name:</h4>
-        <p class="first"><%= @blogcast_user.setting.full_name %></p>
-<% if !@blogcast_user.setting.location.nil? && @blogcast_user.setting.location != "" %>
-        <br>
-        <h4>Location:</h4>
-        <p><%= @blogcast_user.setting.location %></p>
-<% end -%>
-        <div class="clear">
-        </div>
-        <hr>
-        <div class="stats">
-          <a class="first stat" href="<%= username_blogcasts_path :username => @blogcast_user.username -%>"><span class="counter"><%= @num_blogcasts -%></span><span class="name"><%= @num_blogcasts == 1 ? "Blogcast" : "Blogcasts" -%></span></a>
-          <a class="second stat" href="<%= username_subscribers_path :username => @blogcast_user.username -%>"><span class="counter"><%= @num_subscribers -%></span><span class="name"><%= @num_subscribers == 1 ? "Subscriber" : "Subscribers" -%></span></a>
-          <a class="last third stat" href="<%= username_subscriptions_path :username => @blogcast_user.username -%>"><span class="counter"><%= @num_subscriptions -%></span><span class="name"><%= @num_subscriptions == 1 ? "Subscription" : "Subscriptions" -%></span></a>
-        </div>
-      </div>
-      <div class="last lower-left-border-rounded-corner">
-      </div>
-      <div class="last bottom-border-large">
-      </div>
-      <div class="last lower-right-border-rounded-corner">
-      </div>
-      <div class="clear">
-      </div>
-    </div>
+    <%= render :partial => "/users/blogcasts/share/left_side" -%>
     <div id="main">
       <div class="upper-left-border-squared-corner">
       </div>
@@ -180,26 +144,22 @@
       <div class="clear">
       </div>
       <div id="bottom">
-        <h2><span class="counter"><%= @num_posts -%></span><%= @num_posts == 1 ? "Post" : "Posts" -%></h2>
-        <ol class="stream" id="public-stream">
-<% @first = 0 -%>
-<% @iter = 1 -%>
+        <h2 class="first">Posts</h2>
+        <ol id="posts">
+<% i = @num_posts -%>
 <% for post in @posts -%>
-  <%- if (@iter == @posts.length) -%>
-    <%- @first = 1 -%>
-  <%- end -%>
   <%- if post.instance_of?(TextPost) -%>
-          <%= render :partial => "text_post", :object => post -%>
+          <%= render :partial => "/text_posts/text_post", :object => post, :locals => {:i => i - 1} -%>
   <%- elsif post.instance_of?(ImagePost) -%>
-          <%= render :partial => "image_post", :object => post -%>
+          <%= render :partial => "/image_posts/image_post", :object => post, :locals => {:i => i - 1} -%>
   <%- elsif post.instance_of?(AudioPost) -%>
           <%= render :partial => "audio_post", :object => post -%>
   <%- elsif post.instance_of?(CommentPost) -%>
-          <%= render :partial => "comment_post", :object => post -%>
+          <%= render :partial => "/comment_posts/comment_post", :object => post, :locals => {:i => i - 1} -%>
   <%- elsif post.instance_of?(Repost) -%>
           <%= render :partial => "repost", :object => post -%>
   <%- end -%>
-  <% @iter = @iter + 1 -%>
+  <%- i = i - 1 -%>
 <% end -%>
         </ol>
       </div>
@@ -212,110 +172,7 @@
       <div class="clear">
       </div>
     </div>
-    <div id="side">
-      <div class="upper-left-border-rounded-corner">
-      </div>
-      <div class="top-border-large">
-      </div>
-      <div class="upper-right-border-rounded-corner">
-      </div>
-      <div class="clear">
-      </div>
-      <div class="background">
-<% if @blogcast.starting_at > Time.now -%>
-        <h4 class="first">Starts:</h4>
-<% else -%>
-        <h4 class="first">Started:</h4>
-<% end -%>
-        <p class="first date"><%= starting_at_in_words(@blogcast.starting_at) %></p>
-        <br>
-<% if !@blogcast.tags.nil? %>
-        <h4>Tags:</h4>
-        <p class="tags"><%= @blogcast.tags -%></p>
-        <br>
-<% end -%>
-<% if !@blogcast.description.nil? %>
-        <h4>Description:</h4>
-        <p><%= @blogcast.description -%></p>
-        <br>
-<% end -%>
-        <div class="clear">
-        </div>
-	<hr>
-        <div id="stats">
-          <a class="first stat" href="<%= username_blogcast_comments_permalink_path :username => @blogcast_user.username -%>"><span class="counter"><%= @num_comments -%></span><span class="name"><%= @num_comments == 1 ? "Comment" : "Comments" -%></span></a>
-<% if @num_likes == 0 -%>
-          <div class="stat second"><span class="counter">0</span><span class="name">Likes</span></div>
-<% else -%>
-          <h3 class="second" onclick="blogcastrCollapsibleEvent(this, 'likes');"><span class="counter"><%= @num_likes -%></span><span class="name"><%= @num_likes == 1 ? "Like" : "Likes" -%></span><%= image_tag "down.png" -%></h3>
-          <div id="likes">
-            <ul>
-  <%- i = 0 -%>
-  <%- for like in @likes -%>
-    <%- if ((i%8) == 0) -%>
-      <%- if (i < 8) -%>
-              <li class="first top">
-      <%- else -%>
-              <li>
-      <%- end -%>
-    <%- else -%>
-      <%- if (i < 8) -%>
-              <li class="top">
-      <%- else -%>
-              <li>
-      <%- end -%>
-    <%- end -%>
-                <%= link_to image_tag(like.setting.avatar.url(:small), :class => "avatar-small", :alt => "#{like.username}"), profile_path(:username => like.username), :title => "#{like.username}" %>
-              </li>
-    <%- i = i + 1 -%>
-  <% end -%>
-            </ul>
-            <div class="clear">
-            </div>
-  <%- if @num_likes > 21 -%>
-            <%= link_to "More", username_blogcast_likes_permalink_path, :class => "more" -%>
-  <%- end -%>
-          </div>
-<% end -%>
-          <div class="stat third"><span id="num-viewers" class="counter"><%= @num_viewers -%></span><span id="viewers" class="name"><%= @num_viewers == 1 ? "Viewer" : "Viewers" -%></span></div>
-          <%= periodically_call_remote :url => blogcast_update_num_viewers_path(:blogcast_id => @blogcast.id), :frequency => 30 -%>
-          <div class="last stat fourth"><span class="counter"><%= @num_views -%></span><span class="name"><%= @num_views == 1 ? "View" : "Views" -%></span></div>
-        </div>
-<% if @user.instance_of?(BlogcastrUser) -%>
-  <%- if @user != @blogcast_user -%>
-        <hr>
-        <div id="email-reminder">
-    <%- if @email_blogcast_reminder.nil? -%>
-          <%= link_to_remote image_tag("email_add.png") + "<p>Email reminder for \"#{@blogcast.title}\"</p>", :url => blogcast_email_reminders_path(:blogcast_id => @blogcast.id), :failure => "alert('Error communicating with server, failed to create email reminder for \\\"#{@blogcast.title}\\\"');", :html => {:class => "reminder"}, :method => "post" %>
-    <%- else -%>
-          <%= link_to_remote image_tag("email_delete.png") + "<p>Email reminder for \"#{@blogcast.title}\"</p>", :url => blogcast_email_reminder_path(:blogcast_id => @blogcast.id, :id => @email_blogcast_reminder.id), :failure => "alert('Error communicating with server, failed to create email reminder for \\\"#{@blogcast.title}\\\"');", :html => {:class => "reminder"}, :method => "delete" %>
-    <%- end -%>
-        </div>
-        <div class="clear">
-        </div>
-    <%- if @user.setting.mobile_phone_confirmed == true -%>
-        <div id="sms-reminder">
-      <%- if @sms_blogcast_notification.nil? -%>
-          <%= link_to_remote image_tag("phone_add.png") + "<p>SMS reminder for \"#{@blogcast.title}\"</p>", :url => blogcast_sms_reminders_path(:blogcast_id => @blogcast.id), :failure => "alert('Error communicating with server, failed to create sms reminder for \"#{@blogcast.title}\"');", :html => {:class => "reminder"}, :method => "post" %>
-      <%- else -%>
-          <%= link_to_remote image_tag("phone_delete.png") + "<p>SMS reminder for \"#{@blogcast.title}\"</p>", :url => blogcast_sms_reminder_path(:blogcast_id => @blogcast.id, :id => @sms_blogcast_reminder.id), :failure => "alert('Error communicating with server, failed to create sms reminder for \"#{@blogcast.title}\"');", :html => {:class => "reminder"}, :method => "delete" %>
-      <%- end -%>
-        </div>
-        <div class="clear">
-        </div>
-    <%- end -%>
-  <%- end -%>
-<% end -%>
-      </div>
-      <div class="lower-left-border-rounded-corner">
-      </div>
-      <div class="bottom-border-large">
-      </div>
-      <div class="lower-right-border-rounded-corner">
-      </div>
-      <div class="clear">
-      </div>
-    </div>
+    <%= render :partial => "/users/blogcasts/share/right_side" -%>
   </div>
   <div class="clear">
   </div>

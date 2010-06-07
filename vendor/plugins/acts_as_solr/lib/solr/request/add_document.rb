@@ -45,6 +45,7 @@ class Solr::Request::AddDocument < Solr::Request::Update
     for doc in @docs
       e.add_element doc.to_xml
     end
+Rails.logger.error e.to_s
     return e.to_s
   end
   

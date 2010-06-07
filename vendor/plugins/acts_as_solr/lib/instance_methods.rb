@@ -80,8 +80,11 @@ module ActsAsSolr #:nodoc:
     
     private
     def add_includes(doc)
+logger.error "MVR - add_includes 1"
       if configuration[:solr_includes].respond_to?(:each)
+logger.error "MVR - add_includes 2"
         configuration[:solr_includes].each do |association, options|
+logger.error "MVR - add_includes 3"
           data = options[:multivalued] ? [] : ""
           field_name = options[:as] || association.to_s.singularize
           field_type = get_solr_field_type(options[:type])
@@ -89,12 +92,15 @@ module ActsAsSolr #:nodoc:
           suffix = get_solr_field_type(field_type)
           case self.class.reflect_on_association(association).macro
           when :has_many, :has_and_belongs_to_many
+logger.error "MVR - add_includes 4"
             records = self.send(association).to_a
             unless records.empty?
+logger.error "MVR - add_includes 5"
               records.each {|r| data << include_value(r, options)}
               [data].flatten.each do |value|
                 field = Solr::Field.new("#{field_name}_#{suffix}" => value)
                 field.boost = validate_boost(field_boost)
+logger.error "MVR - add_includes 6"
                 doc << field
               end
             end

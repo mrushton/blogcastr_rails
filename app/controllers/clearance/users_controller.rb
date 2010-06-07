@@ -66,10 +66,17 @@ class Clearance::UsersController < ApplicationController
       render :template => 'users/new'
       return
     end
-    ClearanceMailer.deliver_confirmation @blogcastr_user
-    #TODO: do we want a separate confirmation page?
-    flash[:info] = "Welcome! A confirmation message has been sent to your email address."
-    redirect_to sign_in_path
+    if Rails.env.production?
+      ClearanceMailer.deliver_confirmation @blogcastr_user
+      #TODO: do we want a separate confirmation page?
+      flash[:info] = "Welcome! A confirmation message has been sent to your email address."
+      redirect_to sign_in_path
+    else
+      #AS DESIGNED: don't bother with email confirmation for sandbox
+      @blogcastr_user.confirm_email!
+      sign_in @blogcastr_user
+      redirect_to home_path
+    end
   end
 
   def destroy

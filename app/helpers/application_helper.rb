@@ -14,39 +14,73 @@ module ApplicationHelper
     reposted_via
   end
 
-  #MVR - returns markup with either the elapsed time or a timestamp
-  def hours_minutes_ago_helper(time)
+  def time_ago_helper(time)
     elapsed_time = Time.now - time
-    #MVR - less than 24 hours use hours and minutes ago past 24 hours use date
-    if elapsed_time <= 24.hours 
-      hours = (elapsed_time / 1.hour).floor
-      minutes = ((elapsed_time - (hours * 1.hour)) / 1.minute).floor
-      hours_minutes_ago = nil
-      if hours > 0
-        if hours == 1
-          hours_minutes_ago = "1 hour";
-        else
-          hours_minutes_ago = hours.to_s + " hours";
-        end
-        if minutes == 0
-          hours_minutes_ago = hours_minutes_ago + " ago";
-        elsif minutes == 1
-          hours_minutes_ago = hours_minutes_ago + ", 1 minute ago";
-        else
-          hours_minutes_ago = hours_minutes_ago + ", " + minutes.to_s + " minutes ago";
-        end
+    days = (elapsed_time / 1.day).floor
+    hours = (elapsed_time / 1.hour).floor
+    time_ago = nil
+    if days > 0
+      if days == 1
+        time_ago = "1 day ago";
       else
-        if minutes == 0
-          hours_minutes_ago = "less than 1 minute ago";
-        elsif (minutes == 1)
-          hours_minutes_ago = "1 minute ago";
-        else
-          hours_minutes_ago = minutes.to_s + " minutes ago";
-        end
+        time_ago = days.to_s + " days ago";
       end
-      return "<span class=\"date hours_minutes_ago\" timestamp=\"" + time.to_i.to_s + "\">" + hours_minutes_ago + "</span>"
+    elsif hours > 0
+      if hours == 1
+        time_ago = "1 hour ago";
+      else
+        time_ago = hours.to_s + " hours ago";
+      end
     else
-      return "<span class=\"date\">" + time.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/,' ') + "</span>"
+      minutes = ((elapsed_time - (hours * 1.hour)) / 1.minute).floor
+      if minutes == 0
+        time_ago = "less than 1 minute ago";
+      elsif (minutes == 1)
+        time_ago = "1 minute ago";
+      else
+        time_ago = minutes.to_s + " minutes ago";
+      end
+    end
+    return time_ago
+    #return "<span class=\"date time\" timestamp=\"" + time.to_i.to_s + "\">" + time_ago + "</span>"
+  end
+
+  def time_from_now_helper(time)
+    time_difference = time - Time.now
+    days = (time_difference / 1.day).floor
+    hours = (time_difference / 1.hour).floor
+    time_from_now = nil
+    if days > 0
+      if days == 1
+        time_from_now = "1 day from now";
+      else
+        time_from_now = days.to_s + " days from now";
+      end
+    elsif hours > 0
+      if hours == 1
+        time_from_now = "1 hour from now";
+      else
+        time_from_now = hours.to_s + " hours from now";
+      end
+    else
+      minutes = ((time_difference - (hours * 1.hour)) / 1.minute).floor
+      if minutes == 0
+        time_from_now = "less than 1 minute from now";
+      elsif (minutes == 1)
+        time_from_now = "1 minute from now";
+      else
+        time_from_now = minutes.to_s + " minutes from now";
+      end
+    end
+    #return "<span class=\"date time\" timestamp=\"" + time.to_i.to_s + "\">" + time_from_now + "</span>"
+    return time_from_now
+  end
+
+  def time_helper(time)
+    if (time > Time.now)
+      return time_from_now_helper(time)
+    else
+      return time_ago_helper(time)
     end
   end
 

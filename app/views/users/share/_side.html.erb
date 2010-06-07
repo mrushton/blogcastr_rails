@@ -1,0 +1,144 @@
+<div id="side">
+  <div class="upper-left-border-rounded-corner">
+  </div>
+  <div class="top-border-large">
+  </div>
+  <div class="upper-right-border-rounded-corner">
+  </div>
+  <div class="clear">
+  </div>
+  <div class="background">
+    <div class="section first">
+      <span class="name">Name:</span>
+      <%= @profile_user.setting.full_name %>
+    </div>
+<% if !@profile_user.setting.location.nil? && @profile_user.setting.location != "" %>
+    <div class="section">
+      <span class="name">Location:</span>
+      <%= @profile_user.setting.location %>
+    </div>
+<% end -%>
+<% if !@profile_user.setting.bio.nil? && @profile_user.setting.bio != "" %>
+    <div class="section">
+      <span class="name">Bio:</span>
+      <%= @profile_user.setting.bio %>
+    </div>
+<% end -%>
+<% if !@profile_user.setting.web.nil? && @profile_user.setting.web != "" %>
+    <div class="section">
+      <span class="name">Web:</span>
+  <%- web = (@profile_user.setting.web =~ /^http:\/\// ? @profile_user.setting.web : "http://" + @profile_user.setting.web) -%>
+  <%- link = web.length > 25 ? web[0,22] + "..." : web -%>
+      <%= link_to link, web, :class => "web" -%>
+    </div>
+<% end -%>
+    <hr>
+    <div id="stats">
+      <a class="stat" href="<%= username_blogcasts_path :username => @profile_user.username -%>"><span class="counter"><%= @num_blogcasts -%></span><span class="name"><%= @num_blogcasts == 1 ? "Blogcast" : "Blogcasts" -%></span></a>
+      <a class="stat" href="<%= username_comments_path :username => @profile_user.username -%>"><span class="counter"><%= @num_comments -%></span><span class="name"><%= @num_comments == 1 ? "Comment" : "Comments" -%></span></a>
+      <a class="stat" href="<%= username_likes_path :username => @profile_user.username -%>"><span class="counter"><%= @num_likes -%></span><span class="name"><%= @num_likes == 1 ? "Like" : "Likes" -%></span></a>
+      <a class="stat" href="<%= username_posts_path :username => @profile_user.username -%>"><span class="counter"><%= @num_posts -%></span><span class="name"><%= @num_posts == 1 ? "Post" : "Posts" -%></span></a>
+<% if @num_subscribers == 0 -%>
+      <%= link_to "<span class=\"counter\">0</span> <span class=\"name\">Subscribers</span>", username_subscribers_path(:username => @profile_user.username), :class => "stat" %>
+<% else -%>
+      <div class="stat" onclick="blogcastrCollapsibleEvent(this, 'subscribers');"><span class="counter"><%= @num_subscribers -%></span><span class="name"><%= @num_subscribers == 1 ? "Subscriber" : "Subscribers" -%></span><%= image_tag "down.png" -%></div>
+      <div id="subscribers">
+        <ul>
+  <% i = 0 -%>
+  <% for subscriber in @subscribers -%>
+    <%- if i % 8 == 0 -%>
+      <%- if i < 8 -%>
+          <li class="first top">
+      <%- else -%>
+          <li>
+      <%- end -%>
+    <%- else -%>
+      <%- if (i < 8) -%>
+          <li class="top">
+      <%- else -%>
+          <li>
+      <%- end -%>
+    <%- end -%>
+            <%= link_to image_tag(subscriber.setting.avatar.url(:small), :class => "avatar-small", :alt => "#{subscriber.username}"), profile_path(:username => subscriber.username), :title => "#{subscriber.username}" %>
+          </li>
+    <%- i += 1 -%>
+  <%- end -%>
+  <%- if @num_subscribers > 16 -%>
+          <%= link_to "More", username_subscribers_path(:username => @profile_user.username), :class => "more" -%>
+  <%- end -%>
+        </ul>
+        <div class="clear">
+        </div>
+      </div>
+<% end -%>
+<% if @num_subscriptions == 0 -%>
+      <%= link_to "<span class=\"counter\">0</span> <span class=\"name\">Subscriptions</span>", username_subscriptions_path(:username => @profile_user.username), :class => "stat" %>
+<% else -%>
+      <div class="stat" onclick="blogcastrCollapsibleEvent(this, 'subscriptions')"><span class="counter"><%= @num_subscriptions -%></span> <span class="name"><%= @num_subscriptions == 1 ? "Subscription" : "Subscriptions" -%></span><%= image_tag "down.png" -%></div>
+      <div id="subscriptions">
+        <ul>
+  <%- i = 0 -%>
+  <%- for subscription in @subscriptions -%>
+    <%- if i % 8 == 0 -%>
+      <%- if i < 8 -%>
+          <li class="first top">
+      <%- else -%>
+          <li>
+      <%- end -%>
+    <%- else -%>
+      <%- if i < 8 -%>
+          <li class="top">
+      <%- else -%>
+          <li>
+      <%- end -%>
+    <%- end -%>
+            <%= link_to image_tag(subscription.setting.avatar.url(:small), :class => "avatar-small", :alt => "#{subscription.username}"), profile_path(:username => subscription.username), :title => "#{subscription.username}" %>
+          </li>
+    <%- i += 1 -%>
+  <%- end -%>
+        </ul>
+        <div class="clear">
+        </div>
+      </div>
+<% end -%>
+    </div>
+    <hr>
+<% if @user.instance_of?(BlogcastrUser) && @user != @profile_user -%>
+  <% if @user.setting.send_subscription_blogcast_email_notifications == false -%>
+    <div id="email-notifications">
+    <%- if @email_user_notification.nil? -%>
+      <%= link_to_remote image_tag("email_add.png") + "<span>Email notifications for #{@profile_user.possesive_username} blogcasts</span>", :url => username_email_notifications_path(:username => @profile_user.username), :failure => "alert('Error communicating with server, failed to create email notifications for #{@profile_user.username}');", :html => {:class => "notification"}, :method => "post", :condition => "remote_request == false", :before => "remote_request = true", :complete => "setTimeout('remote_request = false', 3500)" %>
+    <%- else -%>
+      <%= link_to_remote image_tag("email_delete.png") + "<span>Email notifications for #{@profile_user.possesive_username} blogcasts</span>", :url => username_email_notifications_path(:username => @profile_user.username), :failure => "alert('Error communicating with server, failed to delete email notifications for #{@profile_user.username}');", :html => {:class => "notification"}, :method => "delete", :condition => "remote_request == false", :before => "remote_request = true", :complete => "setTimeout('remote_request = false', 3500)" %>
+    <%- end -%>
+    </div>
+  <%- end -%>
+    <div class="clear">
+    </div>
+  <%- if @user.setting.mobile_phone_confirmed == true && @user.setting.send_subscription_blogcast_sms_notifications == false -%>
+    <div id="sms-notifications">
+    <%- if @sms_user_notification.nil? -%>
+      <%= link_to_remote image_tag("phone_add.png") + "SMS notifications for #{@profile_user.possesive_username} blogcasts", :url => username_sms_notifications_path(:username => @profile_user.username), :failure => "alert('Error communicating with server, failed to create sms notifications for #{@profile_user.username}');", :html => {:class => "notification"}, :method => "post", :condition => "remote_request == false", :before => "remote_request = true", :complete => "setTimeout('remote_request = false', 3500)" %>
+    <%- else -%>
+      <%= link_to_remote image_tag("phone_delete.png") + "SMS notifications for #{@profile_username.possesive_username} blogcasts", :url => username_sms_notifications_path(:username => @profile_user.username), :failure => "alert('Error communicating with server, failed to create sms notifications for #{@profile_user.username}');", :html => {:class => "notification"}, :method => "delete", :condition => "remote_request == false", :before => "remote_request = true", :complete => "setTimeout('remote_request = false', 3500)" %>
+    <%- end -%>
+    </div>
+    <div class="clear">
+    </div>
+  <%- end -%>
+<% end -%>
+    <div id="rss">
+      <%= link_to image_tag("feed.png")+"RSS feed of #{@profile_user.possesive_username} blogcasts", username_blogcasts_path(:username => @profile_user.username, :format => "rss"), :class => "rss" %>
+    </div>
+    <div class="clear">
+    </div>
+  </div>
+  <div class="last lower-left-border-rounded-corner">
+  </div>
+  <div class="last bottom-border-large">
+  </div>
+  <div class="last lower-right-border-rounded-corner">
+  </div>
+  <div class="clear">
+  </div>
+</div>

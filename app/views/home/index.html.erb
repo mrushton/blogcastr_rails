@@ -21,7 +21,6 @@
           <p class="blogcast-date"><%= blogcast.starting_at.strftime("%a %b %d, %Y %I:%M %p").gsub(/ 0/,' ') %></p>
           <div class="clear">
           </div>
-          <p class="blogcast-tags"><%= blogcast.tags %></p>
   <%- num_likes = blogcast.likes.count -%>
           <h5 class=""><span class="counter-small"><%= num_likes -%></span><%= link_to num_likes == 1 ? "Recording" : "Recordings", username_blogcast_likes_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%></h5>
           <ul>
@@ -48,7 +47,6 @@
           <p class="blogcast-date"><%= blogcast.starting_at.strftime("%a %b %d, %Y %I:%M %p").gsub(/ 0/,' ') %></p>
           <div class="clear">
           </div>
-          <p class="blogcast-tags"><%= blogcast.tags %></p>
   <%- num_likes = blogcast.likes.count -%>
           <h5 class=""><span class="counter-small"><%= num_likes -%></span><%= link_to num_likes == 1 ? "Recording" : "Recordings", username_blogcast_likes_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%></h5>
           <ul>

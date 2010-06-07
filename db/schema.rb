@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100422064302) do
+ActiveRecord::Schema.define(:version => 20100508031049) do
 
   create_table "blogcast_reminders", :force => true do |t|
     t.string   "type",         :null => false
@@ -20,10 +20,16 @@ ActiveRecord::Schema.define(:version => 20100422064302) do
     t.datetime "updated_at"
   end
 
+  create_table "blogcast_tags", :force => true do |t|
+    t.integer  "tag_id",      :null => false
+    t.integer  "blogcast_id", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "blogcasts", :force => true do |t|
     t.integer  "user_id",                    :null => false
     t.string   "title",                      :null => false
-    t.string   "tags"
     t.string   "description"
     t.integer  "year",                       :null => false
     t.integer  "day",                        :null => false
@@ -146,6 +152,13 @@ ActiveRecord::Schema.define(:version => 20100422064302) do
   create_table "subscriptions", :force => true do |t|
     t.integer  "user_id",       :null => false
     t.integer  "subscribed_to", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "tags", :force => true do |t|
+    t.string   "name",       :null => false
+    t.integer  "user_id",    :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

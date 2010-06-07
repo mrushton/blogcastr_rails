@@ -1,0 +1,15 @@
+#header input, #header label img
+{
+	filter: alpha(opacity=50);
+}
+
+#header form.selected input, #header form.selected label img 
+{
+	filter: alpha(opacity=75);
+}
+
+li.user div.spacer, li.blogcast div.spacer, li.post div.spacer, li.comment div.spacer
+{
+	background-color: #ffffff;
+}
+

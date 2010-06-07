@@ -19,8 +19,8 @@
         <%= form.label :link_title, "Link title" %>
         <%= form.text_field :link_title %>
         <br>
-        <%= form.label :tags, "Tags" %>
-        <%= form.text_field :tags %>
+        <label for="tags">Tags</label> 
+        <%= text_field_tag "tags" %>
         <br>
         <%= form.label :description, "Description" %>
         <%= form.text_area :description %>

@@ -1,7 +1,13 @@
 var twitter_sign_in_window;
 var twitter_sign_in_interval;
 
-function blogcastrHoursMinutesAgo(timestamp)
+function blogcastrLog(message)
+{
+  if (typeof(console) != "undefined")
+    console.log(message);
+}
+
+function blogcastrTimeAgo(timestamp)
 {
   var current_client_date = new Date;
   var current_client_timestamp = Math.floor(current_client_date.getTime()/1000);
@@ -11,61 +17,59 @@ function blogcastrHoursMinutesAgo(timestamp)
   //current server timestamp is inherently a little slow
   if (timestamp_elapsed_time < 0)
     timestamp_elapsed_time = 0;
+  var days = Math.floor(timestamp_elapsed_time/86400);
   var hours = Math.floor(timestamp_elapsed_time/3600);
-  var minutes = Math.floor((timestamp_elapsed_time-hours*3600)/60);
-  var hours_minutes_ago;
-  if (hours > 0)
+  if (days > 0)
+  {
+    if (days == 1)
+    {
+      return "1 day ago";
+    }
+    else
+    {
+      return days + " days ago";
+    }
+  }
+  else if (hours > 0)
   {
     if (hours == 1)
     {
-      hours_minutes_ago = "1 hour";
+      return "1 hour ago";
     }
     else
     {
-      hours_minutes_ago = hours + " hours";
-    }
-    if (minutes == 0)
-    {
-      hours_minutes_ago = hours_minutes_ago + " ago";
-    }
-    else if (minutes == 1)
-    {
-      hours_minutes_ago = hours_minutes_ago + ", 1 minute ago";
-    }
-    else
-    {
-      hours_minutes_ago = hours_minutes_ago + ", " + minutes + " minutes ago";
+      return hours + " hours ago";
     }
   }
   else
   {
+    var minutes = Math.floor((timestamp_elapsed_time-hours*3600)/60);
     if (minutes == 0)
     {
-      hours_minutes_ago = "less than 1 minute ago";
+      return "less than 1 minute ago";
     }
     else if (minutes == 1)
     {
-      hours_minutes_ago = "1 minute ago";
+      return "1 minute ago";
     }
     else
     {
-      hours_minutes_ago = minutes + " minutes ago";
+      return minutes + " minutes ago";
     }
   }
-  return hours_minutes_ago;
 }
 
-function blogcastrUpdateHoursMinutesAgo()
+function blogcastrUpdateTimeAgo()
 {
-  jQuery("span.hours_minutes_ago")
+  jQuery("span.time-ago")
     .each(function ()
     {
       var timestamp = jQuery(this).attr("timestamp");
-      var hours_minutes_ago = blogcastrHoursMinutesAgo(timestamp);
+      var time_ago = blogcastrTimeAgo(timestamp);
       //TODO - check before setting or not?
-      var prev_hours_minutes_ago = jQuery(this).text();
-      if (hours_minutes_ago != prev_hours_minutes_ago)
-        jQuery(this).text(hours_minutes_ago);
+      var prev_time_ago = jQuery(this).text();
+      if (time_ago != prev_time_ago)
+        jQuery(this).text(time_ago);
     });
 }
 
@@ -204,11 +208,40 @@ function blogcastrCollapsibleEvent(obj, id)
   blogcastrToggleBlindEffect(id);
 }
 
-function blogcastrToggleHidden(id)
+function blogcastrCollapsibleEvent2(obj, id)
+{
+  //change the image
+  //MVR - only change image if effect will run
+  queue = Effect.Queues.get(id);
+  if (queue.effects.length == 0)
+  {
+    collapsible_state = jQuery(obj).hasClass("up");
+    if (collapsible_state == true)
+    {
+      jQuery(obj).removeClass("up");
+      jQuery(obj).addClass("down");
+    }
+    else
+    {
+      jQuery(obj).removeClass("down");
+      jQuery(obj).addClass("up");
+    }
+  }
+  //effect
+  blogcastrToggleBlindEffect(id);
+}
+
+function blogcastrOverlayEvent(id)
+{
+  //effect
+  blogcastrToggleHidden(id, "block");
+}
+
+function blogcastrToggleHidden(id, display)
 {
   //TODO: make more general purpose with the display property
   if (jQuery("#" + id).css("display") == "none")
-    jQuery("#" + id).css("display", "inline-block");
+    jQuery("#" + id).css("display", display);
   else
     jQuery("#" + id).css("display", "none");
 }
@@ -245,4 +278,16 @@ function blogcastrCheckUsername()
   {
     return true;
   }
+}
+
+function blogcastrClickEvent()
+{
+  jQuery(".overlay").hide();
+}
+
+function blogcastrPopupEvent(event)
+{
+  //MVR - stop propogation of popup events so they do not get handled by document event handler
+  //TODO: IE
+  event.stopPropagation();
 }
