@@ -48,16 +48,10 @@
   <div id="content" class="three-column">
     <%= render :partial => "/users/blogcasts/share/left_side" -%>
     <div id="main">
-      <div class="upper-left-border-squared-corner">
-      </div>
-      <div class="top-border">
-      </div>
-      <div class="upper-right-border-squared-corner">
-      </div>
-      <div class="clear">
+      <div class="top-border-medium-indent-white-squared first">
       </div>
       <div id="top">
-        <div id="title">
+        <div id="title" class="small indent">
           <div class="side-border">
             <div class="upper-left-border-squared-corner-gray horizontal">
             </div>
@@ -127,21 +121,9 @@
         </div>
 <% end -%>
       </div>
-      <div class="lower-left-border-squared-corner">
+      <div class="bottom-border-medium-indent-white-squared">
       </div>
-      <div class="bottom-border">
-      </div>
-      <div class="lower-right-border-squared-corner">
-      </div>
-      <div class="clear">
-      </div>
-      <div class="upper-left-border-squared-corner">
-      </div>
-      <div class="top-border">
-      </div>
-      <div class="upper-right-border-squared-corner">
-      </div>
-      <div class="clear">
+      <div class="top-border-medium-indent-white-squared">
       </div>
       <div id="bottom">
         <h2 class="first">Posts</h2>
@@ -149,13 +131,13 @@
 <% i = @num_posts -%>
 <% for post in @posts -%>
   <%- if post.instance_of?(TextPost) -%>
-          <%= render :partial => "/text_posts/text_post", :object => post, :locals => {:i => i - 1} -%>
+          <%= render :partial => "/share/text_post", :object => post, :locals => {:i => i - 1} -%>
   <%- elsif post.instance_of?(ImagePost) -%>
-          <%= render :partial => "/image_posts/image_post", :object => post, :locals => {:i => i - 1} -%>
+          <%= render :partial => "/share/image_post", :object => post, :locals => {:i => i - 1} -%>
   <%- elsif post.instance_of?(AudioPost) -%>
           <%= render :partial => "audio_post", :object => post -%>
   <%- elsif post.instance_of?(CommentPost) -%>
-          <%= render :partial => "/comment_posts/comment_post", :object => post, :locals => {:i => i - 1} -%>
+          <%= render :partial => "/share/comment_post", :object => post, :locals => {:i => i - 1} -%>
   <%- elsif post.instance_of?(Repost) -%>
           <%= render :partial => "repost", :object => post -%>
   <%- end -%>
@@ -163,27 +145,12 @@
 <% end -%>
         </ol>
       </div>
-      <div class="last lower-left-border-squared-corner">
-      </div>
-      <div class="last bottom-border">
-      </div>
-      <div class="last lower-right-border-squared-corner">
-      </div>
-      <div class="clear">
+      <div class="bottom-border-medium-indent-white-squared">
       </div>
     </div>
     <%= render :partial => "/users/blogcasts/share/right_side" -%>
   </div>
   <div class="clear">
   </div>
-  <div id="footer">
-    <span>&copy; 2010 Blogcastr</span>
-    <%= link_to "About", about_path -%>
-    <a href="http://blogcastr.wordpress.com">Blog</a>
-    <a href="http://www.facebook.com/blogcastr">Facebook</a>
-    <%= link_to "FAQ", faq_path -%>
-    <%= link_to "Privacy Policy", privacy_policy_path -%>
-    <%= link_to "Terms of Service", terms_of_service_path -%>
-    <a href="http://twitter.com/blogcastr">Twitter</a>
-  </div>
+  <%= render :partial => "/share/footer_small" -%>
 </div>

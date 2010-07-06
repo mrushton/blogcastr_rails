@@ -190,11 +190,11 @@
 <% i = @num_posts -%>
 <% for post in @posts -%>
   <%- if post.instance_of?(TextPost) -%>
-          <%= render :partial => "/text_posts/text_post", :object => post, :locals => {:i => i} -%>
+          <%= render :partial => "/share/text_post", :object => post, :locals => {:i => i} -%>
   <%- elsif post.instance_of?(ImagePost) -%>
-          <%= render :partial => "/image_posts/image_post", :object => post, :locals => {:i => i} -%>
+          <%= render :partial => "/share/image_post", :object => post, :locals => {:i => i} -%>
   <%- elsif post.instance_of?(CommentPost) -%>
-          <%= render :partial => "/comment_posts/comment_post", :object => post, :locals => {:i => i} -%>
+          <%= render :partial => "/share/comment_post", :object => post, :locals => {:i => i} -%>
   <%- elsif post.instance_of?(Repost) -%>
           <%= render :partial => "repost", :object => post -%>
   <%- end -%>
@@ -206,7 +206,7 @@
         <ol id="comments-stream" class="stream">
 <% i = @num_comments -%>
 <% for comment in @comments -%>
-  <%= render :partial => "/comments/comment", :object => comment, :locals => {:i => i} -%>
+  <%= render :partial => "/share/comment", :object => comment, :locals => {:i => i} -%>
   <% i = i - 1 -%>
 <% end -%>
         </ol>

@@ -7,7 +7,7 @@
     <%= link_to image_tag(image_post.user.setting.avatar.url(:medium), :class => "avatar"), profile_path(:username => image_post.user.username) -%>
     <div class="right">
       <%= link_to image_post.user.username, profile_path(:username => image_post.user.username), :class => "username" -%>
-      <%= time_ago_helper image_post.created_at %>
+      <span class="date"><%= time_ago_helper image_post.created_at %></span>
       <%= image_tag image_post.image.url(:default), :class => "image" %>
 <% if !image_post.text.nil? -%>
       <p class="text"><%= image_post.text %></p>

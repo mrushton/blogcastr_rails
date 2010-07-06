@@ -2,7 +2,7 @@
 </div>
 <div id="wrapper" class="user">
   <div id="header" class="small">
-    <%- form_tag user_search_path(:username => @profile_user.username, :controller => "search") do -%>
+    <%- form_tag user_search_path(:username => @profile_user.username, :controller => "users/search") do -%>
       <%= label_tag :query, image_tag("magnifying_glass.png") -%>
       <%= text_field_tag :query, "Search #{@profile_username_possesive} Blogcastr", :onfocus => "if (this.value == 'Search #{@profile_username_possesive_escaped} Blogcastr') this.value = ''; jQuery('#header form').addClass('selected');", :onblur => "if (this.value == '') this.value = 'Search #{@profile_username_possesive_escaped} Blogcastr'; jQuery('#header form').removeClass('selected');" -%>
     <%- end -%>
@@ -40,16 +40,10 @@
   </div>
   <div id="content">
     <div id="main">
-      <div class="upper-left-border-squared-corner">
-      </div>
-      <div class="top-border">
-      </div>
-      <div class="upper-right-border-squared-corner">
-      </div>
-      <div class="clear">
+      <div class="top-border-medium-indent-white-squared first">
       </div>
       <div class="background">
-        <div id="title">
+        <div id="title" class="small">
           <div class="side-border">
             <div class="upper-left-border-squared-corner-gray">
             </div>
@@ -104,27 +98,12 @@
         </div>
 <% end -%>
       </div>
-      <div class="last lower-left-border-squared-corner">
-      </div>
-      <div class="last bottom-border">
-      </div>
-      <div class="last lower-right-border-squared-corner">
-      </div>
-      <div class="clear">
+      <div class="bottom-border-medium-indent-white-squared last">
       </div>
     </div>
     <%= render :partial => "/users/share/side" -%>
     <div class="clear">
     </div>
   </div>
-  <div id="footer">
-    <span>&copy; 2010 Blogcastr</span>
-    <%= link_to "About", about_path -%>
-    <a href="http://blogcastr.wordpress.com">Blog</a>
-    <a href="http://www.facebook.com/blogcastr">Facebook</a>
-    <%= link_to "FAQ", faq_path -%>
-    <%= link_to "Privacy Policy", privacy_policy_path -%>
-    <%= link_to "Terms of Service", terms_of_service_path -%>
-    <a href="http://twitter.com/blogcastr">Twitter</a>
-  </div>
+  <%= render :partial => "/share/footer_small" -%>
 </div>

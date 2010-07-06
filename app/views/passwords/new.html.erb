@@ -8,12 +8,13 @@
   </head>
   <body>
     <div id="wrapper">
-      <div id="header">
+      <div id="header" class="large">
         <%- form_tag search_path :controller => "search" do -%>
           <%= label_tag :query, image_tag("magnifying_glass.png") -%>
           <%= text_field_tag :query, "Search Blogcastr", :onfocus => "if (this.value == 'Search Blogcastr') this.value = ''; jQuery('#header form').addClass('selected');", :onblur => "if (this.value == '') this.value = 'Search Blogcastr'; jQuery('#header form').removeClass('selected');" -%>
         <%- end -%>
         <a href="/"><img src="/images/logo.png" alt="Blogcastr" border=0></img></a>
+        <%= image_tag "/images/beta.png", :class => "beta" %>
         <div id="navigation">
           <%= link_to "Sign up", sign_up_path %>
           <%= link_to "Sign in", sign_in_path %>
@@ -30,7 +31,7 @@
           <div class="clear">
           </div>
           <div class="background">
-            <div id="title">
+            <div id="title" class="small">
               <div class="side-border">
                 <div class="upper-left-border-squared-corner-gray">
                 </div>
@@ -77,16 +78,7 @@
       </div>
       <div class="clear">
       </div>
-      <div id="footer">
-        <span>&copy; 2010 Blogcastr</span>
-        <%= link_to "About", about_path -%>
-        <a href="http://blogcastr.wordpress.com">Blog</a>
-        <a href="http://www.facebook.com/blogcastr">Facebook</a>
-        <%= link_to "FAQ", faq_path -%>
-        <%= link_to "Privacy Policy", privacy_policy_path -%>
-        <%= link_to "Terms of Service", terms_of_service_path -%>
-        <a href="http://twitter.com/blogcastr">Twitter</a>
-      </div>
+      <%= render :partial => "/share/footer_small" -%>
     </div>
   </body>
 </html>
