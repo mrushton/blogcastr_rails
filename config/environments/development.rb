@@ -27,11 +27,5 @@ config.action_mailer.smtp_settings = {
 }
 config.action_mailer.default_url_options = {:host => "sandbox.blogcastr.com"}
 
-#MVR - connect to beanstalkd
-config.after_initialize do
-  AsyncObserver::Queue.queue = Beanstalk::Pool.new(%w(localhost:11300))
-  AsyncObserver::Queue.app_version = "beta" 
-end
-
 #MVR - define the host we are running on 
 HOST = "sandbox.blogcastr.com"
