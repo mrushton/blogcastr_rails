@@ -3,8 +3,8 @@ default_run_options[:pty] = true
 ssh_options[:keys] = [File.join(ENV["HOME"], ".ec2", "deploy.pem")]
 ssh_options[:forward_agent] = true
 
-set :application, "blogcastr"
-set :user, "deploy"
+set :application, "rails"
+set :user, "blogcastr"
 set :use_sudo, false
 
 #MVR - git options

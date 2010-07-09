@@ -38,6 +38,7 @@ ActiveRecord::Schema.define(:version => 20100508031049) do
     t.string   "short_url"
     t.datetime "starting_at",                :null => false
     t.integer  "views_count", :default => 0
+    t.boolean  "is_featured"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

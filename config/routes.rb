@@ -61,6 +61,8 @@ ActionController::Routing::Routes.draw do |map|
   map.username_blogcasts ":username/blogcasts.:format", :controller => "users/blogcasts", :format => nil
   map.username_recent_blogcasts ":username/blogcasts/recent.:format", :controller => "users/blogcasts", :action => "recent", :format => nil
   map.username_upcoming_blogcasts ":username/blogcasts/upcoming.:format", :controller => "users/blogcasts", :action => "upcoming", :format => nil
+  #MVR - user search 
+  map.user_search ":username/search", :controller => "users/search"
   #TODO: move everything over to use "user"
   map.user_tagged_blogcasts ":username/blogcasts/tagged.:format", :controller => "users/blogcasts", :action => "tagged", :format => nil
   #MVR - user blogcast
@@ -96,7 +98,6 @@ ActionController::Routing::Routes.draw do |map|
   map.privacy_policy "privacy_policy", :controller => "site", :action => "privacy_policy"
   #MVR - search
   map.search "search", :controller => "search"
-  map.user_search ":username/search.:format", :controller => "search", :action => "user"
   #MVR - authentication token
   map.authentication_token "authentication_token.:format", :controller => "authentication_tokens", :action => "create", :method => "post", :format => nil
   #MVR - home

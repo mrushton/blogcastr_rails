@@ -20,23 +20,6 @@
 	background-image: url("../images/background-border-main.png");
 }
 
-#title
-{
-	left: 9px;
-	top: -30px;
-}
-
-#title img
-{
-	float: left;
-	position: relative;
-	left: -8px;
-	top: 7px;
-	width: 42px;
-	height: 42px;
-	border: none;
-}
-
 #top p, div.background p
 {
 	margin-top: 3px;

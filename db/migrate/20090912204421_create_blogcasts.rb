@@ -13,6 +13,7 @@ class CreateBlogcasts < ActiveRecord::Migration
       #MVR - keep track of view via counter cache
       #TODO: add more where appropriate
       t.integer :views_count, :default => 0
+      t.boolean :is_featured
       t.timestamps
     end
   end

@@ -2,6 +2,7 @@ div#main h2
 {
 	margin-top: 10px;
 	margin-bottom: 0px;
+	border: none;
 	font-size: 1.35em;
 }
 
@@ -68,6 +69,8 @@ div#main p.follow img
 	display: block;
 	text-align: center;
 	background-color: #efc02d;
+	background-image: url('/images/fade.png');
+	background-repeat: repeat-x;
 	color: #000000;
 	font-weight: bold;
 	-moz-border-radius: 8px;
