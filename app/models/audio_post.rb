@@ -19,7 +19,7 @@ class AudioPost < Post
   #  if ogg_pid.nil?
   #    FileUtils.mkdir_p(File.split(audio_post.audio.path(:ogg))[0])
   #    exec("ffmpeg -i \"#{audio_post.audio_post_process_file_name}\" -acodec vorbis #{audio_post.audio.path(:ogg)}")
-    end
+  #  end
    # #MVR - if an mp3 was uploaded just copy it
    # if (audio_post.audio_content_type != "audio/mpeg")
    #   mp3_pid = fork
