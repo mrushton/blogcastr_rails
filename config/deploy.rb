@@ -1,10 +1,10 @@
 #MVR - tty and ssh settings
 default_run_options[:pty] = true
-ssh_options[:keys] = [File.join(ENV["HOME"], ".ec2", "deploy.pem")]
+ssh_options[:keys] = [File.join("..", "keys", "deploy")]
 ssh_options[:forward_agent] = true
 
 set :application, "rails"
-set :user, "blogcastr"
+set :user, "deploy"
 set :use_sudo, false
 
 #MVR - git options
@@ -13,9 +13,9 @@ set :repository, "git@github.com:blogcastr/rails.git"
 set :branch, "master"
 set :deploy_via, :remote_cache
 
-role :web, "blogcastr.com"
-role :app, "blogcastr.com"
-role :db,  "blogcastr.com", :primary => true
+role :web, "rails.blogcastr.com"
+role :app, "rails.blogcastr.com"
+role :db,  "rails.blogcastr.com", :primary => true
 
 #MVR - deploy tasks
 namespace :deploy do
