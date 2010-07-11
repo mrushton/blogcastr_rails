@@ -27,7 +27,7 @@ config.action_view.cache_template_loading            = true
 #MVR - mail relay
 config.action_mailer.smtp_settings = {
   :address => "smtp.sendgrid.net",
-  :port => 587,
+  :port => 25,
   :domain => "blogcastr.com",
   :authentication => :login,
   :user_name => "mrushton@blogcastr.com",
