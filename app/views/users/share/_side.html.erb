@@ -59,7 +59,7 @@
           <li>
       <%- end -%>
     <%- end -%>
-            <%= link_to image_tag(subscriber.setting.avatar.url(:small), :class => "avatar-small", :alt => "#{subscriber.username}"), profile_path(:username => subscriber.username), :title => "#{subscriber.username}" %>
+            <%= link_to image_tag(subscriber.setting.avatar.url(:small), :class => "avatar small", :alt => "#{subscriber.username}"), profile_path(:username => subscriber.username), :title => "#{subscriber.username}" %>
           </li>
     <%- i += 1 -%>
   <%- end -%>
@@ -92,7 +92,7 @@
           <li>
       <%- end -%>
     <%- end -%>
-            <%= link_to image_tag(subscription.setting.avatar.url(:small), :class => "avatar-small", :alt => "#{subscription.username}"), profile_path(:username => subscription.username), :title => "#{subscription.username}" %>
+            <%= link_to image_tag(subscription.setting.avatar.url(:small), :class => "avatar small", :alt => "#{subscription.username}"), profile_path(:username => subscription.username), :title => "#{subscription.username}" %>
           </li>
     <%- i += 1 -%>
   <%- end -%>

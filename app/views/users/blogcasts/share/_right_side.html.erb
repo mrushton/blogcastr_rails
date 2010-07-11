@@ -43,7 +43,7 @@
 <% if @num_likes == 0 -%>
       <div class="stat second"><span class="counter">0</span><span class="name">Likes</span></div>
 <% else -%>
-      <h3 class="second" onclick="blogcastrCollapsibleEvent(this, 'likes');"><span class="counter"><%= @num_likes -%></span><span class="name"><%= @num_likes == 1 ? "Like" : "Likes" -%></span><%= image_tag "down.png" -%></h3>
+      <div class="stat" onclick="blogcastrCollapsibleEvent(this, 'likes');"><span class="counter"><%= @num_likes -%></span><span class="name"><%= @num_likes == 1 ? "Like" : "Likes" -%></span><%= image_tag "down.png" -%></div>
       <div id="likes">
         <ul>
   <%- i = 0 -%>
@@ -61,7 +61,7 @@
           <li>
       <%- end -%>
     <%- end -%>
-            <%= link_to image_tag(like.setting.avatar.url(:small), :class => "avatar-small", :alt => "#{like.username}"), profile_path(:username => like.username), :title => "#{like.username}" %>
+            <%= link_to image_tag(like.setting.avatar.url(:small), :class => "avatar small", :alt => "#{like.username}"), profile_path(:username => like.username), :title => "#{like.username}" %>
           </li>
     <%- i = i + 1 -%>
   <% end -%>

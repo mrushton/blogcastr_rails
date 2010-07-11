@@ -26,9 +26,9 @@ class HomeController < ApplicationController
     @num_comments = @user.comments.count 
     #MVR - subscription blogcasts
     #TODO: don't use the *_by_sql methods
-    @num_upcoming_subscription_blogcasts = Blogcast.count_by_sql(["SELECT count(*) FROM subscriptions, users, blogcasts WHERE subscriptions.user_id = ? AND subscriptions.subscribed_to = users.id AND users.id = blogcasts.user_id AND blogcasts.starting_at > ? ORDER BY blogcasts.starting_at", @user.id, Time.zone.now])
+    @num_upcoming_subscription_blogcasts = Blogcast.count_by_sql(["SELECT count(*) FROM subscriptions, users, blogcasts WHERE subscriptions.user_id = ? AND subscriptions.subscribed_to = users.id AND users.id = blogcasts.user_id AND blogcasts.starting_at > ?", @user.id, Time.zone.now])
     @upcoming_subscription_blogcasts = Blogcast.find_by_sql(["SELECT blogcasts.* FROM subscriptions, users, blogcasts WHERE subscriptions.user_id = ? AND subscriptions.subscribed_to = users.id AND users.id = blogcasts.user_id AND blogcasts.starting_at > ? ORDER BY blogcasts.starting_at LIMIT 3", @user.id, Time.zone.now])
-    @num_recent_subscription_blogcasts = Blogcast.count_by_sql(["SELECT count(*) FROM subscriptions, users, blogcasts WHERE subscriptions.user_id = ? AND subscriptions.subscribed_to = users.id AND users.id = blogcasts.user_id AND blogcasts.starting_at < ? ORDER BY blogcasts.starting_at", @user.id, Time.zone.now])
+    @num_recent_subscription_blogcasts = Blogcast.count_by_sql(["SELECT count(*) FROM subscriptions, users, blogcasts WHERE subscriptions.user_id = ? AND subscriptions.subscribed_to = users.id AND users.id = blogcasts.user_id AND blogcasts.starting_at < ?", @user.id, Time.zone.now])
     @recent_subscription_blogcasts = Blogcast.find_by_sql(["SELECT blogcasts.* FROM subscriptions, users, blogcasts WHERE subscriptions.user_id = ? AND subscriptions.subscribed_to = users.id AND users.id = blogcasts.user_id AND blogcasts.starting_at < ? ORDER BY blogcasts.starting_at DESC LIMIT 3", @user.id, Time.zone.now])
     @blogcasts = @user.blogcasts
   end
