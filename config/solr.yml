@@ -7,7 +7,7 @@ development:
   url: http://127.0.0.1:8982/solr
   
 production:
-  url: http://127.0.0.1:8983/solr
+  url: http://solr.blogcastr.com:8080/solr
   jvm_options: -server -d64 -Xmx1024M -Xms64M
 
 test:
