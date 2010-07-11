@@ -1,4 +1,5 @@
 <% comment_user = comment.user -%>
+<% blogcast = comment.blogcast -%>
 <% if i == 0 -%>
 <li id="Comment:<%= comment.id %>" class="comment first">
 <% else -%>
@@ -16,9 +17,12 @@
 <% end -%>
       <%= time_ago_helper comment.created_at %>
       <p class="text"><%= comment.text %></p>
+  <%- if defined?(show_controls) -%>
+      <%= link_to_remote "Post", :url => {:controller => "comment_posts", :action => "create", "blogcast_id" => blogcast.id, "comment_id" => comment.id, :from => "Web"} %>
+  <%- end -%>
       <div class="info-collapsible" onclick="blogcastrCollapsibleEvent(this, 'Comment:<%= comment.id -%>-info');">Info<%= image_tag "up.png" -%></div>
       <div id="Comment:<%= comment.id -%>-info" class="info" style="display: none;">
-<% if defined?(blogcast) -%>
+<% if defined?(show_blogcast) -%>
   <%- if comment.user.instance_of?(FacebookUser) -%>
         <span class="info">Commented by <%= link_to comment_user.get_username, comment_user.get_url, :class => "username" -%> on <%= comment.created_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/,' ') %> from <%= comment.from %> using Facebook Connect</p>
   <%- elsif comment.user.instance_of?(TwitterUser) -%>

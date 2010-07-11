@@ -206,7 +206,7 @@
         <ol id="comments-stream" class="stream">
 <% i = @num_comments -%>
 <% for comment in @comments -%>
-  <%= render :partial => "/share/comment", :object => comment, :locals => {:i => i} -%>
+  <%= render :partial => "/share/comment", :object => comment, :locals => {:i => i, :show_controls => true} -%>
   <% i = i - 1 -%>
 <% end -%>
         </ol>
