@@ -9,11 +9,6 @@ require File.join(File.dirname(__FILE__), 'boot')
 #MVR - clearence email
 DO_NOT_REPLY = "accounts@blogcastr.com"
 
-#TODO: refactor this
-#MVR - set up a Memcached client
-require 'memcache'
-CACHE = MemCache.new("localhost:11211")
-
 #TODO - move token and secret to a config file
 TWITTER_CONSUMER_KEY = "RyfjiSOXSXxyHkZjv4TsZA"
 TWITTER_CONSUMER_SECRET = "jvTlEHNiyBa3gvWMoIgSWGtpvFY9A0x7G3NeeH5w"

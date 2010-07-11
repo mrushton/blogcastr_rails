@@ -43,3 +43,6 @@ HOST = "blogcastr.com"
 #MVR - thrift
 THRIFT_HOST = "ejabberd.blogcastr.com"
 THRIFT_PORT = 9090 
+#MVR - memcached 
+require 'memcache'
+CACHE = MemCache.new("memcached.blogcastr.com:11211")
