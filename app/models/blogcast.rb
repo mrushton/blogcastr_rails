@@ -32,7 +32,7 @@ class Blogcast < ActiveRecord::Base
   #TODO: fix me!
   def thrift_client
     return @thrift_client if defined?(@thrift_client)
-    @thrift_socket = Thrift::Socket.new("sandbox.blogcastr.com", 9090)
+    @thrift_socket = Thrift::Socket.new(THRIFT_HOST, THRIFT_PORT)
     #TODO: investigate multiple transports 
     @thrift_transport = Thrift::BufferedTransport.new(@thrift_socket)
     @thrift_transport.open
