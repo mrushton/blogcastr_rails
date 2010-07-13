@@ -53,7 +53,12 @@
             <% form_for :blogcastr_user, :url => users_path do |form| %>
               <%= error_messages_for "blogcastr_user", "setting", :header_message => "Oops!", :message => nil -%>
               <input id="utc_offset" type="hidden" name="utc_offset" value="">
-              <%= form.label :email, "Email address", :class => "first" %>
+<% fields_for :invite do |invite| -%>
+              <%= invite.label :token, "Invite token", :class => "first" %>
+              <%= invite.text_field :token, :autocomplete => "off" %>
+              <p>Got an invite?</p>
+<% end -%>
+              <%= form.label :email, "Email address" %>
               <%= form.text_field :email, :autocomplete => "off" %>
               <p>You will be sent a confirmation.</p>
               <%= form.label :username %>

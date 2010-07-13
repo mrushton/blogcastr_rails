@@ -12,6 +12,7 @@ class ClearanceCreateUsers < ActiveRecord::Migration
       t.string :authentication_token, :limit => 128
       t.boolean :email_confirmed, :default => false, :null => false
       t.boolean :is_featured
+      t.integer :invite_id
       #MVR - Facebook
       t.integer :facebook_id
       t.string :facebook_session_key

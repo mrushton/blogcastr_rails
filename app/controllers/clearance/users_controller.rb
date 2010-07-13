@@ -14,6 +14,20 @@ class Clearance::UsersController < ApplicationController
     #@blogcastr_user.username = @blogcastr_user.username.downcase
     #MVR - create setting
     @setting = Setting.new(params[:setting])
+    #MVR - verify the invite token
+    invite = Invite.find_by_token(params[:invite][:token])
+    if invite.nil?
+      @blogcastr_user.valid?
+      #AS DESIGNED - valid? clears all errors so add it here 
+      @blogcastr_user.errors.add_to_base("Invalid invite token")
+      #MVR - also check captcha
+      if !verify_recaptcha :private_key => "6Lc7igsAAAAAADE0g3jbIf8YWU6fpYJppSFa3iBt"
+        @blogcastr_user.errors.add_to_base("Humanness check failed")
+      end
+      @setting.valid?
+      render :template => 'users/new'
+      return
+    end
     #MVR - verify the recaptcha
     if !verify_recaptcha :private_key => "6Lc7igsAAAAAADE0g3jbIf8YWU6fpYJppSFa3iBt"
       @blogcastr_user.valid?

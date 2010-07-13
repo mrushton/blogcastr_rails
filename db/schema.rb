@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100508031049) do
+ActiveRecord::Schema.define(:version => 20100713035853) do
 
   create_table "blogcast_reminders", :force => true do |t|
     t.string   "type",         :null => false
@@ -48,6 +48,14 @@ ActiveRecord::Schema.define(:version => 20100508031049) do
     t.integer  "blogcast_id", :null => false
     t.string   "from",        :null => false
     t.string   "text",        :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "invites", :force => true do |t|
+    t.string   "token"
+    t.integer  "user_id"
+    t.integer  "remaining"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
