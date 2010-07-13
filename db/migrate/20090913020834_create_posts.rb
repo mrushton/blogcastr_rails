@@ -6,7 +6,7 @@ class CreatePosts < ActiveRecord::Migration
       t.integer :blogcast_id, :null => false
       t.string :from, :null => false
       #MVR - text posts
-      t.string :text
+      t.text :text
       #MVR - image posts
       t.string :image_file_name
       t.string :image_content_type

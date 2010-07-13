@@ -5,7 +5,7 @@ class CreateSettings < ActiveRecord::Migration
       t.string :full_name
       t.string :motto
       t.string :location
-      t.string :bio
+      t.text :bio
       t.string :web
       t.string :time_zone
       t.string :avatar_file_name

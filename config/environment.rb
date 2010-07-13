@@ -9,11 +9,11 @@ require File.join(File.dirname(__FILE__), 'boot')
 #MVR - clearence email
 DO_NOT_REPLY = "accounts@blogcastr.com"
 
-#TODO - move token and secret to a config file
+#MVR - Twitter api
 TWITTER_CONSUMER_KEY = "RyfjiSOXSXxyHkZjv4TsZA"
 TWITTER_CONSUMER_SECRET = "jvTlEHNiyBa3gvWMoIgSWGtpvFY9A0x7G3NeeH5w"
 
-#TODO - move login and api key to a config file
+#MVR - Bit.ly api
 BITLY_LOGIN = "blogcastr"
 BITLY_API_KEY = "R_deffaec06227125a4192cbe432799546"
 
@@ -61,3 +61,6 @@ Rails::Initializer.run do |config|
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
   # config.i18n.default_locale = :de
 end
+
+#MVR - memcached
+CACHE = MemCache.new(MEMCACHED_HOST + ":" + MEMCACHED_PORT.to_s)

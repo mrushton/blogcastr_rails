@@ -31,6 +31,7 @@ config.action_mailer.default_url_options = {:host => "sandbox.blogcastr.com"}
 HOST = "sandbox.blogcastr.com"
 #MVR - thrift
 THRIFT_HOST = "sandbox.blogcastr.com"
-THRIFT_PORT = 9090 
+THRIFT_PORT = 9090
 #MVR - memcached
-CACHE = MemCache.new("localhost:11211")
+MEMCACHED_HOST = "localhost"
+MEMCACHED_PORT = 11211

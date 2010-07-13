@@ -44,5 +44,5 @@ HOST = "blogcastr.com"
 THRIFT_HOST = "ejabberd.blogcastr.com"
 THRIFT_PORT = 9090 
 #MVR - memcached 
-require 'memcache'
-CACHE = MemCache.new("memcached.blogcastr.com:11211")
+MEMCACHED_HOST = "memcached.blogcastr.com"
+MEMCACHED_PORT = 11211

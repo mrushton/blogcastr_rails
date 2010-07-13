@@ -3,7 +3,7 @@ class CreateBlogcasts < ActiveRecord::Migration
     create_table :blogcasts do |t|
       t.integer :user_id, :null => false
       t.string :title, :null => false
-      t.string :description
+      t.text :description
       t.integer :year, :null => false
       t.integer :day, :null => false
       t.integer :month, :null => false
