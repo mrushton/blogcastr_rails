@@ -62,4 +62,32 @@ class TextPostsController < ApplicationController
       format.json {render :json => @text_post.to_json, :status => :created, :location => @text_post}
     end
   end
+
+  def destroy
+    if params[:authentication_token].nil?
+      @user = current_user
+    else 
+      @user = rest_current_user
+    end
+    #MVR - find post
+    #AS DESIGNED: do not bother with what type it is 
+    @post = @user.posts.find(params[:id]) 
+    if @post.nil?
+      respond_to do |format|
+        format.js {@error = "Unable to find text post"; render :action => "error"}
+        format.html {flash[:error] = "Unable to fine text post"; redirect_to :back}
+        #TODO: fix xml and json support
+        format.xml {render :xml => @post.errors.to_xml, :status => :unprocessable_entity}
+        format.json {render :json => @post.errors.to_json, :status => :unprocessable_entity}
+      end
+      return
+    end
+    @post.destroy
+    respond_to do |format|
+      format.js
+      format.html {flash[:notice] = "Text post deleted successfully"; redirect_to :back}
+      format.xml {render :xml => @text_post.to_xml, :status => :created, :location => @text_post}
+      format.json {render :json => @text_post.to_json, :status => :created, :location => @text_post}
+    end
+  end
 end

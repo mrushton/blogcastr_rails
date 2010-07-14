@@ -190,7 +190,7 @@
 <% i = @num_posts -%>
 <% for post in @posts -%>
   <%- if post.instance_of?(TextPost) -%>
-          <%= render :partial => "/share/text_post", :object => post, :locals => {:i => i} -%>
+          <%= render :partial => "/share/text_post", :object => post, :locals => {:i => i, :show_controls => true} -%>
   <%- elsif post.instance_of?(ImagePost) -%>
           <%= render :partial => "/share/image_post", :object => post, :locals => {:i => i} -%>
   <%- elsif post.instance_of?(CommentPost) -%>

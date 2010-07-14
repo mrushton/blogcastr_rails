@@ -13,8 +13,8 @@ set :repository, "git@github.com:blogcastr/rails.git"
 set :branch, "master"
 set :deploy_via, :remote_cache
 
-role :web, "rails.blogcastr.com"
 role :app, "rails.blogcastr.com"
+role :web, "rails.blogcastr.com"
 role :db,  "rails.blogcastr.com", :primary => true
 
 #MVR - deploy tasks
