@@ -10,13 +10,9 @@ class Clearance::SessionsController < ApplicationController
     @user = BlogcastrUser.authenticate(params[:username], params[:password])
     if @user.nil?
       flash[:error] = "Oops! Invalid username/email address or password."
-      #MVR - handle https in production
-      if Rails.env.production?
-        insecure_redirect_to sign_in_url
-      else
-        insecure_redirect_to sign_in_path
-      end
+      redirect_to sign_in_path
     else
+      #MVR - redeliver email if not confirmed 
       if @user.email_confirmed?
         sign_in(@user)
         insecure_redirect_back_or home_path
