@@ -4,6 +4,11 @@ class Clearance::UsersController < ApplicationController
 
   def new
     @blogcastr_user = BlogcastrUser.new(params[:blogcastr_user])
+    if Rails.env.production?
+       @users_url = "https://blogcastr.com/users"
+    else
+       @users_url = users_path
+    end
     render :template => 'users/new', :layout => true
   end
 
@@ -84,7 +89,7 @@ class Clearance::UsersController < ApplicationController
       ClearanceMailer.deliver_confirmation @blogcastr_user
       #TODO: do we want a separate confirmation page?
       flash[:info] = "Welcome! A confirmation message has been sent to your email address."
-      redirect_to sign_in_path
+      redirect_to sign_in_url
     else
       #AS DESIGNED: don't bother with email confirmation for sandbox
       @blogcastr_user.confirm_email!

@@ -3,6 +3,12 @@ class Clearance::SessionsController < ApplicationController
   filter_parameter_logging :password
 
   def new
+    #MVR - use https in prodcution
+    if Rails.env.production?
+      @session_url = "https://blogcastr.com/session"
+    else
+      @session_url = session_path 
+    end
     render :template => 'sessions/new'
   end
 
@@ -14,11 +20,19 @@ class Clearance::SessionsController < ApplicationController
     else
       if @user.email_confirmed?
         sign_in(@user)
-        redirect_back_or home_path
+        if Rails.env.production?
+          redirect_back_or home_url
+        else
+          redirect_back_or home_path
+        end
       else
         ClearanceMailer.deliver_confirmation(@user)
         flash[:info] = "A confirmation email has been resent. You must confirm your account before signing in." 
-        redirect_to sign_in_path
+        if Rails.env.production?
+          redirect_back_or sign_in_url
+        else
+          redirect_back_or sign_in_path
+        end
       end
     end
   end
