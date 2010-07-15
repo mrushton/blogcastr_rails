@@ -44,7 +44,7 @@ class Clearance::SessionsController < ApplicationController
     if Rails.env.production?
       url = return_to || default
       if url =~ /\//
-        url = "http://blogcastr" + url
+        url = "http://blogcastr.com" + url
       end
       redirect_to url
       clear_return_to
