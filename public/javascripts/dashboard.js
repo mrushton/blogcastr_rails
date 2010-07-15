@@ -9,7 +9,7 @@ function blogcastrOnLoad()
   var client_date = new Date;
   client_timestamp = Math.floor(client_date.getTime()/1000);
   //MVR - every second update timers
-  setInterval(blogcastrUpdateHoursMinutesAgo, 1000);
+  setInterval(blogcastrUpdateTimeAgo, 1000);
   //MVR - event handling for exandable links
   //jQuery("h3.expandable").find("a").click(blogcastrOnExpandableHeaderLinkClick);
   //jQuery("h3.expandable").find("a").hover(blogcastrOnExpandableHeaderLinkHoverOn, blogcastrOnExpandableHeaderLinkHoverOff);
@@ -44,16 +44,12 @@ function blogcastrOnConnect(status, error)
   }
   else if (status == Strophe.Status.CONNECTED)
   {
-    console.log('----------> Strophe is connected.' );
     //MVR - register message handlers 
     connection.addHandler(blogcastrPostCallback, null, 'message', 'groupchat', null, "blogcast." + blogcast_id + "@conference." + hostname + "/dashboard");
-    console.log('----------> Strophe is connected 1.1.' );
     connection.addHandler(blogcastrCommentCallback, null, 'message', 'chat', null, null);
-    console.log('----------> Strophe is connected 1.2.' );
     //MVR - send presence to muc
     mucPresenceStanza = $pres().attrs({from: connection.jid, to: "Blogcast." + blogcast_id + "@conference." + hostname + "/dashboard"}).c("x", {xmlns: "http://jabber.org/protocol/muc"});
     connection.send(mucPresenceStanza);
-    console.log('----------> Strophe is connected 2.' );
   }
 }
 
