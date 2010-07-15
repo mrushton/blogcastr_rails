@@ -1,14 +1,8 @@
 class Clearance::SessionsController < ApplicationController
-  before_filter :redirect_to_home, :only => [:new, :create], :if => :signed_in_as_blogcastr_user?
+  before_filter :insecure_redirect_to_home, :only => [:new, :create], :if => :signed_in_as_blogcastr_user?
   filter_parameter_logging :password
 
   def new
-    #MVR - use https in prodcution
-    if Rails.env.production?
-      @session_url = "https://blogcastr.com/session"
-    else
-      @session_url = session_path 
-    end
     render :template => 'sessions/new'
   end
 
@@ -16,23 +10,20 @@ class Clearance::SessionsController < ApplicationController
     @user = BlogcastrUser.authenticate(params[:username], params[:password])
     if @user.nil?
       flash[:error] = "Oops! Invalid username/email address or password."
-      redirect_to sign_in_path
+      #MVR - handle https in production
+      if Rails.env.production?
+        insecure_redirect_to sign_in_url
+      else
+        insecure_redirect_to sign_in_path
+      end
     else
       if @user.email_confirmed?
         sign_in(@user)
-        if Rails.env.production?
-          redirect_back_or home_url
-        else
-          redirect_back_or home_path
-        end
+        insecure_redirect_back_or home_path
       else
         ClearanceMailer.deliver_confirmation(@user)
         flash[:info] = "A confirmation email has been resent. You must confirm your account before signing in." 
-        if Rails.env.production?
-          redirect_back_or sign_in_url
-        else
-          redirect_back_or sign_in_path
-        end
+        insecure_redirect_back_insecure_or sign_in_path
       end
     end
   end
@@ -44,7 +35,26 @@ class Clearance::SessionsController < ApplicationController
 
   private
 
-  def redirect_to_home
-    redirect_to :controller => "/home"
+  def insecure_redirect_to_home
+    if Rails.env.production?
+      redirect_to home_url
+    else
+      redirect_to home_path
+    end
+  end
+
+  #MVR - handle https in production
+  def insecure_redirect_back_or(default)
+    if Rails.env.production?
+      url = return_to || default
+      if url =~ /\//
+        url = "http://blogcastr" + url
+      end
+      redirect_to url
+      clear_return_to
+    else
+      redirect_to(return_to || default)
+      clear_return_to
+    end
   end
 end

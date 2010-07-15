@@ -50,7 +50,7 @@
                 </div>
               </div>
             </div>
-            <% form_tag @session_url do %>
+            <% form_tag session_path do %>
 <%- if !flash[:error].nil? -%>
               <div class="error">
                 <h2><%= flash[:error] -%></h2>

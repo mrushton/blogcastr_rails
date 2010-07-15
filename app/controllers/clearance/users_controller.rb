@@ -1,14 +1,9 @@
 class Clearance::UsersController < ApplicationController
-  before_filter :redirect_to_home, :only => [:new, :create], :if => :signed_in_as_blogcastr_user?
+  before_filter :insecure_redirect_to_home, :only => [:new, :create], :if => :signed_in_as_blogcastr_user?
   filter_parameter_logging :password
 
   def new
     @blogcastr_user = BlogcastrUser.new(params[:blogcastr_user])
-    if Rails.env.production?
-       @users_url = "https://blogcastr.com/users"
-    else
-       @users_url = users_path
-    end
     render :template => 'users/new', :layout => true
   end
 
@@ -122,7 +117,26 @@ class Clearance::UsersController < ApplicationController
 
   private
 
-  def redirect_to_home
-    redirect_to :controller => "/home"
+  def insecure_redirect_to_home
+    if Rails.env.production?
+      redirect_to home_url
+    else
+      redirect_to home_path
+    end
+  end
+  
+  #MVR - handle https in production
+  def insecure_redirect_back_or(default)
+    if Rails.env.production?
+      url = return_to || default
+      if url =~ /\//
+        url = "http://blogcastr" + url
+      end
+      redirect_to url
+      clear_return_to
+    else
+      redirect_to(return_to || default)
+      clear_return_to
+    end
   end
 end
