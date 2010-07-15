@@ -7,7 +7,7 @@
 <% end -%>
   <div class="spacer">
 <% if comment_user.instance_of?(BlogcastrUser) -%>
-    <%= link_to image_tag(comment_post.user.setting.avatar(:medium), :class => "avatar"), profile_path(:username => comment_post.user.username) -%>
+    <%= link_to image_tag(comment.user.setting.avatar(:medium), :class => "avatar"), profile_path(:username => comment_post.user.username) -%>
     <div class="right">
       <%= link_to comment_user.username, profile_path(:username => comment_user.username), :class => "username" -%>
 <% else -%>
@@ -15,7 +15,7 @@
     <div class="right">
       <%= link_to comment_user.get_username, comment_user.get_url, :class => "username" -%>
 <% end -%>
-      <%= time_ago_helper comment_post.created_at %>
+      <span class="date"><%= time_ago_helper comment_post.created_at %></span>
       <p class="text"><%= comment.text %></p>
       <div class="info-collapsible" onclick="blogcastrCollapsibleEvent(this, 'CommentPost:<%= comment_post.id -%>-info');">Info<%= image_tag "up.png" -%></div>
       <div id="CommentPost:<%= comment_post.id -%>-info" class="info" style="display: none;">
