@@ -50,7 +50,9 @@ class Solr::Request::Select < Solr::Request::Base
       end
     end
 
-    http_params.join("&")
+    s = http_params.join("&")
+    print s
+    s 
   end
   
 end

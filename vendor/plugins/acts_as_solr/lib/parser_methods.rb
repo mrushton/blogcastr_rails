@@ -76,12 +76,15 @@ module ActsAsSolr #:nodoc:
         end
         query = "(#{query}) #{models}"
 
-        order = options[:order].split(/\s*,\s*/).collect{|e| e.gsub(/\s+/,'_t ').gsub(/\bscore_t\b/, 'score')  }.join(',') if options[:order] 
+        #AS DESIGNED: the query types set above get replaced here
         query_options[:query] = replace_types([query])[0] # TODO adjust replace_types to work with String or Array  
+        #MVR - use sort paramter 
         if options[:order]
-          # TODO: set the sort parameter instead of the old ;order. style.
-          query_options[:query] << ';' << replace_types([order], false)[0]
+          order = options[:order].split(/\s*,\s*/).collect{|e| e.gsub(/\s+/,'_t ').gsub(/\bscore_t\b/, 'score')  }.join(',')
+          #MVR - replace types and do not include colon
+          query_options[:sort] = replace_types([order], false)[0]
         end
+
         ActsAsSolr::Post.execute(Solr::Request::Standard.new(query_options))
       rescue
         raise "There was a problem executing your search: #{$!} in #{$!.backtrace.first}"

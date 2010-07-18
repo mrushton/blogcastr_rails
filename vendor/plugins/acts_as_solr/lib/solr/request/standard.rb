@@ -40,17 +40,22 @@ class Solr::Request::Standard < Solr::Request::Select
     @params[:field_list] ||= ["*","score"]
     
     @params[:shards] ||= []
+    #MVR - use sort paramater
+    @params[:sort] = params[:sort] if params[:start]
   end
   
   def to_hash
     hash = {}
-    
+
     # standard request param processing
-    sort = @params[:sort].collect do |sort|
-      key = sort.keys[0]
-      "#{key.to_s} #{sort[key] == :descending ? 'desc' : 'asc'}"
-    end.join(',') if @params[:sort]
-    hash[:q] = sort ? "#{@params[:query]};#{sort}" : @params[:query]
+    #TODO: use below code which was half implemented and not documented
+    #sort = @params[:sort].collect do |sort|
+    #  key = sort.keys[0]
+    #  "#{key.to_s} #{sort[key] == :descending ? 'desc' : 'asc'}"
+    #end.join(',') if @params[:sort]
+    hash[:q] = @params[:query]
+    #MVR - use sort paramater
+    hash[:sort] = @params[:sort] if @params[:sort]
     hash["q.op"] = @params[:operator]
     hash[:df] = @params[:default_field]
 
