@@ -40,16 +40,10 @@
   </div>
   <div id="content">
     <div id="main">
-      <div class="upper-left-border-squared-corner">
-      </div>
-      <div class="top-border">
-      </div>
-      <div class="upper-right-border-squared-corner">
-      </div>
-      <div class="clear">
+      <div class="top-border-medium-indent-white-squared first">
       </div>
       <div class="background">
-        <div id="title">
+        <div id="title" class="small">
           <div class="side-border">
             <div class="upper-left-border-squared-corner-gray">
             </div>
@@ -58,7 +52,7 @@
             <div class="lower-left-border-squared-corner-gray">
             </div>
           </div>
-          <h1 class="image"><%= link_to image_tag(@profile_user.setting.avatar.url(:medium), :class => "avatar"), profile_path(:username => @profile_user.username) -%>Search <%= @profile_user_username_possesive -%> Blogcastr</h1>
+          <h1 class="image"><%= link_to image_tag(@profile_user.setting.avatar.url(:medium), :class => "avatar medium"), profile_path(:username => @profile_user.username) -%>Search <%= @profile_user_username_possesive -%> Blogcastr</h1>
           <div class="side-border">
             <div class="upper-right-border-squared-corner-gray">
             </div>
@@ -100,11 +94,11 @@
               </div>
               <div class="overlay-background">
     <%- @query_params_order[:order_by] = "most_recent" -%>
-                <%= link_to "Most recent", search_path(@query_params_order) -%>
+                <%= link_to "Most recent", user_search_path(@query_params_order) -%>
     <%- @query_params_order[:order_by] = "starting_at" -%>
-                <%= link_to "Starting at", search_path(@query_params_order) -%>
+                <%= link_to "Starting at", user_search_path(@query_params_order) -%>
     <%- @query_params_order[:order_by] = "most_relevant" -%>
-                <%= link_to "Most relevant", search_path(@query_params_order), :class => "selected" -%>
+                <%= link_to "Most relevant", user_search_path(@query_params_order), :class => "selected" -%>
               </div>
             </div>
   <%- elsif params[:order_by] == "starting_at" -%>
@@ -114,11 +108,11 @@
               </div>
               <div class="overlay-background">
     <%- @query_params_order[:order_by] = "most_recent" -%>
-                <%= link_to "Most recent", search_path(@query_params_order) -%>
+                <%= link_to "Most recent", user_search_path(@query_params_order) -%>
     <%- @query_params_order[:order_by] = "starting_at" -%>
-                <%= link_to "Starting at", search_path(@query_params_order), :class => "selected" -%>
+                <%= link_to "Starting at", user_search_path(@query_params_order), :class => "selected" -%>
     <%- @query_params_order[:order_by] = "most_relevant" -%>
-                <%= link_to "Most relevant", search_path(@query_params_order) -%>
+                <%= link_to "Most relevant", user_search_path(@query_params_order) -%>
               </div>
             </div>
   <%- else -%>
@@ -128,11 +122,11 @@
               </div>
               <div class="overlay-background">
     <%- @query_params_order[:order_by] = "most_recent" -%>
-                <%= link_to "Most recent", search_path(@query_params_order), :class => "selected" -%>
+                <%= link_to "Most recent", user_search_path(@query_params_order), :class => "selected" -%>
     <%- @query_params_order[:order_by] = "starting_at" -%>
-                <%= link_to "Starting at", search_path(@query_params_order) -%>
+                <%= link_to "Starting at", user_search_path(@query_params_order) -%>
     <%- @query_params_order[:order_by] = "most_relevant" -%>
-                <%= link_to "Most relevant", search_path(@query_params_order) -%>
+                <%= link_to "Most relevant", user_search_path(@query_params_order) -%>
               </div>
             </div>
   <%- end -%>
@@ -144,9 +138,9 @@
               </div>
               <div class="overlay-background">
     <%- @query_params_order[:order_by] = "most_recent" -%>
-                <%= link_to "Most recent", search_path(@query_params_order) -%>
+                <%= link_to "Most recent", user_search_path(@query_params_order) -%>
     <%- @query_params_order[:order_by] = "most_relevant" -%>
-                <%= link_to "Most relevant", search_path(@query_params_order), :class => "selected" -%>
+                <%= link_to "Most relevant", user_search_path(@query_params_order), :class => "selected" -%>
               </div>
             </div>
   <%- else -%>
@@ -156,9 +150,9 @@
               </div>
               <div class="overlay-background">
     <%- @query_params_order[:order_by] = "most_recent" -%>
-                <%= link_to "Most recent", search_path(@query_params_order), :class => "selected" -%>
+                <%= link_to "Most recent", user_search_path(@query_params_order), :class => "selected" -%>
     <%- @query_params_order[:order_by] = "most_relevant" -%>
-                <%= link_to "Most relevant", search_path(@query_params_order) -%>
+                <%= link_to "Most relevant", user_search_path(@query_params_order) -%>
               </div>
             </div>
   <%- end -%>
@@ -170,23 +164,24 @@
           <div class="clear">
           </div>
           <div class="tabs">
+<%- @query_params_order[:username] = @profile_user.username -%>
 <% @query_params_results[:results] = "blogcasts" -%>
 <% if params[:results] != "posts" && params[:results] != "comments" -%>
-            <%= link_to "Blogcasts", search_path(@query_params_results), :class => "tab first selected" -%>
+            <%= link_to "Blogcasts", user_search_path(@query_params_results), :class => "tab first selected" -%>
 <% else -%>
-            <%= link_to "Blogcasts", search_path(@query_params_results), :class => "tab first" -%>
+            <%= link_to "Blogcasts", user_search_path(@query_params_results), :class => "tab first" -%>
 <% end -%>
 <% @query_params_results[:results] = "posts" -%>
 <% if params[:results] == "posts" -%>
-            <%= link_to "Posts", search_path(@query_params_results), :class => "tab selected" -%>
+            <%= link_to "Posts", user_search_path(@query_params_results), :class => "tab selected" -%>
 <% else -%>
-            <%= link_to "Posts", search_path(@query_params_results), :class => "tab" -%>
+            <%= link_to "Posts", user_search_path(@query_params_results), :class => "tab" -%>
 <% end -%>
 <% @query_params_results[:results] = "comments" -%>
 <% if params[:results] == "comments" -%>
-            <%= link_to "Comments", search_path(@query_params_results), :class => "tab last selected" -%>
+            <%= link_to "Comments", user_search_path(@query_params_results), :class => "tab last selected" -%>
 <% else -%>
-            <%= link_to "Comments", search_path(@query_params_results), :class => "tab last" -%>
+            <%= link_to "Comments", user_search_path(@query_params_results), :class => "tab last" -%>
 <% end -%>
           </div>
 <% if params[:results] == "posts" -%>
@@ -227,7 +222,7 @@
           <ol class="comments">
     <%- i = @comments.results.length -%>
     <%- for comment in @comments.results -%>
-            nder :partial => "/share/comment", :object => comment, :locals => {:i => i - 1, :blogcast => comment.blogcast} -%>
+            <%= render :partial => "/share/comment", :object => comment, :locals => {:i => i - 1, :blogcast => comment.blogcast} -%>
       <%- i = i - 1 -%>
     <%- end -%>
           </ol>
@@ -260,14 +255,15 @@
 <%- end -%>
 <% if !params[:query].blank? && @num_first_result <= @num_results -%>
           <div id="paginate">
+  <%- @query_params_paginate[:page] = @previous_page -%>
   <%- if !@previous_page.nil? -%>
-   <%- @query_params_paginate[:page] = @previous_page -%>
-            <%= link_to "« Back", search_path(@query_params_paginate), :class => "back" %>
+    <%- @query_params_paginate[:username] = @profile_user.username -%>
+            <%= link_to "« Back", user_search_path(@query_params_paginate), :class => "back" %>
   <%- end -%>
             <%= @num_first_result -%>-<%= @num_last_result -%> of <%= @num_results -%>
   <%- if !@next_page.nil? -%>
-   <%- @query_params_paginate[:page] = @next_page -%>
-            <%= link_to "Next »", search_path(@query_params_paginate), :class => "next" %>
+    <%- @query_params_paginate[:page] = @next_page -%>
+            <%= link_to "Next »", user_search_path(@query_params_paginate), :class => "next" %>
   <%- end -%>
           </div>
 <% end -%>
@@ -279,27 +275,12 @@
 
 
       </div>
-      <div class="last lower-left-border-squared-corner">
-      </div>
-      <div class="last bottom-border">
-      </div>
-      <div class="last lower-right-border-squared-corner">
-      </div>
-      <div class="clear">
+      <div class="bottom-border-medium-indent-white-squared last">
       </div>
     </div>
     <%= render :partial => "/users/share/side" -%>
     <div class="clear">
     </div>
   </div>
-  <div id="footer">
-    <span>&copy; 2010 Blogcastr</span>
-    <%= link_to "About", about_path -%>
-    <a href="http://blogcastr.wordpress.com">Blog</a>
-    <a href="http://www.facebook.com/blogcastr">Facebook</a>
-    <%= link_to "FAQ", faq_path -%>
-    <%= link_to "Privacy Policy", privacy_policy_path -%>
-    <%= link_to "Terms of Service", terms_of_service_path -%>
-    <a href="http://twitter.com/blogcastr">Twitter</a>
-  </div>
+  <%= render :partial => "/share/footer_small" -%>
 </div>

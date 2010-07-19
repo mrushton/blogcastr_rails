@@ -89,12 +89,13 @@
 	font-size: 0.85em;
 }
 
-#content.one-column.narrow #main #recaptcha-right p#recaptcha-credit
+#recaptcha-credit
 {
 	margin-top: 5px;
 	color: #a3a3a3;
-	font-weight: bold;
 	text-align: left;
+	line-height: auto;
+	font-size: 0.65em;
 }
 
 #content.one-column.narrow #main input#recaptcha_response_field

@@ -225,7 +225,7 @@
           <ol class="comments">
     <%- i = @comments.results.length -%>
     <%- for comment in @comments.results -%>
-            nder :partial => "/share/comment", :object => comment, :locals => {:i => i - 1, :blogcast => comment.blogcast} -%>
+      <%- render :partial => "/share/comment", :object => comment, :locals => {:i => i - 1, :blogcast => comment.blogcast} -%>
       <%- i = i - 1 -%>
     <%- end -%>
           </ol>
@@ -245,7 +245,7 @@
     <%- i = @blogcasts.results.length -%>
           <ol class="blogcasts">
     <%- for blogcast in @blogcasts.results -%>
-            <%= render :partial => "/share/blogcast", :locals => {:blogcast => blogcast, :i => i - 1} -%>
+            <%= render :partial => "/share/blogcast", :locals => {:blogcast => blogcast, :show_user => true, :i => i - 1} -%>
       <%- i = i - 1 -%>
     <%- end -%>
           </ol>

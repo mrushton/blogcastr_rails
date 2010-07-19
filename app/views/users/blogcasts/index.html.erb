@@ -71,7 +71,7 @@
         <ol class="blogcasts">
   <%- i = @paginated_blogcasts.length -%>
   <%- for blogcast in @paginated_blogcasts -%>
-          <%= render :partial => "/blogcasts/blogcast", :locals => {:blogcast => blogcast, :i => i - 1} -%>
+          <%= render :partial => "/share/blogcast", :locals => {:blogcast => blogcast, :i => i - 1} -%>
   <%- i = i - 1 -%>
   <%- end -%>
         </ol>

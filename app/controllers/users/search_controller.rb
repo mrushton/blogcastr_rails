@@ -30,19 +30,18 @@ class Users::SearchController < ApplicationController
     if params[:query].blank?
       return
     end
-    #AS DESIGNED: for the results parameters leave everything blank except query
+    #AS DESIGNED: for the results parameters leave everything blank except username and query
+    @query_params_results[:username] = @profile_user.username
+    @query_params_order[:username] = @profile_user.username 
+    @query_params_paginate[:username] = @profile_user.username 
     @query_params_results[:query] = params[:query]
     @query_params_order[:query] = params[:query]
     @query_params_paginate[:query] = params[:query]
     if !params[:results].blank?
       @query_params_order[:results] = params[:results]
-      @query_params_time[:results] = params[:results]
-      @query_params_field[:results] = params[:results]
       @query_params_paginate[:results] = params[:results]
     end
     if !params[:order_by].blank?
-      @query_params_time[:order_by] = params[:order_by]
-      @query_params_field[:order_by] = params[:order_by]
       @query_params_paginate[:order_by] = params[:order_by]
     end
     #MVR - escape all characters in the query syntax 
@@ -59,6 +58,7 @@ class Users::SearchController < ApplicationController
       #MVR - time needs to be in UTC
       @time = Time.at(timestamp).utc
     end
+    @query_params_paginate[:username] = @profile_user.username
     @query_params_paginate[:timestamp] = @time.to_i
     options = {}
     if !params[:page].blank?

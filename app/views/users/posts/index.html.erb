@@ -72,15 +72,15 @@
   <%- i = @paginated_posts.length -%>
   <%- for post in @paginated_posts -%>
     <%- if post.instance_of?(TextPost) -%>
-          <%= render :partial => "/text_posts/text_post", :object => post, :locals => {:i => i - 1, :blogcast => post.blogcast} -%>
+          <%= render :partial => "/share/text_post", :object => post, :locals => {:i => i - 1, :blogcast => post.blogcast} -%>
     <%- elsif post.instance_of?(ImagePost) -%>
-          <%= render :partial => "/image_posts/image_post", :object => post, :locals => {:i => i - 1, :blogcast => post.blogcast} -%>
+          <%= render :partial => "/share/image_post", :object => post, :locals => {:i => i - 1, :blogcast => post.blogcast} -%>
     <%- elsif post.instance_of?(AudioPost) -%>
-          <%= render :partial => "audio_post", :object => post -%>
+          <%= render :partial => "/share/audio_post", :object => post -%>
     <%- elsif post.instance_of?(CommentPost) -%>
-          <%= render :partial => "comment_post", :object => post -%>
+          <%= render :partial => "/share/comment_post", :object => post -%>
     <%- elsif post.instance_of?(Repost) -%>
-          <%= render :partial => "repost", :object => post -%>
+          <%= render :partial => "/share/repost", :object => post -%>
     <%- end -%>
     <%- i = i - 1 -%>
   <%- end -%>

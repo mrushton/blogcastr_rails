@@ -71,7 +71,7 @@
         <ol class="users">
   <%- i = @num_paginated_subscribers -%>
   <%- for user in @paginated_subscribers -%>
-          <%= render :partial => "/clearance/users/user", :locals => {:user => user, :i => i - 1} -%>
+          <%= render :partial => "/share/user", :locals => {:user => user, :i => i - 1} -%>
     <%- i = i - 1 -%>
   <%- end -%>
         </ol>

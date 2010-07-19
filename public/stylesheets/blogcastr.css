@@ -264,7 +264,6 @@ div.overlay a.selected
 	height: 28px;
 	display: inline;
 	float: left;
-	font-weight: bold;
 	font-size: 0.8em;
 	text-decoration: none;
 	color: #000000;
@@ -1077,7 +1076,6 @@ input.tab
 	line-height: 28px;
 	text-align: center;
 	font-size: 0.8em;
-	font-weight: bold;
 	background-color: #f0f0f0;
 	opacity: 0.5;
 	-moz-opactiy: 0.5;
