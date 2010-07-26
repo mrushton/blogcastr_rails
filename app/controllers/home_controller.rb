@@ -31,6 +31,8 @@ class HomeController < ApplicationController
     @num_recent_subscription_blogcasts = Blogcast.count_by_sql(["SELECT count(*) FROM subscriptions, users, blogcasts WHERE subscriptions.user_id = ? AND subscriptions.subscribed_to = users.id AND users.id = blogcasts.user_id AND blogcasts.starting_at < ?", @user.id, Time.zone.now])
     @recent_subscription_blogcasts = Blogcast.find_by_sql(["SELECT blogcasts.* FROM subscriptions, users, blogcasts WHERE subscriptions.user_id = ? AND subscriptions.subscribed_to = users.id AND users.id = blogcasts.user_id AND blogcasts.starting_at < ? ORDER BY blogcasts.starting_at DESC LIMIT 3", @user.id, Time.zone.now])
     @blogcasts = @user.blogcasts
+    @blogcast = Blogcast.new
+    @user_username_possesive = @user.username + (@user.username =~ /.*s$/ ? "'":"'s")
   end
 
   def index_profile

@@ -102,6 +102,10 @@ ActionController::Routing::Routes.draw do |map|
   map.authentication_token "authentication_token.:format", :controller => "authentication_tokens", :action => "create", :method => "post", :format => nil
   #MVR - home
   map.home "home", :controller => "home"
+  #MVR - messages 
+  map.resources :messages, :controller => "messages", :only => [:index]
+  #MVR - notifications 
+  map.resources :notifications, :controller => "notifications", :only => [:index]
   #MVR - settings 
   map.resource :settings, :controller => "settings", :only => [:edit, :update]
   map.settings "settings", :controller => "settings", :action => "edit"
@@ -144,6 +148,12 @@ ActionController::Routing::Routes.draw do |map|
     #MVR - update num viewers
     blogcasts.update_num_viewers "update_num_viewers", :controller => "viewers", :action => "update_num_viewers"
   end
+  #MVR - posts 
+  map.resources :posts, :controller => "posts", :only => [:index]
+  #MVR - comments 
+  map.resources :comments, :controller => "comments", :only => [:index]
+  #MVR - likes 
+  map.resources :likes, :controller => "likes", :only => [:index]
   #MVR - Facebook connect
   map.resource :facebook_connect, :controller => "facebook_connect", :only => [:create, :destroy]
   #MVR - Facebook sessions

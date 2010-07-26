@@ -78,7 +78,7 @@
     <%- elsif post.instance_of?(AudioPost) -%>
           <%= render :partial => "/share/audio_post", :object => post -%>
     <%- elsif post.instance_of?(CommentPost) -%>
-          <%= render :partial => "/share/comment_post", :object => post -%>
+          <%= render :partial => "/share/comment_post", :object => post, :locals => {:i => i - 1, :blogcast => post.blogcast} -%>
     <%- elsif post.instance_of?(Repost) -%>
           <%= render :partial => "/share/repost", :object => post -%>
     <%- end -%>

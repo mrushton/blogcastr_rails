@@ -1,0 +1,38 @@
+<% home_selected = nil if !defined?(home_selected) -%>
+<% messages_selected = nil if !defined?(messages_selected) -%>
+<% notifications_selected = nil if !defined?(notifications_selected) -%>
+<% blogcasts_selected = nil if !defined?(blogcasts_selected) -%>
+<% subscriptions_selected = nil if !defined?(subscriptions_selected) -%>
+<% posts_selected = nil if !defined?(posts_selected) -%>
+<% comments_selected = nil if !defined?(comments_selected) -%>
+<% likes_selected = nil if !defined?(likes_selected) -%>
+<div id="right" class="site">
+  <div class="section">
+<% if home_selected -%>
+    <%= link_to "Home", home_path, :class => "home selected" -%> 
+<% else -%>
+    <%= link_to "Home", home_path, :class => "home" -%> 
+<% end -%>
+  </div>
+  <div class="section">
+    <%= link_to "Messages", messages_path, :class => "messages" -%> 
+  </div>
+  <div class="section">
+    <%= link_to "Notifications", messages_path, :class => "notifications" -%> 
+  </div>
+  <div class="section">
+    <%= link_to "Blogcasts", blogcasts_path, :class => "blogcasts" -%> 
+  </div>
+  <div class="section">
+    <%= link_to "Subscriptions", subscriptions_path, :class => "subscriptions" -%> 
+  </div>
+  <div class="section">
+    <%= link_to "Posts", posts_path, :class => "posts" -%> 
+  </div>
+  <div class="section">
+    <%= link_to "Comments", comments_path, :class => "comments" -%> 
+  </div>
+  <div class="section">
+    <%= link_to "Likes", likes_path, :class => "likes" -%> 
+  </div>
+</div>

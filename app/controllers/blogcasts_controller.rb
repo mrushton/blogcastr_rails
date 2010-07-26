@@ -80,7 +80,7 @@ class BlogcastsController < ApplicationController
       return
     end
     respond_to do |format|
-      format.html {redirect_to home_path}
+      format.html {redirect_to blogcast_dashboard_path(:blogcast_id => @blogcast.id)}
       format.xml {render :xml => @blogcast.to_xml, :status => :created, :location => @blogcast}
       format.json {render :json => @blogcast.to_json, :status => :created, :location => @blogcast}
     end

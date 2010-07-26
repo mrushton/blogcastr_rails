@@ -126,8 +126,15 @@
 	background-repeat: no-repeat;
 }
 
-#right
+#right.search
 {
+	margin-left: 15px;
+	padding-left: 15px;
+	border-left: solid;
+	border-width: 2px;
+	border-color: #d4d4d4;
+	width: 207px;
+	float: left;
 	line-height: 20px;
 }
 
