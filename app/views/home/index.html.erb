@@ -82,7 +82,7 @@
           <ol class="blogcasts">
 <% i = @upcoming_subscription_blogcasts.length -%>
 <% for blogcast in @upcoming_subscription_blogcasts -%>
-            <%= render :partial => "/share/blogcast_large", :locals => {:blogcast => blogcast, show_user => true, :i => i - 1} -%>
+            <%= render :partial => "/share/blogcast", :locals => {:blogcast => blogcast, :show_user => true, :i => i - 1} -%>
   <%- i = i - 1 -%>
 <% end -%>
           </ol>
@@ -90,7 +90,7 @@
           <ol class="blogcasts">
 <% i = @recent_subscription_blogcasts.length -%>
 <% for blogcast in @recent_subscription_blogcasts -%>
-            <%= render :partial => "/share/blogcast_large", :locals => {:blogcast => blogcast, show_user => true, :i => i - 1} -%>
+            <%= render :partial => "/share/blogcast", :locals => {:blogcast => blogcast, :show_user => true, :i => i - 1} -%>
   <%- i = i - 1 -%>
 <% end -%>
           </ol>
