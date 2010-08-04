@@ -1,0 +1,120 @@
+#content.wide #main div.background
+{
+	padding-left: 23px; 
+	padding-top: 38px;
+	padding-right: 23px;
+	padding-bottom: 13px;
+	width: 794px;
+}
+
+#content.one-column.wide #left.blogcast-form
+{
+	width: 471px;
+	float: left;
+}
+
+#left img.icon
+{
+	display: inline;
+	cursor: pointer;
+	vertical-align: middle;
+}
+
+#content.one-column.wide #right.blogcast-form
+{
+	margin-left: 18px;
+	padding-left: 18px;
+	border-left: solid;
+	border-width: 3px;
+	border-color: #333333;
+	width: 284px;
+	float: left;
+}
+
+#right div.wrapper
+{
+	position: relative;
+	display: inline;
+}
+
+.blogcast-form label
+{
+	margin-top: 10px;
+	display: block;
+	color: #333333;
+	font-weight: bold;
+	font-size: 1.15em;
+}
+
+.blogcast-form label:first-child
+{
+	margin-top: 0px;
+}
+
+.blogcast-form input
+{
+	padding-left: 5px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	width: 397px;
+	font-size: 1.0em;
+}
+
+.blogcast-form textarea
+{
+	padding-left: 5px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	width: 459px;
+	height: 80px;
+	font-size: 1.0em;
+
+}
+
+form.new_blogcast input.submit
+{
+	margin-top: 18px;
+	padding: 0px;
+	border: solid;
+	border-color: #000000;
+	border-width: 1px;
+	width: 140px;
+	height: 30px;
+	background-color: #e5e5e5;
+	font-size: 0.8em;
+	cursor: pointer;
+	line-height: 26px;
+}
+ 
+form.new_blogcast input.submit:hover
+{
+	background-color: #a3a3a3;
+}
+
+#left.blogcast-form input
+{
+	width: 459px;
+}
+
+#right.blogcast-form label 
+{
+	font-size: 1.0em;
+}
+
+#right.blogcast-form input
+{
+	width: 273px;
+	font-size: 0.75em;
+}
+
+#calendar
+{
+	position: absolute;
+	display: inline;
+	font-size: 0.75em;
+}
+
+#blogcast_starting_at_12_hour_clock_hour
+{
+	margin-left: 5px;
+}

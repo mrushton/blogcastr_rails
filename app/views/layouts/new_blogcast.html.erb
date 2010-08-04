@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>New blogcast</title>
+    <%= stylesheet_link_tag "blogcastr", "new_blogcast", "http://yui.yahooapis.com/combo?2.8.1/build/calendar/assets/skins/sam/calendar.css", :media => "screen" %>
+    <%= javascript_include_tag :defaults, "jquery.js", "new_blogcast.js", "http://yui.yahooapis.com/combo?2.8.1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.1/build/calendar/calendar-min.js", :media => "all" %>
+    <script type="text/javascript">
+      jQuery.noConflict();
+    </script>
+  </head>
+  <body class="yui-skin-sam">
+    <%= yield :layout %>
+<% if Rails.env.production? -%>
+    <script type="text/javascript">
+      var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+      document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+      try {
+        var pageTracker = _gat._getTracker("UA-11177931-1");
+        pageTracker._trackPageview();
+      } catch(err) {}
+    </script>
+<% end -%>
+  </body>
+</html>

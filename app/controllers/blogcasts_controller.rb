@@ -13,8 +13,9 @@ class BlogcastsController < ApplicationController
   def new
     @user = current_user
     @blogcast = Blogcast.new
-    @title = "New Blogcast"
-    render :layout => "default"
+    #MVR - set start time to now by default
+    @blogcast.starting_at = Time.now
+    render :layout => "new_blogcast"
   end
 
   def create
