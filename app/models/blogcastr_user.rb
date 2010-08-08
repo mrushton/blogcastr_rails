@@ -70,12 +70,12 @@ class BlogcastrUser < User
     username + (username =~ /.*s$/ ? "'":"'s")
   end
 
-  protected
-
   #MVR - added authentication token
   def generate_authentication_token(password)
     self.authentication_token = encrypt("--#{Time.now.utc}--#{password}--")
   end
+
+  protected
 
   #MVR - username must be between four and fifteen characters and can only contain alphanumeric characters and underscores
   def valid_username?
