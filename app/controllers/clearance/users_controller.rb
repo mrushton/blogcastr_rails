@@ -9,14 +9,11 @@ class Clearance::UsersController < ApplicationController
 
   def create
     @blogcastr_user = BlogcastrUser.new(params[:blogcastr_user])
-    #MVR - make username lowercase
-    #TODO: could add a database field to support multi-case usernames if desired
-    #@blogcastr_user.username = @blogcastr_user.username.downcase
     #MVR - create setting
     @setting = Setting.new(params[:setting])
     #MVR - verify the invite token
     invite = Invite.find_by_token(params[:invite][:token])
-    if invite.nil?
+    if invite.nil? || invite.remaining <= 0
       @blogcastr_user.valid?
       #AS DESIGNED - valid? clears all errors so add it here 
       @blogcastr_user.errors.add_to_base("Invalid invite token")
@@ -57,11 +54,13 @@ class Clearance::UsersController < ApplicationController
     else
       @setting.time_zone = "UTC" 
     end
+    invite.remaining = invite.remaining - 1
     begin
       BlogcastrUser.transaction do
         @blogcastr_user.save!
         @setting.user_id = @blogcastr_user.id
         @setting.save!
+        invite.save!
       end
       begin
         #AS DESIGNED: create ejabberd account here since password gets encrypted
