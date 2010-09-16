@@ -362,3 +362,8 @@
 {
 	vertical-align: middle;
 }
+
+#content h2.tab
+{
+	border: none;
+}

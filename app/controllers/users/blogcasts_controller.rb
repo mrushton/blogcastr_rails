@@ -86,8 +86,8 @@ class Users::BlogcastsController < ApplicationController
         render :layout => "profile"
       }
       #TODO: limit result set and order by most recent 
-      format.xml {render :xml => @profile_user.subscribers.to_xml(:only => [:id, :name], :include => :user)}
-      format.json {render :json => @profile_user.subscribers.to_json(:only => [:id, :name], :include => :user)}
+      format.xml {render :xml => @profile_user.blogcasts.find(:all, :limit => 10, :order => "id DESC").to_xml(:only => [:id, :title, :description, :starting_at, :updated_at, :name], :include => :tags)}
+      format.json {render :json => @profile_user.blogcasts.find(:all, :limit => 10).to_json(:only => [:id, :title, :description, :starting_at, :updated_at, :name], :include => :tags)}
       format.rss {
         #MVR - blogcasts
         @blogcasts = @profile_user.blogcasts.find(:all, :limit => 10, :order => "created_at DESC")
