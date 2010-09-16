@@ -36,7 +36,7 @@
             </div>
             <%= select_hour_helper @blogcast.starting_at, "blogcast_starting_at_12_hour_clock_hour" %>
             <%= hidden_field_tag "blogcast[starting_at(4i)]", @blogcast.starting_at.hour, :id => "blogcast_starting_at_4i" %>
-            <%= select_minute @blogcast.starting_at, :field_name => "blogcast[starting_at(5i)]" %>
+            <%= select_minute @blogcast.starting_at, :field_name => "starting_at(5i)", :prefix => "blogcast" %>
             <%= select_12_hour_clock_period_helper @blogcast.starting_at, "blogcast_starting_at_12_hour_clock_period" %>
             <%= form.label :description, "Description" %>
             <%= form.text_area :description %>
@@ -46,9 +46,9 @@
             <%= text_field_tag "tags" %>
             <%= form.label :link_title, "Link title" %>
             <%= form.text_field :link_title %>
-        </div>
-        <div class="clear">
-        </div>
+          </div>
+          <div class="clear">
+          </div>
           <%= form.submit "Create", :class => "submit" %>
         <% end %>
       </div>
