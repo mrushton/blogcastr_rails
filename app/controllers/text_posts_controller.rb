@@ -1,4 +1,7 @@
 class TextPostsController < ApplicationController
+  #MVR - needed to work around CSRF for REST api
+  #TODO: add CSRF before filter for standard authentication only, other option is to modify Rails to bypass CSRF for certain user agents
+  skip_before_filter :verify_authenticity_token
   before_filter :set_time_zone
   before_filter do |controller|
     if controller.params[:authentication_token].nil?
@@ -14,9 +17,20 @@ class TextPostsController < ApplicationController
     else 
       @user = rest_current_user
     end
+    @text_post = TextPost.new(params[:text_post])
     #MVR - find blogcast
     @blogcast = @user.blogcasts.find(params[:blogcast_id]) 
-    @text_post = TextPost.new(params[:text_post])
+    if @blogcast.nil?
+      @text_post.valid?
+      @text_post.errors.add_to_base "Invalid blogcast id"
+      respond_to do |format|
+        format.js {@error = "Invalid blogcast id"; render :action => "error"}
+        format.html {flash[:error] = "Invalid blogcast id"; redirect_to :back}
+        format.xml {render :xml => @text_post.errors.to_xml, :status => :unprocessable_entity}
+        format.json {render :json => @text_post.errors.to_json, :status => :unprocessable_entity}
+      end
+      return
+    end
     @text_post.blogcast_id = @blogcast.id
     @text_post.user_id = @user.id
     if !@text_post.save
@@ -49,17 +63,18 @@ class TextPostsController < ApplicationController
       respond_to do |format|
         format.js {@error = "Unable to send text post to muc room"; render :action => "error"}
         format.html {flash[:error] = "Unable to send text post to muc room"; redirect_to :back}
-        format.xml {render :xml => @text_post.errors.to_xml, :status => :unprocessable_entity}
+        format.xml {render :xml => @text_post.errors, :status => :unprocessable_entity}
         #TODO: fix json support
-        format.json {render :json => @text_post.errors.to_json, :status => :unprocessable_entity}
+        format.json {render :json => @text_post.errors, :status => :unprocessable_entity}
       end
       return
     end
     respond_to do |format|
       format.js
       format.html {flash[:notice] = "Text post posted successfully"; redirect_to :back}
-      format.xml {render :xml => @text_post.to_xml, :status => :created, :location => @text_post}
-      format.json {render :json => @text_post.to_json, :status => :created, :location => @text_post}
+      #TODO: add http Location header back once posts have their own url
+      format.xml {render :xml => @text_post, :status => :created}
+      format.json {render :json => @text_post, :status => :created}
     end
   end
 
@@ -77,8 +92,8 @@ class TextPostsController < ApplicationController
         format.js {@error = "Unable to find text post"; render :action => "error"}
         format.html {flash[:error] = "Unable to fine text post"; redirect_to :back}
         #TODO: fix xml and json support
-        format.xml {render :xml => @post.errors.to_xml, :status => :unprocessable_entity}
-        format.json {render :json => @post.errors.to_json, :status => :unprocessable_entity}
+        format.xml {render :xml => @post.errors, :status => :unprocessable_entity}
+        format.json {render :json => @post.errors, :status => :unprocessable_entity}
       end
       return
     end
@@ -86,8 +101,8 @@ class TextPostsController < ApplicationController
     respond_to do |format|
       format.js
       format.html {flash[:notice] = "Text post deleted successfully"; redirect_to :back}
-      format.xml {render :xml => @text_post.to_xml, :status => :created, :location => @text_post}
-      format.json {render :json => @text_post.to_json, :status => :created, :location => @text_post}
+      format.xml {render :xml => @text_post}
+      format.json {render :json => @text_post}
     end
   end
 end

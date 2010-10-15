@@ -1,4 +1,7 @@
 class ImagePostsController < ApplicationController
+  #MVR - needed to work around CSRF for REST api
+  #TODO: add CSRF before filter for standard authentication only, other option is to modify Rails to bypass CSRF for certain user agents
+  skip_before_filter :verify_authenticity_token
   before_filter :set_time_zone
   before_filter do |controller|
     if controller.request.format.html?

@@ -59,9 +59,9 @@ class BlogcastsController < ApplicationController
     if !@blogcast.save
       respond_to do |format|
         format.html {@title = "New Blogcast"; render :template => "blogcasts/new", :layout => "default"}
-        format.xml {render :xml => @blogcast.errors.to_xml, :status => :unprocessable_entity}
+        format.xml {render :xml => @blogcast.errors, :status => :unprocessable_entity}
         #TODO: fix json support
-        format.json {render :json => @blogcast.errors.to_json, :status => :unprocessable_entity}
+        format.json {render :json => @blogcast.errors, :status => :unprocessable_entity}
       end
       return
     end
@@ -74,16 +74,15 @@ class BlogcastsController < ApplicationController
       @blogcast.destroy
       respond_to do |format|
         format.html {@title = "New Blogcast"; render :template => "blogcasts/new", :layout => "default"}
-        format.xml {render :xml => @blogcast.errors.to_xml, :status => :unprocessable_entity}
-        #TODO: fix json support
-        format.json {render :json => @blogcast.errors.to_json, :status => :unprocessable_entity}
+        format.xml {render :xml => @blogcast.errors, :status => :unprocessable_entity}
+        format.json {render :json => @blogcast.errors, :status => :unprocessable_entity}
       end
       return
     end
     respond_to do |format|
       format.html {redirect_to blogcast_dashboard_path(:blogcast_id => @blogcast.id)}
-      format.xml {render :xml => @blogcast.to_xml, :status => :created, :location => @blogcast}
-      format.json {render :json => @blogcast.to_json, :status => :created, :location => @blogcast}
+      format.xml {render :xml => @blogcast, :status => :created, :location => @blogcast}
+      format.json {render :json => @blogcast, :status => :created, :location => @blogcast}
     end
   end
 
@@ -92,8 +91,8 @@ class BlogcastsController < ApplicationController
       begin
         @blogcast = Blogcast.find(params[:id])
         format.html {redirect_to blogcast_permalink_path(:username => @blogcast.user.username, :year => @blogcast.year, :month => @blogcast.month, :day => @blogcast.day, :title => @blogcast.link_title)}
-        format.xml {render :xml => @blogcast.to_xml}
-        format.json {render :json => @blogcast.to_json}
+        format.xml {render :xml => @blogcast}
+        format.json {render :json => @blogcast}
       rescue ActiveRecord::RecordNotFound => error
         format.html {render :file => "public/404.html", :layout => false, :status => 404}
         format.xml {render :xml => "<errors><error>#{error.message}</error></errors>", :status => :unprocessable_entity}

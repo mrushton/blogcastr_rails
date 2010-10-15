@@ -15,8 +15,13 @@ class AuthenticationTokensController < ApplicationController
         end
         return
       else
-        authentication_token = @user.generate_authentication_token(params[:password])
-        @user.save
+        #AS DESIGNED: do not generate a new token per request
+        if @user.authentication_token.nil?
+          authentication_token = @user.generate_authentication_token(params[:password])
+          @user.save
+        else
+          authentication_token = @user.authentication_token
+        end
         respond_to do |format|
           format.xml {render :xml => "<authentication_token>#{authentication_token}</authentication_token>"}
           format.json {render :json => "[[\"#{authentication_token}\"]]"}
