@@ -125,14 +125,16 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :blogcasts, :controller => "blogcasts", :only => [:new, :create, :show, :edit, :update, :destroy] do |blogcasts|
     #MVR - dashboard
     blogcasts.resource :dashboard, :controller => "dashboard", :only => [:show]
+    #MVR - posts
+    blogcasts.resources :posts, :controller => "posts", :only => [:destroy]
     #MVR - text posts
-    blogcasts.resources :text_posts, :controller => "text_posts", :only => [:create, :destroy]
+    blogcasts.resources :text_posts, :controller => "text_posts", :only => [:create]
     #MVR - image posts
-    blogcasts.resources :image_posts, :controller => "image_posts", :only => [:create, :destroy]
+    blogcasts.resources :image_posts, :controller => "image_posts", :only => [:create]
     #MVR - audio posts
-    blogcasts.resources :audio_posts, :controller => "audio_posts", :only => [:create, :destroy]
+    blogcasts.resources :audio_posts, :controller => "audio_posts", :only => [:create]
     #MVR - video posts
-    blogcasts.resources :video_posts, :controller => "video_posts", :only => [:create, :destroy]
+    blogcasts.resources :video_posts, :controller => "video_posts", :only => [:create]
     #MVR - comment posts
     blogcasts.resources :comment_posts, :controller => "comment_posts", :only => [:create, :destroy]
     #MVR - reposts

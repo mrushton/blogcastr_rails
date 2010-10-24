@@ -192,7 +192,7 @@
   <%- if post.instance_of?(TextPost) -%>
           <%= render :partial => "/share/text_post", :object => post, :locals => {:i => i, :show_controls => true} -%>
   <%- elsif post.instance_of?(ImagePost) -%>
-          <%= render :partial => "/share/image_post", :object => post, :locals => {:i => i} -%>
+          <%= render :partial => "/share/image_post", :object => post, :locals => {:i => i, :show_controls => true} -%>
   <%- elsif post.instance_of?(CommentPost) -%>
           <%= render :partial => "/share/comment_post", :object => post, :locals => {:i => i} -%>
   <%- elsif post.instance_of?(Repost) -%>

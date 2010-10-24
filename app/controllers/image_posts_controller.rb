@@ -26,8 +26,8 @@ class ImagePostsController < ApplicationController
       respond_to do |format|
         format.js {@error = "Unable to save image post"; render :action => "error"}
         format.html {flash[:error] = "Unable to save image post"; redirect_to :back}
-        format.xml {render :xml => @image_post.errors.to_xml, :status => :unprocessable_entity}
-        format.json {render :json => @image_post.errors.to_json, :status => :unprocessable_entity}
+        format.xml {render :xml => @image_post.errors, :status => :unprocessable_entity}
+        format.json {render :json => @image_post.errors, :status => :unprocessable_entity}
       end
       return
     end
@@ -55,17 +55,46 @@ class ImagePostsController < ApplicationController
       respond_to do |format|
         format.js {@error = "Unable to send image post to muc room"; render :action => "error"}
         format.html {flash[:error] = "Unable to send text post to muc room"; redirect_to :back}
-        format.xml {render :xml => @text_post.errors.to_xml, :status => :unprocessable_entity}
+        format.xml {render :xml => @text_post.errors, :status => :unprocessable_entity}
         #TODO: fix json support
-        format.json {render :json => @text_post.errors.to_json, :status => :unprocessable_entity}
+        format.json {render :json => @text_post.errors, :status => :unprocessable_entity}
       end
       return
     end
     respond_to do |format|
       format.js
       format.html {flash[:success] = "Image post posted successfully"; redirect_to :back}
-      format.xml {render :xml =>@image_post.to_xml, :status => :created, :location => @image_post}
-      format.json {render :json => @image_post.to_json, :status => :created, :location => @image_post}
+      #TODO: add http Location header back once posts have their own url
+      format.xml {render :xml =>@image_post, :status => :created}
+      format.json {render :json => @image_post, :status => :created}
+    end
+  end
+
+  def destroy
+    if params[:authentication_token].nil?
+      @user = current_user
+    else 
+      @user = rest_current_user
+    end
+    #MVR - find image post
+    #AS DESIGNED: do not bother with what type it is 
+    @image_post = @user.posts.find(params[:id]) 
+    if @image_post.nil?
+      respond_to do |format|
+        format.js {@error = "Unable to find image post"; render :action => "error"}
+        format.html {flash[:error] = "Unable to find image post"; redirect_to :back}
+        #TODO: fix xml and json support
+        format.xml {render :xml => @image_post.errors, :status => :unprocessable_entity}
+        format.json {render :json => @image_post.errors, :status => :unprocessable_entity}
+      end
+      return
+    end
+    @image_post.destroy
+    respond_to do |format|
+      format.js
+      format.html {flash[:notice] = "Image post deleted successfully"; redirect_to :back}
+      format.xml {render :xml => @image_post}
+      format.json {render :json => @image_post}
     end
   end
 end

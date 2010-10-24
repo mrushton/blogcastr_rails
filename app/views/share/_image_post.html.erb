@@ -1,3 +1,5 @@
+<% blogcast = image_post.blogcast -%>
+<% show_controls = nil if !defined?(show_controls) -%>
 <li id="Post:<%= image_post.id %>" class="post">
 <%- if i == 1 -%>
   <div class="spacer first">
@@ -12,6 +14,9 @@
 <% if !image_post.text.nil? -%>
       <p class="text"><%= image_post.text %></p>
 <% end -%>
+<%- if show_controls -%>
+      <%= link_to_remote "Delete", :url => {:controller => "posts", :action => "destroy", "blogcast_id" => blogcast.id, "id" => image_post.id}, :method => "delete" %>
+<%- end -%>
       <div class="info-collapsible" onclick="blogcastrCollapsibleEvent(this, 'ImagePost:<%= image_post.id -%>-info');">Info<%= image_tag "up.png" -%></div>
       <div id="ImagePost:<%= image_post.id -%>-info" class="info" style="display: none;">
 <% if defined?(blogcast) -%>
