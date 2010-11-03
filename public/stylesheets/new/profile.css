@@ -1,0 +1,54 @@
+#profile-navigation {
+	float: right;
+	font-style: italic;
+	line-height: 14px;
+	list-style: none;
+	margin: 0px;
+	padding: none;
+	text-align: right;
+}
+
+#content div.button-container {
+	float: right;
+}
+
+#subscription-button {
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	font-size: 0.8em;
+	height: 30px;
+	line-height: 30px;
+	padding-left: 20px; 
+	padding-right: 20px; 
+}
+
+#profile-avatar {
+	float: left;
+}
+
+#profile-info-container {
+	float: left;
+	margin-left: 16px;
+	margin-top: 8px;
+}
+
+#full-name {
+	font-size: 2.2em;
+	font-weight: bold;
+	line-height: 36px;
+}
+
+#location-and-web {
+	font-family: serif;
+	font-style: italic;
+	line-height: 22px;
+}
+
+#bio {
+	color: #6f6f6f;
+	font-size: 0.75em;
+	line-height: 14px;
+	margin-top: 2px;
+	width: 280px;
+}
+

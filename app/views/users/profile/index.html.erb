@@ -1,151 +1,136 @@
-<div id="alert" style="display: none;">
-</div>
-<div id="wrapper" class="user">
-  <div id="header" class="small">
-    <%- form_tag user_search_path(:username => @profile_user.username, :controller => "users/search") do -%>
-      <%= label_tag :query, image_tag("magnifying_glass.png") -%>
-      <%= text_field_tag :query, "Search #{@profile_username_possesive} Blogcastr", :onfocus => "if (this.value == 'Search #{@profile_username_possesive_escaped} Blogcastr') this.value = ''; jQuery('#header form').addClass('selected');", :onblur => "if (this.value == '') this.value = 'Search #{@profile_username_possesive_escaped} Blogcastr'; jQuery('#header form').removeClass('selected');" -%>
-    <%- end -%>
-    <%= link_to(image_tag("/images/logo-small.png", :class => "logo"), "/") %>
-    <%= image_tag "/images/beta-small.png", :class => "beta" %>
-    <div id="navigation">
+<div id="container">
+  <div id="header-container">
+    <div id="header">
 <% if @user.instance_of?(BlogcastrUser) -%>
-      <%= link_to image_tag(@user.setting.avatar.url(:small)) + @user.username, profile_path(:username => @user.username), :class => "user" %>
-      <%= link_to "Home", home_path %>
-      <%= link_to "Settings", settings_path %>
-      <%= link_to "Sign out", sign_out_path, :method => "delete" %>
+      <ul id="navigation-container">
+          <li>
+            <%= link_to "Home", home_path %>
+          </li>
+          <li>
+            <%= link_to "Settings", settings_path %>
+          </li>
+          <li>
+            <%= link_to "Sign out", sign_out_path, :method => "delete" %>
+          </li>
+      </ul>
+      <div id="welcome">
+        <%= link_to "<div id=\"welcome-avatar\" class=\"medium-rounded-avatar\" style=\"background-image: url('" + @user.setting.avatar.url(:medium) + "')\"></div>", profile_path(:username => @user.username) %>
+        Welcome,
+        <br>
+        <%= link_to @user.username, profile_path(:username => @user.username), :class => "username" -%>
+      </div>
 <% elsif @user.instance_of?(FacebookUser) -%>
-  <%- avatar = @user.get_avatar_url :small %>
-  <%- if avatar.nil? -%>
-      <%- avatar = get_facebook_avatar_url @user.facebook_id %>
-  <%- end -%>
-  <%- if avatar.nil? -%>
-      <%= link_to image_tag("http://static.ak.facebook.com/pics/q_silhouette_logo.gif") + @user.get_username, @user.get_url, :class => "first" %>
-  <%- else -%>
-      <%= link_to image_tag(avatar) + @user.get_username, @user.get_url, :class => "first user" %>
-  <%- end -%>
-      <%= link_to "Sign up", sign_up_path %>
-      <span class="button" onclick="FB.Connect.logout(blogcastrFacebookSignOut);">Sign out</span>
 <% elsif @user.instance_of?(TwitterUser) -%>
-      <%= link_to image_tag(@user.get_avatar_url(:small)) + @user.get_username, @user.get_url, :class => "first user" %>
-      <%= link_to "Sign up", sign_up_path %>
-      <span onclick="blogcastrTwitterSignOut();">Sign out</span>
 <% else -%>
-      <%= link_to "Sign up", sign_up_path %>
-      <%= link_to "Sign in", sign_in_path %>
+      <div id="sign-in-or-sign-up-container">
+        <%= link_to "Sign In", sign_in_path, :id => "sign-in-button", :class => "blue-button" %>
+        <%= link_to "Sign Up", sign_up_path, :id => "sign-up-button", :class => "orange-button" %>
+      </div>
 <% end -%>
-    </div>
-    <div class="clear">
+      <%- form_tag search_path(:controller => "search"), :method => "get", :id => "header-search" do -%> 
+        <%= text_field_tag :query, "Search #{@profile_user.username}...", :onfocus => "if (this.value == 'Search #{@profile_user.username}...') this.value = '';", :onblur => "if (this.value == '') this.value = 'Search #{@profile_user.username}...';" -%> 
+      <%- end -%> 
     </div>
   </div>
-  <div id="content">
-    <div id="main">
-      <div id="spacer">
-        <div class="top-border-medium-indent-white-squared first">
+  <table id="content" cellspacing="0">
+    <tr>
+      <td id="main">
+<%- if @user.nil? -%>
+        <div class="button-container">
+          <%= link_to "Subscribe", sign_in_path, :id => "subscription-button", :class => "blue-button" %>
         </div>
-        <div id="top">
-          <div id="left">
-            <%= link_to image_tag(@profile_user.setting.avatar.url(:large), :class => "avatar"), @profile_user.setting.avatar.url(:original) %>
-          </div>
-          <div id="right">
-            <h1><%= @profile_username_possesive -%><br>Blogcastr</h1>
-<% if !@profile_user.setting.motto.nil? -%>
-            <div class="motto"><%= @profile_user.setting.motto -%></div>
-<% end -%>
-<% if @user.instance_of?(BlogcastrUser) -%>
-  <%- if @user.id == @profile_user.id -%> 
-            <div class="navigation">
-              <p>Welcome to your Blogcastr!</p>
-              <div class="align">
-                <%= link_to "Home", home_path -%>
-                <%= link_to "Settings", settings_path -%>
-                <div class="clear">
-                </div>
-              </div>
-            </div>
+<%- elsif @user == @profile_user -%>
+        <ul id="profile-navigation">
+          <li>
+            <%= link_to "Go to home &rarr", home_path, :class => "navigation-link" %>
+          </li>
+          <li>
+            <%= link_to "Edit profile &rarr", settings_path, :class => "navigation-link" %>
+          </li>
+        </ul>
+<%- else -%>
+        <div class="button-container">
+  <%- if @subscription.nil? -%>
+          <%= link_to_remote "Subscribe", :html => {:id => "subscription-button", :class => "blue-button"}, :url => subscriptions_path(:user_id => @profile_user.id), :failure => "alert('Error communicating with server, unable to subscribe to #{@profile_user.username}');", :condition => "remote_request == false", :before => "remote_request = true", :complete => "setTimeout('remote_request = false', 3500)" -%>
   <%- else -%>
-    <%- if @subscription.nil? -%>
-            <div class="subscribe">
-              <p>Subscribe to <%= @profile_user.username -%>.</p>
-              <div class="align">
-                <div id="subscription-button">
-                <%= button_to_remote "Subscribe!", :url => subscriptions_path(:user_id => @profile_user.id), :failure => "alert('Error communicating with server, unable to subscribe to #{@profile_user.username}');", :id => "subscription-button", :condition => "remote_request == false", :before => "remote_request = true", :complete => "setTimeout('remote_request = false', 3500)" -%>
-    <%- else -%>
-            <div class="subscribe">
-              <p>You are subscribed to <%= @profile_user.username -%>.</p>
-              <div class="align">
-                <div id="subscription-button">
-                  <%= button_to_remote "Unsubscribe", :url => subscription_path(:id => @subscription.id), :method => "delete", :failure => "alert('Error communicating with server, unable to unsubscribe from #{@profile_user.username}');", :id => "subscription-button", :condition => "remote_request == false", :before => "remote_request = true", :complete => "setTimeout('remote_request = false', 3500)" -%>
-    <%- end -%>
-                </div>
-                <%= link_to "Message!", sign_in_path, :class => "last" -%>
-                <div class="clear">
-                </div>
-              </div>
-            </div>
+          <%= link_to_remote "Unsubscribe", :html => {:id => "subscription-button", :class => "blue-button"}, :url => subscription_path(:id => @subscription.id), :method => "delete", :failure => "alert('Error communicating with server, unable to unsubscribe from #{@profile_user.username}');", :condition => "remote_request == false", :before => "remote_request = true", :complete => "setTimeout('remote_request = false', 3500)" -%>
   <%- end -%>
-<% else -%>
-            <div class="sign-up">
-              <p>To subscribe to <%= @profile_user.username -%> sign up or sign in.</p>
-              <div class="align">
-                <%= link_to "Sign up!", sign_up_path -%>
-                <%= link_to "Sign in!", sign_in_path -%>
-                <div class="clear">
-                </div>
-              </div>
-            </div>
-<% end -%>
-          </div>
-          <div class="clear">
-          </div>
-        </div>
-        <div class="bottom-border-medium-indent-white-squared">
-        </div>
-      </div>
-      <div class="top-border-medium-indent-white-squared">
-      </div>
-      <div id="bottom">
-        <h2 class="first">Upcoming blogcasts</h2>
-<%- if @num_upcoming_blogcasts == 0 -%>
-        <div class="none">
-          <%= @profile_user.username -%> has no upcoming blogcasts.
-        </div>
-<%- else -%>
-        <ol>
-  <%- i = @upcoming_blogcasts.length -%>
-  <% for blogcast in @upcoming_blogcasts -%>
-          <%= render :partial => "/share/blogcast", :locals => {:blogcast => blogcast, :i => i - 1} -%>
-    <%- i = i - 1 -%>
-  <% end %>
-        </ol>
-<% end %>
-<%- if @num_upcoming_blogcasts > 3 -%>
-  <%- num_more = @num_upcoming_blogcasts - 3 -%>
-        <%= link_to num_more.to_s + " More", username_upcoming_blogcasts_path(:username => @profile_user.username), :class => "more" %>
-        <div class="clear">
         </div>
 <%- end -%>
-        <h2>Recent blogcasts</h2>
-<%- if @num_recent_blogcasts == 0 -%>
-        <div class="none">
-          <%= @profile_user.username -%> has no recent blogcasts.
+        <%= link_to "<div id=\"profile-avatar\" class=\"large-rounded-avatar\" style=\"background-image: url('" + @profile_user.setting.avatar.url(:large) + "')\"></div>", @profile_user.setting.avatar.url(:original) %>
+        <div id="profile-info-container">
+          <div id="full-name">
+            <%= @profile_user.setting.full_name -%>
+          </div>
+<%- if !@profile_user.setting.location.nil? -%>
+         <div id="location-and-web">
+  <%- if !@profile_user.setting.web.nil? -%>
+           <%= @profile_user.setting.location + " &bull; " + link_to(@profile_user.setting.web, @profile_user.setting.web) -%> 
+  <%- else -%>
+           <%= @profile_user.setting.location -%> 
+  <%- end -%>
+         </div>
+<%- elsif !@profile_user.setting.web.nil? -%>
+         <div id="location-and-web">
+           <%= @profile_user.setting.web -%> 
+         </div>
+<%- end -%> 
+<%- if !@profile_user.setting.bio.nil? -%>
+         <div id="bio">
+           <%= @profile_user.setting.bio -%> 
+         </div>
+<%- end -%> 
+        </div> 
+      </td>
+      <td id="side">
+        <div id="username">
+          <%= @profile_user.username -%>
         </div>
-<%- else -%>
-        <ol>
-  <%- i = @recent_blogcasts.length -%>
-  <% for blogcast in @recent_blogcasts -%>
-          <%= render :partial => "/share/blogcast", :locals => {:blogcast => blogcast, :i => i - 1} -%>
-    <%- i = i - 1 -%>
-  <% end %>
-        </ol>
+        <div class="arrow">
+        </div>
+        <div class="side-details-container">
+          <ul class="stats-container">
+            <li class="stat">
+              <span class="stat-counter"><%= @num_blogcasts -%></span> <%= link_to @num_blogcasts == 1 ? "Blogcast" : "Blogcasts", username_blogcasts_path(@profile_user.username) -%>
+            </li>
+            <li class="stat">
+              <span class="stat-counter"><%= @num_posts -%></span> <%= link_to @num_posts == 1 ? "Post" : "Posts", username_posts_path(@profile_user.username) -%>
+
+            </li>
+            <li class="stat">
+              <span class="stat-counter"><%= @num_comments -%></span> <%= link_to @num_comments == 1 ? "Comment" : "Comments", username_comments_path(@profile_user.username) -%>
+
+            </li>
+            <li class="stat">
+              <span class="stat-counter"><%= @num_likes -%></span> <%= link_to @num_likes == 1 ? "Favorite" : "Favorites", username_likes_path(@profile_user.username) -%>
+            </li>
+          </ul>
+          <div class="avatar-stat-container">
+            <%= link_to @num_subscriptions.to_s + " " + (@num_subscriptions == 1 ? "Subscription" : "Subscriptions"), username_subscriptions_path(@profile_user.username), :class => "stat" -%> 
+<%- if @num_subscriptions > 0 -%>
+            <ul class="avatar-list clearfix">
+  <%- for subscription in @subscriptions -%>
+              <li>
+                <%= link_to image_tag(subscription.setting.avatar.url(:small), :class => "avatar small", :alt => "#{subscription.username}"), profile_path(:username => subscription.username), :title => "#{subscription.username}" %>
+              </li>
+  <%- end -%>
+            </ul>
 <%- end -%>
-      </div>
-      <div class="bottom-border-medium-indent-white-squared last">
-      </div>
-    </div>
-    <%= render :partial => "/users/share/side" -%>
-    <div class="clear">
-    </div>
-  </div>
-  <%= render :partial => "/share/footer_small" -%>
+          </div>
+          <div class="avatar-stat-container">
+            <%= link_to @num_subscribers.to_s + " " + (@num_subscribers == 1 ? "Subscriber" : "Subscribers"), username_subscribers_path(@profile_user.username), :class => "stat" -%> 
+<%- if @num_subscribers > 0 -%>
+            <ul class="avatar-list clearfix">
+  <%- for subscriber in @subscribers -%>
+              <li>
+                <%= link_to image_tag(subscriber.setting.avatar.url(:small), :class => "avatar small", :alt => "#{subscriber.username}"), profile_path(:username => subscriber.username), :title => "#{subscriber.username}" %>
+              </li>
+  <%- end -%>
+            </ul>
+<%- end -%>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </table>
 </div>

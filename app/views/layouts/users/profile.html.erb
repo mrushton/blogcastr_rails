@@ -3,34 +3,33 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title><%= @title %></title>
-    <%= stylesheet_link_tag "blogcastr", :media => "screen" %>
-    <%= stylesheet_link_tag "profile", :media => "screen" %>
+    <%= stylesheet_link_tag "new/all", :media => "screen" %>
+    <%= stylesheet_link_tag "new/profile", :media => "screen" %>
     <!--[if IE]>
-      <%= stylesheet_link_tag "ie", :media => "screen" %>
+      <%= stylesheet_link_tag "new/ie", :media => "screen" %>
     <![endif]-->
-    <%= auto_discovery_link_tag(:rss, username_blogcasts_url(:username => @profile_user.username, :format => "rss"), {:title => "#{@profile_username_possesive} blogcasts"}) %>
     <style>
 <% if @theme.nil? -%>
       body
       {
-  <%- if !@profile_setting.background_image_file_name.nil? -%>
-        background: url('<%= @profile_setting.background_image.url %>');
+  <%- if !@blogcast_setting.background_image_file_name.nil? -%>
+        background-image: url('<%= @blogcast_setting.background_image.url %>');
   <% end -%>
-  <%- if @profile_setting.tile_background_image == false -%>
+  <%- if @blogcast_setting.tile_background_image == false -%>
         background-repeat: no-repeat;
   <% end -%>
-  <%- if @profile_setting.scroll_background_image == false -%>
+  <%- if @blogcast_setting.scroll_background_image == false -%>
         background-attachment: fixed;
   <% end -%>
-  <%- if !@profile_setting.background_color.blank? -%>
-        background-color: <%= @profile_setting.background_color; -%>
+  <%- if !@blogcast_setting.background_color.blank? -%>
+        background-color: <%= @blogcast_setting.background_color; -%>
   <% end -%>
       }
 <% else -%>
       body
       {
   <%- if !@theme.background_image_file_name.nil? -%>
-        background: url('/images/themes/<%= @theme.id -%>/background_image/original/<%= @theme.background_image_file_name -%>');
+        background-image: url('/images/themes/<%= @theme.id -%>/background_image/original/<%= @theme.background_image_file_name -%>');
   <% end -%>
   <%- if @theme.id == 1 -%>
         background-repeat: repeat-x;
@@ -46,13 +45,12 @@
       }
 <% end -%>
     </style>
-    <%= javascript_include_tag :defaults, "jquery.js", "profile.js", :media => "all" %>
+    <%= auto_discovery_link_tag(:rss, username_blogcasts_url(:username => @profile_user.username, :format => "rss"), {:title => "#{@profile_username_possesive} blogcasts"}) %>
+    <%= javascript_include_tag :defaults, "jquery.js", "new/profile.js", :media => "all" %>
     <% javascript_tag do %>
       jQuery.noConflict();
       var authenticity_token = "<%= form_authenticity_token -%>";
       var server_timestamp = <%= Time.now.to_i %>;
-      var up_image = "<%= image_path "up.png" -%>";
-      var down_image = "<%= image_path "down.png" -%>";
       var email_add_image = "<%= image_path "email_add.png" -%>";
       var email_delete_image = "<%= image_path "email_delete.png" -%>";
       var sms_add_image = "<%= image_path "phone_add.png" -%>";
