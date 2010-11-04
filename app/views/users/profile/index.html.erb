@@ -35,52 +35,66 @@
   <table id="content" cellspacing="0">
     <tr>
       <td id="main">
+        <div class="clearfix">
 <%- if @user.nil? -%>
-        <div class="button-container">
-          <%= link_to "Subscribe", sign_in_path, :id => "subscription-button", :class => "blue-button" %>
-        </div>
-<%- elsif @user == @profile_user -%>
-        <ul id="profile-navigation">
-          <li>
-            <%= link_to "Go to home &rarr", home_path, :class => "navigation-link" %>
-          </li>
-          <li>
-            <%= link_to "Edit profile &rarr", settings_path, :class => "navigation-link" %>
-          </li>
-        </ul>
-<%- else -%>
-        <div class="button-container">
-  <%- if @subscription.nil? -%>
-          <%= link_to_remote "Subscribe", :html => {:id => "subscription-button", :class => "blue-button"}, :url => subscriptions_path(:user_id => @profile_user.id), :failure => "alert('Error communicating with server, unable to subscribe to #{@profile_user.username}');", :condition => "remote_request == false", :before => "remote_request = true", :complete => "setTimeout('remote_request = false', 3500)" -%>
-  <%- else -%>
-          <%= link_to_remote "Unsubscribe", :html => {:id => "subscription-button", :class => "blue-button"}, :url => subscription_path(:id => @subscription.id), :method => "delete", :failure => "alert('Error communicating with server, unable to unsubscribe from #{@profile_user.username}');", :condition => "remote_request == false", :before => "remote_request = true", :complete => "setTimeout('remote_request = false', 3500)" -%>
-  <%- end -%>
-        </div>
-<%- end -%>
-        <%= link_to "<div id=\"profile-avatar\" class=\"large-rounded-avatar\" style=\"background-image: url('" + @profile_user.setting.avatar.url(:large) + "')\"></div>", @profile_user.setting.avatar.url(:original) %>
-        <div id="profile-info-container">
-          <div id="full-name">
-            <%= @profile_user.setting.full_name -%>
+          <div class="button-container">
+            <%= link_to "Subscribe", sign_in_path, :id => "subscription-button", :class => "blue-button" %>
           </div>
-<%- if !@profile_user.setting.location.nil? -%>
-         <div id="location-and-web">
-  <%- if !@profile_user.setting.web.nil? -%>
-           <%= @profile_user.setting.location + " &bull; " + link_to(@profile_user.setting.web, @profile_user.setting.web) -%> 
+<%- elsif @user == @profile_user -%>
+          <ul id="profile-navigation">
+            <li>
+              <%= link_to "Go to home &rarr", home_path, :class => "navigation-link" %>
+            </li>
+            <li>
+              <%= link_to "Edit profile &rarr", settings_path, :class => "navigation-link" %>
+            </li>
+          </ul>
+<%- else -%>
+          <div id="subscription-button-container" class="button-container">
+  <%- if @subscription.nil? -%>
+            <%= link_to_remote "Subscribe", :html => {:id => "subscription-button", :class => "blue-button"}, :url => subscriptions_path(:user_id => @profile_user.id), :failure => "alert('Error communicating with server, unable to subscribe to #{@profile_user.username}');", :condition => "remote_request == false", :before => "remote_request = true", :complete => "setTimeout('remote_request = false', 1000)" -%>
   <%- else -%>
-           <%= @profile_user.setting.location -%> 
+            <%= link_to_remote "Unsubscribe", :html => {:id => "subscription-button", :class => "blue-button"}, :url => subscription_path(:id => @subscription.id), :method => "delete", :failure => "alert('Error communicating with server, unable to unsubscribe from #{@profile_user.username}');", :condition => "remote_request == false", :before => "remote_request = true", :complete => "setTimeout('remote_request = false', 1000)" -%>
   <%- end -%>
-         </div>
+          </div>
+<%- end -%>
+          <%= link_to "<div id=\"profile-avatar\" class=\"large-rounded-avatar\" style=\"background-image: url('" + @profile_user.setting.avatar.url(:large) + "')\"></div>", @profile_user.setting.avatar.url(:original) %>
+          <div id="profile-info-container" class="clearfix">
+            <div id="full-name">
+              <%= @profile_user.setting.full_name -%>
+            </div>
+<%- if !@profile_user.setting.location.nil? -%>
+            <div id="location-and-web">
+  <%- if !@profile_user.setting.web.nil? -%>
+              <%= @profile_user.setting.location + " &bull; " + link_to(@profile_user.setting.web, @profile_user.setting.web) -%> 
+  <%- else -%>
+              <%= @profile_user.setting.location -%> 
+  <%- end -%>
+            </div>
 <%- elsif !@profile_user.setting.web.nil? -%>
-         <div id="location-and-web">
-           <%= @profile_user.setting.web -%> 
-         </div>
+            <div id="location-and-web">
+              <%= @profile_user.setting.web -%> 
+            </div>
 <%- end -%> 
 <%- if !@profile_user.setting.bio.nil? -%>
-         <div id="bio">
-           <%= @profile_user.setting.bio -%> 
-         </div>
+            <div id="bio">
+              <%= @profile_user.setting.bio -%> 
+            </div>
 <%- end -%> 
+          </div> 
         </div> 
+        <h2>Upcoming Blogcasts</h2>
+        <ol class="blogcasts">
+<%- for blogcast in @upcoming_blogcasts -%>
+          <%= render :partial => "/share/new/blogcast", :locals => {:blogcast => blogcast} -%>
+<%- end -%>
+        </ol>
+        <h2>Recent Blogcasts</h2>
+        <ol class="blogcasts">
+<%- for blogcast in @recent_blogcasts -%>
+          <%= render :partial => "/share/new/blogcast", :locals => {:blogcast => blogcast} -%>
+<%- end -%>
+        </ol>
       </td>
       <td id="side">
         <div id="username">
@@ -133,4 +147,14 @@
       </td>
     </tr>
   </table>
+  <div id="footer">
+    <span id="copyright">&copy; 2010 Blogcastr</span>
+    <%= link_to "About", about_path -%>
+    <%= link_to "Blog", "http://blogcastr.wordpress.com" -%>
+    <a href="http://www.facebook.com/blogcastr">Facebook</a>
+    <%= link_to "FAQ", faq_path -%>
+    <%= link_to "Privacy Policy", privacy_policy_path -%>
+    <%= link_to "Terms of Service", terms_of_service_path -%>
+    <a href="http://twitter.com/blogcastr">Twitter</a>
+  </div>
 </div>

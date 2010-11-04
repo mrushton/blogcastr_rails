@@ -57,13 +57,13 @@ ActionController::Routing::Routes.draw do |map|
     #MVR - user subscribers 
     users.resources "subscribers", :controller => "users/subscribers", :only => [:index]
   end
+  #TODO: move everything over to use "user"
   #MVR - user blogcasts
   map.username_blogcasts ":username/blogcasts.:format", :controller => "users/blogcasts", :format => nil
   map.username_recent_blogcasts ":username/blogcasts/recent.:format", :controller => "users/blogcasts", :action => "recent", :format => nil
   map.username_upcoming_blogcasts ":username/blogcasts/upcoming.:format", :controller => "users/blogcasts", :action => "upcoming", :format => nil
   #MVR - user search 
   map.user_search ":username/search", :controller => "users/search"
-  #TODO: move everything over to use "user"
   map.user_tagged_blogcasts ":username/blogcasts/tagged.:format", :controller => "users/blogcasts", :action => "tagged", :format => nil
   #MVR - user blogcast
   map.username_blogcast_permalink ":username/:year/:month/:day/:title.:format", :controller => "users/blogcasts", :action => "show", :format => nil, :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
