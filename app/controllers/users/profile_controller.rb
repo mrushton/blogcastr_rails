@@ -15,10 +15,10 @@ class Users::ProfileController < ApplicationController
       @subscription = @user.subscriptions.find(:first, :conditions => {:subscribed_to => @profile_user.id})
     end
     #MVR - upcoming blogcasts
-    @upcoming_blogcasts = @profile_user.blogcasts.find(:all, :conditions => ["starting_at > ?", Time.zone.now], :order => "starting_at", :limit => 3)
+    @upcoming_blogcasts = @profile_user.blogcasts.find(:all, :conditions => ["starting_at > ?", Time.zone.now], :order => "starting_at", :limit => 2)
     @num_upcoming_blogcasts = Blogcast.count(:conditions => ["user_id = ? AND starting_at > ?", @profile_user.id, Time.zone.now])
     #MVR - recent blogcasts
-    @recent_blogcasts = @profile_user.blogcasts.find(:all, :conditions => ["starting_at < ? AND starting_at > ?", Time.zone.now, 1.month.ago], :order => "starting_at", :limit => 3)
+    @recent_blogcasts = @profile_user.blogcasts.find(:all, :conditions => ["starting_at < ? AND starting_at > ?", Time.zone.now, 1.month.ago], :order => "starting_at", :limit => 2)
     @num_recent_blogcasts = Blogcast.count(:conditions => ["user_id = ? AND starting_at < ? AND starting_at > ?", @profile_user.id, Time.zone.now, 1.month.ago])
     #MVR - blogcasts
     @num_blogcasts = @profile_user.blogcasts.count
@@ -34,9 +34,6 @@ class Users::ProfileController < ApplicationController
     @num_subscribers = @profile_user.subscribers.count
     #MVR - posts
     @num_posts = @profile_user.posts.count
-    #MVR - subscription blogcasts
-    @upcoming_subscription_blogcasts = Blogcast.find_by_sql(["SELECT blogcasts.* FROM subscriptions, users, blogcasts WHERE subscriptions.user_id = ? AND subscriptions.subscribed_to = users.id AND users.id = blogcasts.user_id AND blogcasts.starting_at > ? ORDER BY blogcasts.starting_at LIMIT 3", @profile_user.id, Time.zone.now])
-    @recent_subscription_blogcasts = Blogcast.find_by_sql(["SELECT blogcasts.* FROM subscriptions, users, blogcasts WHERE subscriptions.user_id = ? AND subscriptions.subscribed_to = users.id AND users.id = blogcasts.user_id AND blogcasts.starting_at < ? ORDER BY blogcasts.starting_at DESC LIMIT 3", @profile_user.id, Time.zone.now])
     @profile_username_possesive = @profile_user.username + (@profile_user.username =~ /.*s$/ ? "'":"'s")
     @profile_username_possesive_escaped = @profile_username_possesive.gsub(/'/,"\\\\\'")
     if @user.instance_of?(BlogcastrUser)

@@ -1,17 +1,19 @@
 <%- show_delete = nil if !defined?(show_delete) -%>
 <%- user = blogcast.user -%>    
-<li id="blogcast-<%= blogcast.id -%>" class="blogcast">
+<li class="blogcast" blogcast-id="<%= blogcast.id -%>" blogcast-permalink="<%= blogcast_permalink_path(:username => user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title) -%>">
   <div class="blogcast-header">
     <%= blogcast.title -%>
   </div>
   <div class="blogcast-body">
     <div class="clearfix">
-      <%= link_to image_tag(user.setting.avatar(:medium), :class => "avatar"), profile_path(:username => user.username) -%>
+      <%= link_to image_tag(user.setting.avatar(:small), :class => "avatar"), profile_path(:username => user.username) -%>
       <div class="blogcast-info">
         <%= link_to user.username, profile_path(:username => user.username), :class => "username" -%>
-        <span class="time"><%= time_helper blogcast.starting_at -%></span>
+        <span class="time"><%= timestamp_in_words_helper blogcast.starting_at -%></span>
 <%- if !blogcast.description.nil? -%>
-        <p class="description"><%= blogcast.description -%></p>
+        <p class="description">
+          <%= blogcast.description -%>
+        </p>
 <%- end -%>
 <%- tags = BlogcastTag.find_by_sql(["SELECT * FROM blogcast_tags, tags WHERE blogcast_tags.blogcast_id = ? AND blogcast_tags.tag_id = tags.id", blogcast.id]) -%>
 <%- if tags.length > 0 -%>

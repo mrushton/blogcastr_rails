@@ -36,7 +36,7 @@ class ImagePostsController < ApplicationController
       thrift_user.username = @user.username
       thrift_user.account = "Blogcastr"
       thrift_user.url = profile_path :username => @user.username
-      thrift_user.avatar_url = @user.setting.avatar.url(:medium)
+      thrift_user.avatar_url = @user.setting.avatar.url(:small)
       thrift_image_post = Thrift::ImagePost.new
       thrift_image_post.id = @image_post.id
       thrift_image_post.date = @image_post.created_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/, ' ')

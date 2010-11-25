@@ -4,10 +4,10 @@ class Setting < ActiveRecord::Base
   belongs_to :mobile_phone_carrier
   #MVR - store in either s3 or locally on file
   if Rails.env.production?
-    has_attached_file :avatar, :styles => {:large => "200x200#", :medium => "80x80#", :small => "30x30#"}, :storage => :s3, :s3_credentials => "#{RAILS_ROOT}/config/s3.yml", :path => ":attachment/:id/:style/:basename.:extension"
+    has_attached_file :avatar, :styles => {:large => "120x120#", :medium => "69x69#", :small => "40x40#", :thumb => "30x30#"}, :storage => :s3, :s3_credentials => "#{RAILS_ROOT}/config/s3.yml", :path => ":attachment/:id/:style/:basename.:extension"
     has_attached_file :background_image, :storage => :s3, :s3_credentials => "#{RAILS_ROOT}/config/s3.yml", :path => ":attachment/:id/:style/:basename.:extension"
   else
-    has_attached_file :avatar, :styles => {:large => "120x120#", :medium => "40x40#", :small => "30x30#"}
+    has_attached_file :avatar, :styles => {:large => "120x120#", :medium => "69x69#", :small => "40x40#", :thumb => "30x30#"}
     has_attached_file :background_image
   end
   #MVR - paperclip validations need to come after has_attached_file

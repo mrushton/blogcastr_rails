@@ -1,0 +1,88 @@
+hr {
+	background-image: url('/images/new/dotted-background.png');
+	border: none;
+	height: 4px;
+	margin-top: 10px;
+}
+
+iframe.twitter-share-button {
+	vertical-align: text-bottom;
+}
+
+ul.tags {
+	width: 560px;
+}
+
+#blogcast-info {
+	margin-top: 2px;
+	width: 580px;
+}
+
+#blogcast-user-and-date-and-share {
+	font-size: 0.85em;
+	font-weight: bold;
+}
+
+#like-button-container {
+	float: right;
+}
+
+#like-button {
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	font-size: 0.8em;
+	height: 30px;
+	line-height: 30px;
+	padding-left: 20px; 
+	padding-right: 20px; 
+}
+
+#blogcast-navigation {
+	float: right;
+	font-style: italic;
+	line-height: 14px;
+	list-style: none;
+	margin: 0px;
+	padding: none;
+	text-align: right;
+}
+
+#blogcast-description {
+	color: #6f6f6f;
+	font-size: 0.8em;
+	line-height: 14px;
+	margin-top: 4px;
+}
+
+#blogcast-tags {
+	margin-top: 6px;
+}
+
+#leave-comment-container {
+	margin-top: 4px;
+}
+
+#comments-container {
+	max-height: 77px;
+	overflow: hidden;
+	position: relative;
+	padding-bottom: 3px;
+}
+
+#comments-fade {
+	background-image: -moz-linear-gradient(top, rgba(256, 256, 256, 0.0), rgba(256, 256, 256, 1.0)); 
+	background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(256, 256, 256, 0.0)), to(rgba(256, 256, 256, 1.0)));
+	height: 20px;
+	top: 60px;
+	position: absolute;
+	width: 100%;
+}
+
+#posts {
+	margin-top: 9px;
+}
+
+#num-viewers {
+	font-size: 1.1em;
+	line-height: 12px;
+}

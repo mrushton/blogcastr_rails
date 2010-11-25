@@ -14,7 +14,7 @@ module ApplicationHelper
     reposted_via
   end
 
-  def time_ago_helper(time)
+  def past_timestamp_in_words_helper(time)
     elapsed_time = Time.now - time
     days = (elapsed_time / 1.day).floor
     hours = (elapsed_time / 1.hour).floor
@@ -45,7 +45,7 @@ module ApplicationHelper
     #return "<span class=\"date time\" timestamp=\"" + time.to_i.to_s + "\">" + time_ago + "</span>"
   end
 
-  def time_from_now_helper(time)
+  def future_timestamp_in_words_helper(time)
     time_difference = time - Time.now
     days = (time_difference / 1.day).floor
     hours = (time_difference / 1.hour).floor
@@ -76,11 +76,11 @@ module ApplicationHelper
     return time_from_now
   end
 
-  def time_helper(time)
+  def timestamp_in_words_helper(time)
     if (time > Time.now)
-      return time_from_now_helper(time)
+      return future_timestamp_in_words_helper(time)
     else
-      return time_ago_helper(time)
+      return past_timestamp_in_words_helper(time)
     end
   end
 

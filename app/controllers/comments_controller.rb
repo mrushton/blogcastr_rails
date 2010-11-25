@@ -33,7 +33,7 @@ class CommentsController < ApplicationController
       if @user.instance_of?(BlogcastrUser)
         thrift_user.username = @user.username
         thrift_user.url = profile_path :username => @user.username
-        thrift_user.avatar_url = @user.setting.avatar.url :medium
+        thrift_user.avatar_url = @user.setting.avatar.url :small
       else
         thrift_user.username = @user.get_username
         thrift_user.url = @user.get_url
@@ -42,12 +42,13 @@ class CommentsController < ApplicationController
       thrift_user.account = @user.class.to_s 
       thrift_comment = Thrift::Comment.new
       thrift_comment.id = @comment.id
+      thrift_comment.date = @comment.created_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/, ' ')
       thrift_comment.timestamp = @comment.created_at.to_i
       thrift_comment.medium = @comment.from
       thrift_comment.text = @comment.text
       jid = params[:jid]
       #MVR - send to ejabberd
-      err = thrift_client.send_comment_to_muc_occupant("Blogcast." + @blogcast.id.to_s + "@conference." + HOST + "/dashboard", jid, thrift_user, thrift_comment)
+      err = thrift_client.send_comment_to_muc_room("Blogcast."+@blogcast.id.to_s, HOST, jid, thrift_user, thrift_comment)
       thrift_client_close
     rescue
       @comment.errors.add_to_base "Unable to send comment to muc room"

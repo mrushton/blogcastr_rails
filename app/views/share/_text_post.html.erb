@@ -9,7 +9,8 @@
     <%= link_to image_tag(text_post.user.setting.avatar(:medium), :class => "avatar"), profile_path(:username => text_post.user.username) -%>
     <div class="right">
       <%= link_to text_post.user.username, profile_path(:username => text_post.user.username), :class => "username" -%>
-      <span class="date"><%= time_ago_helper text_post.created_at %></span>
+      <span class="date"><%= timestamp_in_words_helper text_post.created_at %></span>
+
       <p class="text"><%= text_post.text %></p>
 <%- if show_controls -%>
       <%= link_to_remote "Delete", :url => {:controller => "posts", :action => "destroy", "blogcast_id" => blogcast.id, "id" => text_post.id}, :method => "delete" %>

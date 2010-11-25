@@ -47,7 +47,7 @@ class TextPostsController < ApplicationController
       thrift_user.username = @user.username
       thrift_user.account = "Blogcastr"
       thrift_user.url = profile_path :username => @user.username
-      thrift_user.avatar_url = @user.setting.avatar.url(:medium)
+      thrift_user.avatar_url = @user.setting.avatar.url(:small)
       thrift_text_post = Thrift::TextPost.new
       thrift_text_post.id = @text_post.id
       thrift_text_post.date = @text_post.created_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/, ' ')

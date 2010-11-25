@@ -1,9 +1,5 @@
 <div id="wrapper">
   <div id="header" class="small">
-    <%- form_tag username_blogcast_search_permalink_path(:username => @user.username, :year => @blogcast.year, :month => @blogcast.month, :day => @blogcast.day, :title => @blogcast.link_title) do -%>
-      <%= label_tag :query, image_tag("magnifying_glass.png") -%>
-      <%= text_field_tag :query, "Search \"#{@blogcast.title}\"", :onfocus => "if (this.value == 'Search \"#{@blogcast.title}\"') this.value = ''; jQuery('#header form').addClass('selected');", :onblur => "if (this.value == '') this.value = 'Search \"#{@blogcast.title}\"'; jQuery('#header form').removeClass('selected');" -%>
-    <%- end -%>
     <%= link_to(image_tag("/images/logo-small.png", :border => 0, :class => "logo"), "/") %>
     <%= image_tag "/images/beta-small.png", :class => "beta" %>
     <div id="navigation">
@@ -189,15 +185,6 @@
         <ol id="posts-stream" class="stream">
 <% i = @num_posts -%>
 <% for post in @posts -%>
-  <%- if post.instance_of?(TextPost) -%>
-          <%= render :partial => "/share/text_post", :object => post, :locals => {:i => i, :show_controls => true} -%>
-  <%- elsif post.instance_of?(ImagePost) -%>
-          <%= render :partial => "/share/image_post", :object => post, :locals => {:i => i, :show_controls => true} -%>
-  <%- elsif post.instance_of?(CommentPost) -%>
-          <%= render :partial => "/share/comment_post", :object => post, :locals => {:i => i} -%>
-  <%- elsif post.instance_of?(Repost) -%>
-          <%= render :partial => "repost", :object => post -%>
-  <%- end -%>
   <% i = i - 1 -%>
 <% end -%>
         </ol>

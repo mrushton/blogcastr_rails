@@ -289,7 +289,7 @@ class Users::BlogcastsController < ApplicationController
                 @like = @user.likes.find(:first, :conditions => {:blogcast_id => @blogcast.id}) 
               end
             end
-            @comment = Comment.new(:from => "Web")
+            @comment = Comment.new(:from => "Web", :text => "Enter text here...")
           end
           #MVR - get settings
           @blogcast_setting = @blogcast_user.setting
@@ -300,6 +300,7 @@ class Users::BlogcastsController < ApplicationController
           @num_posts = @blogcast.posts.count
           #MVR - comments
           @num_comments = @blogcast.comments.count
+          @comments = @blogcast.comments.find(:all, :order => "created_at DESC", :limit => 3)
           @num_viewers = @blogcast.get_num_viewers + 1 
           #MVR - create view
           if !@user.nil?
@@ -317,12 +318,16 @@ class Users::BlogcastsController < ApplicationController
             @email_blogcast_reminder = EmailBlogcastReminder.find(:first, :conditions => ["user_id = ? AND blogcast_id = ?", @user.id, @blogcast.id])
             @sms_blogcast_reminder = SmsBlogcastReminder.find(:first, :conditions => ["user_id = ? AND blogcast_id = ?", @user.id, @blogcast.id])
           end
-          #MVR - subscribers
-          @num_subscribers = @blogcast_user.subscribers.count
-          #MVR - subscriptions
-          @num_subscriptions = @blogcast_user.subscriptions.count
-          #MVR - blogcasts
-          @num_blogcasts = @blogcast_user.blogcasts.count
+          #MVR - blogcast user blogcasts
+          @num_blogcast_user_blogcasts = @blogcast_user.blogcasts.count
+          #MVR - blogcast user subscriptions 
+          @num_blogcast_user_subscriptions = @blogcast_user.subscriptions.count
+          #MVR - blogcast user subscribers 
+          @num_blogcast_user_subscribers = @blogcast_user.subscribers.count
+          #MVR - subscription
+          if !@user.nil? && @user.id != @blogcast_user.id
+            @subscription = @user.subscriptions.find(:first, :conditions => {:subscribed_to => @blogcast_user.id})
+          end
           #MVR - theme 
           if @blogcast_setting.use_background_image == false
             @theme = @blogcast_setting.theme

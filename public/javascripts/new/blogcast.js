@@ -32,8 +32,8 @@ function blogcastrOnLoad()
   //TODO: we could do much better but since we are only going for sub-minute synchronization it's not a big deal 
   var client_date = new Date;
   client_timestamp = Math.floor(client_date.getTime()/1000);
-  //MVR - every second update timers
-  setInterval(blogcastrUpdateTimeAgo, 1000);
+  //MVR - every second update timestamp in words
+  setInterval(blogcastrUpdateTimestampInWords, 1000);
 }
 
 function onConnect(status, error)
@@ -78,14 +78,12 @@ blogcastrPrintStanza(mucPresenceStanza);
   }
 }
 
-function blogcastrPostCallback(stanza)
-{
+function blogcastrPostCallback(stanza) {
   //jQuery is used for XML parsing, Prototype has no XML support
   //TODO: alternative could be to use a json convertor like http://www.thomasfrank.se/xml_to_json.html
   var body = jQuery(stanza).find("body:first");
   var type = body.find("type:first").text();
-  if (type == "textPost")
-  {
+  if (type == "textPost") {
     //parse text post
     var id = body.find("id:first").text();
     var timestamp = body.find("timestamp:first").text();
@@ -97,32 +95,29 @@ function blogcastrPostCallback(stanza)
     var url = user.find("url:first").text();
     var avatar_url = user.find("avatar_url:first").text();
     //create new post element
+    //post header
+    var timestamp_in_words_span = jQuery("<span>").addClass("timestamp-in-words").attr("timestamp", timestamp).text(blogcastrPastTimestampInWords(timestamp));
+    var post_header_div = jQuery("<div>").addClass("post-header").append(timestamp_in_words_span);
+    //post body
     var avatar_img = jQuery("<img>").addClass("avatar").attr("src", avatar_url);
     var avatar_a = jQuery("<a>").attr("href", url).append(avatar_img); 
     var username_a = jQuery("<a>").addClass("username").attr("href", url).text(username); 
-    var time_ago_span = jQuery("<span>").addClass("date").addClass("time-ago").attr("timestamp", timestamp).text(blogcastrTimeAgo(timestamp));
+    var username_div = jQuery("<div>").addClass("username").append(username_a); 
     var text_p = jQuery("<p>").addClass("text").text(text);
-    var up_img = jQuery("<img>").attr("src", up_image);
-    //AS DESIGNED: some browsers don't work when adding the onclick attribute
-    var info_collapsible_div = jQuery("<div>").addClass("info-collapsible").click(function() { blogcastrCollapsibleEvent(this, "TextPost:" + id + "-info"); }).append("Info").append(up_img);
-    var info_username_a = jQuery("<a>").addClass("username").attr("href", url).text(username); 
-    var date_span = jQuery("<span>").addClass("date").text(date);
-    var info_span = jQuery("<span>").addClass("info").append("Posted by ").append(info_username_a).append(" on ").append(date_span).append(" from " + medium);
-    var info_div = jQuery("<div>").attr("id", "TextPost:" + id + "-info").addClass("info").css("display", "none").append(info_span);
-    var right_div = jQuery("<div>").addClass("right").append(username_a).append(" ").append(time_ago_span).append(text_p).append(info_collapsible_div).append(info_div);
-    var clear_div = jQuery("<div>").addClass("clear");
-    var spacer_div = jQuery("<div>").attr("id", "TextPost:" + id + "-spacer").addClass("spacer").css("opacity", "0.0").append(avatar_a).append(right_div).append(clear_div);
-    var post_li = jQuery("<li>").attr("id", "Post:" + id).addClass("post").css("display", "none").append(spacer_div);
+    var post_info_div = jQuery("<div>").addClass("post-info").append(username_div).append(text_p);
+    var clearfix_div = jQuery("<div>").addClass("clearfix").append(avatar_a).append(post_info_div);
+    var post_body_div = jQuery("<div>").addClass("post-body").append(clearfix_div);
+    //post container for animation 
+    var post_container_div = jQuery("<div>").append(post_header_div).append(post_body_div);
+    var post_li = jQuery("<li>").addClass("post").attr("id", "TextPost:" + id).css("display", "none").css("opacity", "0.0").append(post_container_div);
     //add post to document if not present
-    if (jQuery("#Post\\:" + id).length == 0)
-    {
+    if (jQuery("#TextPost\\:" + id).length == 0) {
       jQuery("#posts").prepend(post_li);
-      new Effect.SlideDown("Post\:" + id, {duration: 0.5, queue: "end"});
-      new Effect.Appear("TextPost\:" + id + "-spacer", {duration: 0.5, queue: "end"});
+      new Effect.SlideDown("TextPost\:" + id, { duration: 0.6, queue: "end" });
+      new Effect.Appear("TextPost\:" + id, { duration: 0.6, queue: "end" });
     }
   }
-  else if (type == "imagePost")
-  {
+  else if (type == "imagePost") {
     //parse image post
     var id = body.find("id:first").text();
     var timestamp = body.find("timestamp:first").text();
@@ -135,32 +130,29 @@ function blogcastrPostCallback(stanza)
     var avatar_url = user.find("avatar_url:first").text();
     var image_url = body.find("image_url:first").text();
     //create new post element
+    //post header
+    var timestamp_in_words_span = jQuery("<span>").addClass("timestamp-in-words").attr("timestamp", timestamp).text(blogcastrPastTimestampInWords(timestamp));
+    var post_header_div = jQuery("<div>").addClass("post-header").append(timestamp_in_words_span);
+    //post body
     var avatar_img = jQuery("<img>").addClass("avatar").attr("src", avatar_url);
     var avatar_a = jQuery("<a>").attr("href", url).append(avatar_img); 
     var username_a = jQuery("<a>").addClass("username").attr("href", url).text(username); 
-    var time_ago_span = jQuery("<span>").addClass("date").addClass("time-ago").attr("timestamp", timestamp).text(blogcastrTimeAgo(timestamp));
-    var text_p = jQuery("<p>").addClass("text").text(text);
+    var username_div = jQuery("<div>").addClass("username").append(username_a); 
     var image_img = jQuery("<img>").addClass("image").attr("src", image_url);
-    var up_img = jQuery("<img>").attr("src", up_image);
-    //AS DESIGNED: some browsers don't work when adding the onclick attribute
-    var info_collapsible_div = jQuery("<div>").addClass("info-collapsible").click(function() { blogcastrCollapsibleEvent(this, "TextPost:" + id + "-info"); }).append("Info").append(up_img);
-    var info_username_a = jQuery("<a>").addClass("username").attr("href", url).text(username); 
-    var date_span = jQuery("<span>").addClass("date").text(date);
-    var info_span = jQuery("<span>").addClass("info").append("Posted by ").append(info_username_a).append(" on ").append(date_span).append(" from " + medium);
-    var info_div = jQuery("<div>").attr("id", "TextPost:" + id + "-info").addClass("info").css("display", "none").append(info_span);
-    if (typeof(text_p) == "undefined")
-      var right_div = jQuery("<div>").addClass("right").append(username_a).append(" ").append(time_ago_span).append(image_img).append(info_collapsible_div).append(info_div);
+    var caption_p = jQuery("<p>").addClass("caption").text(text);
+    if (typeof(caption_p) == "undefined")
+      var post_info_div = jQuery("<div>").addClass("post-info").append(username_div).append(image_img).append(caption_p);
     else
-      var right_div = jQuery("<div>").addClass("right").append(username_a).append(" ").append(time_ago_span).append(image_img).append(text_p).append(info_collapsible_div).append(info_div);
-    var clear_div = jQuery("<div>").addClass("clear");
-    var spacer_div = jQuery("<div>").attr("id", "TextPost:" + id + "-spacer").addClass("spacer").css("opacity", "0.0").append(avatar_a).append(right_div).append(clear_div);
-    var post_li = jQuery("<li>").attr("id", "Post:" + id).addClass("post").css("display", "none").append(spacer_div);
+      var post_info_div = jQuery("<div>").addClass("post-info").append(username_div).append(image_img).append(caption_p);
+    var clearfix_div = jQuery("<div>").addClass("clearfix").append(avatar_a).append(post_info_div);
+    var post_body_div = jQuery("<div>").addClass("post-body").append(clearfix_div);
+    var post_container_div = jQuery("<div>").addClass("spacer").append(post_header_div).append(post_body_div);
+    var post_li = jQuery("<li>").addClass("post").attr("id", "ImagePost:" + id).css("display", "none").css("opacity", "0.0").append(post_container_div);
     //add post to document if not present
-    if (jQuery("#Post\\:" + id).length == 0)
-    {
+    if (jQuery("#ImagePost\\:" + id).length == 0) {
       jQuery("#posts").prepend(post_li);
-      new Effect.SlideDown("Post\:" + id, {duration: 0.5, queue: "end"});
-      new Effect.Appear("TextPost\:" + id + "-spacer", {duration: 0.5, queue: "end"});
+      new Effect.SlideDown("ImagePost\:" + id, {duration: 0.6, queue: "end"});
+      new Effect.Appear("ImagePost\:" + id, {duration: 0.6, queue: "end"});
     }
   }
   else if (type == "audioPost")
@@ -282,6 +274,32 @@ function blogcastrPostCallback(stanza)
       new Effect.Appear("TextPost\:" + id + "-spacer", {duration: 0.5, queue: "end"});
     }
   }
+  else if (type == "comment") {
+    //parse comment
+    var id = body.find("id:first").text();
+    var timestamp = body.find("timestamp:first").text();
+    var text = body.find("text:first").text();
+    var user = jQuery(body).find("user:first");
+    var username = user.find("username:first").text();
+    var url = user.find("url:first").text();
+    var avatar_url = user.find("avatar_url:first").text();
+    //create new comment element
+    var avatar_div = jQuery("<div>").addClass("comment-avatar").addClass("small-rounded-avatar").css("background-image", "url(\"" + avatar_url + "\")"); 
+    var avatar_a = jQuery("<a>").attr("href", url).append(avatar_div); 
+    var username_a = jQuery("<a>").addClass("username").attr("href", url).text(username); 
+    var timestamp_in_words_span = jQuery("<span>").addClass("timestamp-in-words").attr("timestamp", timestamp).text(blogcastrPastTimestampInWords(timestamp));
+    var username_timestamp_container_div = jQuery("<div>").addClass("username-timestamp-in-words-container").append(username_a).append(" ").append(timestamp_in_words_span);
+    var text_p = jQuery("<p>").addClass("text").text(text);
+    var comment_info_div = jQuery("<div>").addClass("comment-info").append(username_timestamp_container_div).append(text_p);
+    var clearfix_div = jQuery("<div>").addClass("clearfix").append(avatar_a).append(comment_info_div);
+    var comment_li = jQuery("<li>").addClass("comment").attr("id", "Comment:" + id).css("display", "none").css("opacity", "0.0").append(clearfix_div);
+    //add comment to document if not present
+    if (jQuery("#Comment\\:" + id).length == 0) {
+      jQuery("#comments").prepend(comment_li);
+      new Effect.SlideDown("Comment\:" + id, { duration: 0.4, queue: "end" });
+      new Effect.Appear("Comment\:" + id, { duration: 0.4, queue: "end" });
+    }
+  }
   else
   {
     var id = body.find("id:first").text();
@@ -346,4 +364,4 @@ function blogcastrTwitterShare(status)
   window.open("http://twitter.com/home?status=" + encodeURIComponent(status), null, "location=0, status=0, width=800, height=400");
 }
 
-window.addEventListener("load",blogcastrOnLoad,false);
+window.addEventListener("load", blogcastrOnLoad, false);

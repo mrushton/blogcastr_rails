@@ -1,52 +1,50 @@
 <div id="container">
-  <div id="header-container">
-    <div id="header">
+  <div id="header">
+    <%= link_to image_tag("new/b-logo.png", :id => "b-logo"), root_path -%> 
 <% if @user.instance_of?(BlogcastrUser) -%>
-      <ul id="navigation-container">
-          <li>
-            <%= link_to "Home", home_path %>
-          </li>
-          <li>
-            <%= link_to "Settings", settings_path %>
-          </li>
-          <li>
-            <%= link_to "Sign out", sign_out_path, :method => "delete" %>
-          </li>
-      </ul>
-      <div id="welcome">
-        <%= link_to "<div id=\"welcome-avatar\" class=\"medium-rounded-avatar\" style=\"background-image: url('" + @user.setting.avatar.url(:medium) + "')\"></div>", profile_path(:username => @user.username) %>
-        Welcome,
-        <br>
-        <%= link_to @user.username, profile_path(:username => @user.username), :class => "username" -%>
-      </div>
+    <ul id="navigation-container">
+      <li>
+        <%= link_to "Home", home_path %>
+      </li>
+      <li>
+        <%= link_to "Settings", settings_path %>
+      </li>
+      <li>
+        <%= link_to "Sign out", sign_out_path, :method => "delete" %>
+      </li>
+    </ul>
+    <div id="welcome">
+      <%= link_to "<div id=\"welcome-avatar\" class=\"small-rounded-avatar\" style=\"background-image: url('" + @user.setting.avatar.url(:small) + "')\"></div>", profile_path(:username => @user.username) %>
+      <div>Welcome,</div>
+      <%= link_to @user.username, profile_path(:username => @user.username), :class => "username" -%>
+    </div>
 <% elsif @user.instance_of?(FacebookUser) -%>
 <% elsif @user.instance_of?(TwitterUser) -%>
 <% else -%>
-      <div id="sign-in-or-sign-up-container">
-        <%= link_to "Sign In", sign_in_path, :id => "sign-in-button", :class => "blue-button" %>
-        <%= link_to "Sign Up", sign_up_path, :id => "sign-up-button", :class => "orange-button" %>
-      </div>
-<% end -%>
-      <%- form_tag search_path(:controller => "search"), :method => "get", :id => "header-search" do -%> 
-        <%= text_field_tag :query, "Search #{@profile_user.username}...", :onfocus => "if (this.value == 'Search #{@profile_user.username}...') this.value = '';", :onblur => "if (this.value == '') this.value = 'Search #{@profile_user.username}...';" -%> 
-      <%- end -%> 
+    <div id="sign-in-or-sign-up-container">
+      <%= link_to "Sign In", sign_in_path, :id => "sign-in-button", :class => "blue-button" %>
+      <%= link_to "Sign Up", sign_up_path, :id => "sign-up-button", :class => "orange-button" %>
     </div>
+<% end -%>
+    <%- form_tag search_path(:controller => "search"), :method => "get", :id => "header-search" do -%> 
+      <%= text_field_tag :query, "Search #{@profile_user.username}...", :onfocus => "if (this.value == 'Search #{@profile_user.username}...') this.value = '';", :onblur => "if (this.value == '') this.value = 'Search #{@profile_user.username}...';" -%> 
+    <%- end -%> 
   </div>
   <table id="content" cellspacing="0">
     <tr>
       <td id="main">
         <div class="clearfix">
 <%- if @user.nil? -%>
-          <div class="button-container">
+          <div id="subscription-button-container" class="button-container">
             <%= link_to "Subscribe", sign_in_path, :id => "subscription-button", :class => "blue-button" %>
           </div>
 <%- elsif @user == @profile_user -%>
           <ul id="profile-navigation">
             <li>
-              <%= link_to "Go to home &rarr", home_path, :class => "navigation-link" %>
+              <%= link_to "Go to home &rArr;", home_path, :class => "navigation-link" %>
             </li>
             <li>
-              <%= link_to "Edit profile &rarr", settings_path, :class => "navigation-link" %>
+              <%= link_to "Edit profile &rArr;", settings_path, :class => "navigation-link" %>
             </li>
           </ul>
 <%- else -%>
@@ -60,9 +58,9 @@
 <%- end -%>
           <%= link_to "<div id=\"profile-avatar\" class=\"large-rounded-avatar\" style=\"background-image: url('" + @profile_user.setting.avatar.url(:large) + "')\"></div>", @profile_user.setting.avatar.url(:original) %>
           <div id="profile-info-container" class="clearfix">
-            <div id="full-name">
+            <h1 id="full-name">
               <%= @profile_user.setting.full_name -%>
-            </div>
+            </h1>
 <%- if !@profile_user.setting.location.nil? -%>
             <div id="location-and-web">
   <%- if !@profile_user.setting.web.nil? -%>
@@ -97,64 +95,86 @@
         </ol>
       </td>
       <td id="side">
-        <div id="username">
+        <h2>
           <%= @profile_user.username -%>
-        </div>
+        </h2>
         <div class="arrow">
         </div>
-        <div class="side-details-container">
-          <ul class="stats-container">
-            <li class="stat">
-              <span class="stat-counter"><%= @num_blogcasts -%></span> <%= link_to @num_blogcasts == 1 ? "Blogcast" : "Blogcasts", username_blogcasts_path(@profile_user.username) -%>
+        <div class="side-info-container">
+          <ul>
+            <li class="side-info-section">
+              <div class="side-info-light-inner-container">
+                <ul class="stats">
+                  <li class="stat">
+                    <span class="stat-counter"><%= @num_blogcasts -%></span> <%= link_to @num_blogcasts == 1 ? "Blogcast" : "Blogcasts", username_blogcasts_path(@profile_user.username) -%>
+                  </li>
+                  <li class="stat">
+                    <span class="stat-counter"><%= @num_posts -%></span> <%= link_to @num_posts == 1 ? "Post" : "Posts", username_posts_path(@profile_user.username) -%>
+                  </li>
+                  <li class="stat">
+                    <span class="stat-counter"><%= @num_comments -%></span> <%= link_to @num_comments == 1 ? "Comment" : "Comments", username_comments_path(@profile_user.username) -%>
+                  </li>
+                  <li class="stat">
+                    <span class="stat-counter"><%= @num_likes -%></span> <%= link_to @num_likes == 1 ? "Like" : "Likes", username_likes_path(@profile_user.username) -%>
+                  </li>
+                </ul>
+              </div>
             </li>
-            <li class="stat">
-              <span class="stat-counter"><%= @num_posts -%></span> <%= link_to @num_posts == 1 ? "Post" : "Posts", username_posts_path(@profile_user.username) -%>
-
+            <li class="side-info-section">
+              <div class="side-info-dark-inner-container avatar-container">
+                <%= link_to @num_subscriptions.to_s + " " + (@num_subscriptions == 1 ? "Subscription" : "Subscriptions"), username_subscriptions_path(@profile_user.username), :class => "stat" -%> 
+<%- if @num_subscriptions > 0 -%>
+                <ul class="avatar-list clearfix">
+  <%- for subscription in @subscriptions -%>
+                  <li>
+                    <%= link_to image_tag(subscription.setting.avatar.url(:small), :class => "avatar small", :alt => "#{subscription.username}"), profile_path(:username => subscription.username), :title => "#{subscription.username}" %>
+                  </li>
+  <%- end -%>
+                </ul>
+<%- end -%>
+              </div>
             </li>
-            <li class="stat">
-              <span class="stat-counter"><%= @num_comments -%></span> <%= link_to @num_comments == 1 ? "Comment" : "Comments", username_comments_path(@profile_user.username) -%>
-
-            </li>
-            <li class="stat">
-              <span class="stat-counter"><%= @num_likes -%></span> <%= link_to @num_likes == 1 ? "Favorite" : "Favorites", username_likes_path(@profile_user.username) -%>
+            <li class="side-info-section">
+              <div class="side-info-dark-inner-container avatar-container">
+                <%= link_to @num_subscribers.to_s + " " + (@num_subscribers == 1 ? "Subscriber" : "Subscribers"), username_subscribers_path(@profile_user.username), :class => "stat" -%> 
+<%- if @num_subscribers > 0 -%>
+                <ul class="avatar-list clearfix">
+  <%- for subscriber in @subscribers -%>
+                  <li>
+                    <%= link_to image_tag(subscriber.setting.avatar.url(:small), :class => "avatar small", :alt => "#{subscriber.username}"), profile_path(:username => subscriber.username), :title => "#{subscriber.username}" %>
+                  </li>
+  <%- end -%>
+                </ul>
+<%- end -%>
+              </div>
             </li>
           </ul>
-          <div class="avatar-stat-container">
-            <%= link_to @num_subscriptions.to_s + " " + (@num_subscriptions == 1 ? "Subscription" : "Subscriptions"), username_subscriptions_path(@profile_user.username), :class => "stat" -%> 
-<%- if @num_subscriptions > 0 -%>
-            <ul class="avatar-list clearfix">
-  <%- for subscription in @subscriptions -%>
-              <li>
-                <%= link_to image_tag(subscription.setting.avatar.url(:small), :class => "avatar small", :alt => "#{subscription.username}"), profile_path(:username => subscription.username), :title => "#{subscription.username}" %>
-              </li>
-  <%- end -%>
-            </ul>
-<%- end -%>
-          </div>
-          <div class="avatar-stat-container">
-            <%= link_to @num_subscribers.to_s + " " + (@num_subscribers == 1 ? "Subscriber" : "Subscribers"), username_subscribers_path(@profile_user.username), :class => "stat" -%> 
-<%- if @num_subscribers > 0 -%>
-            <ul class="avatar-list clearfix">
-  <%- for subscriber in @subscribers -%>
-              <li>
-                <%= link_to image_tag(subscriber.setting.avatar.url(:small), :class => "avatar small", :alt => "#{subscriber.username}"), profile_path(:username => subscriber.username), :title => "#{subscriber.username}" %>
-              </li>
-  <%- end -%>
-            </ul>
-<%- end -%>
-          </div>
         </div>
+        <%= link_to "RSS feed of #{@profile_user.possesive_username} blogcasts", user_blogcasts_path(:username => @profile_user.username, :format => "rss"), :id => "rss" %>
       </td>
     </tr>
   </table>
-  <div id="footer">
+  <div id="footer" class="clearfix">
     <span id="copyright">&copy; 2010 Blogcastr</span>
-    <%= link_to "About", about_path -%>
-    <%= link_to "Blog", "http://blogcastr.wordpress.com" -%>
-    <a href="http://www.facebook.com/blogcastr">Facebook</a>
-    <%= link_to "FAQ", faq_path -%>
-    <%= link_to "Privacy Policy", privacy_policy_path -%>
-    <%= link_to "Terms of Service", terms_of_service_path -%>
-    <a href="http://twitter.com/blogcastr">Twitter</a>
+    <ul id="footer-navigation">
+      <li>
+        <%= link_to image_tag("new/twitter-small.png"), "http://twitter.com/blogcastr" -%>
+      </li>
+      <li>
+        <%= link_to image_tag("new/facebook-small.png"), "http://facebook.com/blogcastr" -%>
+      </li>
+      <li class="bullet">
+        <%= link_to "About", about_path -%>
+      </li>
+      <li class="bullet">
+        <%= link_to "Blog", "http://blogcastr.wordpress.com" -%>
+      </li>
+      <li class="bullet">
+        <%= link_to "Privacy Policy", privacy_policy_path -%>
+      </li>
+      <li class="bullet">
+        <%= link_to "Terms of Service", terms_of_service_path -%>
+      </li>
+    </ul>
   </div>
 </div>
