@@ -9,12 +9,26 @@ iframe.twitter-share-button {
 	vertical-align: text-bottom;
 }
 
-ul.tags {
+div.comments-container {
 	width: 560px;
 }
 
+p.comment-sign-in {
+	color: #6c6c6c;
+	font-size: 0.8em;
+}
+
+p.comment-sign-in a.navigation-link {
+	font-size: 1.0em;
+	font-style: italic;
+}
+
+a.fb_button {
+	vertical-align: bottom;
+}
+
 #blogcast-info {
-	margin-top: 2px;
+	margin-top: 4px;
 	width: 580px;
 }
 
@@ -30,11 +44,22 @@ ul.tags {
 #like-button {
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
-	font-size: 0.8em;
+	background-color: #538aca;
+	background-image: url("/images/new/heart-button.png"), -moz-linear-gradient(top, #7aaddc, #538aca 50%, #387eb9 50%, #3166aa); 
+	background-image: url("/images/new/heart-button.png"), -webkit-gradient(linear, left top, left bottom, from(#7aaddc), color-stop(50%, #538aca), color-stop(50%, #387eb9), to(#3166aa));
+	background-position: 6px 50%, top left;
+	background-repeat: no-repeat, repeat;
+	font-size: 0.85em;
 	height: 30px;
 	line-height: 30px;
-	padding-left: 20px; 
-	padding-right: 20px; 
+	padding-left: 30px; 
+	padding-right: 6px; 
+}
+
+#like-button:hover {
+	background-color: #4a7db4;
+	background-image: url("/images/new/heart-button.png"), -moz-linear-gradient(top, #6f9bc8, #4a7db4 50%, #4071ab 50%, #325b99); 
+	background-image: url("/images/new/heart-button.png"), -webkit-gradient(linear, left top, left bottom, from(#6f9bc8), color-stop(50%, #4a7db4), color-stop(50%, #4071ab), to(#325b99));
 }
 
 #blogcast-navigation {
@@ -48,7 +73,7 @@ ul.tags {
 }
 
 #blogcast-description {
-	color: #6f6f6f;
+	color: #6c6c6c;
 	font-size: 0.8em;
 	line-height: 14px;
 	margin-top: 4px;
@@ -62,7 +87,21 @@ ul.tags {
 	margin-top: 4px;
 }
 
-#comments-container {
+#facebook-and-twitter-sign-in {
+	margin-top: 4px;
+}
+
+#facebook-and-twitter-sign-in-buttons {
+	margin-top: 4px;
+	text-align: center;
+}
+
+#sign-in-with-twitter {
+	vertical-align: bottom;
+}
+
+#comments-fade-container {
+	margin-top: 6px;
 	max-height: 77px;
 	overflow: hidden;
 	position: relative;
@@ -82,7 +121,28 @@ ul.tags {
 	margin-top: 9px;
 }
 
-#num-viewers {
-	font-size: 1.1em;
-	line-height: 12px;
+#current-viewers-container {
+	-moz-border-radius: 4px;
+	-moz-box-shadow: inset 0px 1px 2px #444444, 0px 1px #ffffff; 
+	-webkit-border-radius: 4px;
+	-webkit-box-shadow: inset 0px 1px 2px #444444, 0px 1px #ffffff; 
+	background-color: rgba(0, 0, 0, 0.2); 
+	text-align: center;
+	padding-bottom: 4px;
+	padding-top: 10px;
+}
+
+#current-viewers {
+	color: #ffffff;
+	font-size: 2.8em;
+	font-weight: bold;
+	line-height: 40px;
+	text-shadow: 0px 2px #787878;
+}
+
+#current-viewers-text {
+	color: #666666;
+	font-size: 0.9em;
+	font-weight: bold; 
+	text-shadow: 0px 1px #ffffff;
 }

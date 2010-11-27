@@ -1,8 +1,8 @@
 page << "jQuery(\"#comment_text\").removeClass(\"selected\");"
-#MVR - success info
-page << "jQuery(\"#comment_submit\").removeClass(\"loading-button\").addClass(\"success-button\");"
+#MVR - hide loading animation and display check
+page << "jQuery(\"#comment_form div.comment-button-container\").removeClass(\"loading\").addClass(\"success\");"
 #MVR - reset the comment form
 page[:comment_form].reset
 page.delay(1) do
-  page << "jQuery(\"#comment_submit\").removeClass(\"success-button\").addClass(\"orange-button\");"
+  page << "jQuery(\"#comment_form div.comment-button-container\").removeClass(\"success\");"
 end

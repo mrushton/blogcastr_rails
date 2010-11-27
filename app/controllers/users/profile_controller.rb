@@ -16,10 +16,8 @@ class Users::ProfileController < ApplicationController
     end
     #MVR - upcoming blogcasts
     @upcoming_blogcasts = @profile_user.blogcasts.find(:all, :conditions => ["starting_at > ?", Time.zone.now], :order => "starting_at", :limit => 2)
-    @num_upcoming_blogcasts = Blogcast.count(:conditions => ["user_id = ? AND starting_at > ?", @profile_user.id, Time.zone.now])
-    #MVR - recent blogcasts
-    @recent_blogcasts = @profile_user.blogcasts.find(:all, :conditions => ["starting_at < ? AND starting_at > ?", Time.zone.now, 1.month.ago], :order => "starting_at", :limit => 2)
-    @num_recent_blogcasts = Blogcast.count(:conditions => ["user_id = ? AND starting_at < ? AND starting_at > ?", @profile_user.id, Time.zone.now, 1.month.ago])
+    #MVR - past blogcasts
+    @past_blogcasts = @profile_user.blogcasts.find(:all, :conditions => ["starting_at < ?", Time.zone.now], :order => "starting_at DESC", :limit => 2)
     #MVR - blogcasts
     @num_blogcasts = @profile_user.blogcasts.count
     #MVR - comments

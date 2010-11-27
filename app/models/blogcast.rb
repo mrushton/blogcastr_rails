@@ -21,11 +21,11 @@ class Blogcast < ActiveRecord::Base
   end
 
   def get_num_viewers
-    num_viewers = CACHE.get("Blogcast:" + id.to_s + "-num_viewers") 
-    unless num_viewers 
+    #num_viewers = CACHE.get("Blogcast:" + id.to_s + "-num_viewers") 
+    #unless num_viewers 
       num_viewers = thrift_client.get_num_muc_room_occupants("blogcast." + id.to_s)
-      CACHE.set("Blogcast:" + id.to_s + "-num_viewers", num_viewers, 30.seconds)
-    end
+      #CACHE.set("Blogcast:" + id.to_s + "-num_viewers", num_viewers, 30.seconds)
+   # end
     num_viewers
   end
 

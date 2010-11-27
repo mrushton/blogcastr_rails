@@ -79,32 +79,49 @@
 <%- end -%>
           <hr></hr>
         </div>
-        <h3 class="leave-comment">Leave a comment</h3>
-        <div id="leave-comment-container">
+        <div class="comments-container">
+          <h3 class="leave-comment">Leave a comment</h3>
+          <div id="leave-comment-container">
 <%- if signed_in? -%>
-          <div class="clearfix">
-            <%= link_to "<div class=\"comment-avatar small-rounded-avatar\" style=\"background-image: url('" + @user.setting.avatar.url(:small) + "')\"></div>", profile_path(:username => @user.username) %>
-            <div class="comment-info">
-              <%= link_to @user.username, profile_path(:username => @user.username), :class => "username" -%>
-              <% remote_form_for :comment, :url => blogcast_comments_path(:blogcast_id => @blogcast.id), :html => { :id => "comment_form", :method => "post"}, :before => "this.disabled = true; if (jQuery(\"#comment_text\").val() == 'Enter text here...') return false; jQuery(\"#comment_submit\").removeClass(\"orange-button\").addClass(\"loading-button\")" do |f| -%>
-                <input id="jid" type="hidden" value="" name="jid"/>
-                <%= f.hidden_field :from %>
-                <%= f.text_area :text, :class => "comment", :onfocus => "if (this.value == 'Enter text here...') { this.value = ''; jQuery(this).addClass('selected'); }", :onblur => "if (this.value == '') { jQuery(this).removeClass('selected'); this.value = 'Enter text here...'; }" -%>
-                <%= f.submit "Post", :class => "comment orange-button" %>
-              <%- end -%>
+            <div class="clearfix">
+              <%= link_to "<div class=\"comment-avatar small-rounded-avatar\" style=\"background-image: url('" + @user.setting.avatar.url(:small) + "')\"></div>", profile_path(:username => @user.username) %>
+              <div class="comment-info">
+                <%= link_to @user.username, profile_path(:username => @user.username), :class => "username" -%>
+                <% remote_form_for :comment, :url => blogcast_comments_path(:blogcast_id => @blogcast.id), :html => { :id => "comment_form", :method => "post"}, :before => "if (jQuery(\"#comment_text\").val() == 'Enter text here...') return false; jQuery(this).find(\"div.comment-button-container\").addClass(\"loading\")" do |f| -%>
+                  <input id="jid" type="hidden" value="" name="jid"/>
+                  <%= f.hidden_field :from %>
+                  <%= f.text_area :text, :class => "comment", :onfocus => "if (this.value == 'Enter text here...') { this.value = ''; jQuery(this).addClass('selected'); }", :onblur => "if (this.value == '') { jQuery(this).removeClass('selected'); this.value = 'Enter text here...'; }" -%>
+                  <div class="comment-button-container">
+                    <%= f.submit "Post", :class => "comment orange-button" %>
+                  </div>
+                <%- end -%>
+              </div>
             </div>
-          </div>
 <%- else -%>
-          <%= link_to_function image_tag("Sign-in-with-Twitter-darker.png", :id => "twitter-sign-in"), "blogcastrTwitterSignIn()" -%>
+            <p class="comment-sign-in">
+              To leave a comment please <%= link_to "Sign In &rArr;", sign_in_path, :class => "navigation-link" -%> or <%= link_to "Sign Up &rArr;", sign_up_path, :class => "navigation-link" -%>. 
+            </p>
+            <div id="facebook-and-twitter-sign-in">
+              <p class="comment-sign-in">
+                You can also sign in with your Facebook or Twitter account.
+              </p>
+              <div id="facebook-and-twitter-sign-in-buttons">
+                <fb:login-button>
+                  Sign in with Facebook
+                </fb:login-button>
+                <%= link_to_function image_tag("Sign-in-with-Twitter-darker.png", :id => "sign-in-with-twitter"), "twitterSignIn()" -%>
+              </div>
+            </div>
 <%- end -%>
-        </div>
-        <div id="comments-container">
-          <ol id="comments">
+          </div>
+          <div id="comments-fade-container">
+            <ol id="comments">
 <% for comment in @comments -%>
-            <%= render :partial => "/share/new/comment", :locals => {:comment => comment} -%>
+              <%= render :partial => "/share/new/comment", :locals => {:comment => comment} -%>
 <% end -%>
-          </ol>
-          <div id="comments-fade"></div>
+            </ol>
+            <div id="comments-fade"></div>
+          </div>
         </div>
         <ol id="posts">
 <% for post in @posts -%>
@@ -132,15 +149,19 @@
 </script>
       </td>
       <td id="side">
+        <div id="current-viewers-container">
+          <div id="current-viewers">
+            <%= @num_viewers -%>
+          </div>
+          <%= periodically_call_remote :url => blogcast_update_current_viewers_path(:blogcast_id => @blogcast.id), :frequency => 30 -%>
+          <div id="current-viewers-text">
+            current viewers
+          </div>
+        </div>
         <h2><%= @blogcast.title -%></h2>
         <div class="arrow"></div>
         <div class="side-info-container">
           <ul>
-            <li class="side-info-section">
-              <div id="num-viewers" class="side-info-light-inner-container">
-                123 Viewers
-              </div>
-            </li>
             <li class="side-info-section">
               <div class="side-info-light-inner-container">
                 <ul class="stats">

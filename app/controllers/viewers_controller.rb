@@ -1,5 +1,5 @@
 class ViewersController < ApplicationController
-  def update_num_viewers
+  def update_current_viewers
     @blogcast = Blogcast.find(params[:blogcast_id])
     if @blogcast.nil?
       respond_to do |format|

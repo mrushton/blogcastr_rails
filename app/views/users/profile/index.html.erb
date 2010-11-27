@@ -81,16 +81,20 @@
 <%- end -%> 
           </div> 
         </div> 
+<%- if @upcoming_blogcasts.length > 0 -%>
         <h2>Upcoming Blogcasts</h2>
         <ol class="blogcasts">
-<%- for blogcast in @upcoming_blogcasts -%>
+  <%- for blogcast in @upcoming_blogcasts -%>
           <%= render :partial => "/share/new/blogcast", :locals => {:blogcast => blogcast} -%>
+  <%- end -%>
 <%- end -%>
         </ol>
-        <h2>Recent Blogcasts</h2>
+<%- if @past_blogcasts.length > 0 -%>
+        <h2>Past Blogcasts</h2>
         <ol class="blogcasts">
-<%- for blogcast in @recent_blogcasts -%>
+  <%- for blogcast in @past_blogcasts -%>
           <%= render :partial => "/share/new/blogcast", :locals => {:blogcast => blogcast} -%>
+  <%- end -%>
 <%- end -%>
         </ol>
       </td>

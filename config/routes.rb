@@ -155,7 +155,7 @@ ActionController::Routing::Routes.draw do |map|
     #MVR - sms reminders 
     blogcasts.resources :sms_reminders, :controller => "sms_blogcast_reminders", :only => [:create, :destroy]
     #MVR - update num viewers
-    blogcasts.update_num_viewers "update_num_viewers", :controller => "viewers", :action => "update_num_viewers"
+    blogcasts.update_current_viewers "update_current_viewers", :controller => "viewers", :action => "update_current_viewers"
   end
   #MVR - posts 
   map.resources :posts, :controller => "posts", :only => [:index]

@@ -2,6 +2,8 @@ var can_play_audio = false;
 var can_play_mp3 = false;
 var can_play_ogg = false;
 var remote_request = false;
+var twitter_sign_in_window;
+var twitter_sign_in_interval;
 
 function blogcastrOnLoad()
 {
@@ -359,9 +361,40 @@ function blogcastrPrintStanza(stanza)
 //  var string = (new XMLSerializer()).serializeToString(stanza);
 }
 
-function blogcastrTwitterShare(status)
-{
-  window.open("http://twitter.com/home?status=" + encodeURIComponent(status), null, "location=0, status=0, width=800, height=400");
+function checkTwitterSignIn() {
+  if (twitter_sign_in_window.closed) {
+    clearInterval(twitter_sign_in_interval);
+  }
+  else {
+    //MVR - check if we are signed in or not
+    var ret = jQuery(twitter_sign_in_window.document.body).find("#twitter-sign-in").text();
+    if (ret == "success") {
+      twitter_sign_in_window.close();
+      //AS DESIGNED: reload page
+      window.location.reload();
+    }
+    else if (ret == "failure") {
+      twitter_sign_in_window.close();
+      alert('Error: failed to connect Twitter account.');
+    }
+  }
+}
+
+function twitterSignIn() {
+  //MVR - open window 
+  twitter_sign_in_window = window.open("/twitter_sign_in", "Twitter Sign In", "location=0, status=0, width=800, height=400");
+  //MVR - check twitter sign in window every 1 second 
+  twitter_sign_in_interval = setInterval(checkTwitterSignIn, 1000);
+}
+
+function twitterSignOutCallback() {
+  //TODO: error handling
+  //AS DESIGNED: reload page
+  window.location.reload();
+}
+
+function twitterSignOut() {
+  jQuery.post("/twitter_sign_in", {authenticity_token: authenticity_token, _method: "delete"}, twitterSignOutCallback);
 }
 
 window.addEventListener("load", blogcastrOnLoad, false);

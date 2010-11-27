@@ -1,6 +1,3 @@
-var twitter_sign_in_window;
-var twitter_sign_in_interval;
-
 function blogcastrLog(message)
 {
   if (typeof(console) != "undefined")
