@@ -20,6 +20,19 @@
     </div>
 <% elsif @user.instance_of?(FacebookUser) -%>
 <% elsif @user.instance_of?(TwitterUser) -%>
+    <ul id="navigation-container">
+      <li>
+        <%= link_to "Sign up", sign_up_path %>
+      </li>
+      <li>
+        <%= link_to "Sign out", twitter_sign_in_path, :method => "delete" %>
+      </li>
+    </ul>
+    <div id="welcome">
+      <%= link_to "<div id=\"welcome-avatar\" class=\"small-rounded-avatar\" style=\"background-image: url('" + @user.setting.avatar.url(:small) + "')\"></div>", "http://twitter.com/" + @user.username %>
+      <div>Welcome,</div>
+      <%= link_to "@" + @user.username, "http://twitter.com/" + @user.username, :class => "username" -%>
+    </div>
 <% else -%>
     <div id="sign-in-or-sign-up-container">
       <%= link_to "Sign In", sign_in_path, :id => "sign-in-button", :class => "blue-button" %>
@@ -84,9 +97,16 @@
           <div id="leave-comment-container">
 <%- if signed_in? -%>
             <div class="clearfix">
+  <%- if @user.instance_of?(BlogcastrUser) -%>
               <%= link_to "<div class=\"comment-avatar small-rounded-avatar\" style=\"background-image: url('" + @user.setting.avatar.url(:small) + "')\"></div>", profile_path(:username => @user.username) %>
               <div class="comment-info">
                 <%= link_to @user.username, profile_path(:username => @user.username), :class => "username" -%>
+  <%- elsif @user.instance_of?(FacebookUser) -%>
+  <%- elsif @user.instance_of?(TwitterUser) -%>
+              <%= link_to "<div class=\"comment-avatar small-rounded-avatar\" style=\"background-image: url('" + @user.setting.avatar.url(:small) + "')\"></div>", "http://twitter.com/" + @user.username %>
+              <div class="comment-info">
+                <%= link_to "@" + @user.username, "http://twitter.com/" + @user.username, :class => "username" -%>
+  <%- end -%>
                 <% remote_form_for :comment, :url => blogcast_comments_path(:blogcast_id => @blogcast.id), :html => { :id => "comment_form", :method => "post"}, :before => "if (jQuery(\"#comment_text\").val() == 'Enter text here...') return false; jQuery(this).find(\"div.comment-button-container\").addClass(\"loading\")" do |f| -%>
                   <input id="jid" type="hidden" value="" name="jid"/>
                   <%= f.hidden_field :from %>

@@ -1,1 +1,2 @@
+page << "jQuery(\"#comment_form div.comment-button-container\").removeClass(\"loading\");"
 page.alert @error

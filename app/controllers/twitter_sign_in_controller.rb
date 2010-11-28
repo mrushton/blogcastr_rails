@@ -3,7 +3,6 @@ class TwitterSignInController < ApplicationController
     #MVR - get a request token from Twitter and redirect
     oauth_client = Twitter::OAuth.new(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET, :sign_in => true)
     begin
-      #TODO: better way of setting domain?
       if Rails.env.production?
         oauth_client.set_callback_url("http://blogcastr.com" + twitter_sign_in_callback_path)
       else
@@ -20,18 +19,82 @@ class TwitterSignInController < ApplicationController
 
   def create
     oauth_client = Twitter::OAuth.new(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET)
-    oauth_client.authorize_from_request(session['rtoken'], session['rsecret'], params[:oauth_verifier])
-    session['rtoken'] = nil
-    session['rsecret'] = nil
-    twitter_user = Twitter::Base.new(oauth_client)
-    twitter_profile = twitter_user.verify_credentials
-    #MVR - create or find the Twitter user and sign them in 
-    user = TwitterUser.find_or_create_by_twitter_id(twitter_profile.id)
-    user.twitter_access_token = oauth_client.access_token.token
-    user.twitter_token_secret = oauth_client.access_token.secret
-    if !user.save(false)
+    begin
+      oauth_client.authorize_from_request(session['rtoken'], session['rsecret'], params[:oauth_verifier])
+    rescue
       render :action => "failure"
       return
+    end
+    session['rtoken'] = nil
+    session['rsecret'] = nil
+    client = Twitter::Base.new(oauth_client)
+    #MVR - verify credentials returns info about the authenticated user 
+    begin
+      verify_credentials = client.verify_credentials
+    rescue
+      render :action => "failure"
+      return
+    end
+    #MVR - find the Twitter user
+    user = User.find_by_twitter_id(verify_credentials.id)
+    if user.nil?
+      #MVR - create a new user if they don't exist
+      user = TwitterUser.new
+      user.username = verify_credentials.screen_name
+      user.twitter_id = verify_credentials.id
+      user.twitter_access_token = oauth_client.access_token.token
+      user.twitter_token_secret = oauth_client.access_token.secret
+      #TODO: set timezone info
+      setting = Setting.new
+      if (defined? verify_credentials.name)
+        setting.full_name = verify_credentials.name
+      end
+      if (defined? verify_credentials.location)
+        setting.location = verify_credentials.location
+      end
+      #MVR - get avatar
+      url = URI.parse(verify_credentials.profile_image_url)
+      avatar_name = File.basename(url.path)
+      avatar = nil
+      begin
+        timeout(10) do
+          Net::HTTP.start(url.host, url.port) do |http|
+            resp = http.get(url.path)
+            avatar = ActionController::UploadedTempfile.new(avatar_name)
+            avatar.binmode
+            avatar.write(resp.body)
+            avatar.original_path = avatar_name
+            avatar.content_type = resp["Content-Type"]
+            avatar.rewind
+          end
+        end
+      rescue TimeoutError
+        render :action => "failure"
+        return
+      end
+      setting.avatar = avatar
+      avatar.close!
+      begin
+        TwitterUser.transaction do
+          #MVR - do not run validations
+          user.save_without_validation!
+          setting.user_id = user.id
+          setting.save_without_validation!
+        end
+      rescue
+        render :action => "failure"
+        return
+      end
+    else
+      #TODO: update info if Twitter user
+      #MVR - update the access token and secret
+      user.twitter_access_token = oauth_client.access_token.token
+      user.twitter_token_secret = oauth_client.access_token.secret
+      #MVR - do not run validations
+      if !user.save(false)
+        render :action => "failure"
+        return
+      end
     end
     sign_in(user)
   end
@@ -39,7 +102,7 @@ class TwitterSignInController < ApplicationController
   def destroy
     #MVR - clear cookies
     sign_out
-    redirect_to_back_or_default(sign_in_path)
+    redirect_back_or sign_in_path
   end
 
   private
@@ -50,7 +113,7 @@ class TwitterSignInController < ApplicationController
     else
       user.remember_me!
       #MVR - only sign in Twitter users for 1 day
-      cookies[:remember_token] = {:value => user.remember_token, :expires => 1.day.from_now.utc}
+      cookies[:remember_token] = { :value => user.remember_token, :expires => 1.day.from_now.utc }
       current_user = user
     end
   end

@@ -167,14 +167,10 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :facebook_connect, :controller => "facebook_connect", :only => [:create, :destroy]
   #MVR - Facebook sessions
   map.resource :facebook_session, :controller => "facebook_sessions", :only => [:create, :destroy]
-  #MVR - Twitter sign in
+  #MVR - Twitter sign in 
   map.resource :twitter_sign_in, :controller => "twitter_sign_in", :only => [:destroy]
   map.twitter_sign_in "twitter_sign_in", :controller => "twitter_sign_in", :action => "init"
   map.twitter_sign_in_callback "twitter_sign_in_callback", :controller => "twitter_sign_in", :action => "create"
-  #MVR - Twitter oauth 
-  map.resource :twitter_oauth, :controller => "twitter_oauth", :only => [:destroy]
-  map.twitter_oauth "twitter_oauth", :controller => "twitter_oauth", :action => "init"
-  map.twitter_oauth_callback "twitter_oauth_callback", :controller => "twitter_oauth", :action => "create"
   #MVR - mobile phone
   map.resource :mobile_phone, :controller => "mobile_phone", :only => [:create, :destroy]
   map.confirm_mobile_phone "mobile_phone/confirm", :controller => "mobile_phone", :action => "confirm"

@@ -34,10 +34,12 @@ class CommentsController < ApplicationController
         thrift_user.username = @user.username
         thrift_user.url = profile_path :username => @user.username
         thrift_user.avatar_url = @user.setting.avatar.url :small
-      else
-        thrift_user.username = @user.get_username
-        thrift_user.url = @user.get_url
-        thrift_user.avatar_url = @user.get_avatar_url :small
+      elsif @user.instance_of?(FacebookUser)
+        thrift_user.username = @user.username
+      elsif @user.instance_of?(TwitterUser)
+        thrift_user.username = "@" + @user.username
+        thrift_user.url = "http://twitter.com/" + @user.username 
+        thrift_user.avatar_url = @user.setting.avatar.url :small
       end
       thrift_user.account = @user.class.to_s 
       thrift_comment = Thrift::Comment.new
@@ -51,10 +53,10 @@ class CommentsController < ApplicationController
       err = thrift_client.send_comment_to_muc_room("Blogcast."+@blogcast.id.to_s, HOST, jid, thrift_user, thrift_comment)
       thrift_client_close
     rescue
-      @comment.errors.add_to_base "Unable to send comment to muc room"
+      @comment.errors.add_to_base "Unable to post comment"
       @comment.destroy
       respond_to do |format|
-        format.js {@error = "Unable to send comment to muc room"; render :action => "error"}
+        format.js {@error = "Unable to post comment"; render :action => "error"}
         format.html {flash[:error] = "Unable to send comment to muc room"; redirect_to :bacl}
         format.xml {render :xml => @comment.errors.to_xml, :status => :unprocessable_entity}
         #TODO: fix json support

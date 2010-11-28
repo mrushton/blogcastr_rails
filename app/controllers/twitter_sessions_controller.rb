@@ -8,7 +8,6 @@ class TwitterSessionsController < ApplicationController
       oauth_client = Twitter::OAuth.new(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET)
     end
     begin
-      #TODO: better way of setting domain?
       if Rails.env.production?
         oauth_client.set_callback_url("http://blogcastr.com" + twitter_oauth_callback_path)
       else
@@ -28,30 +27,71 @@ class TwitterSessionsController < ApplicationController
     oauth_client.authorize_from_request(session['rtoken'], session['rsecret'], params[:oauth_verifier])
     session['rtoken'] = nil
     session['rsecret'] = nil
-    twitter_user = Twitter::Base.new(oauth_client)
-    twitter_profile = twitter_user.verify_credentials
-    #MVR - a user may be connecting their Twitter accounts and already logged in
+    client = Twitter::Base.new(oauth_client)
+    #MVR - verify credentials returns info about the authenticated user 
+    begin
+      verify_credentials = client.verify_credentials
+    rescue
+      render :action => "failure"
+      return
+    end
     user = current_user
     if user.nil?
-      user = TwitterUser.find_or_create_by_twitter_id(twitter_profile.id)
-      sign_in(user)
+      #MVR - sign in with Twitter
+      #MVR - find the user
+      twitter_user = User.find_by_twitter_id(verify_credentials.id)
+      if twitter_user.nil?
+        #MVR - create a new user if they don't exist
+        twitter_user = TwitterUser.new(:username => verify_credentials.screen_name, :twitter_id => verify_credentials.id, :twitter_access_token => oauth_client.access_token.token, :twitter_token_secret => oauth_client.access_token.secret)
+        #TODO: set timezone info
+        setting = Setting.new
+        if (defined? verify_credentials.name)
+          setting.full_name = verify_credentials.name
+        end
+        if (defined? verify_credentials.location)
+          setting.location = verify_credentials.location
+        end
+        begin
+          TwitterUser.transaction do
+            #MVR - do not run validations
+            twitter_user.save_without_validation!
+            setting.user_id = twitter_user.id
+            setting.save_without_validation!
+          end
+        rescue
+          render :action => "failure"
+          return
+        end
+      else
+        #TODO: update info
+        #MVR - update the access token and secret
+        twitter_user.twitter_access_token = oauth_client.access_token.token
+        twitter_user.twitter_token_secret = oauth_client.access_token.secret
+        #MVR - do not run validations
+        if !twitter_user.save(false)
+          render :action => "failure"
+          return
+        end
+      end
+      sign_in(twitter_user)
     else
-      user.twitter_id = twitter_profile.id
+      #TODO: connect with Twitter
     end
-    user.twitter_access_token = oauth_client.access_token.token
-    user.twitter_token_secret = oauth_client.access_token.secret
-    user.save
   end
 
   def destroy
-    if params[:sign_out] == true
-      #MVR - clear Blogcastr cookies
+    user = current_user
+    if user.instance_of?(BlogcastrUser)
+      #MVR - clear twitter connection 
+      user.twitter_id = nil 
+      user.twitter_access_token = nil
+      user.twitter_token_secret = nil
+      #TODO: error handling
+      user.save
+    else
+      #MVR - clear cookies
       sign_out
       redirect_to_back_or_default(url_after_destroy)
-    else
-      user = current_user
-      user.twitter_id = nil 
-      user.save
     end
   end
 

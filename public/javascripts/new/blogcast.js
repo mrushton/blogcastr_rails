@@ -387,14 +387,4 @@ function twitterSignIn() {
   twitter_sign_in_interval = setInterval(checkTwitterSignIn, 1000);
 }
 
-function twitterSignOutCallback() {
-  //TODO: error handling
-  //AS DESIGNED: reload page
-  window.location.reload();
-}
-
-function twitterSignOut() {
-  jQuery.post("/twitter_sign_in", {authenticity_token: authenticity_token, _method: "delete"}, twitterSignOutCallback);
-}
-
 window.addEventListener("load", blogcastrOnLoad, false);
