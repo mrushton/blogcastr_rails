@@ -1,8 +1,9 @@
 class Users::BlogcastsController < ApplicationController
+  before_filter :set_cache_headers
   before_filter :set_time_zone
   before_filter :set_blogcast_time_zone
   before_filter :set_facebook_session
-  before_filter :store_location, :only => ["show"]
+  before_filter :store_location, :only => [ "show" ]
   helper_method :facebook_session
 
   def index
@@ -300,7 +301,7 @@ class Users::BlogcastsController < ApplicationController
           @num_posts = @blogcast.posts.count
           #MVR - comments
           @num_comments = @blogcast.comments.count
-          @comments = @blogcast.comments.find(:all, :order => "created_at DESC", :limit => 3)
+          @comments = @blogcast.comments.find(:all, :order => "created_at DESC", :limit => 2)
           @num_viewers = @blogcast.get_num_viewers + 1 
           #MVR - create view
           if !@user.nil?
