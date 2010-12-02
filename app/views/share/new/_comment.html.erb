@@ -7,6 +7,10 @@
       <div class="username-timestamp-in-words-container">
         <%= link_to user.username, profile_path(:username => user.username), :class => "username" -%>
 <%- elsif user.instance_of?(FacebookUser) -%>
+    <%= link_to "<div class=\"comment-avatar small-rounded-avatar\" style=\"background-image: url('" + user.setting.avatar.url(:small) + "')\"></div>", user.facebook_link %>
+    <div class="comment-info">
+      <div class="username-timestamp-in-words-container">
+        <%= link_to user.setting.full_name, user.facebook_link, :class => "username" -%>
 <%- elsif user.instance_of?(TwitterUser) -%>
     <%= link_to "<div class=\"comment-avatar small-rounded-avatar\" style=\"background-image: url('" + user.setting.avatar.url(:small) + "')\"></div>", "http://twitter.com/" + user.username %>
     <div class="comment-info">

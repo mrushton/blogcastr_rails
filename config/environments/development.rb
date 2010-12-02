@@ -35,3 +35,7 @@ THRIFT_PORT = 9090
 #MVR - memcached
 MEMCACHED_HOST = "localhost"
 MEMCACHED_PORT = 11211
+#MVR - Facebook app id
+FACEBOOK_APP_ID = "261363731690"
+#MVR - Facebook app secret 
+FACEBOOK_APP_SECRET = "d04c149be09170e05a1fd36c03d4e79d"

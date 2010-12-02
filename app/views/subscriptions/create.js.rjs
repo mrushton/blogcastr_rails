@@ -1,1 +1,6 @@
-page.replace_html "subscription-button-container", :partial => "delete_subscription_button"
+page.replace_html "subscription-button-container", :partial => "/share/new/destroy_subscription_button", :locals => { :subscription => @subscription, :user => @profile_user }
+page.replace_html "alert", :partial => "create_subscription_alert"
+page.visual_effect :slide_down, "alert", :duration => 0.5
+page.delay(3) do
+  page.visual_effect :slide_up, "alert", :duration => 0.5
+end

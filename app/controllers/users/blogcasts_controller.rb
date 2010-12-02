@@ -2,9 +2,7 @@ class Users::BlogcastsController < ApplicationController
   before_filter :set_cache_headers
   before_filter :set_time_zone
   before_filter :set_blogcast_time_zone
-  before_filter :set_facebook_session
   before_filter :store_location, :only => [ "show" ]
-  helper_method :facebook_session
 
   def index
     #MVR - find user by username
@@ -97,70 +95,6 @@ class Users::BlogcastsController < ApplicationController
         @profile_user_full_name_possesive = @profile_user.username + (@profile_user.username =~ /.*s$/ ? "'":"'s")
         render :layout => false
       }
-    end
-  end
-
-  def recent 
-    #MVR - find user by name or id
-    if !params[:username].nil?
-      @user = BlogcastrUser.find_by_username(params[:username])
-      if @user.nil?
-        respond_to do |format|
-          format.html {render :file => "public/404.html", :layout => false, :status => 404}
-          format.xml {render :xml => "<errors><error>Couldn't find BlogcastrUser with NAME=\"#{params[:username]}\"</error></errors>", :status => :unprocessable_entity}
-          format.json {render :json => "[[\"Couldn't find BlogcastrUser with NAME=\"#{params[:username]}\"\"]]", :status => :unprocessable_entity}
-        end
-        return
-      end
-    else
-      begin
-        @user = BlogcastrUser.find(params[:user_id])
-      rescue ActiveRecord::RecordNotFound => error
-        respond_to do |format|
-          format.html {render :file => "public/404.html", :layout => false, :status => 404}
-          format.xml {render :xml => "<errors><error>#{error.message}</error></errors>", :status => :unprocessable_entity}
-          format.json {render :json => "[[\"#{error.message}\"]]", :status => :unprocessable_entity}
-        end
-        return
-      end
-    end
-    respond_to do |format|
-        format.html
-        #TODO: limit result set and order by most recent 
-        format.xml {render :xml => @user.blogcasts.find(:all, :conditions => ["starting_at < ? AND starting_at > ?", Time.zone.now, 1.month.ago], :limit => 3).to_xml}
-        format.json {render :json => @user.blogcasts.find(:all, :conditions => ["starting_at < ? AND starting_at > ?", Time.zone.now, 1.month.ago], :limit => 3).to_json}
-    end
-  end
-
-  def upcoming 
-    #MVR - find user by name or id
-    if !params[:username].nil?
-      @user = BlogcastrUser.find_by_username(params[:username])
-      if @user.nil?
-        respond_to do |format|
-          format.html {render :file => "public/404.html", :layout => false, :status => 404}
-          format.xml {render :xml => "<errors><error>Couldn't find BlogcastrUser with NAME=\"#{params[:username]}\"</error></errors>", :status => :unprocessable_entity}
-          format.json {render :json => "[[\"Couldn't find BlogcastrUser with NAME=\"#{params[:username]}\"\"]]", :status => :unprocessable_entity}
-        end
-        return
-      end
-    else
-      begin
-        @user = BlogcastrUser.find(params[:user_id])
-      rescue ActiveRecord::RecordNotFound => error
-        respond_to do |format|
-          format.html {render :file => "public/404.html", :layout => false, :status => 404}
-          format.xml {render :xml => "<errors><error>#{error.message}</error></errors>", :status => :unprocessable_entity}
-          format.json {render :json => "[[\"#{error.message}\"]]", :status => :unprocessable_entity}
-        end
-        return
-      end
-    end
-    respond_to do |format|
-        format.html
-        #TODO: limit result set and order by most recent 
-        format.xml {render :xml => @user.blogcasts.find(:all, :conditions => ["starting_at > ?", Time.zone.now], :limit => 3).to_xml}
-        format.json {render :json => @user.blogcasts.find(:all, :conditions => ["starting_at > ?", Time.zone.now], :limit => 3).to_json}
     end
   end
 
@@ -327,7 +261,7 @@ class Users::BlogcastsController < ApplicationController
           @num_blogcast_user_subscribers = @blogcast_user.subscribers.count
           #MVR - subscription
           if !@user.nil? && @user.id != @blogcast_user.id
-            @subscription = @user.subscriptions.find(:first, :conditions => {:subscribed_to => @blogcast_user.id})
+            @subscription = @user.subscriptions.find(:first, :conditions => { :subscribed_to => @blogcast_user.id })
           end
           #MVR - theme 
           if @blogcast_setting.use_background_image == false
@@ -335,8 +269,8 @@ class Users::BlogcastsController < ApplicationController
           end
         }
         #TODO: limit result set and order by most recent 
-        format.xml {render :xml => @blogcast.to_xml(:include => :posts)}
-        format.json {render :json => @blogcast.to_json(:include => :posts)}
+        format.xml { render :xml => @blogcast.to_xml(:include => :posts) }
+        format.json { render :json => @blogcast.to_json(:include => :posts) }
     end
     return
   end

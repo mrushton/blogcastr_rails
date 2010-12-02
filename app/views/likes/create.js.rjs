@@ -1,1 +1,6 @@
-page.replace_html "like-button-container", :partial => "delete_like_button"
+page.replace_html "like-button-container", :partial => "/share/new/destroy_like_button", :locals => { :like => @like, :blogcast => @blogcast }
+page.replace_html "alert", :partial => "create_like_alert"
+page.visual_effect :slide_down, "alert", :duration => 0.5
+page.delay(3) do
+  page.visual_effect :slide_up, "alert", :duration => 0.5
+end

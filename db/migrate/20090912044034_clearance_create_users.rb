@@ -15,9 +15,9 @@ class ClearanceCreateUsers < ActiveRecord::Migration
       t.integer :invite_id
       #MVR - Facebook
       t.integer :facebook_id
-      t.string :facebook_session_key
+      t.string :facebook_access_token
       t.boolean :has_facebook_publish_stream
-      t.boolean :has_facebook_create_event
+      t.string :facebook_link
       #MVR - Twitter
       t.integer :twitter_id
       t.string :twitter_access_token 

@@ -9,7 +9,7 @@ class TwitterSignInController < ApplicationController
         oauth_client.set_callback_url("http://sandbox.blogcastr.com" + twitter_sign_in_callback_path)
       end
     rescue 
-      render :action => "failure"
+      render :action => "error"
       return
     end
     session['rtoken'] = oauth_client.request_token.token
@@ -22,7 +22,7 @@ class TwitterSignInController < ApplicationController
     begin
       oauth_client.authorize_from_request(session['rtoken'], session['rsecret'], params[:oauth_verifier])
     rescue
-      render :action => "failure"
+      render :action => "error"
       return
     end
     session['rtoken'] = nil
@@ -32,7 +32,7 @@ class TwitterSignInController < ApplicationController
     begin
       verify_credentials = client.verify_credentials
     rescue
-      render :action => "failure"
+      render :action => "error"
       return
     end
     #MVR - find the Twitter user
@@ -69,7 +69,7 @@ class TwitterSignInController < ApplicationController
           end
         end
       rescue TimeoutError
-        render :action => "failure"
+        render :action => "error"
         return
       end
       setting.avatar = avatar
@@ -82,7 +82,7 @@ class TwitterSignInController < ApplicationController
           setting.save_without_validation!
         end
       rescue
-        render :action => "failure"
+        render :action => "error"
         return
       end
     else
@@ -92,7 +92,7 @@ class TwitterSignInController < ApplicationController
       user.twitter_token_secret = oauth_client.access_token.secret
       #MVR - do not run validations
       if !user.save(false)
-        render :action => "failure"
+        render :action => "error"
         return
       end
     end

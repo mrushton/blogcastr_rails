@@ -1,3 +1,5 @@
+<div id="alert" style="display: none;">
+</div>
 <div id="container">
   <div id="header">
     <%= link_to image_tag("new/b-logo.png", :id => "b-logo"), root_path -%> 
@@ -19,13 +21,26 @@
       <%= link_to @user.username, profile_path(:username => @user.username), :class => "username" -%>
     </div>
 <% elsif @user.instance_of?(FacebookUser) -%>
+    <ul id="navigation-container">
+      <li>
+        <%= link_to "Sign up", sign_up_path %>
+      </li>
+      <li>
+        <%= link_to "Sign out", facebook_logout_path, :method => "delete" %>
+      </li>
+    </ul>
+    <div id="welcome">
+      <%= link_to "<div id=\"welcome-avatar\" class=\"small-rounded-avatar\" style=\"background-image: url('" + @user.setting.avatar.url(:small) + "')\"></div>", @user.facebook_link %>
+      <div>Welcome,</div>
+      <%= link_to @user.setting.full_name, @user.facebook_link, :class => "username" -%>
+    </div>
 <% elsif @user.instance_of?(TwitterUser) -%>
     <ul id="navigation-container">
       <li>
         <%= link_to "Sign up", sign_up_path %>
       </li>
       <li>
-        <%= link_to "Sign out", twitter_sign_in_path, :method => "delete" %>
+        <%= link_to "Sign out", twitter_sign_out_path, :method => "delete" %>
       </li>
     </ul>
     <div id="welcome">
@@ -46,7 +61,7 @@
   <table id="content" cellspacing="0">
     <tr>
       <td id="main">
-<%- if @user.nil? -%>
+<%- if @user.nil? || !@user.instance_of?(BlogcastrUser) -%>
         <div id="like-button-container" class="button-container">
           <%= link_to "Like", sign_in_path, :id => "like-button", :class => "blue-button" %>
         </div>
@@ -62,9 +77,9 @@
 <%- else -%>
         <div id="like-button-container" class="button-container">
   <%- if @like.nil? -%>
-          <%= link_to_remote "Like", :html => {:id => "like-button", :class => "blue-button"}, :url => blogcast_likes_path(:blogcast_id => @blogcast.id), :failure => "alert('Error: Failed communicating with server. Unable to like \"#{@blogcast.title.gsub(/'/, "\\\\'")}\".');", :condition => "remote_request == false", :before => "remote_request = true", :complete => "setTimeout('remote_request = false', 1000)" %>
+          <%= render :partial => "/share/new/create_like_button", :locals => {:blogcast => @blogcast} -%>
   <%- else -%>
-          <%= link_to_remote "Unlike",:html => {:id => "like-button", :class => "blue-button"}, :url => blogcast_like_path(:blogcast_id => @blogcast.id, :id => @like.id), :method => "delete", :failure => "alert('Error: Failed communicating with server. Unable to unlike \"#{@blogcast.title.gsub(/'/, "\\\\'")}\".');", :condition => "remote_request == false", :before => "remote_request = true", :complete => "setTimeout('remote_request = false', 1000)" %>
+          <%= render :partial => "/share/new/destroy_like_button", :locals => {:like => @like, :blogcast => @blogcast} -%>
   <%- end -%>
         </div>
 <%- end -%>
@@ -102,6 +117,9 @@
               <div class="comment-info">
                 <%= link_to @user.username, profile_path(:username => @user.username), :class => "username" -%>
   <%- elsif @user.instance_of?(FacebookUser) -%>
+              <%= link_to "<div class=\"comment-avatar small-rounded-avatar\" style=\"background-image: url('" + @user.setting.avatar.url(:small) + "')\"></div>", @user.facebook_link %>
+              <div class="comment-info">
+                <%= link_to @user.setting.full_name, @user.facebook_link, :class => "username" -%>
   <%- elsif @user.instance_of?(TwitterUser) -%>
               <%= link_to "<div class=\"comment-avatar small-rounded-avatar\" style=\"background-image: url('" + @user.setting.avatar.url(:small) + "')\"></div>", "http://twitter.com/" + @user.username %>
               <div class="comment-info">
@@ -126,10 +144,8 @@
                 You can also sign in with your Facebook or Twitter account.
               </p>
               <div id="facebook-and-twitter-sign-in-buttons">
-                <fb:login-button>
-                  Sign in with Facebook
-                </fb:login-button>
-                <%= link_to_function image_tag("Sign-in-with-Twitter-darker.png", :id => "sign-in-with-twitter"), "twitterSignIn()" -%>
+                <%= link_to_function image_tag("new/facebook-login-button.png", :id => "login-with-facebook"), "facebookLogin()" -%>
+                <%= link_to_function image_tag("new/Sign-in-with-Twitter-darker.png", :id => "sign-in-with-twitter"), "twitterSignIn()" -%>
               </div>
             </div>
 <%- end -%>
@@ -149,24 +165,11 @@
           <%= render :partial => "/share/new/text_post", :locals => {:text_post => post} -%>
   <%- elsif post.instance_of?(ImagePost) -%>
           <%= render :partial => "/share/new/image_post", :object => post -%>
-  <%- elsif post.instance_of?(CommentPost) -%>
+  <%- elsif !post.instance_of?(CommentPost) -%>
           <%= render :partial => "/share/new/comment_post", :object => post -%>
   <%- end -%>
 <% end -%>
         </ol>
-        <div id="fb-root"></div>
-<script>
-  window.fbAsyncInit = function() {
-    FB.init({appId: '261363731690', status: true, cookie: true,
-             xfbml: true});
-  };
-  (function() {
-    var e = document.createElement('script'); e.async = true;
-    e.src = document.location.protocol +
-      '//connect.facebook.net/en_US/all.js';
-    document.getElementById('fb-root').appendChild(e);
-  }());
-</script>
       </td>
       <td id="side">
         <div id="current-viewers-container">
@@ -242,21 +245,19 @@
               </div>
             </li>
             <li class="side-info-section">
-<%- if @user == @blogcast_user -%>
-              <div class="side-info-dark-inner-container button-container">
-                <%= link_to "Home", home_path, :class => "blue-button" %>
-              </div>
-<%- else -%>
               <div id="subscription-button-container" class="side-info-dark-inner-container button-container">
-  <%- if @user.nil? || !@user.instance_of?(BlogcastrUser) -%>
+<%- if @user.nil? || !@user.instance_of?(BlogcastrUser) -%>
                 <%= link_to "Subscribe", sign_in_path, :id => "subscription-button", :class => "blue-button" %>
-  <%- elsif @subscription.nil? -%>
-                <%= link_to_remote "Subscribe", :html => {:id => "subscription-button", :class => "blue-button"}, :url => subscriptions_path(:user_id => @blogcast_user.id), :failure => "alert('Error communicating with server, unable to subscribe to #{@blogcast_user.username}');", :condition => "remote_request == false", :before => "remote_request = true", :complete => "setTimeout('remote_request = false', 1000)" %>
+<%- elsif @user == @blogcast_user -%>
+                <%= link_to "Home", home_path, :class => "blue-button" %>
+<%- else -%>
+  <%- if @subscription.nil? -%>
+                <%= render :partial => "/share/new/create_subscription_button", :locals => { :user => @blogcast_user } -%>
   <%- else -%>
-                <%= link_to_remote "Unsubscribe", :html => {:id => "subscription-button", :class => "blue-button"}, :url => subscription_path(:id => @subscription.id), :method => "delete", :failure => "alert('Error communicating with server, unable to unsubscribe from #{@blogcast_user.username}');", :condition => "remote_request == false", :before => "remote_request = true", :complete => "setTimeout('remote_request = false', 1000)" %>
+                <%= render :partial => "/share/new/destroy_subscription_button", :locals => { :subscription => @subscription, :user => @blogcast_user } -%>
   <%- end -%>
-              </div>
 <%- end -%>
+              </div>
             </li>
           </ul>
         </div>

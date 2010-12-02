@@ -1,3 +1,5 @@
+<div id="alert" style="display: none;">
+</div>
 <div id="container">
   <div id="header">
     <%= link_to image_tag("new/b-logo.png", :id => "b-logo"), root_path -%> 
@@ -34,7 +36,7 @@
     <tr>
       <td id="main">
         <div class="clearfix">
-<%- if @user.nil? -%>
+<%- if @user.nil? || !@user.instance_of?(BlogcastrUser) -%>
           <div id="subscription-button-container" class="button-container">
             <%= link_to "Subscribe", sign_in_path, :id => "subscription-button", :class => "blue-button" %>
           </div>
@@ -50,9 +52,9 @@
 <%- else -%>
           <div id="subscription-button-container" class="button-container">
   <%- if @subscription.nil? -%>
-            <%= link_to_remote "Subscribe", :html => {:id => "subscription-button", :class => "blue-button"}, :url => subscriptions_path(:user_id => @profile_user.id), :failure => "alert('Error communicating with server, unable to subscribe to #{@profile_user.username}');", :condition => "remote_request == false", :before => "remote_request = true", :complete => "setTimeout('remote_request = false', 1000)" -%>
+            <%= render :partial => "/share/new/create_subscription_button", :locals => { :user => @profile_user } -%>
   <%- else -%>
-            <%= link_to_remote "Unsubscribe", :html => {:id => "subscription-button", :class => "blue-button"}, :url => subscription_path(:id => @subscription.id), :method => "delete", :failure => "alert('Error communicating with server, unable to unsubscribe from #{@profile_user.username}');", :condition => "remote_request == false", :before => "remote_request = true", :complete => "setTimeout('remote_request = false', 1000)" -%>
+            <%= render :partial => "/share/new/destroy_subscription_button", :locals => { :subscription => @subscription, :user => @profile_user } -%>
   <%- end -%>
           </div>
 <%- end -%>

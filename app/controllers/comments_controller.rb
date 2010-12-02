@@ -35,7 +35,9 @@ class CommentsController < ApplicationController
         thrift_user.url = profile_path :username => @user.username
         thrift_user.avatar_url = @user.setting.avatar.url :small
       elsif @user.instance_of?(FacebookUser)
-        thrift_user.username = @user.username
+        thrift_user.username = @user.setting.full_name
+        thrift_user.url = @user.facebook_link 
+        thrift_user.avatar_url = @user.setting.avatar.url :small
       elsif @user.instance_of?(TwitterUser)
         thrift_user.username = "@" + @user.username
         thrift_user.url = "http://twitter.com/" + @user.username 
