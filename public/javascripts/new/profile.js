@@ -1,5 +1,5 @@
 function profileOnLoad() {
-  //MVR - attach click events to blogcasts
+  //MVR - attach click events
   jQuery('li.blogcast').click(blogcastClick);
 }
 

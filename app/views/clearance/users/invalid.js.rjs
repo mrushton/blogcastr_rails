@@ -1,8 +1,4 @@
 page << "var val = jQuery('#blogcastr_user_username').val();"
-page << "if (val == \"" + @username + "\")"
-page << "{"
-page.select('#username img').each do |element|
-  element.hide
-end
-page.show 'username-invalid'
+page << "if (val == \"" + @username + "\") {"
+page << "  jQuery('#pick-username-container').removeClass().addClass('invalid')"
 page << "}"

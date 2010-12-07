@@ -261,22 +261,6 @@ function blogcastrViewSelect(section_id, view_id)
   jQuery("#" + view_id).addClass("selected");
 }
 
-//do not check username if it is blank
-function blogcastrCheckUsername()
-{
-  val = jQuery('#blogcastr_user_username').val();
-  if (val == '')
-  {
-    //hide images
-    jQuery('#username img').hide();
-    return false;
-  } 
-  else
-  {
-    return true;
-  }
-}
-
 function blogcastrClickEvent()
 {
   jQuery(".overlay").hide();

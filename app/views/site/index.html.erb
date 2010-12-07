@@ -1,119 +1,76 @@
-<div id="header" class="site">
-  <div class="wrapper">
-    <%- form_tag search_path :controller => "search" do -%>
-      <%= label_tag :query, image_tag("magnifying_glass.png") -%>
-      <%= text_field_tag :query, "Search Blogcastr", :onfocus => "if (this.value == 'Search Blogcastr') this.value = ''; jQuery('#header form').addClass('selected');", :onblur => "if (this.value == '') this.value = 'Search Blogcastr'; jQuery('#header form').removeClass('selected');" -%>
-    <%- end -%>
-    <%= link_to(image_tag("/images/logo.png", :class => "logo"), "/") %>
-    <%= image_tag "/images/beta.png", :class => "beta" %>
-    <div id="navigation">
-<% if @user.instance_of?(BlogcastrUser) -%>
-      <%= link_to image_tag(@user.setting.avatar.url(:small))+@user.username, profile_path(:username => @user.username), :class => "first user" %>
-      <%= link_to "Home", home_path %>
-      <%= link_to "Settings", settings_path %>
-      <%= link_to "Sign out", sign_out_path, :method => "delete" %>
-<% elsif @user.instance_of?(FacebookUser) -%>
-  <%- avatar_url = @user.get_avatar_url :small -%>
-  <%- if avatar_url.nil? -%>
-    <%- avatar_url = get_facebook_avatar_url @user.facebook_id %>
-    <%- if avatar_url.nil? -%>
-      <%- avatar = "http://static.ak.facebook.com/pics/q_silhouette_logo.gif" %>
-    <%- end -%>
-  <%- end -%>
-  <%- username = @user.get_username -%>
-  <%- if username.nil? -%>
-    <%- username = get_facebook_name @user.facebook_id %>
-  <%- end -%>
-  <%- url = @user.get_url -%>
-  <%- if url.nil? -%>
-    <%- url = get_facebook_url @user.facebook_id %>
-  <%- end -%>
-      <%= link_to image_tag(avatar_url) + username, url, :class => "first user" %>
-      <%= link_to "Sign up", sign_up_path %>
-      <span onclick="FB.Connect.logout(blogcastrFacebookSignOut);">Sign out</span>
-<% elsif @user.instance_of?(TwitterUser) -%>
-      <%= link_to image_tag(@user.get_avatar_url(:small)) + @user.get_username, @user.get_url, :class => "first user" %>
-      <%= link_to "Sign up", sign_up_path %>
-      <span onclick="blogcastrTwitterSignOut();">Sign out</span>
-<% else -%>
-      <%= link_to "Sign up", sign_up_path %>
-      <%= link_to "Sign in", sign_in_path %>
-<% end -%>
-    </div>
-    <div class="clear">
-    </div>
+<div id="container">
+  <div id="marketing-header">
+    <ul id="marketing-navigation">
+      <li>
+        <%= link_to "Sign In", sign_in_path %>
+      </li>
+      <li class="vertical-bar">
+        <%= link_to "Sign Up", sign_up_path %>
+      </li>
+    </ul>
   </div>
-</div>
-<div id="title" class="large">
-  <div class="wrapper">
-    <div id="motto">
-    </div>
-  </div>
-</div>
-<div id="content" class="site">
-  <div class="wrapper">
-    <div class="background">
-      <div class="left">
-        <h2 class="first"><span class="highlight">Create</span>, <span class="highlight">share</span> and <span class="highlight">discover</span></h2>
-        <p>Blogcastr is a free, easy-to-use live blogging service for sharing cool stuff as it happens.</p>
-        <div class="container">
-          <% form_for :blogcastr_user, :url => new_user_path, :html => {:class => "sign-up", :method => "get"} do |form| %>
-            <%= form.label :username, "Pick a username and get started!" %>
-            <div id="username" onclick="jQuery('#username input').focus();">
-              <%= image_tag "ajax-loader.gif", :id => "username-loading", :style => "display: none;" -%>
-              <%= image_tag "tick.png", :id => "username-valid", :style => "display: none;" -%>
-              <%= image_tag "cross.png", :id => "username-invalid", :style => "display: none;" -%>
-              http://blogcastr.com/<%= form.text_field :username, :autocomplete => "off" -%>
-              <div class="clear">
-              </div>
-            </div>
-            <div class="align">
-              <%= form.submit "Sign up now!", :class => "button" %>
-            </div>
-          <% end %>
-          <%= observe_field "blogcastr_user_username", :url => valid_user_path, :frequency => 0.5, :with => "blogcastr_user[username]", :before => "jQuery('#username img').hide(); jQuery('#username-loading').show();", :condition => "blogcastrCheckUsername()" -%>
+  <div id="marketing" class="clearfix">
+    <div id="marketing-info">
+      <h2>Broadcast your blog live!</h2>
+      <p>Blogcastr is a free, easy-to-use live blogging service for sharing cool stuff as it happens.</p>
+      <% form_for :blogcastr_user, :url => new_user_path, :html => { :id => "pick-username", :method => "get" } do |form| %>
+        <%= form.label :username, "Pick a username and get started:" %>
+        <div id="pick-username-container" onclick="jQuery('#pick-username-container input').focus();">
+          http://blogcastr.com/<%= form.text_field :username, :autocomplete => "off", :maxlength => 15, :size => 20 -%>
         </div>
-        <% form_tag search_path, :class => "search", :method => "get" do %>
-          <%= label_tag :bottom_query, "Or search Blogcastr to see what's happening." %>
-          <div class="border">
-            <%= submit_tag "Search", :class => "button" %>
-            <%= text_field_tag :bottom_query, nil, :name => "query" -%>
-            <div class="clear">
-            </div>
-          </div>
-        <% end %>
+        <div id="pick-username-button-container">
+          <%= form.submit "Sign Up Today", :class => "orange-button" %>
+        </div>
+      <% end %>
+<%= observe_field "blogcastr_user_username", :url => valid_user_path, :frequency => 0.5, :with => "blogcastr_user[username]", :before => "jQuery('#pick-username-container').removeClass().addClass('loading');", :condition => "blogcastrCheckUsername()" -%>
+    </div>
+    <div id="carousel-container">
+      <div id="carousel-inner-container">
+        <ul id="carousel">
+          <li>
+            <h2>Create</h2>
+            <p>blogcasts to post text and photos while receiving comments in real time.</p>
+          </li>
+          <li>
+            <h2>Share</h2>
+            <p>blogcasts with your friends and followers before or after they start.</p>
+          </li>
+          <li>
+            <h2>Discover</h2>
+            <p>cool blogcasts and interesting people.</p>
+          </li>
+        </ul>
       </div>
-<%- @num_featured = 3 -%>
-      <div class="right">
-        <div id="featured-users">
-          <div class="large-arrow">
-            Featured users
-          </div>
-          <ul>
-  <% for featured_user in @featured_users -%>
-            <li>
-              <%= link_to image_tag(featured_user.setting.avatar.url(:medium), :class => "avatar medium", :alt => "#{featured_user.username}"), profile_path(:username => featured_user.username), :title => "#{featured_user.username}" %>
-            </li>
-  <%- end -%>
-          </ul>
-          <div class="clear">
-          </div>
-        </div>
-        <h2>Featured blogcasts</h2>
+      <div id="carousel-buttons">
+        <div class="carousel-button selected" button-id="1"></div>
+        <div class="carousel-button" button-id="2"></div>
+        <div class="carousel-button" button-id="3"></div>
+      </div>
+    </div>
+  </div>
+  <%= render :partial => "share/new/header", :locals => { :user => @user } %>
+  <table id="content" cellspacing="0">
+    <tr>
+      <td id="main">
+<%- if @featured_blogcasts.length > 0 -%>
+        <h2>Featured Blogcasts</h2>
         <ol class="blogcasts">
-<% i = @featured_blogcasts.length -%>
-<% for blogcast in @featured_blogcasts -%>
-          <%= render :partial => "/share/small_blogcast", :locals => {:blogcast => blogcast, :i => i - 1} -%>
-  <%- i = i - 1 -%>
-<% end %>
+  <%- for blogcast in @featured_blogcasts -%>
+          <%= render :partial => "/share/new/blogcast", :locals => { :blogcast => blogcast } -%>
+  <%- end -%>
+<%- end -%>
         </ol>
-      </div>
-      <div class="clear">
-      </div>
-    </div>
-    <div class="bottom-border">
-    </div>
-  </div>
-  </div>
-  <%= render :partial => "/share/footer_large" -%>
+<%- if @recent_blogcasts.length > 0 -%>
+        <h2>Recent Blogcasts</h2>
+        <ol class="blogcasts">
+  <%- for blogcast in @recent_blogcasts -%>
+          <%= render :partial => "/share/new/blogcast", :locals => { :blogcast => blogcast } -%>
+  <%- end -%>
+<%- end -%>
+        </ol>
+      </td>
+      <td id="side">
+      </td>
+    </tr>
+  </table>
 </div>

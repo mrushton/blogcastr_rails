@@ -1,0 +1,31 @@
+<div id="header">
+  <%= link_to image_tag("new/b-logo.png", :id => "b-logo"), root_path -%> 
+<% if user.instance_of?(BlogcastrUser) -%>
+  <ul id="navigation-container">
+    <li>
+      <%= link_to "Home", home_path %>
+    </li>
+    <li>
+      <%= link_to "Settings", settings_path %>
+    </li>
+    <li>
+      <%= link_to "Sign out", sign_out_path, :method => "delete" %>
+    </li>
+  </ul>
+  <div id="welcome">
+    <%= link_to "<div id=\"welcome-avatar\" class=\"small-rounded-avatar\" style=\"background-image: url('" + user.setting.avatar.url(:small) + "')\"></div>", profile_path(:username => user.username) %>
+    <div>Welcome,</div>
+    <%= link_to user.username, profile_path(:username => user.username), :class => "username" -%>
+  </div>
+<% elsif user.instance_of?(FacebookUser) -%>
+<% elsif user.instance_of?(TwitterUser) -%>
+<% else -%>
+  <div id="sign-in-or-sign-up-container">
+    <%= link_to "Sign In", sign_in_path, :id => "sign-in-button", :class => "blue-button" %>
+    <%= link_to "Sign Up", sign_up_path, :id => "sign-up-button", :class => "orange-button" %>
+  </div>
+<% end -%>
+  <%- form_tag search_path(:controller => "search"), :method => "get", :id => "header-search" do -%> 
+    <%= text_field_tag :query, "Search Blogcastr...", :onfocus => "if (this.value == 'Search Blogcastr...') this.value = '';", :onblur => "if (this.value == '') this.value = 'Search Blogcastr...';" -%> 
+  <%- end -%> 
+</div>
