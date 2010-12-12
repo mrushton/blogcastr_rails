@@ -173,7 +173,7 @@ class Users::BlogcastsController < ApplicationController
           @theme = @profile_setting.theme
         end
         @title = @profile_user_username_possesive + " blogcasts"
-        render :layout => "profile"
+        render :layout => "users/profile"
       }
       #TODO: limit result set and order by most recent 
       format.xml {render :xml => @user.blogcasts.find(:all, :conditions => ["starting_at > ?", Time.zone.now], :limit => 3).to_xml}

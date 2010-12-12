@@ -1,12 +1,17 @@
 var is_carousel_animating = false;
 var carousel_animation_interval;
+var z_index = 100;
 
 function siteOnLoad() {
   //MVR - attach click events
   jQuery('div.carousel-button').click(carouselButtonClick);
   jQuery('li.blogcast').click(blogcastClick);
+  //TODO: play with hoverIntent settings
   //MVR - carousel hovering 
   jQuery("#carousel-container").hoverIntent(stopCarousel, startCarousel);
+  //MVR - avatar hovering
+  jQuery("div.large-rounded-avatar").hoverIntent(avatarIn, avatarOut);
+  //TODO: make sure mouse is not inside carousel
   startCarousel();
 }
 
@@ -54,6 +59,14 @@ function afterMoveCarousel() {
 function carouselButtonClick() {
   var button_id = jQuery(this).attr("button-id");
   moveCarouselToPos(button_id);
+}
+
+function avatarIn() {
+  jQuery(this).css("z-index", z_index);
+  z_index = z_index + 1;
+}
+
+function avatarOut() {
 }
 
 window.addEventListener("load", siteOnLoad, false);

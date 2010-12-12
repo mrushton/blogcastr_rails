@@ -24,9 +24,9 @@
       <div class="details">
 <%- if show_user -%>
         <%= link_to user.username, profile_path(:username => user.username), :class => "username detail first" -%>
-        <span class="date time detail"><%= time_helper blogcast.starting_at -%></span>
+        <span class="date time detail"><%= timestamp_in_words_helper blogcast.starting_at -%></span>
 <%- else -%>
-        <span class="date time detail first"><%= time_helper blogcast.starting_at -%></span>
+        <span class="date time detail first"><%= timestamp_in_words_helper blogcast.starting_at -%></span>
 <%- end -%>
 <%- tags = BlogcastTag.find_by_sql(["SELECT * FROM blogcast_tags, tags WHERE blogcast_tags.blogcast_id = ? AND blogcast_tags.tag_id = tags.id", blogcast.id]) -%>
 <%- if tags.length > 0 -%>

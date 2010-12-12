@@ -38,7 +38,8 @@
 }
 
 #location-and-web {
-	font-family: serif;
+	font-family: Georgia, serif;
+	font-size: 0.9em;
 	font-style: italic;
 	line-height: 22px;
 }

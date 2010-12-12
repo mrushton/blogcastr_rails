@@ -39,7 +39,7 @@ ActionController::Routing::Routes.draw do |map|
     users.resource :password, :controller => "clearance/passwords", :only => [:create, :edit, :update]
     users.resource :confirmation, :controller => "clearance/confirmations", :only => [:new, :create]
   end
-  map.valid_user "valid_user", :controller => "clearance/users", :action => :valid
+  map.valid_user "valid-user", :controller => "clearance/users", :action => :valid
   map.sign_up "sign_up", :controller => "clearance/users", :action => "new"
   map.sign_in "sign_in", :controller => "clearance/sessions", :action => "new"
   map.sign_out "sign_out", :controller => "clearance/sessions", :action => "destroy", :method => :delete
@@ -47,7 +47,7 @@ ActionController::Routing::Routes.draw do |map|
   #MVR - user
   map.resources :users, :only => [] do |users|
     #MVR - user blogcasts
-    users.resources "blogcasts", :controller => "users/blogcasts", :only => [:index, :show], :collection => {"recent" => :get, "upcoming" => :get}
+    users.resources "blogcasts", :controller => "users/blogcasts", :only => [:index, :show]
     #MVR - user comments 
     users.resources "comments", :controller => "users/comments", :only => [:index]
     #MVR - users likes

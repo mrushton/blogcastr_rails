@@ -41,6 +41,15 @@
             <li>
               <h2>Discover</h2>
               <p>cool blogcasts and interesting people.</p>
+              <div id="avatars">
+<%- iter = 0 -%>
+<%- for user in @discover_users -%>
+  <%- x_offset = iter % 6 * 57 + rand(30) -%> 
+  <%- y_offset = iter / 6 * 50 + rand(30) -%>
+                <%= link_to "<div class=\"large-rounded-avatar\" style=\"background-image: url('" + user.setting.avatar.url(:large) + "'); left: " + x_offset.to_s + "px; top: " + y_offset.to_s + "px; z-index:" + rand(99).to_s + ";\" title=\"" + user.username + "\"></div>", profile_path(:username => user.username) %>
+  <%- iter += 1 -%>
+<%- end -%>
+              </div>
             </li>
           </ul>
         </div>
@@ -76,7 +85,27 @@
 <%- end -%>
           </ol>
         </td>
-        <td id="side">
+        <td id="side" side-id="hello">
+<%- if @featured_users.length > 0 -%>
+          <h2>Featured Users</h2>
+          <ol class="users">
+  <%- for user in @featured_users -%>
+            <li class="clearfix">
+              <%= link_to image_tag(user.setting.avatar(:medium), :class => "avatar"), profile_path(:username => user.username) -%>
+              <div class="user-info">
+                <div class="username">
+                  <%= link_to user.username, profile_path(:username => user.username), :class => "username" -%>
+                </div>
+    <%- if !user.setting.location.blank? -%>
+                <div class="location">
+                  <%= user.setting.location -%>
+                </div>
+    <%- end -%>
+              </div>
+            </li>
+  <%- end -%>
+          </ol>
+<%- end -%>
         </td>
       </tr>
     </table>
@@ -85,19 +114,21 @@
 <div id="marketing-footer-container">
   <div id="marketing-footer">
     <span id="copyright">&copy; 2010 Blogcastr</span>
-    <fb:like id="facebook-like" layout="button_count"></fb:like>
     <ul id="footer-navigation">
       <li>
-        <%= link_to image_tag("new/twitter-small.png"), "http://twitter.com/blogcastr" -%>
+        <%= link_to image_tag("new/facebook-small.png"), "http://facebook.com/blogcastr" -%>
       </li>
       <li>
-        <%= link_to image_tag("new/facebook-small.png"), "http://facebook.com/blogcastr" -%>
+        <%= link_to image_tag("new/twitter-small.png"), "http://twitter.com/blogcastr" -%>
       </li>
       <li class="bullet">
         <%= link_to "About", about_path -%>
       </li>
       <li class="bullet">
         <%= link_to "Blog", "http://blogcastr.wordpress.com" -%>
+      </li>
+      <li class="bullet">
+        <%= link_to "Feedback", "http://getsatisfaction.com/blogcastr" -%>
       </li>
       <li class="bullet">
         <%= link_to "Privacy Policy", privacy_policy_path -%>

@@ -3,17 +3,12 @@
 	padding: 0px;
 }
 
-html {
-	height: 100%;
-}
-
 body {
 	background-color: #e9e9e9;
 	background-image: url("/images/new/background.png");
 	background-repeat: repeat-x;
 	font-family: Helvetica, sans-serif;
 	font-size: 1.0em;
-	height: 100%;
 }
 
 a {
@@ -145,8 +140,44 @@ div.blogcast-header, div.post-header {
 	color: #ffffff;
 	font-size: 0.9em;
 	font-weight: bold;
-	line-height: 14px;
-	padding: 8px;
+	height: 30px;
+	line-height: 30px;
+	padding-left: 8px;
+	padding-right: 8px;
+}
+
+ul.icon-stats {
+	float: right;
+}
+
+ul.icon-stats li {
+	float: left;
+	margin-right: 8px;
+}
+
+ul.icon-stats li:last-child {
+	margin-right: 0px;
+}
+
+ul.icon-stats a {
+	color: #ffffff;
+	display: inline-block;
+	font-size: 0.85em;
+	height: 18px;
+	line-height: 18px;
+	padding-left: 22px;
+}
+
+ul.icon-stats a.posts {
+	background: url('/images/new/posts.png') no-repeat 0% 50%;
+}
+
+ul.icon-stats a.comments {
+	background: url('/images/new/comments.png') no-repeat 0% 50%;
+}
+
+ul.icon-stats a.likes {
+	background: url('/images/new/likes.png') no-repeat 0% 50%;
 }
 
 div.blogcast-body, div.post-body {
@@ -173,8 +204,13 @@ div.comment-avatar {
 
 div.blogcast-info, div.post-info {
 	float: left;
-	padding-left: 6px;
-	width: 618px;
+	padding-left: 8px;
+	width: 616px;
+}
+
+div.username-and-time {
+	height: 17px;
+	line-height: 17px;
 }
 
 div.blogcast-info a.username, div.post-info a.username {
@@ -193,11 +229,12 @@ div.blogcast-info span.time {
 
 div.blogcast-info p.description {
 	font-size: 0.75em;
-	margin: 0px;
+	line-height: 13px;
+	margin-top: 2px;
 }
 
 div.post-info p.text {
-	font-size: 0.9em;
+	font-size: 0.85em;
 	margin-top: 2px;
 }
 
@@ -213,6 +250,7 @@ div.post-info p.caption {
 div.comment-info {
 	float: left;
 	padding-left: 6px;
+	width: 514px;
 }
 
 div.comment-info a.username {
@@ -231,7 +269,7 @@ div.comment-info p.text {
 
 ul.tags {
 	padding: 0px;
-	margin-top: 4px;
+	margin-top: 5px;
 }
 
 li.tag {
@@ -328,7 +366,7 @@ input.comment.success-button {
 	padding-top: 5px;
 }
 
-div.large-rounded-avatar {
+div.super-rounded-avatar {
 	-moz-border-radius: 6px;
 	-webkit-border-radius: 6px;
 	border: none;
@@ -336,11 +374,18 @@ div.large-rounded-avatar {
 	width: 120px; 
 }
 
-div.medium-rounded-avatar {
+div.large-rounded-avatar {
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
 	height: 69px;
 	width: 69px; 
+}
+
+div.medium-rounded-avatar {
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	height: 50px;
+	width: 50px; 
 }
 
 div.small-rounded-avatar {
@@ -456,6 +501,7 @@ div.side-info-dark-inner-container a.stat {
 div.side-info-dark-inner-container a.blue-button {
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
+	display: block;
 	font-size: 0.8em;
 	height: 30px;
 	line-height: 30px;
@@ -528,9 +574,9 @@ ul.avatar-list img {
 
 #header {
 	-moz-border-radius: 10px;
-	-moz-box-shadow: 0px 0px 10px #444444, inset 0px -1px #ffffff; 
+	-moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.6), inset 0px -1px #ffffff; 
 	-webkit-border-radius: 10px;
-	-webkit-box-shadow: 0px 0px 10px #444444, inset 0px -1px #ffffff; 
+	-webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.6), inset 0px -1px #ffffff; 
 	background-color: #eeeeee;
 	background-image: -moz-linear-gradient(#fffefb, #dbdbdb); 
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#fffefb), to(#dbdbdb)); 
@@ -698,9 +744,9 @@ ul.avatar-list img {
 
 #content-table {
 	-moz-border-radius: 4px;
-	-moz-box-shadow: 0px 2px 4px #444444; 
+	-moz-box-shadow: 0px 1px 3px #444444; 
 	-webkit-border-radius: 4px;
-	-webkit-box-shadow: 0px 2px 4px #444444; 
+	-webkit-box-shadow: 0px 1px 3px #444444; 
 	margin-top: 30px;
 }
 
@@ -721,8 +767,8 @@ ul.avatar-list img {
 	-webkit-border-bottom-right-radius: 4px;
 	-webkit-border-top-right-radius: 4px;
 	background-color: rgba(228, 228, 228, 0.5); 
-	background-image: -moz-linear-gradient(left, #696969, rgba(228, 228, 228, 0.0) 9px); 
-	background-image: -webkit-gradient(linear, left center, 9 center, from(#696969), to(rgba(228, 228, 228, 0.0))); 
+	background-image: -moz-linear-gradient(left, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.0) 9px); 
+	background-image: -webkit-gradient(linear, left center, 9 center, from(#898989), to(rgba(228, 228, 228, 0.0))); 
 	padding: 20px;
 	vertical-align: top;
 	width: 200px;
@@ -751,9 +797,9 @@ ul.avatar-list img {
 
 #content-footer {
 	-moz-border-radius: 6px;
-	-moz-box-shadow: 0px 0px 10px #444444, inset 0px -1px #ffffff; 
+	-moz-box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.4), inset 0px -1px #ffffff; 
 	-webkit-border-radius: 6px;
-	-webkit-box-shadow: 0px 0px 10px #444444, inset 0px -1px #ffffff; 
+	-webkit-box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.4), inset 0px -1px #ffffff; 
 	background-color: #eeeeee;
 	background-image: -moz-linear-gradient(#fffefb, #dbdbdb); 
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#fffefb), to(#dbdbdb)); 

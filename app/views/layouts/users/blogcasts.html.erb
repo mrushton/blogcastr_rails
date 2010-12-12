@@ -2,6 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta property="og:title" content="<%= @blogcast.title -%>"/>
+    <meta property="og:type" content="article"/>
+    <meta property="og:image" content="<%= @blogcast_user.setting.avatar(:small) -%>"/>
+    <meta property="og:site_name" content="Blogcastr"/>
+<%- if !@blogcast.description.blank? -%>
+    <meta property="og:description" content="<%= @blogcast.description -%>"/>
+<%- end -%>
     <title><%= @blogcast.title %></title>
     <link rel="stylesheet" href="/stylesheets/new/all.css" media="screen"/>
     <link rel="stylesheet" href="/stylesheets/new/blogcast.css" media="screen"/>

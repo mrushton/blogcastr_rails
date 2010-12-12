@@ -1,19 +1,7 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta property="og:title" content="Blogcastr"/>
-    <meta property="og:type" content="website"/>
-<%- if Rails.env.production? -%>
-    <meta property="og:image" content="http://blogcastr.com/images/new/b-logo.png"/>
-    <meta property="og:url" content="<%= root_url -%>"/>
-<%- else -%>
-    <meta property="og:image" content="http://sandbox.blogcastr.com/images/new/b-logo.png"/>
-    <meta property="og:url" content="http://sandbox.blogcastr.com"/>
-<%- end -%>
-    <meta property="og:site_name" content="Blogcastr"/>
-    <meta property="og:description" content="Broadcast Your Blog LIVE!"/>
-    <meta property="fb:admin" content="7501878, 14600710"/>
     <title>Blogcastr</title>
     <%= stylesheet_link_tag "new/all", :media => "screen" %>
     <%= stylesheet_link_tag "new/root", :media => "screen" %>
@@ -38,18 +26,6 @@
       feedback_widget_options.style = "idea";
       var feedback_widget = new GSFN.feedback_widget(feedback_widget_options);
     </script> 
-    <div id="fb-root"></div>
-    <script>
-      window.fbAsyncInit = function() {
-        FB.init({appId: '261363731690', status: true, cookie: true, xfbml: true});
-      };
-      (function() {
-        var e = document.createElement('script');
-        e.async = true;
-        e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
-        document.getElementById('fb-root').appendChild(e);
-      }());
-    </script>
     <script type="text/javascript">
       var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
       document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));

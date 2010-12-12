@@ -2,6 +2,12 @@ body {
 	background: url("/images/new/marketing-footer-background.png") repeat transparent;
 }
 
+div.large-rounded-avatar {
+	-moz-box-shadow: inset 0px 2px 2px -1px #bbbbbb, inset 0px -1px 2px #000000, 0px 4px 4px -2px #000000; 
+	-webkit-box-shadow: inset 0px 2px 2px -1px #bbbbbb, inset 0px -1px 2px #000000, 0px 4px 4px -2px #000000; 
+	position: absolute;
+}
+
 div.carousel-button {
 	-moz-border-radius: 6px;
 	-moz-box-shadow: 0px 2px 0px #4f6980;
@@ -116,9 +122,9 @@ div.carousel-button.selected {
 #pick-username-container
 {
 	-moz-border-radius: 6px;
-	-moz-box-shadow: inset 0px 2px 2px #000000;
+	-moz-box-shadow: inset 0px 2px 2px #222222;
 	-webkit-border-radius: 6px;
-	-webkit-box-shadow: inset 0px 2px 2px #000000;
+	-webkit-box-shadow: inset 0px 2px 2px #222222;
 	color: #cccccc;
 	background-color: #ffffff;
 	background-position: 446px 50%; 
@@ -147,11 +153,12 @@ div.carousel-button.selected {
 }
 
 #pick-username-container input {
-	padding: 0px;
+	background-color: transparent; 
 	border: none;
 	font-size: 1.3em;
 	font-weight: bold;
 	outline-style: none;
+	padding: 0px;
 }
 
 #pick-username-button-container {
@@ -217,7 +224,18 @@ div.carousel-button.selected {
 	margin-right: auto;
 }
 
+#avatars {
+	height: 200px;
+	margin-left: auto;
+	margin-top: 16px;
+	margin-right: auto;
+	position: relative;
+	width: 386px;
+}
+
 #carousel-buttons {
+	-moz-user-select: none;
+        -webkit-user-select: none;
 	margin-top: 8px;
 	text-align: center;
 }
@@ -243,9 +261,51 @@ div.carousel-button.selected {
 	margin-top: 0px;
 }
 
+#side {
+	padding-left: 30px;
+	padding-right: 30px;
+	width: 180px;
+}
+
+#side h2 {
+	color: #454545;
+	font-size: 1.15em;
+}
+
+#side ol {
+	margin-top: 12px;
+}
+
+#side li {
+	margin-top: 8px;
+}
+
+#side img.avatar {
+	float: left;
+}
+
+#side div.user-info {
+	float: left;
+	margin-left: 10px;
+	padding-top: 8px;
+	width: 120px;
+}
+
+#side a.username  {
+	font-size: 0.95em;
+	font-weight: bold;
+}
+
+#side div.location  {
+	color: #505050;
+	font-family: Georgia,jkhkjhm, serif;
+	font-size: 0.75em;
+	font-style: italic;
+}
+
 #marketing-footer-container {
-	background-image: -moz-linear-gradient(top, #aeaeae, rgba(174, 174, 174, 0) 20px); 
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#ffffff), color-stop(50%, #dddddd)));
+	background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0) 20px); 
+	background-image: -webkit-gradient(linear, left top, left 20, from(rgba(0, 0, 0, 0.1)), to(rgba(0, 0, 0, 0))); 
 	height: 100px;
 	padding-top: 16px;
 }

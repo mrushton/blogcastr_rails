@@ -45,6 +45,7 @@ p.comment-sign-in a.navigation-link {
 	background-image: url("/images/new/heart-button.png"), -webkit-gradient(linear, left top, left bottom, from(#7aaddc), color-stop(50%, #538aca), color-stop(50%, #387eb9), to(#3166aa));
 	background-position: 6px 50%, top left;
 	background-repeat: no-repeat, repeat;
+	display: block;
 	font-size: 0.85em;
 	height: 30px;
 	line-height: 30px;

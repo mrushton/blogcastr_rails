@@ -39,14 +39,14 @@ class BlogcastsController < ApplicationController
     end
     #MVR - if link_title is not set, set it to lowercase title with non-alphanumeric characters replaced with an underscore
     if @blogcast.link_title.blank?
-      @blogcast.link_title = @blogcast.title.downcase.gsub(/[^a-z0-9]/, "_") 
+      @blogcast.link_title = @blogcast.title.downcase.gsub(/[^a-z0-9]/, "-") 
     end
     @blogcast.year = @blogcast.starting_at.year
     @blogcast.month = @blogcast.starting_at.month
     @blogcast.day = @blogcast.starting_at.day
     #MVR - tags must be in database for acts_as_solr
     if !params[:tags].blank?
-      tags = params[:tags].split(/,/).map {|tag| tag.gsub(/^\s*/,"")}
+      tags = params[:tags].split(/,/).map { |tag| tag.gsub(/^\s*/, "") }
       for tag in tags
         #MVR - add tag if not present
         #AS DESIGNED: no error checking just proceed

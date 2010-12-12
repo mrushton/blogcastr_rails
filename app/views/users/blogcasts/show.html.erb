@@ -1,290 +1,214 @@
 <div id="alert" style="display: none;">
 </div>
-<div id="container">
-  <div id="header">
-    <%= link_to image_tag("new/b-logo.png", :id => "b-logo"), root_path -%> 
-<% if @user.instance_of?(BlogcastrUser) -%>
-    <ul id="navigation-container">
-      <li>
-        <%= link_to "Home", home_path %>
-      </li>
-      <li>
-        <%= link_to "Settings", settings_path %>
-      </li>
-      <li>
-        <%= link_to "Sign out", sign_out_path, :method => "delete" %>
-      </li>
-    </ul>
-    <div id="welcome">
-      <%= link_to "<div id=\"welcome-avatar\" class=\"small-rounded-avatar\" style=\"background-image: url('" + @user.setting.avatar.url(:small) + "')\"></div>", profile_path(:username => @user.username) %>
-      <div>Welcome,</div>
-      <%= link_to @user.username, profile_path(:username => @user.username), :class => "username" -%>
-    </div>
-<% elsif @user.instance_of?(FacebookUser) -%>
-    <ul id="navigation-container">
-      <li>
-        <%= link_to "Sign up", sign_up_path %>
-      </li>
-      <li>
-        <%= link_to "Sign out", facebook_logout_path, :method => "delete" %>
-      </li>
-    </ul>
-    <div id="welcome">
-      <%= link_to "<div id=\"welcome-avatar\" class=\"small-rounded-avatar\" style=\"background-image: url('" + @user.setting.avatar.url(:small) + "')\"></div>", @user.facebook_link %>
-      <div>Welcome,</div>
-      <%= link_to @user.setting.full_name, @user.facebook_link, :class => "username" -%>
-    </div>
-<% elsif @user.instance_of?(TwitterUser) -%>
-    <ul id="navigation-container">
-      <li>
-        <%= link_to "Sign up", sign_up_path %>
-      </li>
-      <li>
-        <%= link_to "Sign out", twitter_sign_out_path, :method => "delete" %>
-      </li>
-    </ul>
-    <div id="welcome">
-      <%= link_to "<div id=\"welcome-avatar\" class=\"small-rounded-avatar\" style=\"background-image: url('" + @user.setting.avatar.url(:small) + "')\"></div>", "http://twitter.com/" + @user.username %>
-      <div>Welcome,</div>
-      <%= link_to "@" + @user.username, "http://twitter.com/" + @user.username, :class => "username" -%>
-    </div>
-<% else -%>
-    <div id="sign-in-or-sign-up-container">
-      <%= link_to "Sign In", sign_in_path, :id => "sign-in-button", :class => "blue-button" %>
-      <%= link_to "Sign Up", sign_up_path, :id => "sign-up-button", :class => "orange-button" %>
-    </div>
-<% end -%>
-    <%- form_tag blogcast_search_path, :method => "get", :id => "header-search" do -%> 
-      <%= text_field_tag :query, "Search #{@blogcast.title}...", :onfocus => "if (this.value == 'Search #{@blogcast.title}...') this.value = '';", :onblur => "if (this.value == '') this.value = 'Search #{@blogcast.title}...';" -%> 
-    <%- end -%> 
-  </div>
-  <table id="content" cellspacing="0">
-    <tr>
-      <td id="main">
+<div id="content-container">
+  <div id="content">
+    <%= render :partial => "/share/new/header", :locals => { :user => @user } -%>
+    <table id="content-table" cellspacing="0">
+      <tr>
+        <td id="main">
 <%- if @user.nil? || !@user.instance_of?(BlogcastrUser) -%>
-        <div id="like-button-container" class="button-container">
-          <%= link_to "Like", sign_in_path, :id => "like-button", :class => "blue-button" %>
-        </div>
+          <div id="like-button-container" class="button-container">
+            <%= link_to "Like", sign_up_path, :id => "like-button", :class => "blue-button" %>
+          </div>
 <%- elsif @user == @blogcast_user -%>
-        <ul id="blogcast-navigation">
-          <li>
-            <%= link_to "Go to dashboard &rArr;", blogcast_dashboard_path(:blogcast_id => @blogcast.id), :class => "navigation-link" %>
-          </li>
-          <li>
-            <%= link_to "Edit blogcast &rArr;", edit_blogcast_path(:id => @blogcast.id), :class => "navigation-link" %>
-          </li>
-        </ul>
+          <ul id="blogcast-navigation">
+            <li>
+              <%= link_to "Go to dashboard &rArr;", blogcast_dashboard_path(:blogcast_id => @blogcast.id), :class => "navigation-link" %>
+            </li>
+            <li>
+              <%= link_to "Edit blogcast &rArr;", edit_blogcast_path(:id => @blogcast.id), :class => "navigation-link" %>
+            </li>
+          </ul>
 <%- else -%>
-        <div id="like-button-container" class="button-container">
+          <div id="like-button-container" class="button-container">
   <%- if @like.nil? -%>
-          <%= render :partial => "/share/new/create_like_button", :locals => {:blogcast => @blogcast} -%>
+            <%= render :partial => "/share/new/create_like_button", :locals => {:blogcast => @blogcast} -%>
   <%- else -%>
-          <%= render :partial => "/share/new/destroy_like_button", :locals => {:like => @like, :blogcast => @blogcast} -%>
+            <%= render :partial => "/share/new/destroy_like_button", :locals => {:like => @like, :blogcast => @blogcast} -%>
   <%- end -%>
-        </div>
+          </div>
 <%- end -%>
-        <h1><%= @blogcast.title -%></h1>
+          <h1><%= @blogcast.title -%></h1>
 <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
-        <div id="blogcast-info">
-          <div id="blogcast-user-and-date-and-share">
-            <%= link_to @blogcast_user.username, profile_path(:username => @blogcast_user.username), :class => "username" -%> &bull; <%= @blogcast.starting_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/,' ') -%> &bull;
-            <fb:like layout="button_count"></fb:like>
-            <a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal">Tweet</a>
-          </div>
+          <div id="blogcast-info">
+            <div id="blogcast-user-and-date-and-share">
+              <%= link_to @blogcast_user.username, profile_path(:username => @blogcast_user.username), :class => "username" -%> &bull; <%= @blogcast.starting_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/,' ') -%> &bull;
+              <fb:like layout="button_count"></fb:like>
+              <a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal">Tweet</a>
+            </div>
 <%- if !@blogcast.description.blank? -%>
-          <div id="blogcast-description">
-            <%= @blogcast.description -%>
-          </div>
+            <div id="blogcast-description">
+              <%= @blogcast.description -%>
+            </div>
 <%- end -%>
 <%- if @tags.length > 0 -%>
-          <ul id="blogcast-tags" class="tags clearfix">
+            <ul id="blogcast-tags" class="tags clearfix">
   <%- for tag in @tags -%>
-            <li class="tag">
-              <%= link_to tag.name, user_tagged_blogcasts_path(:username => @blogcast_user.username, :tag => tag.name), :class => "tag" -%>
+              <li class="tag">
+                <%= link_to tag.name, user_tagged_blogcasts_path(:username => @blogcast_user.username, :tag => tag.name), :class => "tag" -%>
   <%- end -%>
-            </li>
-          </ul>
+              </li>
+            </ul>
 <%- end -%>
-          <hr></hr>
-        </div>
-        <div class="comments-container">
-          <h3 class="leave-comment">Leave a comment</h3>
-          <div id="leave-comment-container">
+            <hr></hr>
+          </div>
+          <div class="comments-container">
+            <h3 class="leave-comment">Leave a comment</h3>
+            <div id="leave-comment-container">
 <%- if signed_in? -%>
-            <div class="clearfix">
+              <div class="clearfix">
   <%- if @user.instance_of?(BlogcastrUser) -%>
-              <%= link_to "<div class=\"comment-avatar small-rounded-avatar\" style=\"background-image: url('" + @user.setting.avatar.url(:small) + "')\"></div>", profile_path(:username => @user.username) %>
-              <div class="comment-info">
-                <%= link_to @user.username, profile_path(:username => @user.username), :class => "username" -%>
+                <%= link_to "<div class=\"comment-avatar small-rounded-avatar\" style=\"background-image: url('" + @user.setting.avatar.url(:small) + "')\"></div>", profile_path(:username => @user.username) %>
+                <div class="comment-info">
+                  <%= link_to @user.username, profile_path(:username => @user.username), :class => "username" -%>
   <%- elsif @user.instance_of?(FacebookUser) -%>
-              <%= link_to "<div class=\"comment-avatar small-rounded-avatar\" style=\"background-image: url('" + @user.setting.avatar.url(:small) + "')\"></div>", @user.facebook_link %>
-              <div class="comment-info">
-                <%= link_to @user.setting.full_name, @user.facebook_link, :class => "username" -%>
+                <%= link_to "<div class=\"comment-avatar small-rounded-avatar\" style=\"background-image: url('" + @user.setting.avatar.url(:small) + "')\"></div>", @user.facebook_link %>
+                <div class="comment-info">
+                  <%= link_to @user.setting.full_name, @user.facebook_link, :class => "username" -%>
   <%- elsif @user.instance_of?(TwitterUser) -%>
-              <%= link_to "<div class=\"comment-avatar small-rounded-avatar\" style=\"background-image: url('" + @user.setting.avatar.url(:small) + "')\"></div>", "http://twitter.com/" + @user.username %>
-              <div class="comment-info">
-                <%= link_to "@" + @user.username, "http://twitter.com/" + @user.username, :class => "username" -%>
+                <%= link_to "<div class=\"comment-avatar small-rounded-avatar\" style=\"background-image: url('" + @user.setting.avatar.url(:small) + "')\"></div>", "http://twitter.com/" + @user.username %>
+                <div class="comment-info">
+                  <%= link_to "@" + @user.username, "http://twitter.com/" + @user.username, :class => "username" -%>
   <%- end -%>
-                <% remote_form_for :comment, :url => blogcast_comments_path(:blogcast_id => @blogcast.id), :html => { :id => "comment_form", :method => "post"}, :before => "if (jQuery(\"#comment_text\").val() == 'Enter text here...') return false; jQuery(this).find(\"div.comment-button-container\").addClass(\"loading\")" do |f| -%>
-                  <input id="jid" type="hidden" value="" name="jid"/>
-                  <%= f.hidden_field :from %>
-                  <%= f.text_area :text, :class => "comment", :onfocus => "if (this.value == 'Enter text here...') { this.value = ''; jQuery(this).addClass('selected'); }", :onblur => "if (this.value == '') { jQuery(this).removeClass('selected'); this.value = 'Enter text here...'; }" -%>
-                  <div class="comment-button-container">
-                    <%= f.submit "Post", :class => "comment orange-button" %>
-                  </div>
-                <%- end -%>
+                  <% remote_form_for :comment, :url => blogcast_comments_path(:blogcast_id => @blogcast.id), :html => { :id => "comment_form", :method => "post"}, :before => "if (jQuery(\"#comment_text\").val() == 'Enter text here...') return false; jQuery(this).find(\"div.comment-button-container\").addClass(\"loading\")" do |f| -%>
+                    <input id="jid" type="hidden" value="" name="jid"/>
+                    <%= f.hidden_field :from %>
+                    <%= f.text_area :text, :class => "comment", :onfocus => "if (this.value == 'Enter text here...') { this.value = ''; jQuery(this).addClass('selected'); }", :onblur => "if (this.value == '') { jQuery(this).removeClass('selected'); this.value = 'Enter text here...'; }" -%>
+                    <div class="comment-button-container">
+                      <%= f.submit "Post", :class => "comment orange-button" %>
+                    </div>
+                  <%- end -%>
+                </div>
               </div>
-            </div>
 <%- else -%>
-            <p class="comment-sign-in">
-              To leave a comment please <%= link_to "Sign In &rArr;", sign_in_path, :class => "navigation-link" -%> or <%= link_to "Sign Up &rArr;", sign_up_path, :class => "navigation-link" -%>. 
-            </p>
-            <div id="facebook-and-twitter-sign-in">
               <p class="comment-sign-in">
-                You can also sign in with your Facebook or Twitter account.
+                To leave a comment please <%= link_to "Sign In &rArr;", sign_in_path, :class => "navigation-link" -%> or <%= link_to "Sign Up &rArr;", sign_up_path, :class => "navigation-link" -%>. 
               </p>
-              <div id="facebook-and-twitter-sign-in-buttons">
-                <%= link_to_function image_tag("new/facebook-login-button.png", :id => "login-with-facebook"), "facebookLogin()" -%>
-                <%= link_to_function image_tag("new/Sign-in-with-Twitter-darker.png", :id => "sign-in-with-twitter"), "twitterSignIn()" -%>
+              <div id="facebook-and-twitter-sign-in">
+                <p class="comment-sign-in">
+                  You can also sign in with your Facebook or Twitter account.
+                </p>
+                <div id="facebook-and-twitter-sign-in-buttons">
+                  <%= link_to_function image_tag("new/facebook-login-button.png", :id => "login-with-facebook"), "facebookLogin()" -%>
+                  <%= link_to_function image_tag("new/Sign-in-with-Twitter-darker.png", :id => "sign-in-with-twitter"), "twitterSignIn()" -%>
+                </div>
               </div>
-            </div>
 <%- end -%>
-          </div>
-          <div id="comments-fade-container">
-            <ol id="comments">
+            </div>
+            <div id="comments-fade-container">
+              <ol id="comments">
 <% for comment in @comments -%>
-              <%= render :partial => "/share/new/comment", :locals => {:comment => comment} -%>
+                <%= render :partial => "/share/new/comment", :locals => {:comment => comment} -%>
 <% end -%>
-            </ol>
-            <div id="comments-fade"></div>
+              </ol>
+              <div id="comments-fade"></div>
+            </div>
           </div>
-        </div>
-        <ol id="posts">
+          <ol id="posts">
 <% for post in @posts -%>
   <%- if post.instance_of?(TextPost) -%>
-          <%= render :partial => "/share/new/text_post", :locals => {:text_post => post} -%>
+            <%= render :partial => "/share/new/text_post", :locals => {:text_post => post} -%>
   <%- elsif post.instance_of?(ImagePost) -%>
-          <%= render :partial => "/share/new/image_post", :object => post -%>
+            <%= render :partial => "/share/new/image_post", :object => post -%>
   <%- elsif !post.instance_of?(CommentPost) -%>
-          <%= render :partial => "/share/new/comment_post", :object => post -%>
+            <%= render :partial => "/share/new/comment_post", :object => post -%>
   <%- end -%>
 <% end -%>
-        </ol>
-      </td>
-      <td id="side">
-        <div id="current-viewers-container">
-          <div id="current-viewers">
-            <%= @num_viewers -%>
+          </ol>
+        </td>
+        <td id="side">
+          <div id="current-viewers-container">
+            <div id="current-viewers">
+              <%= @num_viewers -%>
+            </div>
+            <%= periodically_call_remote :url => blogcast_update_current_viewers_path(:blogcast_id => @blogcast.id), :frequency => 30 -%>
+            <div id="current-viewers-text">
+              current viewers
+            </div>
           </div>
-          <%= periodically_call_remote :url => blogcast_update_current_viewers_path(:blogcast_id => @blogcast.id), :frequency => 30 -%>
-          <div id="current-viewers-text">
-            current viewers
-          </div>
-        </div>
-        <h2><%= @blogcast.title -%></h2>
-        <div class="arrow"></div>
-        <div class="side-info-container">
-          <ul>
-            <li class="side-info-section">
-              <div class="side-info-light-inner-container">
-                <ul class="stats">
-                  <li class="stat">
-                    <span class="stat-counter"><%= @num_posts -%></span> <%= link_to @num_posts == 1 ? "Post" : "Posts", blogcast_posts_permalink_path(@blogcast_user.username) -%>
-                  </li>
-                  <li class="stat">
-                    <span class="stat-counter"><%= @num_comments -%></span> <%= link_to @num_comments == 1 ? "Comment" : "Comments", blogcast_comments_permalink_path(@blogcast_user.username) -%>
-                  </li>
-                  <li class="stat">
-                    <span class="stat-counter"><%= @num_views -%></span> <%= @num_views == 1 ? "View" : "Views" -%>
-                  </li>
-                </ul>
-              </div>
-            </li>
-            <li class="side-info-section">
-              <div class="side-info-dark-inner-container avatar-container">
-                <%= link_to @num_likes.to_s + " " + (@num_likes == 1 ? "Like" : "Likes"), blogcast_likes_permalink_path(@blogcast_user.username), :class => "stat" -%> 
+          <h2><%= @blogcast.title -%></h2>
+          <div class="arrow"></div>
+          <div class="side-info-container">
+            <ul>
+              <li class="side-info-section">
+                <div class="side-info-light-inner-container">
+                  <ul class="stats">
+                    <li class="stat">
+                      <span class="stat-counter"><%= @num_posts -%></span> <%= link_to @num_posts == 1 ? "Post" : "Posts", blogcast_posts_permalink_path(@blogcast_user.username) -%>
+                    </li>
+                    <li class="stat">
+                      <span class="stat-counter"><%= @num_comments -%></span> <%= link_to @num_comments == 1 ? "Comment" : "Comments", blogcast_comments_permalink_path(@blogcast_user.username) -%>
+                    </li>
+                    <li class="stat">
+                      <span class="stat-counter"><%= @num_views -%></span> <%= @num_views == 1 ? "View" : "Views" -%>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="side-info-section">
+                <div class="side-info-dark-inner-container avatar-container">
+                  <%= link_to @num_likes.to_s + " " + (@num_likes == 1 ? "Like" : "Likes"), blogcast_likes_permalink_path(@blogcast_user.username), :class => "stat" -%> 
 <%- if @num_likes > 0 -%>
-                <ul class="avatar-list clearfix">
+                  <ul class="avatar-list clearfix">
   <%- for like in @likes -%>
-                  <li>
-                    <%= link_to image_tag(like.setting.avatar.url(:small), :class => "avatar small", :alt => "#{like.username}"), profile_path(:username => like.username), :title => "#{like.username}" %>
-                  </li>
+                    <li>
+                      <%= link_to image_tag(like.setting.avatar.url(:small), :class => "avatar small", :alt => "#{like.username}"), profile_path(:username => like.username), :title => "#{like.username}" %>
+                    </li>
   <%- end -%>
-                </ul>
+                  </ul>
 <%- end -%>
-              </div>
-            </li>
-          </ul>
-        </div>
-        <h2><%= @blogcast_user.username -%></h2>
-        <div class="arrow"></div>
-        <div class="side-info-container">
-          <ul>
-            <li class="side-info-section">
-              <div class="side-info-light-inner-container clearfix">
-                <%= link_to "<div id=\"side-profile-avatar\" class=\"medium-rounded-avatar\" style=\"background-image: url('" + @blogcast_user.setting.avatar.url(:medium) + "')\"></div>", profile_path(:username => @blogcast_user.username) %>
-                <ul id="side-profile-stats" class="stats">
-                  <li class="stat">
-                    <span class="stat-counter"><%= @num_blogcast_user_blogcasts -%></span> <%= link_to @num_blogcast_user_blogcasts == 1 ? "Blogcast" : "Blogcasts", username_blogcasts_path(@blogcast_user.username) -%>
-                  </li>
-                  <li class="stat">
-                    <span class="stat-counter"><%= @num_blogcast_user_subscriptions -%></span> <%= link_to @num_blogcast_user_subscriptions == 1 ? "Subscription" : "Subscriptions", username_subscriptions_path(@blogcast_user.username) -%>
-                  </li>
-                  <li class="stat">
-                    <span class="stat-counter"><%= @num_blogcast_user_subscribers -%></span> <%= link_to @num_blogcast_user_subscribers == 1 ? "Subscriber" : "Subscribers", username_subscribers_path(@blogcast_user.username) -%>
-                  </li>
-                </ul>
-              </div>
-            </li>
-            <li class="side-info-section">
-              <div id="side-profile-info">
-                <%= @blogcast_user.setting.full_name -%>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <h2><%= @blogcast_user.username -%></h2>
+          <div class="arrow"></div>
+          <div class="side-info-container">
+            <ul>
+              <li class="side-info-section">
+                <div class="side-info-light-inner-container clearfix">
+                  <%= link_to "<div id=\"side-profile-avatar\" class=\"large-rounded-avatar\" style=\"background-image: url('" + @blogcast_user.setting.avatar.url(:large) + "')\"></div>", profile_path(:username => @blogcast_user.username) %>
+                  <ul id="side-profile-stats" class="stats">
+                    <li class="stat">
+                      <span class="stat-counter"><%= @num_blogcast_user_blogcasts -%></span> <%= link_to @num_blogcast_user_blogcasts == 1 ? "Blogcast" : "Blogcasts", username_blogcasts_path(@blogcast_user.username) -%>
+                    </li>
+                    <li class="stat">
+                      <span class="stat-counter"><%= @num_blogcast_user_subscriptions -%></span> <%= link_to @num_blogcast_user_subscriptions == 1 ? "Subscription" : "Subscriptions", username_subscriptions_path(@blogcast_user.username) -%>
+                    </li>
+                    <li class="stat">
+                      <span class="stat-counter"><%= @num_blogcast_user_subscribers -%></span> <%= link_to @num_blogcast_user_subscribers == 1 ? "Subscriber" : "Subscribers", username_subscribers_path(@blogcast_user.username) -%>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="side-info-section">
+                <div id="side-profile-info">
+                  <%= @blogcast_user.setting.full_name -%>
 <%- if !@blogcast_user.setting.location.blank? -%>
-                &bull; <%= @blogcast_user.setting.location -%>
+                  &bull; <%= @blogcast_user.setting.location -%>
 <%- end -%>
-              </div>
-            </li>
-            <li class="side-info-section">
-              <div id="subscription-button-container" class="side-info-dark-inner-container button-container">
+                </div>
+              </li>
+              <li class="side-info-section">
+                <div id="subscription-button-container" class="side-info-dark-inner-container button-container">
 <%- if @user.nil? || !@user.instance_of?(BlogcastrUser) -%>
-                <%= link_to "Subscribe", sign_in_path, :id => "subscription-button", :class => "blue-button" %>
+                  <%= link_to "Subscribe", sign_up_path, :id => "subscription-button", :class => "blue-button" %>
 <%- elsif @user == @blogcast_user -%>
-                <%= link_to "Home", home_path, :class => "blue-button" %>
+                  <%= link_to "Home", home_path, :class => "blue-button" %>
 <%- else -%>
   <%- if @subscription.nil? -%>
-                <%= render :partial => "/share/new/create_subscription_button", :locals => { :user => @blogcast_user } -%>
+                  <%= render :partial => "/share/new/create_subscription_button", :locals => { :user => @blogcast_user } -%>
   <%- else -%>
-                <%= render :partial => "/share/new/destroy_subscription_button", :locals => { :subscription => @subscription, :user => @blogcast_user } -%>
+                  <%= render :partial => "/share/new/destroy_subscription_button", :locals => { :subscription => @subscription, :user => @blogcast_user } -%>
   <%- end -%>
 <%- end -%>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </td>
-    </tr>
-  </table>
-  <div id="footer" class="clearfix">
-    <span id="copyright">&copy; 2010 Blogcastr</span>
-    <ul id="footer-navigation">
-      <li>
-        <%= link_to image_tag("new/facebook-small.png"), "http://facebook.com/blogcastr" -%>
-      </li>
-      <li>
-        <%= link_to image_tag("new/twitter-small.png"), "http://twitter.com/blogcastr" -%>
-      </li>
-      <li class="bullet">
-        <%= link_to "About", about_path -%>
-      </li>
-      <li class="bullet">
-        <%= link_to "Blog", "http://blogcastr.wordpress.com" -%>
-      </li>
-      <li class="bullet">
-        <%= link_to "Privacy Policy", privacy_policy_path -%>
-      </li>
-      <li class="bullet">
-        <%= link_to "Terms of Service", terms_of_service_path -%>
-      </li>
-    </ul>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <%= render :partial => "/share/new/content_footer" -%>
   </div>
 </div>
