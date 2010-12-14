@@ -78,54 +78,46 @@
           <div class="arrow">
           </div>
           <div class="side-info-container">
-            <ul>
-              <li class="side-info-section">
-                <div class="side-info-light-inner-container">
-                  <ul class="stats">
-                    <li class="stat">
-                      <span class="stat-counter"><%= @num_blogcasts -%></span> <%= link_to @num_blogcasts == 1 ? "Blogcast" : "Blogcasts", username_blogcasts_path(@profile_user.username) -%>
-                    </li>
-                    <li class="stat">
-                      <span class="stat-counter"><%= @num_posts -%></span> <%= link_to @num_posts == 1 ? "Post" : "Posts", username_posts_path(@profile_user.username) -%>
-                    </li>
-                    <li class="stat">
-                      <span class="stat-counter"><%= @num_comments -%></span> <%= link_to @num_comments == 1 ? "Comment" : "Comments", username_comments_path(@profile_user.username) -%>
-                    </li>
-                    <li class="stat">
-                      <span class="stat-counter"><%= @num_likes -%></span> <%= link_to @num_likes == 1 ? "Like" : "Likes", username_likes_path(@profile_user.username) -%>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <li class="side-info-section">
-                <div class="side-info-dark-inner-container avatar-container">
-                  <%= link_to @num_subscriptions.to_s + " " + (@num_subscriptions == 1 ? "Subscription" : "Subscriptions"), username_subscriptions_path(@profile_user.username), :class => "stat" -%> 
+            <div class="side-info-inner-container light">
+              <ul class="stats">
+                <li class="stat">
+                  <span class="stat-counter"><%= @num_blogcasts -%></span> <%= link_to @num_blogcasts == 1 ? "Blogcast" : "Blogcasts", username_blogcasts_path(@profile_user.username) -%>
+                </li>
+                <li class="stat">
+                  <span class="stat-counter"><%= @num_posts -%></span> <%= link_to @num_posts == 1 ? "Post" : "Posts", username_posts_path(@profile_user.username) -%>
+                </li>
+                <li class="stat">
+                  <span class="stat-counter"><%= @num_comments -%></span> <%= link_to @num_comments == 1 ? "Comment" : "Comments", username_comments_path(@profile_user.username) -%>
+                </li>
+                <li class="stat">
+                  <span class="stat-counter"><%= @num_likes -%></span> <%= link_to @num_likes == 1 ? "Like" : "Likes", username_likes_path(@profile_user.username) -%>
+                </li>
+              </ul>
+            </div>
+            <div class="side-info-inner-container dark avatar-container">
+              <%= link_to @num_subscriptions.to_s + " " + (@num_subscriptions == 1 ? "Subscription" : "Subscriptions"), username_subscriptions_path(@profile_user.username), :class => "stat" -%> 
 <%- if @num_subscriptions > 0 -%>
-                  <ul class="avatar-list clearfix">
+              <ul class="avatar-list clearfix">
   <%- for subscription in @subscriptions -%>
-                    <li>
-                      <%= link_to image_tag(subscription.setting.avatar.url(:small), :class => "avatar small", :alt => "#{subscription.username}"), profile_path(:username => subscription.username), :title => "#{subscription.username}" %>
-                    </li>
+                <li>
+                  <%= link_to image_tag(subscription.setting.avatar.url(:small), :class => "avatar small", :alt => "#{subscription.username}"), profile_path(:username => subscription.username), :title => "#{subscription.username}" %>
+                </li>
   <%- end -%>
-                  </ul>
+              </ul>
 <%- end -%>
-                </div>
-              </li>
-              <li class="side-info-section">
-                <div class="side-info-dark-inner-container avatar-container">
-                  <%= link_to @num_subscribers.to_s + " " + (@num_subscribers == 1 ? "Subscriber" : "Subscribers"), username_subscribers_path(@profile_user.username), :class => "stat" -%> 
+            </div>
+            <div class="side-info-inner-container dark avatar-container">
+              <%= link_to @num_subscribers.to_s + " " + (@num_subscribers == 1 ? "Subscriber" : "Subscribers"), username_subscribers_path(@profile_user.username), :class => "stat" -%> 
 <%- if @num_subscribers > 0 -%>
-                  <ul class="avatar-list clearfix">
+              <ul class="avatar-list clearfix">
   <%- for subscriber in @subscribers -%>
-                    <li>
-                      <%= link_to image_tag(subscriber.setting.avatar.url(:small), :class => "avatar small", :alt => "#{subscriber.username}"), profile_path(:username => subscriber.username), :title => "#{subscriber.username}" %>
-                    </li>
+                <li>
+                  <%= link_to image_tag(subscriber.setting.avatar.url(:small), :class => "avatar small", :alt => "#{subscriber.username}"), profile_path(:username => subscriber.username), :title => "#{subscriber.username}" %>
+                </li>
   <%- end -%>
-                  </ul>
+              </ul>
 <%- end -%>
-                </div>
-              </li>
-            </ul>
+            </div>
           </div>
           <%= link_to "RSS feed of #{@profile_user.possesive_username} blogcasts", user_blogcasts_path(:username => @profile_user.username, :format => "rss"), :id => "rss" %>
         </td>

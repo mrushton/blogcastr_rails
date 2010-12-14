@@ -46,11 +46,11 @@
       <p class="description"><%= blogcast.description -%></p>
 <%- end -%>
 <%- num_posts = blogcast.posts.count -%>
-      <%= link_to num_posts.to_s + ((num_posts == 1) ? " Post" : " Posts"), username_blogcast_posts_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title), :class => "stat first" -%>
+      <%= link_to num_posts.to_s + ((num_posts == 1) ? " Post" : " Posts"), blogcast_posts_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title), :class => "stat first" -%>
 <%- num_comments = blogcast.comments.count -%>
-      <%= link_to num_comments.to_s + ((num_comments == 1) ? " Comment" : " Comments"), username_blogcast_comments_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title), :class => "stat" -%>
+      <%= link_to num_comments.to_s + ((num_comments == 1) ? " Comment" : " Comments"), blogcast_comments_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title), :class => "stat" -%>
 <%- num_likes = blogcast.likes.count -%>
-      <%= link_to num_likes.to_s + ((num_likes == 1) ? " Like" : " Likes"), username_blogcast_likes_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title), :class => "stat" -%>
+      <%= link_to num_likes.to_s + ((num_likes == 1) ? " Like" : " Likes"), blogcast_likes_permalink_path(:username => blogcast.user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title), :class => "stat" -%>
     </div>
     <div class="clear">
     </div>

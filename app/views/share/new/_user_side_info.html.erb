@@ -1,0 +1,37 @@
+<h2><%= user.username -%></h2>
+<div class="arrow"></div>
+<div class="side-info-container">
+  <div class="side-info-inner-container light clearfix">
+    <%= link_to "<div id=\"side-profile-avatar\" class=\"large-rounded-avatar\" style=\"background-image: url('" + user.setting.avatar.url(:large) + "')\"></div>", profile_path(:username => user.username) %>
+    <ul id="side-profile-stats" class="stats">
+      <li class="stat">
+        <span class="stat-counter"><%= num_blogcasts -%></span> <%= link_to num_blogcasts == 1 ? "Blogcast" : "Blogcasts", username_blogcasts_path(user.username) -%>
+      </li>
+      <li class="stat">
+        <span class="stat-counter"><%= num_subscriptions -%></span> <%= link_to num_subscriptions == 1 ? "Subscription" : "Subscriptions", username_subscriptions_path(user.username) -%>
+      </li>
+      <li class="stat">
+        <span class="stat-counter"><%= num_subscribers -%></span> <%= link_to num_subscribers == 1 ? "Subscriber" : "Subscribers", username_subscribers_path(user.username) -%>
+      </li>
+    </ul>
+  </div>
+  <div id="side-profile-info" class="side-info-inner-container">
+    <%= user.setting.full_name -%>
+<%- if !user.setting.location.blank? -%>
+    &bull; <%= user.setting.location -%>
+<%- end -%>
+  </div>
+  <div id="subscription-button-container" class="side-info-inner-container dark button-container">
+<%- if current_user.nil? || !current_user.instance_of?(BlogcastrUser) -%>
+    <%= link_to "Subscribe", sign_up_path, :id => "subscription-button", :class => "blue-button" %>
+<%- elsif current_user == user -%>
+    <%= link_to "Home", home_path, :class => "blue-button" %>
+<%- else -%>
+  <%- if subscription.nil? -%>
+    <%= render :partial => "/share/new/create_subscription_button", :locals => { :user => user } -%>
+  <%- else -%>
+    <%= render :partial => "/share/new/destroy_subscription_button", :locals => { :subscription => subscription, :user => user } -%>
+  <%- end -%>
+<%- end -%>
+  </div>
+</div>

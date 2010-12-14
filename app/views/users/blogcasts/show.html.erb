@@ -129,83 +129,33 @@
           <h2><%= @blogcast.title -%></h2>
           <div class="arrow"></div>
           <div class="side-info-container">
-            <ul>
-              <li class="side-info-section">
-                <div class="side-info-light-inner-container">
-                  <ul class="stats">
-                    <li class="stat">
-                      <span class="stat-counter"><%= @num_posts -%></span> <%= link_to @num_posts == 1 ? "Post" : "Posts", blogcast_posts_permalink_path(@blogcast_user.username) -%>
-                    </li>
-                    <li class="stat">
-                      <span class="stat-counter"><%= @num_comments -%></span> <%= link_to @num_comments == 1 ? "Comment" : "Comments", blogcast_comments_permalink_path(@blogcast_user.username) -%>
-                    </li>
-                    <li class="stat">
-                      <span class="stat-counter"><%= @num_views -%></span> <%= @num_views == 1 ? "View" : "Views" -%>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <li class="side-info-section">
-                <div class="side-info-dark-inner-container avatar-container">
-                  <%= link_to @num_likes.to_s + " " + (@num_likes == 1 ? "Like" : "Likes"), blogcast_likes_permalink_path(@blogcast_user.username), :class => "stat" -%> 
+            <div class="side-info-inner-container light">
+              <ul class="stats">
+                <li class="stat">
+                  <span class="stat-counter"><%= @num_posts -%></span> <%= link_to @num_posts == 1 ? "Post" : "Posts", blogcast_posts_permalink_path(@blogcast_user.username) -%>
+                </li>
+                <li class="stat">
+                  <span class="stat-counter"><%= @num_comments -%></span> <%= link_to @num_comments == 1 ? "Comment" : "Comments", blogcast_comments_permalink_path(@blogcast_user.username) -%>
+                </li>
+                <li class="stat">
+                  <span class="stat-counter"><%= @num_views -%></span> <%= @num_views == 1 ? "View" : "Views" -%>
+                </li>
+              </ul>
+            </div>
+            <div class="side-info-inner-container dark avatar-container">
+              <%= link_to @num_likes.to_s + " " + (@num_likes == 1 ? "Like" : "Likes"), blogcast_likes_permalink_path(@blogcast_user.username), :class => "stat" -%> 
 <%- if @num_likes > 0 -%>
-                  <ul class="avatar-list clearfix">
+              <ul class="avatar-list clearfix">
   <%- for like in @likes -%>
-                    <li>
-                      <%= link_to image_tag(like.setting.avatar.url(:small), :class => "avatar small", :alt => "#{like.username}"), profile_path(:username => like.username), :title => "#{like.username}" %>
-                    </li>
+                <li>
+                  <%= link_to image_tag(like.setting.avatar.url(:small), :class => "avatar small", :alt => "#{like.username}"), profile_path(:username => like.username), :title => "#{like.username}" %>
+                </li>
   <%- end -%>
-                  </ul>
+              </ul>
 <%- end -%>
-                </div>
-              </li>
-            </ul>
+            </div>
           </div>
-          <h2><%= @blogcast_user.username -%></h2>
-          <div class="arrow"></div>
-          <div class="side-info-container">
-            <ul>
-              <li class="side-info-section">
-                <div class="side-info-light-inner-container clearfix">
-                  <%= link_to "<div id=\"side-profile-avatar\" class=\"large-rounded-avatar\" style=\"background-image: url('" + @blogcast_user.setting.avatar.url(:large) + "')\"></div>", profile_path(:username => @blogcast_user.username) %>
-                  <ul id="side-profile-stats" class="stats">
-                    <li class="stat">
-                      <span class="stat-counter"><%= @num_blogcast_user_blogcasts -%></span> <%= link_to @num_blogcast_user_blogcasts == 1 ? "Blogcast" : "Blogcasts", username_blogcasts_path(@blogcast_user.username) -%>
-                    </li>
-                    <li class="stat">
-                      <span class="stat-counter"><%= @num_blogcast_user_subscriptions -%></span> <%= link_to @num_blogcast_user_subscriptions == 1 ? "Subscription" : "Subscriptions", username_subscriptions_path(@blogcast_user.username) -%>
-                    </li>
-                    <li class="stat">
-                      <span class="stat-counter"><%= @num_blogcast_user_subscribers -%></span> <%= link_to @num_blogcast_user_subscribers == 1 ? "Subscriber" : "Subscribers", username_subscribers_path(@blogcast_user.username) -%>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <li class="side-info-section">
-                <div id="side-profile-info">
-                  <%= @blogcast_user.setting.full_name -%>
-<%- if !@blogcast_user.setting.location.blank? -%>
-                  &bull; <%= @blogcast_user.setting.location -%>
-<%- end -%>
-                </div>
-              </li>
-              <li class="side-info-section">
-                <div id="subscription-button-container" class="side-info-dark-inner-container button-container">
-<%- if @user.nil? || !@user.instance_of?(BlogcastrUser) -%>
-                  <%= link_to "Subscribe", sign_up_path, :id => "subscription-button", :class => "blue-button" %>
-<%- elsif @user == @blogcast_user -%>
-                  <%= link_to "Home", home_path, :class => "blue-button" %>
-<%- else -%>
-  <%- if @subscription.nil? -%>
-                  <%= render :partial => "/share/new/create_subscription_button", :locals => { :user => @blogcast_user } -%>
-  <%- else -%>
-                  <%= render :partial => "/share/new/destroy_subscription_button", :locals => { :subscription => @subscription, :user => @blogcast_user } -%>
-  <%- end -%>
-<%- end -%>
-                </div>
-              </li>
-            </ul>
-          </div>
+          <%= render :partial => "/share/new/user_side_info", :locals => { :user => @blogcast_user, :current_user => current_user, :num_blogcasts => @num_blogcast_user_blogcasts, :num_subscriptions => @num_blogcast_user_subscriptions, :num_subscribers => @num_blogcast_user_subscribers, :subscription => @subscription } -%>
         </td>
       </tr>
     </table>

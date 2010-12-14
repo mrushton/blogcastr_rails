@@ -1,0 +1,36 @@
+<h2><%= blogcast.title -%></h2>
+<div class="arrow"></div>
+<div class="side-info-container">
+  <div class="side-info-inner-container light">
+    <ul class="stats">
+      <li class="stat">
+        <span class="stat-counter"><%= num_posts -%></span> <%= link_to num_posts == 1 ? "Post" : "Posts", blogcast_posts_permalink_path(user.username) -%>
+      </li>
+      <li class="stat">
+        <span class="stat-counter"><%= num_comments -%></span> <%= link_to num_comments == 1 ? "Comment" : "Comments", blogcast_comments_permalink_path(user.username) -%>
+      </li>
+      <li class="stat">
+        <span class="stat-counter"><%= num_likes -%></span> <%= link_to num_likes == 1 ? "Like" : "Likes", blogcast_likes_permalink_path(user.username) -%>
+      </li>
+    </ul>
+  </div>
+  <div id="side-blogcast-info" class="side-info-inner-container">
+    <%= blogcast.starting_at.strftime("%D") -%>
+<%- if !blogcast.description.blank? -%>
+     &bull; <%= blogcast.description -%>
+<%- end -%>
+  </div>
+  <div id="like-button-container" class="side-info-inner-container dark button-container">
+<%- if current_user.nil? || !current_user.instance_of?(BlogcastrUser) -%>
+    <%= link_to "Like", sign_up_path, :id => "like-button", :class => "blue-button" %>
+<%- elsif current_user == user -%>
+    <%= link_to "<span class=\"icon\">Dashboard</span>", blogcast_dashboard_path(:blogcast_id => blogcast.id), :class => "blue-button" %>
+<%- else -%>
+  <%- if like.nil? -%>
+    <%= render :partial => "/share/new/create_like_button", :locals => { :blogcast => blogcast } -%>
+  <%- else -%>
+    <%= render :partial => "/share/new/destroy_like_button", :locals => { :like => like, :blogcast => blogcast } -%>
+  <%- end -%>
+<%- end -%>
+  </div>
+</div>
