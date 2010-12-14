@@ -49,7 +49,13 @@ div.carousel-button.selected {
 #marketing-header {
 	height: 88px;
 	padding-top: 12px;
+	position: relative;
 	text-align: center;
+}
+
+#beta {
+	left: 617px;
+	top: 50px;
 }
 
 #marketing-navigation {
@@ -287,7 +293,7 @@ div.carousel-button.selected {
 #side div.user-info {
 	float: left;
 	margin-left: 10px;
-	padding-top: 8px;
+	padding-top: 6px;
 	width: 120px;
 }
 

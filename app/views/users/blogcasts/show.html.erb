@@ -7,7 +7,7 @@
       <tr>
         <td id="main">
 <%- if @user.nil? || !@user.instance_of?(BlogcastrUser) -%>
-          <div id="like-button-container" class="button-container">
+          <div id="like-button-container" class="button-container like-button-container">
             <%= link_to "Like", sign_up_path, :id => "like-button", :class => "blue-button" %>
           </div>
 <%- elsif @user == @blogcast_user -%>
@@ -20,11 +20,11 @@
             </li>
           </ul>
 <%- else -%>
-          <div id="like-button-container" class="button-container">
+          <div id="like-button-container" class="button-container like-button-container">
   <%- if @like.nil? -%>
-            <%= render :partial => "/share/new/create_like_button", :locals => {:blogcast => @blogcast} -%>
+            <%= render :partial => "/share/new/create_like_button", :locals => { :blogcast => @blogcast } -%>
   <%- else -%>
-            <%= render :partial => "/share/new/destroy_like_button", :locals => {:like => @like, :blogcast => @blogcast} -%>
+            <%= render :partial => "/share/new/destroy_like_button", :locals => { :like => @like, :blogcast => @blogcast } -%>
   <%- end -%>
           </div>
 <%- end -%>
@@ -32,7 +32,7 @@
 <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
           <div id="blogcast-info">
             <div id="blogcast-user-and-date-and-share">
-              <%= link_to @blogcast_user.username, profile_path(:username => @blogcast_user.username), :class => "username" -%> &bull; <%= @blogcast.starting_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/,' ') -%> &bull;
+              <%= link_to @blogcast_user.username, profile_path(:username => @blogcast_user.username), :class => "username" -%> &bull; <%= @blogcast.starting_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/, ' ') -%> &bull;
               <fb:like layout="button_count"></fb:like>
               <a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal">Tweet</a>
             </div>
@@ -98,7 +98,7 @@
             <div id="comments-fade-container">
               <ol id="comments">
 <% for comment in @comments -%>
-                <%= render :partial => "/share/new/comment", :locals => {:comment => comment} -%>
+                <%= render :partial => "/share/new/comment", :locals => { :comment => comment } -%>
 <% end -%>
               </ol>
               <div id="comments-fade"></div>
@@ -107,7 +107,7 @@
           <ol id="posts">
 <% for post in @posts -%>
   <%- if post.instance_of?(TextPost) -%>
-            <%= render :partial => "/share/new/text_post", :locals => {:text_post => post} -%>
+            <%= render :partial => "/share/new/text_post", :locals => { :text_post => post } -%>
   <%- elsif post.instance_of?(ImagePost) -%>
             <%= render :partial => "/share/new/image_post", :object => post -%>
   <%- elsif !post.instance_of?(CommentPost) -%>

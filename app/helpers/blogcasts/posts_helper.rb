@@ -1,0 +1,2 @@
+module Blogcasts::PostsHelper
+end

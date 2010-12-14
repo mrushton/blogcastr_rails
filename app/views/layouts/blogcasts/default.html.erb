@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title><%= @title %></title>
+    <link rel="stylesheet" href="/stylesheets/new/all.css" media="screen"/>
+    <link rel="stylesheet" href="/stylesheets/new/blogcast.css" media="screen"/>
+    <%= javascript_include_tag :defaults, "jquery.js", "new/application.js", "new/blogcast.js", :media => "all" %>
+    <style>
+<% if @theme.nil? -%>
+      body
+      {
+  <%- if !@blogcast_setting.background_image_file_name.nil? -%>
+        background-image: url('<%= @blogcast_setting.background_image.url %>');
+  <% end -%>
+  <%- if @blogcast_setting.tile_background_image == false -%>
+        background-repeat: no-repeat;
+  <% end -%>
+  <%- if @blogcast_setting.scroll_background_image == false -%>
+        background-attachment: fixed;
+  <% end -%>
+  <%- if !@blogcast_setting.background_color.blank? -%>
+        background-color: <%= @blogcast_setting.background_color; -%>
+  <% end -%>
+      }
+<% else -%>
+      body
+      {
+  <%- if !@theme.background_image_file_name.nil? -%>
+        background-image: url('/images/themes/<%= @theme.id -%>/background_image/original/<%= @theme.background_image_file_name -%>');
+  <% end -%>
+  <%- if @theme.id == 1 -%>
+        background-repeat: repeat-x;
+  <%- elsif @theme.tile_background_image == false -%>
+        background-repeat: no-repeat;
+  <%- end -%>
+  <%- if @theme.scroll_background_image == false -%>
+        background-attachment: fixed;
+  <% end -%>
+  <%- if !@theme.background_color.blank? -%>
+        background-color: <%= @theme.background_color; -%>
+  <% end -%>
+      }
+<% end -%>
+    </style>
+    <% javascript_tag do %>
+      jQuery.noConflict();
+      var server_timestamp = <%= Time.now.to_i %>;
+    <% end %>
+  </head>
+  <body>
+    <%= yield :layout %>
+    <script type="text/javascript">
+      var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+      document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+      try {
+        var pageTracker = _gat._getTracker("UA-11177931-1");
+        pageTracker._trackPageview();
+      } catch(err) {}
+    </script>
+  </body>
+</html>

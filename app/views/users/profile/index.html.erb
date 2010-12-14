@@ -8,8 +8,8 @@
         <td id="main">
           <div class="clearfix">
 <%- if @user.nil? || !@user.instance_of?(BlogcastrUser) -%>
-            <div id="subscription-button-container" class="button-container">
-              <%= link_to "Subscribe", sign_in_path, :id => "subscription-button", :class => "blue-button" %>
+            <div id="subscription-button-container" class="button-container profile-button-container">
+              <%= link_to "Subscribe", sign_up_path, :id => "subscription-button", :class => "blue-button" %>
             </div>
 <%- elsif @user == @profile_user -%>
             <ul id="profile-navigation">
@@ -21,7 +21,7 @@
               </li>
             </ul>
 <%- else -%>
-            <div id="subscription-button-container" class="button-container">
+            <div id="subscription-button-container" class="button-container profile-button-container">
   <%- if @subscription.nil? -%>
               <%= render :partial => "/share/new/create_subscription_button", :locals => { :user => @profile_user } -%>
   <%- else -%>

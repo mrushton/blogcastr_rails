@@ -15,7 +15,7 @@
     <div class="right">
       <%= link_to comment_user.get_username, comment_user.get_url, :class => "username" -%>
 <% end -%>
-      <span class="date"><%= time_ago_helper comment_post.created_at %></span>
+      <span class="date"><%= timestamp_in_words_helper comment_post.created_at %></span>
       <p class="text"><%= comment.text %></p>
       <div class="info-collapsible" onclick="blogcastrCollapsibleEvent(this, 'CommentPost:<%= comment_post.id -%>-info');">Info<%= image_tag "up.png" -%></div>
       <div id="CommentPost:<%= comment_post.id -%>-info" class="info" style="display: none;">

@@ -1,6 +1,0 @@
-page.replace_html "num-viewers", @num_viewers
-if @num_viewers == 1
-  page.replace_html "viewers", "Viewer"
-else
-  page.replace_html "viewers", "Viewers"
-end
