@@ -3,11 +3,9 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title><%= @title %></title>
+    <link rel="shortcut icon" href="/images/new/favicon.ico">
     <%= stylesheet_link_tag "new/all", :media => "screen" %>
     <%= stylesheet_link_tag "new/profile", :media => "screen" %>
-    <!--[if IE]>
-      <%= stylesheet_link_tag "new/ie", :media => "screen" %>
-    <![endif]-->
     <style>
 <% if @theme.nil? -%>
       body

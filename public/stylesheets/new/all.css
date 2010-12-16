@@ -198,11 +198,11 @@ ul.icon-stats {
 
 ul.icon-stats li {
 	float: left;
-	margin-right: 8px;
+	margin-left: 10px;
 }
 
-ul.icon-stats li:last-child {
-	margin-right: 0px;
+ul.icon-stats li:first-child {
+	margin-left: 0px;
 }
 
 ul.icon-stats a {
@@ -215,15 +215,15 @@ ul.icon-stats a {
 }
 
 ul.icon-stats a.posts {
-	background: url('/images/new/posts.png') no-repeat 0% 50%;
+	background: url('/images/new/pencil.png') no-repeat 0% 50%;
 }
 
 ul.icon-stats a.comments {
-	background: url('/images/new/comments.png') no-repeat 0% 50%;
+	background: url('/images/new/comment.png') no-repeat 0% 50%;
 }
 
 ul.icon-stats a.likes {
-	background: url('/images/new/likes.png') no-repeat 0% 50%;
+	background: url('/images/new/heart.png') no-repeat 0% 50%;
 }
 
 div.blogcast-body, div.post-body {
@@ -274,7 +274,7 @@ div.blogcast-info span.time {
 }
 
 div.blogcast-info p.description {
-	font-size: 0.75em;
+	font-size: 0.7em;
 	line-height: 13px;
 	margin-top: 2px;
 }
