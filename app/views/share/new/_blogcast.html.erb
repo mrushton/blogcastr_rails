@@ -17,7 +17,7 @@
   </div>
   <div class="blogcast-body">
     <div class="clearfix">
-      <%= link_to image_tag(user.setting.avatar(:small), :class => "avatar"), profile_path(:username => user.username) -%>
+      <%= link_to image_tag(user.setting.avatar(:small), :class => "small-avatar"), profile_path(:username => user.username) -%>
       <div class="blogcast-info">
         <div class="username-and-time">
           <%= link_to user.username, profile_path(:username => user.username), :class => "username" -%>

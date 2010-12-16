@@ -98,6 +98,51 @@ a.username, a.navigation-link, #header-search input, h1, #side h2, #pick-usernam
 	color: #1c4b75;
 }
 
+img.super-avatar, div.super-rounded-avatar {
+	height: 120px;
+	width: 120px; 
+}
+
+div.super-rounded-avatar {
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+}
+
+img.large-avatar, div.large-rounded-avatar {
+	height: 69px;
+	width: 69px; 
+}
+
+div.large-rounded-avatar {
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+}
+
+img.medium-avatar, div.medium-rounded-avatar {
+	height: 50px;
+	width: 50px; 
+}
+
+div.medium-rounded-avatar {
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+}
+
+img.small-avatar, div.small-rounded-avatar {
+	height: 40px;
+	width: 40px; 
+}
+
+div.small-rounded-avatar {
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+}
+
+img.thumb-avatar {
+	height: 24px;
+	width: 24px;
+}
+
 a.navigation-link {
 	font-style: italic;
 }
@@ -239,7 +284,7 @@ li.blogcast:hover div.blogcast-body, li.post:hover div.post-body {
 	background-color: #e0e0e0;
 }
 
-div.blogcast-body img.avatar, div.post-body img.avatar, div.comment-avatar {
+div.blogcast-body img.small-avatar, div.post-body img.small-avatar, div.comment-avatar {
 	float: left;
 }
 
@@ -410,56 +455,6 @@ input.comment.success-button {
 	font-size: 0.8em;
 	padding-bottom: 5px;
 	padding-top: 5px;
-}
-
-.super-avatar {
-	border: none;
-	height: 120px;
-	width: 120px; 
-}
-
-.super-avatar.rounded {
-	-moz-border-radius: 6px;
-	-webkit-border-radius: 6px;
-}
-
-.large-avatar {
-	border: none;
-	height: 69px;
-	width: 69px; 
-}
-
-.large-avatar.rounded {
-	-moz-border-radius: 4px;
-	-webkit-border-radius: 4px;
-}
-
-.medium-avatar {
-	border: none;
-	height: 50px;
-	width: 50px; 
-}
-
-.medium-avatar.rounded {
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
-}
-
-.small-avatar {
-	border: none;
-	height: 40px;
-	width: 40px; 
-}
-
-.small-avatar.rounded {
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
-}
-
-.thumb-avatar {
-	border: none;
-	height: 24px;
-	width: 24px;
 }
 
 div.button-container {

@@ -2,7 +2,7 @@
 <div class="arrow"></div>
 <div class="side-info-container">
   <div class="side-info-inner-container light clearfix">
-    <%= link_to "<div id=\"side-profile-avatar\" class=\"large-avatar rounded\" style=\"background-image: url('" + user.setting.avatar.url(:large) + "')\"></div>", profile_path(:username => user.username) %>
+    <%= link_to "<div id=\"side-profile-avatar\" class=\"large-rounded-avatar\" style=\"background-image: url('" + user.setting.avatar.url(:large) + "')\"></div>", profile_path(:username => user.username) %>
     <ul id="side-profile-stats" class="stats">
       <li class="stat">
         <span class="stat-counter"><%= num_blogcasts -%></span> <%= link_to num_blogcasts == 1 ? "Blogcast" : "Blogcasts", username_blogcasts_path(user.username) -%>

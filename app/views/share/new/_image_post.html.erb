@@ -6,7 +6,7 @@
     </div>
     <div class="post-body">
       <div class="clearfix">
-        <%= link_to image_tag(user.setting.avatar(:small), :class => "avatar"), profile_path(:username => user.username) -%>
+        <%= link_to image_tag(user.setting.avatar(:small), :class => "small-avatar"), profile_path(:username => user.username) -%>
         <div class="post-info">
           <div class="username">
             <%= link_to user.username, profile_path(:username => user.username), :class => "username" -%>

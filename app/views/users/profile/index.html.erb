@@ -29,7 +29,7 @@
   <%- end -%>
             </div>
 <%- end -%>
-            <%= link_to "<div id=\"profile-avatar\" class=\"super-avatar rounded\" style=\"background-image: url('" + @profile_user.setting.avatar.url(:super) + "')\"></div>", @profile_user.setting.avatar.url(:original) %>
+            <%= link_to "<div id=\"profile-avatar\" class=\"super-rounded-avatar\" style=\"background-image: url('" + @profile_user.setting.avatar.url(:super) + "')\"></div>", @profile_user.setting.avatar.url(:original) %>
             <div id="profile-info-container" class="clearfix">
               <h1 id="full-name">
                 <%= @profile_user.setting.full_name -%>
