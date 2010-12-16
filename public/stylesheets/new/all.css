@@ -412,36 +412,52 @@ input.comment.success-button {
 	padding-top: 5px;
 }
 
-div.super-rounded-avatar {
-	-moz-border-radius: 6px;
-	-webkit-border-radius: 6px;
+.super-avatar {
 	border: none;
 	height: 120px;
 	width: 120px; 
 }
 
-div.large-rounded-avatar {
-	-moz-border-radius: 4px;
-	-webkit-border-radius: 4px;
+.super-avatar.rounded {
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+}
+
+.large-avatar {
+	border: none;
 	height: 69px;
 	width: 69px; 
 }
 
-div.medium-rounded-avatar {
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
+.large-avatar.rounded {
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+}
+
+.medium-avatar {
+	border: none;
 	height: 50px;
 	width: 50px; 
 }
 
-div.small-rounded-avatar {
+.medium-avatar.rounded {
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
+}
+
+.small-avatar {
+	border: none;
 	height: 40px;
 	width: 40px; 
 }
 
-img.avatar.small {
+.small-avatar.rounded {
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+}
+
+.thumb-avatar {
+	border: none;
 	height: 24px;
 	width: 24px;
 }
@@ -575,7 +591,6 @@ ul.avatar-list li:first-child {
 
 ul.avatar-list img {
 	border: none;
-	width: 24px;
 	vertical-align: top;
 }
 

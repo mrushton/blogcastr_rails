@@ -29,7 +29,7 @@
   <%- end -%>
             </div>
 <%- end -%>
-            <%= link_to "<div id=\"profile-avatar\" class=\"super-rounded-avatar\" style=\"background-image: url('" + @profile_user.setting.avatar.url(:super) + "')\"></div>", @profile_user.setting.avatar.url(:original) %>
+            <%= link_to "<div id=\"profile-avatar\" class=\"super-avatar rounded\" style=\"background-image: url('" + @profile_user.setting.avatar.url(:super) + "')\"></div>", @profile_user.setting.avatar.url(:original) %>
             <div id="profile-info-container" class="clearfix">
               <h1 id="full-name">
                 <%= @profile_user.setting.full_name -%>
@@ -100,7 +100,7 @@
               <ul class="avatar-list clearfix">
   <%- for subscription in @subscriptions -%>
                 <li>
-                  <%= link_to image_tag(subscription.setting.avatar.url(:small), :class => "avatar small", :alt => "#{subscription.username}"), profile_path(:username => subscription.username), :title => "#{subscription.username}" %>
+                  <%= link_to image_tag(subscription.setting.avatar.url(:thumb), :class => "thumb-avatar", :alt => "#{subscription.username}"), profile_path(:username => subscription.username), :title => "#{subscription.username}" %>
                 </li>
   <%- end -%>
               </ul>
@@ -112,7 +112,7 @@
               <ul class="avatar-list clearfix">
   <%- for subscriber in @subscribers -%>
                 <li>
-                  <%= link_to image_tag(subscriber.setting.avatar.url(:small), :class => "avatar small", :alt => "#{subscriber.username}"), profile_path(:username => subscriber.username), :title => "#{subscriber.username}" %>
+                  <%= link_to image_tag(subscriber.setting.avatar.url(:thumb), :class => "thumb-avatar", :alt => "#{subscriber.username}"), profile_path(:username => subscriber.username), :title => "#{subscriber.username}" %>
                 </li>
   <%- end -%>
               </ul>

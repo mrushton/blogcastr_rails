@@ -58,15 +58,15 @@
 <%- if signed_in? -%>
               <div class="clearfix">
   <%- if @user.instance_of?(BlogcastrUser) -%>
-                <%= link_to "<div class=\"comment-avatar small-rounded-avatar\" style=\"background-image: url('" + @user.setting.avatar.url(:small) + "')\"></div>", profile_path(:username => @user.username) %>
+                <%= link_to "<div class=\"comment-avatar small-avatar rounded\" style=\"background-image: url('" + @user.setting.avatar.url(:small) + "')\"></div>", profile_path(:username => @user.username) %>
                 <div class="comment-info">
                   <%= link_to @user.username, profile_path(:username => @user.username), :class => "username" -%>
   <%- elsif @user.instance_of?(FacebookUser) -%>
-                <%= link_to "<div class=\"comment-avatar small-rounded-avatar\" style=\"background-image: url('" + @user.setting.avatar.url(:small) + "')\"></div>", @user.facebook_link %>
+                <%= link_to "<div class=\"comment-avatar small-avatar rounded\" style=\"background-image: url('" + @user.setting.avatar.url(:small) + "')\"></div>", @user.facebook_link %>
                 <div class="comment-info">
                   <%= link_to @user.setting.full_name, @user.facebook_link, :class => "username" -%>
   <%- elsif @user.instance_of?(TwitterUser) -%>
-                <%= link_to "<div class=\"comment-avatar small-rounded-avatar\" style=\"background-image: url('" + @user.setting.avatar.url(:small) + "')\"></div>", "http://twitter.com/" + @user.username %>
+                <%= link_to "<div class=\"comment-avatar small-avatar rounded\" style=\"background-image: url('" + @user.setting.avatar.url(:small) + "')\"></div>", "http://twitter.com/" + @user.username %>
                 <div class="comment-info">
                   <%= link_to "@" + @user.username, "http://twitter.com/" + @user.username, :class => "username" -%>
   <%- end -%>
@@ -148,7 +148,7 @@
               <ul class="avatar-list clearfix">
   <%- for like in @likes -%>
                 <li>
-                  <%= link_to image_tag(like.setting.avatar.url(:small), :class => "avatar small", :alt => "#{like.username}"), profile_path(:username => like.username), :title => "#{like.username}" %>
+                  <%= link_to image_tag(like.setting.avatar.url(:thumb), :class => "thumb-avatar", :alt => "#{like.username}"), profile_path(:username => like.username), :title => "#{like.username}" %>
                 </li>
   <%- end -%>
               </ul>
