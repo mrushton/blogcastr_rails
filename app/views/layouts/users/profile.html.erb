@@ -10,17 +10,17 @@
 <% if @theme.nil? -%>
       body
       {
-  <%- if !@blogcast_setting.background_image_file_name.nil? -%>
-        background-image: url('<%= @blogcast_setting.background_image.url %>');
+  <%- if !@profile_setting.background_image_file_name.nil? -%>
+        background-image: url('<%= @profile_setting.background_image.url %>');
   <% end -%>
-  <%- if @blogcast_setting.tile_background_image == false -%>
+  <%- if @profile_setting.tile_background_image == false -%>
         background-repeat: no-repeat;
   <% end -%>
-  <%- if @blogcast_setting.scroll_background_image == false -%>
+  <%- if @profile_setting.scroll_background_image == false -%>
         background-attachment: fixed;
   <% end -%>
-  <%- if !@blogcast_setting.background_color.blank? -%>
-        background-color: <%= @blogcast_setting.background_color; -%>
+  <%- if !@profile_setting.background_color.blank? -%>
+        background-color: <%= @profile_setting.background_color; -%>
   <% end -%>
       }
 <% else -%>

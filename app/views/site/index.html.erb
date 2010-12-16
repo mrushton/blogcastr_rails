@@ -92,7 +92,7 @@
           <ol class="users">
   <%- for user in @featured_users -%>
             <li class="clearfix">
-              <%= link_to image_tag(user.setting.avatar(:medium), :class => "avatar"), profile_path(:username => user.username) -%>
+              <%= link_to image_tag(user.setting.avatar(:medium), :class => "medium-avatar"), profile_path(:username => user.username) -%>
               <div class="user-info">
                 <div class="username">
                   <%= link_to user.username, profile_path(:username => user.username), :class => "username" -%>
