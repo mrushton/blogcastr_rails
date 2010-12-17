@@ -75,3 +75,11 @@ function blogcastrCheckUsername() {
     return true;
   }
 }
+
+function preloadImages(image_array) {
+  //preload each image in the array images
+  for(var i = 0; i < image_array.length; i++) {
+    image = new Image();
+    image.src = image_array[i];
+  }
+}

@@ -38,6 +38,8 @@ function blogcastrOnLoad()
   client_timestamp = Math.floor(client_date.getTime()/1000);
   //MVR - every second update timestamp in words
   setInterval(blogcastrUpdateTimestampInWords, 1000);
+  //MVR - preload images
+  preloadImages([ "/images/new/ajax-loader.gif", "/images/new/tick.png" ]);
 }
 
 function onConnect(status, error)
@@ -138,7 +140,7 @@ function blogcastrPostCallback(stanza) {
     var timestamp_in_words_span = jQuery("<span>").addClass("timestamp-in-words").attr("timestamp", timestamp).text(blogcastrPastTimestampInWords(timestamp));
     var post_header_div = jQuery("<div>").addClass("post-header").append(timestamp_in_words_span);
     //post body
-    var avatar_img = jQuery("<img>").addClass("medium-avatar").attr("src", avatar_url);
+    var avatar_img = jQuery("<img>").addClass("small-avatar").attr("src", avatar_url);
     var avatar_a = jQuery("<a>").attr("href", url).append(avatar_img); 
     var username_a = jQuery("<a>").addClass("username").attr("href", url).text(username); 
     var username_div = jQuery("<div>").addClass("username").append(username_a); 
@@ -174,7 +176,7 @@ function blogcastrPostCallback(stanza) {
     var avatar_url = user.find("avatar_url:first").text();
     //create new post element
     var time_ago_span = jQuery("<span>").addClass("date").addClass("time_ago").attr("timestamp", timestamp).text(blogcastrTimeAgo(timestamp));
-    var avatar_img = jQuery("<img>").addClass("avatar").attr("src", avatar_url);
+    var avatar_img = jQuery("<img>").addClass("small-avatar").attr("src", avatar_url);
     var user_a = jQuery("<a>").addClass("user").attr("href", url).append(avatar_img).append(username); 
     var clear_div = jQuery("<div>").addClass("clear");
     var player_div = jQuery("<div>").addClass("player loading");

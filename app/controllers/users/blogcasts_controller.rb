@@ -241,7 +241,7 @@ class Users::BlogcastsController < ApplicationController
     #unless num_viewers 
       #CACHE.set("Blogcast:" + id.to_s + "-num_viewers", num_viewers, 30.seconds)
    # end
-            @num_viewers = thrift_client.get_num_muc_room_occupants("blogcast." + id.to_s) + 1
+            @num_viewers = thrift_client.get_num_muc_room_occupants("Blogcast." + id.to_s) + 1
             thrift_client_close
           rescue
             @num_viewers = 1 

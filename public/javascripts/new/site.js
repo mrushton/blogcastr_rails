@@ -11,6 +11,8 @@ function siteOnLoad() {
   jQuery("#carousel-container").hoverIntent(stopCarousel, startCarousel);
   //MVR - avatar hovering
   jQuery("div.large-rounded-avatar").hoverIntent(avatarIn, avatarOut);
+  //MVR - preload images
+  preloadImages([ "/images/new/ajax-loader.gif", "/images/new/tick.png", "/images/new/cross.png" ]);
   //TODO: make sure mouse is not inside carousel
   startCarousel();
 }
