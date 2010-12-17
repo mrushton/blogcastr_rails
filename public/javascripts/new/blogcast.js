@@ -103,7 +103,7 @@ function blogcastrPostCallback(stanza) {
     var timestamp_in_words_span = jQuery("<span>").addClass("timestamp-in-words").attr("timestamp", timestamp).text(blogcastrPastTimestampInWords(timestamp));
     var post_header_div = jQuery("<div>").addClass("post-header").append(timestamp_in_words_span);
     //post body
-    var avatar_img = jQuery("<img>").addClass("avatar").attr("src", avatar_url);
+    var avatar_img = jQuery("<img>").addClass("small-avatar").attr("src", avatar_url);
     var avatar_a = jQuery("<a>").attr("href", url).append(avatar_img); 
     var username_a = jQuery("<a>").addClass("username").attr("href", url).text(username); 
     var username_div = jQuery("<div>").addClass("username").append(username_a); 
@@ -138,7 +138,7 @@ function blogcastrPostCallback(stanza) {
     var timestamp_in_words_span = jQuery("<span>").addClass("timestamp-in-words").attr("timestamp", timestamp).text(blogcastrPastTimestampInWords(timestamp));
     var post_header_div = jQuery("<div>").addClass("post-header").append(timestamp_in_words_span);
     //post body
-    var avatar_img = jQuery("<img>").addClass("avatar").attr("src", avatar_url);
+    var avatar_img = jQuery("<img>").addClass("medium-avatar").attr("src", avatar_url);
     var avatar_a = jQuery("<a>").attr("href", url).append(avatar_img); 
     var username_a = jQuery("<a>").addClass("username").attr("href", url).text(username); 
     var username_div = jQuery("<div>").addClass("username").append(username_a); 
