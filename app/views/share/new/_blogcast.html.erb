@@ -19,9 +19,9 @@
     <div class="clearfix">
       <%= link_to image_tag(user.setting.avatar(:small), :class => "small-avatar"), profile_path(:username => user.username) -%>
       <div class="blogcast-info">
-        <div class="username-and-time">
+        <div class="username-and-timestamp-in-words">
           <%= link_to user.username, profile_path(:username => user.username), :class => "username" -%>
-          <span class="time"><%= timestamp_in_words_helper blogcast.starting_at -%></span>
+          <span class="timestamp-in-words"><%= timestamp_in_words_helper blogcast.starting_at -%></span>
         </div>
 <%- if !blogcast.description.nil? -%>
         <p class="description">

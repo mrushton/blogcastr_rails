@@ -1,0 +1,21 @@
+<%- user = comment_post.user -%>
+<li class="post" id="CommentPost:<%= comment_post.id -%>">
+  <div>
+    <div class="post-header">
+      <span class="timestamp-in-words" timestamp="<%= comment_post.created_at.to_i.to_s -%>" ><%= timestamp_in_words_helper comment_post.created_at -%></span>
+    </div>
+    <div class="post-body">
+      <div class="clearfix">
+        <%= link_to image_tag(user.setting.avatar(:small), :class => "small-avatar"), profile_path(:username => user.username) -%>
+        <div class="post-info">
+          <div class="username">
+            <%= link_to user.username, profile_path(:username => user.username), :class => "username" -%>
+          </div>
+          <p class="text">
+            <%= comment_post.comment.text -%>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</li>

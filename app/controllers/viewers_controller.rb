@@ -16,9 +16,10 @@ class ViewersController < ApplicationController
       #CACHE.set("Blogcast:" + id.to_s + "-num_viewers", num_viewers, 30.seconds)
    # end
    #TODO: these rooms are created using an uppercase B but this needs to be lowercase
-      @num_viewers = thrift_client.get_num_muc_room_occupants("blogcast." + @blogcast.id.to_s) + 1
+      @num_viewers = thrift_client.get_num_muc_room_occupants("blogcast." + @blogcast.id.to_s)
       thrift_client_close
     rescue
+      #MVR - always assume one viewer
       @num_viewers = 1 
     end
     respond_to do |format|

@@ -11,30 +11,24 @@
               <%= link_to "Go to #{@blogcast.title} &rArr;", blogcast_permalink_path, :class => "navigation-link" -%>
             </li>
           </ul>
-          <h1 class="inline">Posts</h1>
+          <h1 class="inline">Comments</h1>
           <span class="subtitle"><%= @blogcast.title -%></span>
           <div class="showing">
-            Showing <%= @num_first_post -%>-<%= @num_last_post -%> of <%= @num_paginated_posts -%> posts...
+            Showing <%= @num_first_comment -%>-<%= @num_last_comment -%> of <%= @num_paginated_comments -%> posts...
           </div>
-          <ol id="posts">
-<% for post in @paginated_posts -%>
-  <%- if post.instance_of?(TextPost) -%>
-            <%= render :partial => "/share/new/text_post", :locals => { :text_post => post } -%>
-  <%- elsif post.instance_of?(ImagePost) -%>
-            <%= render :partial => "/share/new/image_post", :object => post -%>
-  <%- elsif !post.instance_of?(CommentPost) -%>
-            <%= render :partial => "/share/new/comment_post", :object => post -%>
-  <%- end -%>
+          <ol id="comments">
+<% for comment in @paginated_comments -%>
+            <%= render :partial => "/share/new/comment", :locals => { :comment => comment } -%>
 <% end -%>
           </ol>
-<% if @num_paginated_posts > 0 -%>
+<% if @num_paginated_comments > 0 -%>
           <div class="pagination">
   <%- if !@previous_page.nil? -%>
-            <%= link_to "&lArr; Back", blogcast_posts_permalink_path(:page => @previous_page, :id => @id), :class => "back navigation-link" %>
+            <%= link_to "&lArr; Back", blogcast_comments_permalink_path(:page => @previous_page, :id => @id), :class => "back navigation-link" %>
   <%- end -%>
-            <%= @num_first_post -%>-<%= @num_last_post -%> of <%= @num_paginated_posts -%>
+            <%= @num_first_comment -%>-<%= @num_last_comment -%> of <%= @num_paginated_comments -%>
   <%- if !@next_page.nil? -%>
-            <%= link_to "Next &rArr;", blogcast_posts_permalink_path(:page => @next_page, :id => @id), :class => "next navigation-link" %>
+            <%= link_to "Next &rArr;", blogcast_comments_permalink_path(:page => @next_page, :id => @id), :class => "next navigation-link" %>
   <%- end -%>
           </div>
 <% end -%>

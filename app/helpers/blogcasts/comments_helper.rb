@@ -1,0 +1,2 @@
+module Blogcasts::CommentsHelper
+end

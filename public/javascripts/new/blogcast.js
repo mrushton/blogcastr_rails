@@ -1,7 +1,6 @@
 var can_play_audio = false;
 var can_play_mp3 = false;
 var can_play_ogg = false;
-var remote_request = false;
 var facebook_login_window;
 var facebook_login_interval;
 var twitter_sign_in_window;
@@ -294,15 +293,15 @@ function blogcastrPostCallback(stanza) {
     var avatar_a = jQuery("<a>").attr("href", url).append(avatar_div); 
     var username_a = jQuery("<a>").addClass("username").attr("href", url).text(username); 
     var timestamp_in_words_span = jQuery("<span>").addClass("timestamp-in-words").attr("timestamp", timestamp).text(blogcastrPastTimestampInWords(timestamp));
-    var username_timestamp_container_div = jQuery("<div>").addClass("username-timestamp-in-words-container").append(username_a).append(" ").append(timestamp_in_words_span);
+    var username_timestamp_container_div = jQuery("<div>").addClass("username-and-timestamp-in-words-container").append(username_a).append(" ").append(timestamp_in_words_span);
     var text_p = jQuery("<p>").addClass("text").text(text);
     var comment_info_div = jQuery("<div>").addClass("comment-info").append(username_timestamp_container_div).append(text_p);
     var clearfix_div = jQuery("<div>").addClass("clearfix").append(avatar_a).append(comment_info_div);
-    var comment_li = jQuery("<li>").addClass("comment").attr("id", "Comment:" + id).css("display", "none").css("opacity", "0.0").append(clearfix_div);
+    var comment_li = jQuery("<li>").addClass("small-comment").attr("id", "Comment:" + id).css("display", "none").css("opacity", "0.0").append(clearfix_div);
     //add comment to document if not present
     if (jQuery("#Comment\\:" + id).length == 0) {
       jQuery("#comments").prepend(comment_li);
-      new Effect.SlideDown("Comment\:" + id, { duration: 0.4, queue: "end" });
+      new Effect.SlideDown("Comment\:" + id, { duration: 10.4, queue: "end" });
       new Effect.Appear("Comment\:" + id, { duration: 0.4, queue: "end" });
     }
   }

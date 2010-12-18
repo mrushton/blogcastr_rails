@@ -47,7 +47,7 @@ ol, ul {
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#7aaddc), color-stop(50%, #538aca), color-stop(50%, #387eb9), to(#3166aa));
 	border-bottom: 1px solid #2b476f;
 	border-top: 1px solid #6fd0f3;
-	color: #ffffff;
+	color: #fff;
 	font-weight: bold;
 	text-decoration: none;
 	text-shadow: 0px -1px #444444;
@@ -67,7 +67,7 @@ ol, ul {
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#f5da95), color-stop(50%, #ebc15d), color-stop(50%, #e1b14d), to(#d9992d)); 
 	border-bottom: 1px solid #a66e0f;
 	border-top: 1px solid #fbd5d2;
-	color: #ffffff;
+	color: #fff;
 	font-weight: bold;
 	text-decoration: none;
 	text-shadow: 0px -1px #444444;
@@ -82,7 +82,7 @@ ol, ul {
 }
 
 div.beta {
-	color: #ffffff;
+	color: #fff;
 	font-size: 9px;
 	font-weight: bold;
 	height: 12px;
@@ -181,7 +181,7 @@ ol.blogcasts {
 	margin-top: 6px;
 }
 
-li.blogcast, li.post {
+li.blogcast, li.post, li.comment {
 	-moz-border-radius: 6px;
 	-moz-box-shadow: 0px 2px 3px -1px #444444;
 	-webkit-border-radius: 6px;
@@ -190,12 +190,12 @@ li.blogcast, li.post {
 	margin-top: 12px;
 }
 
-li.comment {
+li.small-comment {
 	margin-top: 8px;
 	min-height: 43px;
 }
 
-li.blogcast:first-child, li.post:first-child, li.comment:first-child {
+li.blogcast:first-child, li.post:first-child, li.comment:firs-child, li.small-comment:first-child {
 	margin-top: 0px;
 }
 
@@ -220,7 +220,7 @@ div.pagination a.next {
 	right: 0px;
 }
 
-div.blogcast-header, div.post-header {
+div.blogcast-header, div.post-header, div.comment-header, div.comment-header {
 	-moz-border-radius-topleft: 6px;
 	-moz-border-radius-topright: 6px;
 	-webkit-border-top-left-radius: 6px;
@@ -228,7 +228,7 @@ div.blogcast-header, div.post-header {
 	background-color: #222222;
 	background-image: -moz-linear-gradient(#333333, #131313); 
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#333333), to(#131313)); 
-	color: #ffffff;
+	color: #fff;
 	font-size: 0.9em;
 	font-weight: bold;
 	height: 30px;
@@ -251,7 +251,7 @@ ul.icon-stats li:first-child {
 }
 
 ul.icon-stats a {
-	color: #ffffff;
+	color: #fff;
 	display: inline-block;
 	font-size: 0.85em;
 	height: 18px;
@@ -271,7 +271,7 @@ ul.icon-stats a.likes {
 	background: url('/images/new/heart.png') no-repeat 0% 50%;
 }
 
-div.blogcast-body, div.post-body {
+div.blogcast-body, div.post-body, div.comment-body {
 	-moz-border-radius-bottomleft: 6px;
 	-moz-border-radius-bottomright: 6px;
 	-webkit-border-bottom-left-radius: 6px;
@@ -280,11 +280,11 @@ div.blogcast-body, div.post-body {
 	padding: 8px;
 }
 
-li.blogcast:hover div.blogcast-body, li.post:hover div.post-body {
+li.blogcast:hover div.blogcast-body, li.post:hover div.post-body, li.comment:hover div.comment-body {
 	background-color: #e0e0e0;
 }
 
-div.blogcast-body img.small-avatar, div.post-body img.small-avatar, div.comment-avatar {
+div.blogcast-body img.small-avatar, div.post-body img.small-avatar, div.comment-body img.small-avatar, div.comment-avatar {
 	float: left;
 }
 
@@ -293,27 +293,33 @@ div.comment-avatar {
 	-webkit-box-shadow: 0px 1px 2px #444444; 
 }
 
-div.blogcast-info, div.post-info {
+div.blogcast-info, div.post-info, div.comment-info {
 	float: left;
+	overflow: hidden;
 	padding-left: 8px;
 	width: 616px;
 }
 
-div.username-and-time {
+div.comments-container div.comment-info {
+	padding-left: 6px;
+	width: 514px;
+}
+
+div.username-and-timestamp-in-words {
 	height: 17px;
 	line-height: 17px;
 }
 
-div.blogcast-info a.username, div.post-info a.username {
+div.blogcast-info a.username, div.post-info a.username, div.comment-info a.username {
 	font-size: 0.8em;
 	font-weight: bold;
 }
 
-div.blogcast-info span.time, div.blogcast-info p.description, div.post-info p.text, div.post-info p.caption, li.comment span.timestamp-in-words, li.comment p.text, textarea.comment.selected {
+div.blogcast-info span.timestamp-in-words, div.blogcast-info p.description, div.post-info p.text, div.post-info p.caption, div.comment-info p.text, div.comment-info span.timestamp-in-words, textarea.comment.selected {
 	color: #565656;
 }
 
-div.blogcast-info span.time {
+div.blogcast-info span.timestamp-in-words {
 	font-size: 0.75em;
 	font-style: italic;
 }
@@ -324,7 +330,7 @@ div.blogcast-info p.description {
 	margin-top: 2px;
 }
 
-div.post-info p.text {
+div.post-info p.text, div.comment-info p.text {
 	font-size: 0.85em;
 	margin-top: 2px;
 }
@@ -338,13 +344,7 @@ div.post-info p.caption {
 	margin-top: 2px;
 }
 
-div.comment-info {
-	float: left;
-	padding-left: 6px;
-	width: 514px;
-}
-
-div.comment-info a.username {
+li.small-comment a.username {
 	font-size: 0.9em;
 	font-weight: bold;
 }
@@ -495,8 +495,8 @@ div.side-info-inner-container.light {
 	-webkit-border-radius: 4px;
 	-webkit-box-shadow: inset 0px 2px 5px -1px #000000; 
 	background-color: #f0f0f0;
-	background-image: -moz-linear-gradient(#ffffff, #e2e2e2); 
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#e2e2e2));
+	background-image: -moz-linear-gradient(#fff, #e2e2e2); 
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#e2e2e2));
 	padding: 9px;
 }
 
@@ -515,9 +515,9 @@ li.stat:first-child {
 
 span.stat-counter {
 	-moz-border-radius: 4px;
-	-moz-box-shadow: inset 0px 1px 1px -1px #ffffff; 
+	-moz-box-shadow: inset 0px 1px 1px -1px #fff; 
 	-webkit-border-radius: 4px;
-	-webkit-box-shadow: inset 0px 1px 1px -1px #ffffff; 
+	-webkit-box-shadow: inset 0px 1px 1px -1px #fff; 
 	background-color: #1e5075;
         background-image: -moz-linear-gradient(#2a5a9a, #224f86 10px, #0c3762); 
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#2a5a9a), color-stop(50%, #224f86), to(#0c3762)); 
@@ -541,7 +541,7 @@ div.side-info-inner-container.dark {
 	-webkit-box-shadow: inset 0px 1px 2px #000000, 0px 1px 0px #3c3c3c; 
 	background-color: #1b1b1b;
 	background-image: url('/images/new/side-info-dark-background.png');
-	color: #ffffff;
+	color: #fff;
 	line-height: 12px;
 }
 
@@ -554,7 +554,7 @@ div.side-info-inner-container.button-container {
 }
 
 div.side-info-inner-container.dark a.stat {
-	color: #ffffff;
+	color: #fff;
 	font-size: 0.8em;
 	font-weight: bold;
 }
@@ -613,7 +613,7 @@ ul.avatar-list img {
 
 #alert {
 	background: rgba(0, 0, 0, 0.85);
-	color: #ffffff;
+	color: #fff;
 	font-size: 0.9em;
 	font-weight: bold;
 	height: 60px;
@@ -634,9 +634,9 @@ ul.avatar-list img {
 
 #header {
 	-moz-border-radius: 10px;
-	-moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.6), inset 0px -1px #ffffff; 
+	-moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.6), inset 0px -1px #fff; 
 	-webkit-border-radius: 10px;
-	-webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.6), inset 0px -1px #ffffff; 
+	-webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.6), inset 0px -1px #fff; 
 	background-color: #eeeeee;
 	background-image: -moz-linear-gradient(#fffefb, #dbdbdb); 
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#fffefb), to(#dbdbdb)); 
@@ -662,7 +662,7 @@ ul.avatar-list img {
 	-moz-box-shadow: inset 0px 2px 3px -1px #000000; 
 	-webkit-border-radius: 5px;
 	-webkit-box-shadow: inset 0px 2px 3px -1px #000000; 
-	background: #ffffff url("/images/new/search.png") no-repeat 10px 11px;
+	background: #fff url("/images/new/search.png") no-repeat 10px 11px;
 	border: none;
 	font-size: 1.3em;
 	font-weight: bold;
@@ -675,9 +675,9 @@ ul.avatar-list img {
 
 #sign-in-or-sign-up-container {
 	-moz-border-radius: 6px;
-	-moz-box-shadow: inset 0px 1px 3px #000000, 0px 1px #ffffff; 
+	-moz-box-shadow: inset 0px 1px 3px #000000, 0px 1px #fff; 
 	-webkit-border-radius: 6px;
-	-webkit-box-shadow: inset 0px 1px 3px #000000, 0px 1px #ffffff; 
+	-webkit-box-shadow: inset 0px 1px 3px #000000, 0px 1px #fff; 
 	background-color: #c4c4c4;
 	background-image: -moz-linear-gradient(#9f9f9f, #e8e8e8); 
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#9f9f9f), to(#e8e8e8)); 
@@ -712,10 +712,10 @@ ul.avatar-list img {
 #welcome {
 	-moz-border-radius-bottomleft: 6px;
 	-moz-border-radius-topleft: 6px;
-	-moz-box-shadow: 0px 1px #ffffff; 
+	-moz-box-shadow: 0px 1px #fff; 
 	-webkit-border-bottom-left-radius: 6px;
 	-webkit-border-top-left-radius: 6px;
-	-webkit-box-shadow: 0px 1px #ffffff; 
+	-webkit-box-shadow: 0px 1px #fff; 
 	background-color: #c8c8c8;
 	background-image: -moz-linear-gradient(#e1e1e1, #b3b3b3); 
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#e1e1e1), to(#b3b3b3)); 
@@ -745,10 +745,10 @@ ul.avatar-list img {
 #header-navigation {
 	-moz-border-radius-bottomright: 6px;
 	-moz-border-radius-topright: 6px;
-	-moz-box-shadow: inset 0px 1px 3px #000000, 0px 1px #ffffff; 
+	-moz-box-shadow: inset 0px 1px 3px #000000, 0px 1px #fff; 
 	-webkit-border-bottom-right-radius: 6px;
 	-webkit-border-top-right-radius: 6px;
-	-webkit-box-shadow: inset 0px 1px 3px #000000, 0px 1px #ffffff; 
+	-webkit-box-shadow: inset 0px 1px 3px #000000, 0px 1px #fff; 
 	background-color: #c4c4c4;
 	background-image: -moz-linear-gradient(#9f9f9f, #e8e8e8); 
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#9f9f9f), to(#e8e8e8)); 
@@ -763,10 +763,10 @@ ul.avatar-list img {
 
 #header-navigation li a {
 	background-color: #ececec;
-	background-image: -moz-linear-gradient(top, #ffffff, #ececec 20px, #e6e6e6 21px, #d4d4d4); 
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#ffffff), color-stop(50%, #ececec), color-stop(50%, #e6e6e6), to(#d4d4d4)); 
+	background-image: -moz-linear-gradient(top, #fff, #ececec 20px, #e6e6e6 21px, #d4d4d4); 
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#fff), color-stop(50%, #ececec), color-stop(50%, #e6e6e6), to(#d4d4d4)); 
 	border-bottom: 1px solid #b9b9b9;
-	border-left: 1px solid #ffffff;
+	border-left: 1px solid #fff;
 	border-right: 1px solid #cacaca;
 	color: #474747;
 	display: block;
@@ -797,8 +797,8 @@ ul.avatar-list img {
 
 #header-navigation li a:hover {
 	background-color: #ececec;
-	background-image: -moz-linear-gradient(top, #ffffff, #ececec 20px, #dddddd 21px, #d0d0d0); 
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#ffffff), color-stop(50%, #ececec), color-stop(50%, #dddddd), to(#d0d0d0));
+	background-image: -moz-linear-gradient(top, #fff, #ececec 20px, #dddddd 21px, #d0d0d0); 
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#fff), color-stop(50%, #ececec), color-stop(50%, #dddddd), to(#d0d0d0));
 }
 
 #content {
@@ -820,7 +820,7 @@ ul.avatar-list img {
 	-moz-border-radius-topleft: 4px;
 	-webkit-border-bottom-left-radius: 4px;
 	-webkit-border-top-left-radius: 4px;
-	background-color: #ffffff;
+	background-color: #fff;
 	padding: 20px;
 	width: 680px;
 	vertical-align: top;
@@ -840,8 +840,8 @@ ul.avatar-list img {
 }
 
 #side-profile-avatar {
-	-moz-box-shadow: inset 0px 3px 5px 0px #000000, 0px 1px #ffffff; 
-	-webkit-box-shadow: inset 0px 3px 5px 0px #000000, 0px 1px #ffffff; 
+	-moz-box-shadow: inset 0px 3px 5px 0px #000000, 0px 1px #fff; 
+	-webkit-box-shadow: inset 0px 3px 5px 0px #000000, 0px 1px #fff; 
 	float: left;
 }
 
@@ -853,7 +853,7 @@ ul.avatar-list img {
 }
 
 #side-profile-info, #side-blogcast-info {
-	color: #ffffff;
+	color: #fff;
 	font-size: 0.65em;
 	font-weight: bold;
 	padding-left: 5px;
@@ -862,9 +862,9 @@ ul.avatar-list img {
 
 #content-footer {
 	-moz-border-radius: 6px;
-	-moz-box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.4), inset 0px -1px #ffffff; 
+	-moz-box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.4), inset 0px -1px #fff; 
 	-webkit-border-radius: 6px;
-	-webkit-box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.4), inset 0px -1px #ffffff; 
+	-webkit-box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.4), inset 0px -1px #fff; 
 	background-color: #eeeeee;
 	background-image: -moz-linear-gradient(#fffefb, #dbdbdb); 
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#fffefb), to(#dbdbdb)); 

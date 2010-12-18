@@ -28,6 +28,8 @@
   <% end -%>
   <%- if !@blogcast_setting.background_color.blank? -%>
         background-color: <%= @blogcast_setting.background_color; -%>
+  <% else -%>
+        background-color: #fff; 
   <% end -%>
       }
 <% else -%>
@@ -46,6 +48,8 @@
   <% end -%>
   <%- if !@theme.background_color.blank? -%>
         background-color: <%= @theme.background_color; -%>
+  <% else -%>
+        background-color: #fff; 
   <% end -%>
       }
 <% end -%>

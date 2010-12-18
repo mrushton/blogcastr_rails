@@ -61,23 +61,10 @@ ActionController::Routing::Routes.draw do |map|
   map.blogcast_permalink ":username/:year/:month/:day/:title", :controller => "users/blogcasts", :action => "show", :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
   map.username_blogcasts ":username/blogcasts.:format", :controller => "users/blogcasts", :format => nil
   map.user_blogcasts ":username/blogcasts.:format", :controller => "users/blogcasts", :format => nil
-  map.username_recent_blogcasts ":username/blogcasts/recent.:format", :controller => "users/blogcasts", :action => "recent", :format => nil
-  map.username_upcoming_blogcasts ":username/blogcasts/upcoming.:format", :controller => "users/blogcasts", :action => "upcoming", :format => nil
   #MVR - user search 
   map.user_search ":username/search", :controller => "users/search"
   #TODO: move everything over to use "user"
-  #TODO 2: just use blogcast and not user
   map.user_tagged_blogcasts ":username/blogcasts/tagged.:format", :controller => "users/blogcasts", :action => "tagged", :format => nil
-  #MVR - user blogcast
-  map.username_blogcast_permalink ":username/:year/:month/:day/:title.:format", :controller => "users/blogcasts", :action => "show", :format => nil, :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
-  map.user_blogcast_permalink ":username/:year/:month/:day/:title.:format", :controller => "users/blogcasts", :action => "show", :format => nil, :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
-  map.blogcast_permalink ":username/:year/:month/:day/:title.:format", :controller => "users/blogcasts", :action => "show", :format => nil, :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
-  map.blogcast_posts_permalink ":username/:year/:month/:day/:title/posts", :controller => "blogcasts/posts", :action => "index", :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
-  map.username_blogcast_comments_permalink ":username/:year/:month/:day/:title/comments.:format", :controller => "users/blogcasts/comments", :action => "index", :format => nil, :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
-  map.blogcast_comments_permalink ":username/:year/:month/:day/:title/comments.:format", :controller => "users/blogcasts/comments", :action => "index", :format => nil, :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
-  map.username_blogcast_likes_permalink ":username/:year/:month/:day/:title/likes.:format", :controller => "users/blogcasts/likes", :format => nil, :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
-  map.blogcast_likes_permalink ":username/:year/:month/:day/:title/likes.:format", :controller => "users/blogcasts/likes", :format => nil, :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
-  map.blogcast_search ":username/:year/:month/:day/:title/search", :controller => "search", :action => "blogcasts", :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
   #MVR - user likes 
   map.username_likes ":username/likes.:format", :controller => "users/likes", :format => nil
   #MVR - user comments 
@@ -94,6 +81,12 @@ ActionController::Routing::Routes.draw do |map|
   #MVR - user sms notifications 
   map.username_sms_notifications ":username/sms_notifications", :controller => "sms_user_notifications", :action => "create", :conditions => {:method => :post}
   map.username_sms_notifications ":username/sms_notifications", :controller => "sms_user_notifications", :action => "destroy", :conditions => {:method => :delete}
+  #MVR - blogcasts
+  map.blogcast_permalink ":username/:year/:month/:day/:title", :controller => "users/blogcasts", :action => "show", :format => nil, :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
+  map.blogcast_posts_permalink ":username/:year/:month/:day/:title/posts", :controller => "blogcasts/posts", :action => "index", :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
+  map.blogcast_comments_permalink ":username/:year/:month/:day/:title/comments", :controller => "blogcasts/comments", :action => "index", :format => nil, :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
+  map.blogcast_likes_permalink ":username/:year/:month/:day/:title/likes", :controller => "blogcasts/likes", :format => nil, :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
+  map.blogcast_search_permalink ":username/:year/:month/:day/:title/search", :controller => "search", :action => "blogcasts", :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
   #MVR - site 
   map.root :controller => "site"
   #MVR - site links

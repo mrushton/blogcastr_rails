@@ -98,7 +98,7 @@
             <div id="comments-fade-container">
               <ol id="comments">
 <% for comment in @comments -%>
-                <%= render :partial => "/share/new/comment", :locals => { :comment => comment } -%>
+                <%= render :partial => "/share/new/small_comment", :locals => { :comment => comment } -%>
 <% end -%>
               </ol>
               <div id="comments-fade"></div>
@@ -109,9 +109,9 @@
   <%- if post.instance_of?(TextPost) -%>
             <%= render :partial => "/share/new/text_post", :locals => { :text_post => post } -%>
   <%- elsif post.instance_of?(ImagePost) -%>
-            <%= render :partial => "/share/new/image_post", :object => post -%>
-  <%- elsif !post.instance_of?(CommentPost) -%>
-            <%= render :partial => "/share/new/comment_post", :object => post -%>
+            <%= render :partial => "/share/new/image_post", :locals => { :image_post => post } -%>
+  <%- elsif post.instance_of?(CommentPost) -%>
+            <%= render :partial => "/share/new/comment_post", :locals => { :comment_post => post } -%>
   <%- end -%>
 <% end -%>
           </ol>
