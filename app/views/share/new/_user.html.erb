@@ -1,0 +1,29 @@
+<%- setting = user.setting -%>
+<li class="user">
+  <div class="user-header">
+    <span class="username"><%= user.username -%></span>
+  </div>
+  <div class="user-body">
+    <div class="clearfix">
+      <%= link_to image_tag(setting.avatar(:small), :class => "small-avatar"), profile_path(:username => user.username) -%>
+      <div class="user-info">
+        <div class="full-name">
+          <%= setting.full_name -%>
+        </div>
+<%- if !setting.location.blank? -%>
+        <div class="location-and-web">
+  <%- if !setting.web.blank? -%>
+          <%= setting.location + " &bull; " + link_to(setting.web, setting.web) -%> 
+  <%- else -%>
+          <%= setting.location -%> 
+  <%- end -%>
+        </div>
+<%- elsif !setting.web.blank? -%>
+        <div class="location-and-web">
+          <%= setting.web -%> 
+        </div>
+<%- end -%> 
+      </div>
+    </div>
+  </div>
+</li>

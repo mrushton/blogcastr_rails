@@ -293,6 +293,7 @@ div.carousel-button.selected {
 #side div.user-info {
 	float: left;
 	margin-left: 10px;
+	padding-left: 0px;
 	padding-top: 6px;
 	width: 120px;
 }

@@ -301,8 +301,8 @@ function blogcastrPostCallback(stanza) {
     //add comment to document if not present
     if (jQuery("#Comment\\:" + id).length == 0) {
       jQuery("#comments").prepend(comment_li);
-      new Effect.SlideDown("Comment\:" + id, { duration: 10.4, queue: "end" });
-      new Effect.Appear("Comment\:" + id, { duration: 0.4, queue: "end" });
+      new Effect.SlideDown("Comment\:" + id, { duration: 0.5, queue: "end" });
+      new Effect.Appear("Comment\:" + id, { duration: 0.5, queue: "end" });
     }
   }
   else

@@ -44,7 +44,7 @@ ActionController::Routing::Routes.draw do |map|
   map.sign_in "sign_in", :controller => "clearance/sessions", :action => "new"
   map.sign_out "sign_out", :controller => "clearance/sessions", :action => "destroy", :method => :delete
   map.goodbye "goodbye", :controller => "clearance/users", :action => "destroy"
-  #MVR - user
+  #MVR - users
   map.resources :users, :only => [] do |users|
     #MVR - user blogcasts
     users.resources "blogcasts", :controller => "users/blogcasts", :only => [:index, :show]
@@ -57,36 +57,55 @@ ActionController::Routing::Routes.draw do |map|
     #MVR - user subscribers 
     users.resources "subscribers", :controller => "users/subscribers", :only => [:index]
   end
-  #MVR - blogcasts
-  map.blogcast_permalink ":username/:year/:month/:day/:title", :controller => "users/blogcasts", :action => "show", :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
-  map.username_blogcasts ":username/blogcasts.:format", :controller => "users/blogcasts", :format => nil
   map.user_blogcasts ":username/blogcasts.:format", :controller => "users/blogcasts", :format => nil
-  #MVR - user search 
   map.user_search ":username/search", :controller => "users/search"
-  #TODO: move everything over to use "user"
   map.user_tagged_blogcasts ":username/blogcasts/tagged.:format", :controller => "users/blogcasts", :action => "tagged", :format => nil
-  #MVR - user likes 
-  map.username_likes ":username/likes.:format", :controller => "users/likes", :format => nil
-  #MVR - user comments 
-  map.username_comments ":username/comments.:format", :controller => "users/comments", :format => nil
-  #MVR - user posts 
-  map.username_posts ":username/posts.:format", :controller => "users/posts", :format => nil
-  #MVR - user subscriptions
-  map.username_subscriptions ":username/subscriptions.:format", :controller => "users/subscriptions", :format => nil
-  #MVR - user subscribers
-  map.username_subscribers ":username/subscribers.:format", :controller => "users/subscribers", :format => nil
-  #MVR - user email notifications 
-  map.username_email_notifications ":username/email_notifications", :controller => "email_user_notifications", :action => "create", :conditions => {:method => :post}
-  map.username_email_notifications ":username/email_notifications", :controller => "email_user_notifications", :action => "destroy", :conditions => {:method => :delete}
-  #MVR - user sms notifications 
-  map.username_sms_notifications ":username/sms_notifications", :controller => "sms_user_notifications", :action => "create", :conditions => {:method => :post}
-  map.username_sms_notifications ":username/sms_notifications", :controller => "sms_user_notifications", :action => "destroy", :conditions => {:method => :delete}
+  map.user_likes ":username/likes.:format", :controller => "users/likes", :format => nil
+  map.user_comments ":username/comments.:format", :controller => "users/comments", :format => nil
+  map.user_posts ":username/posts.:format", :controller => "users/posts", :format => nil
+  map.user_subscriptions ":username/subscriptions.:format", :controller => "users/subscriptions", :format => nil
+  map.user_subscribers ":username/subscribers.:format", :controller => "users/subscribers", :format => nil
+  map.user_email_notifications ":username/email_notifications", :controller => "email_user_notifications", :action => "create", :conditions => {:method => :post}
+  map.user_email_notifications ":username/email_notifications", :controller => "email_user_notifications", :action => "destroy", :conditions => {:method => :delete}
+  map.user_sms_notifications ":username/sms_notifications", :controller => "sms_user_notifications", :action => "create", :conditions => {:method => :post}
+  map.user_sms_notifications ":username/sms_notifications", :controller => "sms_user_notifications", :action => "destroy", :conditions => {:method => :delete}
   #MVR - blogcasts
-  map.blogcast_permalink ":username/:year/:month/:day/:title", :controller => "users/blogcasts", :action => "show", :format => nil, :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
+  #MVR - DO I NEED THIS?
+  #map.create_blogcast "/blogcasts/create", :controller => "blogcasts", :action => "create"
+  map.resources :blogcasts, :controller => "blogcasts", :only => [:new, :create, :show, :edit, :update, :destroy] do |blogcasts|
+    #MVR - dashboard
+    blogcasts.resource :dashboard, :controller => "dashboard", :only => [:show]
+    #MVR - posts
+    blogcasts.resources :posts, :controller => "posts", :only => [:destroy]
+    #MVR - text posts
+    blogcasts.resources :text_posts, :controller => "text_posts", :only => [:create]
+    #MVR - image posts
+    blogcasts.resources :image_posts, :controller => "image_posts", :only => [:create]
+    #MVR - audio posts
+    blogcasts.resources :audio_posts, :controller => "audio_posts", :only => [:create]
+    #MVR - video posts
+    blogcasts.resources :video_posts, :controller => "video_posts", :only => [:create]
+    #MVR - comment posts
+    blogcasts.resources :comment_posts, :controller => "comment_posts", :only => [:create, :destroy]
+    #MVR - reposts
+    blogcasts.resources :reposts, :controller => "reposts", :only => [:create, :destroy]
+    #MVR - comments
+    blogcasts.resources :comments, :controller => "comments", :only => [:create]
+    #MVR - likes 
+    blogcasts.resources :likes, :controller => "likes", :only => [:create, :destroy]
+    #MVR - email reminders 
+    blogcasts.resources :email_reminders, :controller => "email_blogcast_reminders", :only => [:create, :destroy]
+    #MVR - sms reminders 
+    blogcasts.resources :sms_reminders, :controller => "sms_blogcast_reminders", :only => [:create, :destroy]
+    #MVR - update num viewers
+    blogcasts.update_current_viewers "update_current_viewers", :controller => "viewers", :action => "update_current_viewers"
+  end
+  map.blogcast_permalink ":username/:year/:month/:day/:title", :controller => "users/blogcasts", :action => "show", :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
   map.blogcast_posts_permalink ":username/:year/:month/:day/:title/posts", :controller => "blogcasts/posts", :action => "index", :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
-  map.blogcast_comments_permalink ":username/:year/:month/:day/:title/comments", :controller => "blogcasts/comments", :action => "index", :format => nil, :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
-  map.blogcast_likes_permalink ":username/:year/:month/:day/:title/likes", :controller => "blogcasts/likes", :format => nil, :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
+  map.blogcast_comments_permalink ":username/:year/:month/:day/:title/comments", :controller => "blogcasts/comments", :action => "index", :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
+  map.blogcast_likes_permalink ":username/:year/:month/:day/:title/likes", :controller => "blogcasts/likes", :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
   map.blogcast_search_permalink ":username/:year/:month/:day/:title/search", :controller => "search", :action => "blogcasts", :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
+  #TODO: move this stuff first
   #MVR - site 
   map.root :controller => "site"
   #MVR - site links
@@ -118,36 +137,6 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :subscriptions, :controller => "subscriptions", :only => [:index, :create, :destroy]
   #MVR - subscribed
   map.resources :subscribed, :controller => "subscribed", :only => [:index]
-  #MVR - blogcasts
-  map.create_blogcast "/blogcasts/create", :controller => "blogcasts", :action => "create"
-  map.resources :blogcasts, :controller => "blogcasts", :only => [:new, :create, :show, :edit, :update, :destroy] do |blogcasts|
-    #MVR - dashboard
-    blogcasts.resource :dashboard, :controller => "dashboard", :only => [:show]
-    #MVR - posts
-    blogcasts.resources :posts, :controller => "posts", :only => [:destroy]
-    #MVR - text posts
-    blogcasts.resources :text_posts, :controller => "text_posts", :only => [:create]
-    #MVR - image posts
-    blogcasts.resources :image_posts, :controller => "image_posts", :only => [:create]
-    #MVR - audio posts
-    blogcasts.resources :audio_posts, :controller => "audio_posts", :only => [:create]
-    #MVR - video posts
-    blogcasts.resources :video_posts, :controller => "video_posts", :only => [:create]
-    #MVR - comment posts
-    blogcasts.resources :comment_posts, :controller => "comment_posts", :only => [:create, :destroy]
-    #MVR - reposts
-    blogcasts.resources :reposts, :controller => "reposts", :only => [:create, :destroy]
-    #MVR - comments
-    blogcasts.resources :comments, :controller => "comments", :only => [:create]
-    #MVR - likes 
-    blogcasts.resources :likes, :controller => "likes", :only => [:create, :destroy]
-    #MVR - email reminders 
-    blogcasts.resources :email_reminders, :controller => "email_blogcast_reminders", :only => [:create, :destroy]
-    #MVR - sms reminders 
-    blogcasts.resources :sms_reminders, :controller => "sms_blogcast_reminders", :only => [:create, :destroy]
-    #MVR - update num viewers
-    blogcasts.update_current_viewers "update_current_viewers", :controller => "viewers", :action => "update_current_viewers"
-  end
   #MVR - posts 
   map.resources :posts, :controller => "posts", :only => [:index]
   #MVR - comments 

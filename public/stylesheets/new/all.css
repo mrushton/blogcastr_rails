@@ -94,7 +94,7 @@ div.beta {
 	width: 23px;
 }
 
-a.username, a.navigation-link, #header-search input, h1, #side h2, #pick-username-container input {
+a.username, a.navigation-link, div.full-name, #header-search input, h1, #side h2, #pick-username-container input {
 	color: #1c4b75;
 }
 
@@ -181,7 +181,7 @@ ol.blogcasts {
 	margin-top: 6px;
 }
 
-li.blogcast, li.post, li.comment {
+li.user, li.blogcast, li.post, li.comment {
 	-moz-border-radius: 6px;
 	-moz-box-shadow: 0px 2px 3px -1px #444444;
 	-webkit-border-radius: 6px;
@@ -191,11 +191,10 @@ li.blogcast, li.post, li.comment {
 }
 
 li.small-comment {
-	margin-top: 8px;
-	min-height: 43px;
+	margin-top: 5px;
 }
 
-li.blogcast:first-child, li.post:first-child, li.comment:firs-child, li.small-comment:first-child {
+li.user:first-child, li.blogcast:first-child, li.post:first-child, li.comment:first-child, li.small-comment:first-child {
 	margin-top: 0px;
 }
 
@@ -220,7 +219,7 @@ div.pagination a.next {
 	right: 0px;
 }
 
-div.blogcast-header, div.post-header, div.comment-header, div.comment-header {
+div.user-header, div.blogcast-header, div.post-header, div.comment-header, div.comment-header {
 	-moz-border-radius-topleft: 6px;
 	-moz-border-radius-topright: 6px;
 	-webkit-border-top-left-radius: 6px;
@@ -271,7 +270,7 @@ ul.icon-stats a.likes {
 	background: url('/images/new/heart.png') no-repeat 0% 50%;
 }
 
-div.blogcast-body, div.post-body, div.comment-body {
+div.user-body, div.blogcast-body, div.post-body, div.comment-body {
 	-moz-border-radius-bottomleft: 6px;
 	-moz-border-radius-bottomright: 6px;
 	-webkit-border-bottom-left-radius: 6px;
@@ -280,20 +279,21 @@ div.blogcast-body, div.post-body, div.comment-body {
 	padding: 8px;
 }
 
-li.blogcast:hover div.blogcast-body, li.post:hover div.post-body, li.comment:hover div.comment-body {
+li.user:hover div.user-body, li.blogcast:hover div.blogcast-body, li.post:hover div.post-body, li.comment:hover div.comment-body {
 	background-color: #e0e0e0;
 }
 
-div.blogcast-body img.small-avatar, div.post-body img.small-avatar, div.comment-body img.small-avatar, div.comment-avatar {
+div.user-body img.small-avatar, div.blogcast-body img.small-avatar, div.post-body img.small-avatar, div.comment-body img.small-avatar, div.comment-avatar {
 	float: left;
 }
 
 div.comment-avatar {
 	-moz-box-shadow: 0px 1px 2px #444444; 
 	-webkit-box-shadow: 0px 1px 2px #444444; 
+	margin-bottom: 3px;
 }
 
-div.blogcast-info, div.post-info, div.comment-info {
+div.user-info, div.blogcast-info, div.post-info, div.comment-info {
 	float: left;
 	overflow: hidden;
 	padding-left: 8px;
@@ -305,13 +305,13 @@ div.comments-container div.comment-info {
 	width: 514px;
 }
 
-div.username-and-timestamp-in-words {
+div.username-and-timestamp-in-words, div.full-name, div.usrname {
 	height: 17px;
 	line-height: 17px;
 }
 
-div.blogcast-info a.username, div.post-info a.username, div.comment-info a.username {
-	font-size: 0.8em;
+div.user-info div.full-name, div.blogcast-info a.username, div.post-info a.username, div.comment-info a.username {
+	font-size: 0.9em;
 	font-weight: bold;
 }
 
@@ -324,6 +324,12 @@ div.blogcast-info span.timestamp-in-words {
 	font-style: italic;
 }
 
+div.user-info div.location-and-web {
+	font-family: Georgia, serif;
+	font-style: italic;
+	font-size: 0.8em;
+}
+
 div.blogcast-info p.description {
 	font-size: 0.7em;
 	line-height: 13px;
@@ -331,7 +337,7 @@ div.blogcast-info p.description {
 }
 
 div.post-info p.text, div.comment-info p.text {
-	font-size: 0.85em;
+	font-size: 0.8em;
 	margin-top: 2px;
 }
 
@@ -824,6 +830,10 @@ ul.avatar-list img {
 	padding: 20px;
 	width: 680px;
 	vertical-align: top;
+}
+
+#posts, #comments, #likes {
+	margin-top: 10px;
 }
 
 #side {

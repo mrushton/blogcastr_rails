@@ -1,0 +1,2 @@
+module Blogcasts::LikesHelper
+end
