@@ -57,18 +57,19 @@ ActionController::Routing::Routes.draw do |map|
     #MVR - user subscribers 
     users.resources "subscribers", :controller => "users/subscribers", :only => [:index]
   end
-  map.user_blogcasts ":username/blogcasts.:format", :controller => "users/blogcasts", :format => nil
-  map.user_search ":username/search", :controller => "users/search"
-  map.user_tagged_blogcasts ":username/blogcasts/tagged.:format", :controller => "users/blogcasts", :action => "tagged", :format => nil
-  map.user_likes ":username/likes.:format", :controller => "users/likes", :format => nil
-  map.user_comments ":username/comments.:format", :controller => "users/comments", :format => nil
-  map.user_posts ":username/posts.:format", :controller => "users/posts", :format => nil
-  map.user_subscriptions ":username/subscriptions.:format", :controller => "users/subscriptions", :format => nil
-  map.user_subscribers ":username/subscribers.:format", :controller => "users/subscribers", :format => nil
-  map.user_email_notifications ":username/email_notifications", :controller => "email_user_notifications", :action => "create", :conditions => {:method => :post}
-  map.user_email_notifications ":username/email_notifications", :controller => "email_user_notifications", :action => "destroy", :conditions => {:method => :delete}
-  map.user_sms_notifications ":username/sms_notifications", :controller => "sms_user_notifications", :action => "create", :conditions => {:method => :post}
-  map.user_sms_notifications ":username/sms_notifications", :controller => "sms_user_notifications", :action => "destroy", :conditions => {:method => :delete}
+  map.user_blogcasts_permalink ":username/blogcasts.:format", :controller => "users/blogcasts", :format => nil
+  map.user_search_permalink ":username/search", :controller => "users/search"
+  map.user_tagged_blogcasts_permalink ":username/blogcasts/tagged.:format", :controller => "users/blogcasts", :action => "tagged", :format => nil
+  map.user_likes_permalink ":username/likes.:format", :controller => "users/likes", :format => nil
+  map.user_comments_permalink ":username/comments.:format", :controller => "users/comments", :format => nil
+  map.user_posts_permalink ":username/posts.:format", :controller => "users/posts", :format => nil
+  map.user_subscriptions_permalink ":username/subscriptions.:format", :controller => "users/subscriptions", :format => nil
+  map.user_subscribers_permalink ":username/subscribers.:format", :controller => "users/subscribers", :format => nil
+  #MVR - DO I NEED THESE?
+  #map.user_email_notifications_permalink ":username/email_notifications", :controller => "email_user_notifications", :action => "create", :conditions => {:method => :post}
+  #map.user_email_notifications_permalink ":username/email_notifications", :controller => "email_user_notifications", :action => "destroy", :conditions => {:method => :delete}
+  #map.user_sms_notifications_permalink ":username/sms_notifications", :controller => "sms_user_notifications", :action => "create", :conditions => {:method => :post}
+  #map.user_sms_notifications_permalink ":username/sms_notifications", :controller => "sms_user_notifications", :action => "destroy", :conditions => {:method => :delete}
   #MVR - blogcasts
   #MVR - DO I NEED THIS?
   #map.create_blogcast "/blogcasts/create", :controller => "blogcasts", :action => "create"

@@ -20,7 +20,7 @@
     </div>
 <%- end -%>
     <div class="right">
-      <%= link_to blogcast.title, username_blogcast_permalink_path(:username => user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title), :class => "title" -%>
+      <%= link_to blogcast.title, blogcast_permalink_path(:username => user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title), :class => "title" -%>
       <div class="details">
 <%- if show_user -%>
         <%= link_to user.username, profile_path(:username => user.username), :class => "username detail first" -%>
@@ -36,7 +36,7 @@
     <%- if i != 0 -%>
 ,
     <%- end -%>
-          <%= link_to tag.name, user_tagged_blogcasts_path(:username => blogcast.user.username, :tag => tag.name), :class => "tag" -%>
+          <%= link_to tag.name, user_tagged_blogcasts_permalink_path(:username => blogcast.user.username, :tag => tag.name), :class => "tag" -%>
     <%- i = i + 1 -%>
   <%- end -%>
         </span>

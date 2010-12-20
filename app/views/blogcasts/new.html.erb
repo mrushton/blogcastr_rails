@@ -24,7 +24,7 @@
             </div>
           </div>
         </div>
-        <% form_for @blogcast, :url => create_blogcast_path do |form| %>
+        <% form_for @blogcast, :url => blogcasts_path do |form| %>
           <%= form.error_messages %>
           <div id="left" class="blogcast-form">
             <%= form.label :title, "Title" %>

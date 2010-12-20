@@ -69,7 +69,7 @@
             </div>
           </div>
         </div>
-        <p><%= link_to "\"#{@blogcast.title}\"", username_blogcast_permalink_path(:username => @user.username, :year => @blogcast.year, :month => @blogcast.month, :day => @blogcast.day, :title => @blogcast.link_title), :class => "title" -%> by <a class="user" href="<%= profile_path(:username => @user.username) -%>"><%= @user.username -%></a></span> on <span class="date"><%= @blogcast.starting_at.strftime("%B %e, %Y") -%></span>
+        <p><%= link_to "\"#{@blogcast.title}\"", blogcast_permalink_path(:username => @user.username, :year => @blogcast.year, :month => @blogcast.month, :day => @blogcast.day, :title => @blogcast.link_title), :class => "title" -%> by <a class="user" href="<%= profile_path(:username => @user.username) -%>"><%= @user.username -%></a></span> on <span class="date"><%= @blogcast.starting_at.strftime("%B %e, %Y") -%></span>
       
 
         <div id="dashboard">

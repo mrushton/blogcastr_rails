@@ -19,7 +19,7 @@
     </div>
 <%- end -%>
     <div class="right">
-      <%= link_to blogcast.title, username_blogcast_permalink_path(:username => user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title), :class => "title" -%>
+      <%= link_to blogcast.title, blogcast_permalink_path(:username => user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title), :class => "title" -%>
 <% if show_controls -%>
       <div class="controls">
         <%= link_to "Dashboard", blogcast_dashboard_path(:blogcast_id => blogcast.id) %>

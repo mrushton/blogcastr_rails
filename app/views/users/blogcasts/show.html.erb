@@ -45,7 +45,7 @@
             <ul id="blogcast-tags" class="tags clearfix">
   <%- for tag in @tags -%>
               <li class="tag">
-                <%= link_to tag.name, user_tagged_blogcasts_path(:username => @blogcast_user.username, :tag => tag.name), :class => "tag" -%>
+                <%= link_to tag.name, user_tagged_blogcasts_permalink_path(:username => @blogcast_user.username, :tag => tag.name), :class => "tag" -%>
   <%- end -%>
               </li>
             </ul>

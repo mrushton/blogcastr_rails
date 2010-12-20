@@ -81,21 +81,21 @@
             <div class="side-info-inner-container light">
               <ul class="stats">
                 <li class="stat">
-                  <span class="stat-counter"><%= @num_blogcasts -%></span> <%= link_to @num_blogcasts == 1 ? "Blogcast" : "Blogcasts", user_blogcasts_path(@profile_user.username) -%>
+                  <span class="stat-counter"><%= @num_blogcasts -%></span> <%= link_to @num_blogcasts == 1 ? "Blogcast" : "Blogcasts", user_blogcasts_permalink_path(@profile_user.username) -%>
                 </li>
                 <li class="stat">
-                  <span class="stat-counter"><%= @num_posts -%></span> <%= link_to @num_posts == 1 ? "Post" : "Posts", user_posts_path(@profile_user.username) -%>
+                  <span class="stat-counter"><%= @num_posts -%></span> <%= link_to @num_posts == 1 ? "Post" : "Posts", user_posts_permalink_path(@profile_user.username) -%>
                 </li>
                 <li class="stat">
-                  <span class="stat-counter"><%= @num_comments -%></span> <%= link_to @num_comments == 1 ? "Comment" : "Comments", user_comments_path(@profile_user.username) -%>
+                  <span class="stat-counter"><%= @num_comments -%></span> <%= link_to @num_comments == 1 ? "Comment" : "Comments", user_comments_permalink_path(@profile_user.username) -%>
                 </li>
                 <li class="stat">
-                  <span class="stat-counter"><%= @num_likes -%></span> <%= link_to @num_likes == 1 ? "Like" : "Likes", user_likes_path(@profile_user.username) -%>
+                  <span class="stat-counter"><%= @num_likes -%></span> <%= link_to @num_likes == 1 ? "Like" : "Likes", user_likes_permalink_path(@profile_user.username) -%>
                 </li>
               </ul>
             </div>
             <div class="side-info-inner-container dark avatar-container">
-              <%= link_to @num_subscriptions.to_s + " " + (@num_subscriptions == 1 ? "Subscription" : "Subscriptions"), user_subscriptions_path(@profile_user.username), :class => "stat" -%> 
+              <%= link_to @num_subscriptions.to_s + " " + (@num_subscriptions == 1 ? "Subscription" : "Subscriptions"), user_subscriptions_permalink_path(@profile_user.username), :class => "stat" -%> 
 <%- if @num_subscriptions > 0 -%>
               <ul class="avatar-list clearfix">
   <%- for subscription in @subscriptions -%>
@@ -107,7 +107,7 @@
 <%- end -%>
             </div>
             <div class="side-info-inner-container dark avatar-container">
-              <%= link_to @num_subscribers.to_s + " " + (@num_subscribers == 1 ? "Subscriber" : "Subscribers"), user_subscribers_path(@profile_user.username), :class => "stat" -%> 
+              <%= link_to @num_subscribers.to_s + " " + (@num_subscribers == 1 ? "Subscriber" : "Subscribers"), user_subscribers_permalink_path(@profile_user.username), :class => "stat" -%> 
 <%- if @num_subscribers > 0 -%>
               <ul class="avatar-list clearfix">
   <%- for subscriber in @subscribers -%>
@@ -119,7 +119,7 @@
 <%- end -%>
             </div>
           </div>
-          <%= link_to "RSS feed of #{@profile_user.possesive_username} blogcasts", user_blogcasts_path(:username => @profile_user.username, :format => "rss"), :id => "rss" %>
+          <%= link_to "RSS feed of #{@profile_user.possesive_username} blogcasts", user_blogcasts_path(:user_id => @profile_user.id, :format => "rss"), :id => "rss" %>
         </td>
       </tr>
     </table>
