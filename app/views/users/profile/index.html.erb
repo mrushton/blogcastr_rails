@@ -37,7 +37,7 @@
 <%- if !@profile_user.setting.location.blank? -%>
               <div id="location-and-web">
   <%- if !@profile_user.setting.web.blank? -%>
-                <%= @profile_user.setting.location + " &bull; " + link_to(@profile_user.setting.web, @profile_user.setting.web) -%> 
+                <%= @profile_user.setting.location + " &bull; " + link_to(@profile_user.setting.web, @profile_user.setting.web, :rel => "nofollow") -%> 
   <%- else -%>
                 <%= @profile_user.setting.location -%> 
   <%- end -%>

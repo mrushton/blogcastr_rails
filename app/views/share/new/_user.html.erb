@@ -13,7 +13,7 @@
 <%- if !setting.location.blank? -%>
         <div class="location-and-web">
   <%- if !setting.web.blank? -%>
-          <%= setting.location + " &bull; " + link_to(setting.web, setting.web) -%> 
+          <%= setting.location + " &bull; " + link_to(setting.web, setting.web, :rel => "nofollow") -%> 
   <%- else -%>
           <%= setting.location -%> 
   <%- end -%>

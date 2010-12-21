@@ -5,13 +5,13 @@
     <%= link_to "<div id=\"side-profile-avatar\" class=\"large-rounded-avatar\" style=\"background-image: url('" + user.setting.avatar.url(:large) + "')\"></div>", profile_path(:username => user.username) %>
     <ul id="side-profile-stats" class="stats">
       <li class="stat">
-        <span class="stat-counter"><%= num_blogcasts -%></span> <%= link_to num_blogcasts == 1 ? "Blogcast" : "Blogcasts", user_blogcasts_path(user.username) -%>
+        <span class="stat-counter"><%= num_blogcasts -%></span> <%= link_to num_blogcasts == 1 ? "Blogcast" : "Blogcasts", user_blogcasts_permalink_path(user.username) -%>
       </li>
       <li class="stat">
-        <span class="stat-counter"><%= num_subscriptions -%></span> <%= link_to num_subscriptions == 1 ? "Subscription" : "Subscriptions", user_subscriptions_path(user.username) -%>
+        <span class="stat-counter"><%= num_subscriptions -%></span> <%= link_to num_subscriptions == 1 ? "Subscription" : "Subscriptions", user_subscriptions_permalink_path(user.username) -%>
       </li>
       <li class="stat">
-        <span class="stat-counter"><%= num_subscribers -%></span> <%= link_to num_subscribers == 1 ? "Subscriber" : "Subscribers", user_subscribers_path(user.username) -%>
+        <span class="stat-counter"><%= num_subscribers -%></span> <%= link_to num_subscribers == 1 ? "Subscriber" : "Subscribers", user_subscribers_permalink_path(user.username) -%>
       </li>
     </ul>
   </div>
