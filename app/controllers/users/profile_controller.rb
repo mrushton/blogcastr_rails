@@ -3,7 +3,7 @@ class Users::ProfileController < ApplicationController
   before_filter :set_time_zone
   before_filter :store_location
 
-  def index
+  def show 
     @user = current_user
     @profile_user = User.find_by_username(params[:username])
     if @profile_user.nil?

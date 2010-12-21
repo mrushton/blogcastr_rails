@@ -7,37 +7,27 @@ class Users::BlogcastsController < ApplicationController
   def index
     #MVR - find user by username
     if params[:username].nil?
-      respond_to do |format|
-        format.html {render :file => "public/404.html", :layout => false, :status => 404}
-        format.xml {render :xml => "<errors><error>Couldn't find BlogcastrUser with NAME=\"#{params[:user_name]}\"</error></errors>", :status => :unprocessable_entity}
-        format.json {render :json => "[[\"Couldn't find BlogcastrUser with NAME=\"#{params[:user_name]}\"\"]]", :status => :unprocessable_entity}
-      end
+      render :file => "public/404.html", :layout => false, :status => 404
       return
     end
-    @profile_user = BlogcastrUser.find_by_username(params[:username])
-    if @profile_user.nil?
-      respond_to do |format|
-        format.html {render :file => "public/404.html", :layout => false, :status => 404}
-        format.xml {render :xml => "<errors><error>Couldn't find BlogcastrUser with NAME=\"#{params[:user_name]}\"</error></errors>", :status => :unprocessable_entity}
-        format.json {render :json => "[[\"Couldn't find BlogcastrUser with NAME=\"#{params[:user_name]}\"\"]]", :status => :unprocessable_entity}
-      end
+    @user = BlogcastrUser.find_by_username(params[:username])
+    if @user.nil?
+      render :file => "public/404.html", :layout => false, :status => 404
       return
     end
-    respond_to do |format|
-      format.html {
-        @user = current_user
+        @current_user = current_user
         #MVR - blogcasts
-        @num_blogcasts = @profile_user.blogcasts.count
+        @num_blogcasts = @user.blogcasts.count
         #MVR - comments
-        @num_comments = @profile_user.comments.count 
+        @num_comments = @user.comments.count 
         #MVR - likes 
-        @num_likes = Like.count(:conditions => {:user_id => @profile_user.id})
+        @num_likes = Like.count(:conditions => { :user_id => @user.id })
         #MVR - subscriptions
-        @subscriptions = User.find_by_sql(["SELECT users.* FROM subscriptions, users WHERE subscriptions.user_id = ? AND subscriptions.subscribed_to = users.id LIMIT 16", @profile_user.id])
-        @num_subscriptions = @profile_user.subscriptions.count
+        @subscriptions = User.find_by_sql([ "SELECT users.* FROM subscriptions, users WHERE subscriptions.user_id = ? AND subscriptions.subscribed_to = users.id LIMIT 16", @user.id ])
+        @num_subscriptions = @user.subscriptions.count
         #MVR - subscribers
-        @subscribers = User.find_by_sql(["SELECT users.* FROM subscriptions, users WHERE subscriptions.subscribed_to = ? AND subscriptions.user_id = users.id LIMIT 16", @profile_user.id])
-        @num_subscribers = @profile_user.subscribers.count
+        @subscribers = User.find_by_sql([ "SELECT users.* FROM subscriptions, users WHERE subscriptions.subscribed_to = ? AND subscriptions.user_id = users.id LIMIT 16", @user.id ])
+        @num_subscribers = @user.subscribers.count
         #MVR - paginated blogcasts 
         if params[:page].nil?
           @page = 1 
@@ -48,12 +38,12 @@ class Users::BlogcastsController < ApplicationController
           @id = params[:id].to_i
         end
         if @id.blank?
-          @paginated_blogcasts = Blogcast.paginate_by_sql(["SELECT * FROM blogcasts WHERE user_id = ? ORDER BY id DESC", @profile_user.id], :page => @page, :per_page => 10)
-          @id = Blogcast.maximum(:id, :conditions => ["user_id = ?", @profile_user.id])
+          @paginated_blogcasts = Blogcast.paginate_by_sql([ "SELECT * FROM blogcasts WHERE user_id = ? ORDER BY id DESC", @user.id ], :page => @page, :per_page => 10)
+          @id = Blogcast.maximum(:id, :conditions => [ "user_id = ?", @user.id ])
         else
-          @paginated_blogcasts = Blogcast.paginate_by_sql(["SELECT * FROM blogcasts WHERE user_id = ? AND id <= ? ORDER BY id DESC", @profile_user.id, @id], :page => @page, :per_page => 10, :total_entries => @num_blogcasts)
+          @paginated_blogcasts = Blogcast.paginate_by_sql([ "SELECT * FROM blogcasts WHERE user_id = ? AND id <= ? ORDER BY id DESC", @user.id, @id ], :page => @page, :per_page => 10, :total_entries => @num_blogcasts)
         end
-        @num_paginated_blogcasts = Blogcast.count(:conditions => ["user_id = ? AND id <= ?", @profile_user.id, @id])
+        @num_paginated_blogcasts = Blogcast.count(:conditions => [ "user_id = ? AND id <= ?", @user.id, @id ])
         if @page * 10 < @num_paginated_blogcasts
           @next_page = @page + 1
         end
@@ -69,33 +59,13 @@ class Users::BlogcastsController < ApplicationController
           @num_last_blogcast = @num_paginated_blogcasts
         end
         #MVR - posts
-        @num_posts = @profile_user.posts.count
-        @profile_user_username_possesive = @profile_user.username + (@profile_user.username =~ /.*s$/ ? "'":"'s")
-        @profile_user_full_name_possesive = @profile_user.username + (@profile_user.username =~ /.*s$/ ? "'":"'s")
-        @profile_user_username_possesive_escaped = @profile_user_username_possesive.gsub(/'/,"\\\\\'")
-        if @user.instance_of?(BlogcastrUser)
-          @email_user_notification = EmailUserNotification.find(:first, :conditions => ["user_id = ? AND notifying_about = ?", @user.id, @profile_user.id])
-          @sms_user_notification = SmsUserNotification.find(:first, :conditions => ["user_id = ? AND notifying_about = ?", @user.id, @profile_user.id])
+        @num_posts = @user.posts.count
+        @setting = @user.setting
+        if @setting.use_background_image == false
+          @theme = @setting.theme
         end
-        @profile_setting = @profile_user.setting
-        if @profile_setting.use_background_image == false
-          @theme = @profile_setting.theme
-        end
-        @title = @profile_user_username_possesive + " blogcasts"
-        render :layout => "profile"
-      }
-      #TODO: limit result set and order by most recent 
-      format.xml {render :xml => @profile_user.blogcasts.find(:all, :limit => 10, :order => "id DESC").to_xml(:only => [:id, :title, :description, :starting_at, :updated_at, :name], :include => :tags)}
-      format.json {render :json => @profile_user.blogcasts.find(:all, :limit => 10).to_json(:only => [:id, :title, :description, :starting_at, :updated_at, :name], :include => :tags)}
-      format.rss {
-        #MVR - blogcasts
-        @blogcasts = @profile_user.blogcasts.find(:all, :limit => 10, :order => "created_at DESC")
-        #MVR - possesive names 
-        @profile_user_username_possesive = @profile_user.username + (@profile_user.username =~ /.*s$/ ? "'":"'s")
-        @profile_user_full_name_possesive = @profile_user.username + (@profile_user.username =~ /.*s$/ ? "'":"'s")
-        render :layout => false
-      }
-    end
+        @title = "Blogcasts - " + @user.username
+      render :layout => "users/default"
   end
 
   def tagged
@@ -281,6 +251,5 @@ class Users::BlogcastsController < ApplicationController
         format.xml { render :xml => @blogcast.to_xml(:include => :posts) }
         format.json { render :json => @blogcast.to_json(:include => :posts) }
     end
-    return
   end
 end

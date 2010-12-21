@@ -1,0 +1,128 @@
+<div id="alert" style="display: none;">
+</div>
+<div id="content-container">
+  <div id="content">
+    <%= render :partial => "/share/new/header", :locals => { :user => @user } -%>
+    <table id="content-table" cellspacing="0">
+      <tr>
+        <td id="main">
+          <div class="clearfix">
+<%- if @user.nil? || !@user.instance_of?(BlogcastrUser) -%>
+            <div id="subscription-button-container" class="button-container profile-button-container">
+              <%= link_to "Subscribe", sign_up_path, :id => "subscription-button", :class => "blue-button" %>
+            </div>
+<%- elsif @user == @profile_user -%>
+            <ul id="profile-navigation">
+              <li>
+                <%= link_to "Go to home &rArr;", home_path, :class => "navigation-link" %>
+              </li>
+              <li>
+                <%= link_to "Edit profile &rArr;", settings_path, :class => "navigation-link" %>
+              </li>
+            </ul>
+<%- else -%>
+            <div id="subscription-button-container" class="button-container profile-button-container">
+  <%- if @subscription.nil? -%>
+              <%= render :partial => "/share/new/create_subscription_button", :locals => { :user => @profile_user } -%>
+  <%- else -%>
+              <%= render :partial => "/share/new/destroy_subscription_button", :locals => { :subscription => @subscription, :user => @profile_user } -%>
+  <%- end -%>
+            </div>
+<%- end -%>
+            <%= link_to "<div id=\"profile-avatar\" class=\"super-rounded-avatar\" style=\"background-image: url('" + @profile_user.setting.avatar.url(:super) + "')\"></div>", @profile_user.setting.avatar.url(:original) %>
+            <div id="profile-info-container" class="clearfix">
+              <h1 id="full-name">
+                <%= @profile_user.setting.full_name -%>
+              </h1>
+<%- if !@profile_user.setting.location.blank? -%>
+              <div id="location-and-web">
+  <%- if !@profile_user.setting.web.blank? -%>
+                <%= @profile_user.setting.location + " &bull; " + link_to(@profile_user.setting.web, @profile_user.setting.web, :rel => "nofollow") -%> 
+  <%- else -%>
+                <%= @profile_user.setting.location -%> 
+  <%- end -%>
+              </div>
+<%- elsif !@profile_user.setting.web.blank? -%>
+              <div id="location-and-web">
+                <%= @profile_user.setting.web -%> 
+              </div>
+<%- end -%> 
+<%- if !@profile_user.setting.bio.blank? -%>
+              <div id="bio">
+                <%= @profile_user.setting.bio -%> 
+              </div>
+<%- end -%> 
+            </div> 
+          </div> 
+<%- if @upcoming_blogcasts.length > 0 -%>
+          <h2>Upcoming Blogcasts</h2>
+          <ol class="blogcasts">
+  <%- for blogcast in @upcoming_blogcasts -%>
+            <%= render :partial => "/share/new/blogcast", :locals => {:blogcast => blogcast} -%>
+  <%- end -%>
+<%- end -%>
+          </ol>
+<%- if @past_blogcasts.length > 0 -%>
+          <h2>Past Blogcasts</h2>
+          <ol class="blogcasts">
+  <%- for blogcast in @past_blogcasts -%>
+            <%= render :partial => "/share/new/blogcast", :locals => {:blogcast => blogcast} -%>
+  <%- end -%>
+<%- end -%>
+          </ol>
+        </td>
+        <td id="side">
+          <h2>
+            <%= @profile_user.username -%>
+          </h2>
+          <div class="arrow">
+          </div>
+          <div class="side-info-container">
+            <div class="side-info-inner-container light">
+              <ul class="stats">
+                <li class="stat">
+                  <span class="stat-counter"><%= @num_blogcasts -%></span> <%= link_to @num_blogcasts == 1 ? "Blogcast" : "Blogcasts", user_blogcasts_permalink_path(@profile_user.username) -%>
+                </li>
+                <li class="stat">
+                  <span class="stat-counter"><%= @num_posts -%></span> <%= link_to @num_posts == 1 ? "Post" : "Posts", user_posts_permalink_path(@profile_user.username) -%>
+                </li>
+                <li class="stat">
+                  <span class="stat-counter"><%= @num_comments -%></span> <%= link_to @num_comments == 1 ? "Comment" : "Comments", user_comments_permalink_path(@profile_user.username) -%>
+                </li>
+                <li class="stat">
+                  <span class="stat-counter"><%= @num_likes -%></span> <%= link_to @num_likes == 1 ? "Like" : "Likes", user_likes_permalink_path(@profile_user.username) -%>
+                </li>
+              </ul>
+            </div>
+            <div class="side-info-inner-container dark avatar-container">
+              <%= link_to @num_subscriptions.to_s + " " + (@num_subscriptions == 1 ? "Subscription" : "Subscriptions"), user_subscriptions_permalink_path(@profile_user.username), :class => "stat" -%> 
+<%- if @num_subscriptions > 0 -%>
+              <ul class="avatar-list clearfix">
+  <%- for subscription in @subscriptions -%>
+                <li>
+                  <%= link_to image_tag(subscription.setting.avatar.url(:thumb), :class => "thumb-avatar", :alt => "#{subscription.username}"), profile_path(:username => subscription.username), :title => "#{subscription.username}" %>
+                </li>
+  <%- end -%>
+              </ul>
+<%- end -%>
+            </div>
+            <div class="side-info-inner-container dark avatar-container">
+              <%= link_to @num_subscribers.to_s + " " + (@num_subscribers == 1 ? "Subscriber" : "Subscribers"), user_subscribers_permalink_path(@profile_user.username), :class => "stat" -%> 
+<%- if @num_subscribers > 0 -%>
+              <ul class="avatar-list clearfix">
+  <%- for subscriber in @subscribers -%>
+                <li>
+                  <%= link_to image_tag(subscriber.setting.avatar.url(:thumb), :class => "thumb-avatar", :alt => "#{subscriber.username}"), profile_path(:username => subscriber.username), :title => "#{subscriber.username}" %>
+                </li>
+  <%- end -%>
+              </ul>
+<%- end -%>
+            </div>
+          </div>
+          <%= link_to "RSS feed of #{@profile_user.possesive_username} blogcasts", user_blogcasts_path(:user_id => @profile_user.id, :format => "rss"), :id => "rss" %>
+        </td>
+      </tr>
+    </table>
+    <%= render :partial => "/share/new/content_footer" -%>
+  </div>
+</div>

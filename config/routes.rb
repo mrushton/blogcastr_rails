@@ -57,14 +57,14 @@ ActionController::Routing::Routes.draw do |map|
     #MVR - user subscribers 
     users.resources "subscribers", :controller => "users/subscribers", :only => [:index]
   end
-  map.user_blogcasts_permalink ":username/blogcasts.:format", :controller => "users/blogcasts", :format => nil
+  map.user_blogcasts_permalink ":username/blogcasts", :controller => "users/blogcasts"
+  map.user_likes_permalink ":username/likes", :controller => "users/likes"
+  map.user_comments_permalink ":username/comments", :controller => "users/comments"
+  map.user_posts_permalink ":username/posts", :controller => "users/posts"
+  map.user_subscriptions_permalink ":username/subscriptions", :controller => "users/subscriptions"
+  map.user_subscribers_permalink ":username/subscribers", :controller => "users/subscribers"
   map.user_search_permalink ":username/search", :controller => "users/search"
-  map.user_tagged_blogcasts_permalink ":username/blogcasts/tagged.:format", :controller => "users/blogcasts", :action => "tagged", :format => nil
-  map.user_likes_permalink ":username/likes.:format", :controller => "users/likes", :format => nil
-  map.user_comments_permalink ":username/comments.:format", :controller => "users/comments", :format => nil
-  map.user_posts_permalink ":username/posts.:format", :controller => "users/posts", :format => nil
-  map.user_subscriptions_permalink ":username/subscriptions.:format", :controller => "users/subscriptions", :format => nil
-  map.user_subscribers_permalink ":username/subscribers.:format", :controller => "users/subscribers", :format => nil
+  map.user_tagged_blogcasts_permalink ":username/blogcasts/tagged", :controller => "users/blogcasts", :action => "tagged"
   #MVR - DO I NEED THESE?
   #map.user_email_notifications_permalink ":username/email_notifications", :controller => "email_user_notifications", :action => "create", :conditions => {:method => :post}
   #map.user_email_notifications_permalink ":username/email_notifications", :controller => "email_user_notifications", :action => "destroy", :conditions => {:method => :delete}
@@ -101,7 +101,7 @@ ActionController::Routing::Routes.draw do |map|
     #MVR - update num viewers
     blogcasts.update_current_viewers "update_current_viewers", :controller => "viewers", :action => "update_current_viewers"
   end
-  map.blogcast_permalink ":username/:year/:month/:day/:title", :controller => "users/blogcasts", :action => "show", :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
+  map.blogcast_permalink ":username/:year/:month/:day/:title", :controller => "blogcasts/blogcasts", :action => "show", :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
   map.blogcast_posts_permalink ":username/:year/:month/:day/:title/posts", :controller => "blogcasts/posts", :action => "index", :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
   map.blogcast_comments_permalink ":username/:year/:month/:day/:title/comments", :controller => "blogcasts/comments", :action => "index", :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
   map.blogcast_likes_permalink ":username/:year/:month/:day/:title/likes", :controller => "blogcasts/likes", :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
@@ -159,7 +159,7 @@ ActionController::Routing::Routes.draw do |map|
   #MVR - ejabberd
   map.ejabberd "ejabberd/:action.:format", :controller => "ejabberd"
   #MVR - profile
-  map.profile ":username", :controller => "users/profile", :action => "index"
+  map.profile ":username", :controller => "users/profile", :action => "show"
 
   # See how all your routes lay out with "rake routes"
 

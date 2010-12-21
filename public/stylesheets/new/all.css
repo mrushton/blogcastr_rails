@@ -152,7 +152,7 @@ span.subtitle {
 	font-family: Georgia, serif;
 	font-size: 0.85em;
 	font-style: italic;
-	margin-left: 4px;
+	margin-left: 2px;
 }
 
 span.subscribe-icon {
@@ -604,7 +604,7 @@ ul.avatar-list img {
 #main h1 {
 	font-size: 2.2em;
 	font-weight: bold;
-	line-height: 36px;
+	line-height: 40px;
 }
 
 #side h2 {

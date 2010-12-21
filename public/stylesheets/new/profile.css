@@ -2,6 +2,21 @@ div.profile-button-container {
 	float: right;
 }
 
+div.profile-button-container a {
+	background-image: url("/images/new/subscribe.png"), -moz-linear-gradient(top, #7aaddc, #538aca 50%, #387eb9 50%, #3166aa); 
+	background-image: url("/images/new/subscribe.png"), -webkit-gradient(linear, left top, left bottom, from(#7aaddc), color-stop(50%, #538aca), color-stop(50%, #387eb9), to(#3166aa));
+	background-position: 6px 50%, top left;
+	background-repeat: no-repeat, repeat;
+	padding-left: 30px; 
+	padding-right: 6px; 
+}
+
+div.profile-button-container a:hover {
+	background-color: #4a7db4;
+	background-image: url("/images/new/subscribe.png"), -moz-linear-gradient(top, #6f9bc8, #4a7db4 50%, #4071ab 50%, #325b99); 
+	background-image: url("/images/new/subscribe.png"), -webkit-gradient(linear, left top, left bottom, from(#6f9bc8), color-stop(50%, #4a7db4), color-stop(50%, #4071ab), to(#325b99));
+}
+
 #profile-navigation {
 	float: right;
 	font-size: 0.75em;
@@ -17,26 +32,9 @@ div.profile-button-container {
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
 	display: block;
-	font-size: 0.8em;
+	font-size: 0.85em;
 	height: 30px;
 	line-height: 30px;
-	padding-left: 20px; 
-	padding-right: 20px; 
-}
-
-#subscription-button-container a {
-	background-image: url("/images/new/subscribe.png"), -moz-linear-gradient(top, #7aaddc, #538aca 50%, #387eb9 50%, #3166aa); 
-	background-image: url("/images/new/subscribe.png"), -webkit-gradient(linear, left top, left bottom, from(#7aaddc), color-stop(50%, #538aca), color-stop(50%, #387eb9), to(#3166aa));
-	background-position: 6px 50%, top left;
-	background-repeat: no-repeat, repeat;
-	padding-left: 30px; 
-	padding-right: 6px; 
-}
-
-#subscription-button-container a:hover {
-	background-color: #4a7db4;
-	background-image: url("/images/new/subscribe.png"), -moz-linear-gradient(top, #6f9bc8, #4a7db4 50%, #4071ab 50%, #325b99); 
-	background-image: url("/images/new/subscribe.png"), -webkit-gradient(linear, left top, left bottom, from(#6f9bc8), color-stop(50%, #4a7db4), color-stop(50%, #4071ab), to(#325b99));
 }
 
 #profile-avatar {

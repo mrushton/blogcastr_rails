@@ -6,6 +6,10 @@ function blogcastrLog(message) {
     console.log(message);
 }
 
+function userClick() {
+  window.location = jQuery(this).attr("user-permalink");
+}
+
 function blogcastClick() {
   window.location = jQuery(this).attr("blogcast-permalink");
 }
@@ -83,3 +87,9 @@ function preloadImages(image_array) {
     image.src = image_array[i];
   }
 }
+
+jQuery(document).ready(function() {
+  //MVR - attach click events
+  jQuery('li.user').click(userClick);
+  jQuery('li.blogcast').click(blogcastClick);
+})

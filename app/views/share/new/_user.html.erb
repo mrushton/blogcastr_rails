@@ -1,5 +1,5 @@
 <%- setting = user.setting -%>
-<li class="user">
+<li class="user" user-permalink="<%= profile_path(:username => user.username) -%>">
   <div class="user-header">
     <span class="username"><%= user.username -%></span>
   </div>

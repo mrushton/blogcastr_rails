@@ -2,21 +2,6 @@ var is_carousel_animating = false;
 var carousel_animation_interval;
 var z_index = 100;
 
-function siteOnLoad() {
-  //MVR - attach click events
-  jQuery('div.carousel-button').click(carouselButtonClick);
-  jQuery('li.blogcast').click(blogcastClick);
-  //TODO: play with hoverIntent settings
-  //MVR - carousel hovering 
-  jQuery("#carousel-container").hoverIntent(stopCarousel, startCarousel);
-  //MVR - avatar hovering
-  jQuery("div.large-rounded-avatar").hoverIntent(avatarIn, avatarOut);
-  //MVR - preload images
-  preloadImages([ "/images/new/ajax-loader.gif", "/images/new/tick.png", "/images/new/cross.png" ]);
-  //TODO: make sure mouse is not inside carousel
-  startCarousel();
-}
-
 function startCarousel() {
   //MVR - move carousel right every five seconds 
   carousel_animation_interval = setInterval(moveCarouselRight, 5000);
@@ -71,4 +56,16 @@ function avatarIn() {
 function avatarOut() {
 }
 
-window.addEventListener("load", siteOnLoad, false);
+jQuery(document).ready(function() {
+  //MVR - attach click events
+  jQuery('div.carousel-button').click(carouselButtonClick);
+  //TODO: play with hoverIntent settings
+  //MVR - carousel hovering 
+  jQuery("#carousel-container").hoverIntent(stopCarousel, startCarousel);
+  //MVR - avatar hovering
+  jQuery("div.large-rounded-avatar").hoverIntent(avatarIn, avatarOut);
+  //MVR - preload images
+  preloadImages([ "/images/new/ajax-loader.gif", "/images/new/tick.png", "/images/new/cross.png" ]);
+  //TODO: make sure mouse is not inside carousel
+  startCarousel();
+})
