@@ -138,11 +138,10 @@ class Users::BlogcastsController < ApplicationController
           @email_user_notification = EmailUserNotification.find(:first, :conditions => ["user_id = ? AND notifying_about = ?", @user.id, @profile_user.id])
           @sms_user_notification = SmsUserNotification.find(:first, :conditions => ["user_id = ? AND notifying_about = ?", @user.id, @profile_user.id])
         end
-        @profile_setting = @profile_user.setting
-        if @profile_setting.use_background_image == false
-          @theme = @profile_setting.theme
+        @setting = @profile_user.setting
+        if @setting.use_background_image == false
+          @theme = @setting.theme
         end
-        @title = @profile_user_username_possesive + " blogcasts"
         render :layout => "users/profile"
       }
       #TODO: limit result set and order by most recent 
