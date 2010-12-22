@@ -5,10 +5,10 @@
     <%= render :partial => "/share/new/header", :locals => { :user => @current_user } -%>
     <table id="content-table" cellspacing="0">
       <tr>
-        <td id="main" class="pagination">
+        <td id="main">
           <ul id="profile-navigation">
             <li>
-              <%= link_to "Go to #{@user.username} &rArr;", profile_path, :class => "navigation-link" -%>
+              <%= link_to "Go to #{@possesive_username} profile &rArr;", profile_path, :class => "navigation-link" -%>
             </li>
           </ul>
           <h1 class="inline">Blogcasts</h1>
@@ -16,7 +16,7 @@
           <div class="showing">
             Showing <%= @num_first_blogcast -%>-<%= @num_last_blogcast -%> of <%= @num_paginated_blogcasts -%> blogcasts...
           </div>
-          <ol id="posts">
+          <ol id="blogcasts">
 <% for blogcast in @paginated_blogcasts -%>
             <%= render :partial => "/share/new/blogcast", :object => blogcast -%>
 <% end -%>

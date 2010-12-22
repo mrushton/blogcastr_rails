@@ -5,7 +5,7 @@
     <%= render :partial => "/share/new/header", :locals => { :user => @current_user } -%>
     <table id="content-table" cellspacing="0">
       <tr>
-        <td id="main" class="pagination">
+        <td id="main">
           <ul id="blogcast-navigation">
             <li>
               <%= link_to "Go to #{@blogcast.title} &rArr;", blogcast_permalink_path, :class => "navigation-link" -%>

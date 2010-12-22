@@ -50,7 +50,7 @@ class Blogcasts::BlogcastsController < ApplicationController
             @comment = Comment.new(:from => "Web", :text => "Enter text here...")
           end
           #MVR - get settings
-          @blogcast_setting = @blogcast_user.setting
+          @setting = @blogcast_user.setting
           #MVR - tags
           @tags = BlogcastTag.find_by_sql(["SELECT * FROM blogcast_tags, tags WHERE blogcast_tags.blogcast_id = ? AND blogcast_tags.tag_id = tags.id", @blogcast.id])
           #MVR - posts 
@@ -96,8 +96,8 @@ class Blogcasts::BlogcastsController < ApplicationController
             @subscription = @user.subscriptions.find(:first, :conditions => { :subscribed_to => @blogcast_user.id })
           end
           #MVR - theme 
-          if @blogcast_setting.use_background_image == false
-            @theme = @blogcast_setting.theme
+          if @setting.use_background_image == false
+            @theme = @setting.theme
           end
         }
         #TODO: limit result set and order by most recent 
