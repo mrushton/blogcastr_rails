@@ -62,7 +62,7 @@ class Users::SubscriptionsController < ApplicationController
       @theme = @setting.theme
     end
     @title = "Subscribers - " + @user.username
-    render :layout => "/users/default"
+    render :layout => "users/default"
   end
 
   def subscribers

@@ -69,6 +69,6 @@ class Users::SubscribersController < ApplicationController
     @title = "Subscribers - " + @user.username
 
 
-    render :layout => "/users/default"
+    render :layout => "users/default"
   end
 end

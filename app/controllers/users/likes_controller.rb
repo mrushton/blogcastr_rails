@@ -54,6 +54,6 @@ class Users::LikesController < ApplicationController
       @theme = @setting.theme
     end
     @title = "Likes - " + @user.username
-    render :layout => "/users/default"
+    render :layout => "users/default"
   end
 end

@@ -74,7 +74,7 @@ class Users::CommentsController < ApplicationController
     @title = "Comments - " + @user.username
 
 
-    render :layout => "/users/default"
+    render :layout => "users/default"
 
   end
 end
