@@ -59,6 +59,10 @@ class Users::SubscribersController < ApplicationController
     if @num_last_subscriber > @num_paginated_subscribers
       @num_last_subscriber = @num_paginated_subscribers
     end
+    #MVR - subscription
+    if !@current_user.nil? && @current_user != @user
+      @subscription = @current_user.subscriptions.find(:first, :conditions => { :subscribed_to => @user.id })
+    end
     #MVR - posts
     @num_posts = @user.posts.count
     @possesive_username = @user.username + (@user.username =~ /.*s$/ ? "'":"'s")

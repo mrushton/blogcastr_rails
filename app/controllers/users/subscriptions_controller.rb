@@ -21,11 +21,7 @@ class Users::SubscriptionsController < ApplicationController
     @num_comments = @user.comments.count 
     #MVR - likes 
     @num_likes = Like.count(:conditions => {:user_id => @user.id})
-    #MVR - subscriptions
-    @subscriptions = User.find_by_sql(["SELECT users.* FROM subscriptions, users WHERE subscriptions.user_id = ? AND subscriptions.subscribed_to = users.id LIMIT 16", @user.id])
     @num_subscriptions = @user.subscriptions.count
-    #MVR - subscribers
-    @subscribers = User.find_by_sql(["SELECT users.* FROM subscriptions, users WHERE subscriptions.subscribed_to = ? AND subscriptions.user_id = users.id LIMIT 16", @user.id])
     @num_subscribers = @user.subscribers.count
     #MVR - paginated subscribers 
     if params[:page].nil?
@@ -53,6 +49,10 @@ class Users::SubscriptionsController < ApplicationController
     @num_last_subscription = @page * 10 
     if @num_last_subscription > @num_paginated_subscriptions
       @num_last_subscription = @num_paginated_subscriptions
+    end
+    #MVR - subscription
+    if !@current_user.nil? && @current_user != @user
+      @subscription = @current_user.subscriptions.find(:first, :conditions => { :subscribed_to => @user.id })
     end
     #MVR - posts
     @num_posts = @user.posts.count

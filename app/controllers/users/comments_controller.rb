@@ -27,11 +27,7 @@ class Users::CommentsController < ApplicationController
     @num_comments = @user.comments.count 
     #MVR - likes 
     @num_likes = Like.count(:conditions => {:user_id => @user.id})
-    #MVR - subscriptions
-    @subscriptions = User.find_by_sql(["SELECT users.* FROM subscriptions, users WHERE subscriptions.user_id = ? AND subscriptions.subscribed_to = users.id LIMIT 16", @user.id])
     @num_subscriptions = @user.subscriptions.count
-    #MVR - subscribers
-    @subscribers = User.find_by_sql(["SELECT users.* FROM subscriptions, users WHERE subscriptions.subscribed_to = ? AND subscriptions.user_id = users.id LIMIT 16", @user.id])
     @num_subscribers = @user.subscribers.count
     #MVR - paginated subscribers 
     if params[:page].nil?
@@ -60,13 +56,13 @@ class Users::CommentsController < ApplicationController
     if @num_last_comment > @num_paginated_comments
       @num_last_comment = @num_paginated_comments
     end
+    #MVR - subscription
+    if !@current_user.nil? && @current_user != @user
+      @subscription = @current_user.subscriptions.find(:first, :conditions => { :subscribed_to => @user.id })
+    end
     #MVR - posts
     @num_posts = @user.posts.count
     @possesive_username = @user.username + (@user.username =~ /.*s$/ ? "'":"'s")
-    if @user.instance_of?(BlogcastrUser)
-      @email_user_notification = EmailUserNotification.find(:first, :conditions => ["user_id = ? AND notifying_about = ?", @user.id, @user.id])
-      @sms_user_notification = SmsUserNotification.find(:first, :conditions => ["user_id = ? AND notifying_about = ?", @user.id, @user.id])
-    end
     @setting = @user.setting
     if @setting.use_background_image == false
       @theme = @setting.theme
