@@ -118,8 +118,7 @@ ActionController::Routing::Routes.draw do |map|
   map.search "search", :controller => "search"
   #MVR - authentication token
   map.authentication_token "authentication_token.:format", :controller => "authentication_tokens", :action => "create", :method => "post", :format => nil
-  #MVR - home
-  map.home "home", :controller => "home"
+  map.home "home", :controller => "home", :action => "show"
   #MVR - messages 
   map.resources :messages, :controller => "messages", :only => [:index]
   #MVR - notifications 

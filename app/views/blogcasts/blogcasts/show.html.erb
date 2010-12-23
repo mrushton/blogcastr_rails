@@ -7,8 +7,8 @@
       <tr>
         <td id="main">
 <%- if @user.nil? || !@user.instance_of?(BlogcastrUser) -%>
-          <div id="like-button-container" class="button-container like-button-container">
-            <%= link_to "Like", sign_up_path, :id => "like-button", :class => "blue-button" %>
+          <div id="like-button-container" class="main-button-container">
+            <%= link_to "Like", sign_up_path, :id => "like-button", :class => "action-button blue-button" %>
           </div>
 <%- elsif @user == @blogcast_user -%>
           <ul id="blogcast-navigation">
@@ -20,7 +20,7 @@
             </li>
           </ul>
 <%- else -%>
-          <div id="like-button-container" class="button-container like-button-container">
+          <div id="like-button-container" class="main-button-container">
   <%- if @like.nil? -%>
             <%= render :partial => "/share/new/create_like_button", :locals => { :blogcast => @blogcast } -%>
   <%- else -%>

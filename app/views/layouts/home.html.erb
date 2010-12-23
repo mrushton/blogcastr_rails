@@ -2,21 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title><%= @user.username %>'s home</title>
-    <%= stylesheet_link_tag "blogcastr", :media => "screen" %>
-    <%= stylesheet_link_tag "home", :media => "screen" %>
-    <%= javascript_include_tag :defaults, "jquery.js", "strophe/b64.js", "strophe/md5.js", "strophe/sha1.js", "strophe/strophe.js", "strophe/plugins/strophe.pubsub.js", "dashboard.js", :media => "all" %>
-    <%= javascript_tag "var authenticity_token = \"#{form_authenticity_token}\"" %>
-    <script type="text/javascript">
+    <title>Blogcastr - My Home</title>
+    <link rel="shortcut icon" href="/images/new/favicon.ico">
+    <%= stylesheet_link_tag "new/all", :media => "screen" %>
+    <%= stylesheet_link_tag "new/home", :media => "screen" %>
+    <%= javascript_include_tag :defaults, "jquery.js", "new/application.js", :media => "all" %>
+    <% javascript_tag do %>
       jQuery.noConflict();
-      var username = "<%= @user.username %>";
-      var jid = "<%= @user.username %>@blogcastr.com";
-      var blogname = "<%= @user.username %>";
-      var nodename = "/home/blogcastr.com/<%= @user.username %>/blog";
-      var roomname = "<%= @user.username %>";
-      var server_timestamp = <%= Time.now.to_i %>
-    </script>
-    <script type="text/javascript" src="http://blogcastr.com/ejabberd/password.js"></script>
+    <% end %>
   </head>
   <body>
     <%= yield :layout %>

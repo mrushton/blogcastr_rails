@@ -23,9 +23,9 @@
   </div>
   <div id="subscription-button-container" class="side-info-inner-container dark button-container">
 <%- if current_user.nil? || !current_user.instance_of?(BlogcastrUser) -%>
-    <%= link_to "Subscribe", sign_up_path, :id => "subscription-button", :class => "blue-button" %>
+    <%= link_to "Subscribe", sign_up_path, :id => "subscription-button", :class => "action-button blue-button" %>
 <%- elsif current_user == user -%>
-    <%= link_to "Home", home_path, :class => "blue-button" %>
+    <%= link_to "Home", home_path, :class => "action-button blue-button" %>
 <%- else -%>
   <%- if subscription.nil? -%>
     <%= render :partial => "/share/new/create_subscription_button", :locals => { :user => user } -%>

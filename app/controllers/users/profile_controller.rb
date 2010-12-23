@@ -25,10 +25,10 @@ class Users::ProfileController < ApplicationController
     #MVR - likes 
     @num_likes = Like.count(:conditions => {:user_id => @profile_user.id})
     #MVR - subscriptions
-    @subscriptions = User.find_by_sql(["SELECT users.* FROM subscriptions, users WHERE subscriptions.user_id = ? AND subscriptions.subscribed_to = users.id LIMIT 16", @profile_user.id])
+    @subscriptions = User.find_by_sql(["SELECT users.* FROM subscriptions, users WHERE subscriptions.user_id = ? AND subscriptions.subscribed_to = users.id LIMIT 6", @profile_user.id])
     @num_subscriptions = @profile_user.subscriptions.count
     #MVR - subscribers
-    @subscribers = User.find_by_sql(["SELECT users.* FROM subscriptions, users WHERE subscriptions.subscribed_to = ? AND subscriptions.user_id = users.id LIMIT 16", @profile_user.id])
+    @subscribers = User.find_by_sql(["SELECT users.* FROM subscriptions, users WHERE subscriptions.subscribed_to = ? AND subscriptions.user_id = users.id LIMIT 6", @profile_user.id])
     @num_subscribers = @profile_user.subscribers.count
     #MVR - posts
     @num_posts = @profile_user.posts.count

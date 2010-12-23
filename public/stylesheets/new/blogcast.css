@@ -1,8 +1,4 @@
-div.like-button-container {
-	float: right;
-}
-
-div.like-button-container a {
+div.main-button-container a {
 	background-image: url("/images/new/heart-button.png"), -moz-linear-gradient(top, #7aaddc, #538aca 50%, #387eb9 50%, #3166aa); 
 	background-image: url("/images/new/heart-button.png"), -webkit-gradient(linear, left top, left bottom, from(#7aaddc), color-stop(50%, #538aca), color-stop(50%, #387eb9), to(#3166aa));
 	background-position: 6px 50%, top left;
@@ -11,7 +7,7 @@ div.like-button-container a {
 	padding-right: 6px; 
 }
 
-div.like-button-container a:hover {
+div.main-button-container a:hover {
 	background-color: #4a7db4;
 	background-image: url("/images/new/heart-button.png"), -moz-linear-gradient(top, #6f9bc8, #4a7db4 50%, #4071ab 50%, #325b99); 
 	background-image: url("/images/new/heart-button.png"), -webkit-gradient(linear, left top, left bottom, from(#6f9bc8), color-stop(50%, #4a7db4), color-stop(50%, #4071ab), to(#325b99));
@@ -50,15 +46,6 @@ p.comment-sign-in a.navigation-link {
 #blogcast-user-and-date-and-share {
 	font-size: 0.85em;
 	font-weight: bold;
-}
-
-#like-button {
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
-	display: block;
-	font-size: 0.8em;
-	height: 30px;
-	line-height: 30px;
 }
 
 #blogcast-navigation {

@@ -11,7 +11,7 @@
               <%= link_to "Go to #{@possesive_username} profile &rArr;", profile_path, :class => "navigation-link" -%>
             </li>
           </ul>
-          <h1 class="inline">Subscribers</h1>
+          <h1 class="subtitled">Subscribers</h1>
           <span class="subtitle"><%= @user.username -%></span>
           <div class="showing">
             Showing <%= @num_first_subscriber -%>-<%= @num_last_subscriber -%> of <%= @num_paginated_subscribers -%> subscribers...

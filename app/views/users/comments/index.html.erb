@@ -11,7 +11,7 @@
               <%= link_to "Go to #{@possesive_username} profile &rArr;", profile_path, :class => "navigation-link" -%>
             </li>
           </ul>
-          <h1 class="inline">Comments</h1>
+          <h1 class="subtitled">Comments</h1>
           <span class="subtitle"><%= @user.username -%></span>
           <div class="showing">
             Showing <%= @num_first_comment -%>-<%= @num_last_comment -%> of <%= @num_paginated_comments -%> comments...

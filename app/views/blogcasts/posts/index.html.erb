@@ -11,7 +11,7 @@
               <%= link_to "Go to #{@blogcast.title} &rArr;", blogcast_permalink_path, :class => "navigation-link" -%>
             </li>
           </ul>
-          <h1 class="inline">Posts</h1>
+          <h1 class="subtitled">Posts</h1>
           <span class="subtitle"><%= @blogcast.title -%></span>
           <div class="showing">
             Showing <%= @num_first_post -%>-<%= @num_last_post -%> of <%= @num_paginated_posts -%> posts...

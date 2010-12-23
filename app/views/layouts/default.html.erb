@@ -2,12 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title><%= @title -%></title>
-    <link rel="stylesheet" href="/stylesheets/blogcastr.css" media="screen"/>
+    <title><%= @title %></title>
+    <link rel="shortcut icon" href="/images/new/favicon.ico">
+    <%= stylesheet_link_tag "new/all", :media => "screen" %>
+    <%= javascript_include_tag :defaults, "jquery.js", "new/application.js", :media => "all" %>
+    <% javascript_tag do %>
+      jQuery.noConflict();
+    <% end %>
   </head>
   <body>
     <%= yield :layout %>
-<% if Rails.env.production? -%>
     <script type="text/javascript">
       var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
       document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
@@ -18,6 +22,5 @@
         pageTracker._trackPageview();
       } catch(err) {}
     </script>
-<% end -%>
   </body>
 </html>

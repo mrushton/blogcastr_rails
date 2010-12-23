@@ -22,9 +22,9 @@
   </div>
   <div id="like-button-container" class="side-info-inner-container dark button-container">
 <%- if current_user.nil? || !current_user.instance_of?(BlogcastrUser) -%>
-    <%= link_to "Like", sign_up_path, :id => "like-button", :class => "blue-button" %>
+    <%= link_to "Like", sign_up_path, :id => "like-button", :class => "action-button blue-button" %>
 <%- elsif current_user == user -%>
-    <%= link_to "<span class=\"icon\">Dashboard</span>", blogcast_dashboard_path(:blogcast_id => blogcast.id), :class => "blue-button" %>
+    <%= link_to "<span class=\"icon\">Dashboard</span>", blogcast_dashboard_path(:blogcast_id => blogcast.id), :class => "action-button blue-button" %>
 <%- else -%>
   <%- if like.nil? -%>
     <%= render :partial => "/share/new/create_like_button", :locals => { :blogcast => blogcast } -%>

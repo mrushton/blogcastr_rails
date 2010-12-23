@@ -1,0 +1,84 @@
+<div id="content-container">
+  <div id="content">
+    <%= render :partial => "/share/new/header", :locals => { :user => @user } -%>
+    <table id="content-table" cellspacing="0">
+      <tr>
+        <td id="main">
+          <div id="new-blogcast-button-container" class="main-button-container">
+            <%= link_to "New Blogcast", new_blogcast_path, :id => "new-blogcast-button", :class => "action-button blue-button" %>
+          </div>
+          <div class="avatar-header-container clearfix">
+            <%= link_to "<div class=\"medium-rounded-avatar\" style=\"background-image: url('" + @user.setting.avatar.url(:medium) + "')\"></div>", profile_path(:username => @user.username) %>
+            <h1>My Home</h1>
+          </div>
+<%- if @upcoming_subscription_blogcasts.length > 0 -%>
+          <h2>Upcoming Subscription Blogcasts</h2>
+          <ol class="blogcasts">
+  <%- for blogcast in @upcoming_subscription_blogcasts -%>
+            <%= render :partial => "/share/new/blogcast", :locals => { :blogcast => blogcast } -%>
+  <%- end -%>
+<%- end -%>
+          </ol>
+<%- if @past_subscription_blogcasts.length > 0 -%>
+          <h2>Past Subscription Blogcasts</h2>
+          <ol class="blogcasts">
+  <%- for blogcast in @past_subscription_blogcasts -%>
+            <%= render :partial => "/share/new/blogcast", :locals => { :blogcast => blogcast } -%>
+  <%- end -%>
+<%- end -%>
+          </ol>
+        </td>
+        <td id="side">
+          <h2>
+            Me 
+          </h2>
+          <div class="arrow">
+          </div>
+          <div class="side-info-container">
+            <div class="side-info-inner-container light">
+              <ul class="stats">
+                <li class="stat">
+                  <span class="stat-counter"><%= @num_blogcasts -%></span> <%= link_to @num_blogcasts == 1 ? "Blogcast" : "Blogcasts", user_blogcasts_permalink_path(@user.username) -%>
+                </li>
+                <li class="stat">
+                  <span class="stat-counter"><%= @num_posts -%></span> <%= link_to @num_posts == 1 ? "Post" : "Posts", user_posts_permalink_path(@user.username) -%>
+                </li>
+                <li class="stat">
+                  <span class="stat-counter"><%= @num_comments -%></span> <%= link_to @num_comments == 1 ? "Comment" : "Comments", user_comments_permalink_path(@user.username) -%>
+                </li>
+                <li class="stat">
+                  <span class="stat-counter"><%= @num_likes -%></span> <%= link_to @num_likes == 1 ? "Like" : "Likes", user_likes_permalink_path(@user.username) -%>
+                </li>
+              </ul>
+            </div>
+            <div class="side-info-inner-container dark avatar-container">
+              <%= link_to @num_subscriptions.to_s + " " + (@num_subscriptions == 1 ? "Subscription" : "Subscriptions"), user_subscriptions_permalink_path(@user.username), :class => "stat" -%> 
+<%- if @num_subscriptions > 0 -%>
+              <ul class="avatar-list clearfix">
+  <%- for subscription in @subscriptions -%>
+                <li>
+                  <%= link_to image_tag(subscription.setting.avatar.url(:thumb), :class => "thumb-avatar", :alt => "#{subscription.username}"), profile_path(:username => subscription.username), :title => "#{subscription.username}" %>
+                </li>
+  <%- end -%>
+              </ul>
+<%- end -%>
+            </div>
+            <div class="side-info-inner-container dark avatar-container">
+              <%= link_to @num_subscribers.to_s + " " + (@num_subscribers == 1 ? "Subscriber" : "Subscribers"), user_subscribers_permalink_path(@user.username), :class => "stat" -%> 
+<%- if @num_subscribers > 0 -%>
+              <ul class="avatar-list clearfix">
+  <%- for subscriber in @subscribers -%>
+                <li>
+                  <%= link_to image_tag(subscriber.setting.avatar.url(:thumb), :class => "thumb-avatar", :alt => "#{subscriber.username}"), profile_path(:username => subscriber.username), :title => "#{subscriber.username}" %>
+                </li>
+  <%- end -%>
+              </ul>
+<%- end -%>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <%= render :partial => "/share/new/content_footer" -%>
+  </div>
+</div>
