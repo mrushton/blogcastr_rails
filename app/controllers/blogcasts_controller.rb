@@ -10,6 +10,31 @@ class BlogcastsController < ApplicationController
   before_filter :set_facebook_session
   helper_method :facebook_session
 
+  def index
+    #MVR - find user by id 
+    @user = BlogcastrUser.find_by_id(params[:user_id])
+    @setting = @user.setting
+    if @user.nil?
+      respond_to do |format|
+        format.xml { render :xml => "<errors><error>Couldn't find BlogcastrUser with ID=\"#{params[:user_id]}\"</error></errors>", :status => :unprocessable_entity }
+        format.json { render :json => "[[\"Couldn't find BlogcastrUser with ID=\"#{params[:user_id]}\"\"]]", :status => :unprocessable_entity }
+      end
+      return
+    end
+    respond_to do |format|
+      #TODO: limit result set and order by most recent
+      format.xml { render :xml => @user.blogcasts.find(:all, :limit => 10, :order => "id DESC").to_xml(:only => [:id, :title, :description, :starting_at, :updated_at, :name], :include => :tags) }
+      format.json { render :json => @user.blogcasts.find(:all, :limit => 10).to_json(:only => [:id, :title, :description, :starting_at, :updated_at, :name], :include => :tags) }
+      format.rss {
+        @blogcasts = @user.blogcasts.find(:all, :limit => 10, :order => "created_at DESC")
+        #MVR - possesive names 
+        @possesive_username = @user.username + (@user.username =~ /.*s$/ ? "'":"'s")
+        @possesive_full_name = @setting.full_name + (@setting.full_name =~ /.*s$/ ? "'":"'s")
+        render :layout => false
+      }
+    end
+  end
+
   def new
     @user = current_user
     @blogcast = Blogcast.new
@@ -86,21 +111,6 @@ class BlogcastsController < ApplicationController
     end
   end
 
-  def show
-    respond_to do |format|
-      begin
-        @blogcast = Blogcast.find(params[:id])
-        format.html {redirect_to blogcast_permalink_path(:username => @blogcast.user.username, :year => @blogcast.year, :month => @blogcast.month, :day => @blogcast.day, :title => @blogcast.link_title)}
-        format.xml {render :xml => @blogcast}
-        format.json {render :json => @blogcast}
-      rescue ActiveRecord::RecordNotFound => error
-        format.html {render :file => "public/404.html", :layout => false, :status => 404}
-        format.xml {render :xml => "<errors><error>#{error.message}</error></errors>", :status => :unprocessable_entity}
-        format.json {render :json => "[[#{error.message}]]", :status => :unprocessable_entity}
-      end
-    end
-  end
-
   def edit
     @user = current_user;
     @blogcast = @user.blogcasts.find(params[:id])
@@ -131,17 +141,6 @@ class BlogcastsController < ApplicationController
     blogcast.save
     #TODO: handle errors
     redirect_to home_path
-  end
-
-  def edit
-    @user = current_user;
-    @blogcast = @user.blogcasts.find(params[:id])
-    if @blogcast.nil?
-      #MVR - treat this as a 404 error
-      render :file => "public/404.html", :layout => false, :status => 404
-      return
-    end
-    render :layout => "default"
   end
 
   def destroy

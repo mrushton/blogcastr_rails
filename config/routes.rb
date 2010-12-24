@@ -47,7 +47,7 @@ ActionController::Routing::Routes.draw do |map|
   #MVR - users
   map.resources :users, :only => [] do |users|
     #MVR - user blogcasts
-    users.resources "blogcasts", :controller => "users/blogcasts", :only => [:index, :show]
+    users.resources "blogcasts",  :only => [:index, :show]
     #MVR - user comments 
     users.resources "comments", :controller => "users/comments", :only => [:index]
     #MVR - users likes
