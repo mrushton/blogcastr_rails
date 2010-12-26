@@ -89,6 +89,7 @@ div.carousel-button.selected {
 	color: #ffd02b;
 	font-size: 1.6em;
 	font-weight: bold;
+	line-height: 20px;
 	text-shadow: 0px 1px #000000;
 }
 
@@ -237,12 +238,13 @@ div.carousel-button.selected {
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
+	margin-top: 10px;
 }
 
 #avatars {
 	height: 200px;
 	margin-left: auto;
-	margin-top: 16px;
+	margin-top: 20px;
 	margin-right: auto;
 	position: relative;
 	width: 386px;
