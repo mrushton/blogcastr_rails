@@ -5,7 +5,7 @@ class Users::ProfileController < ApplicationController
 
   def show 
     @user = current_user
-    @profile_user = User.find_by_username(params[:username])
+    @profile_user = BlogcastrUser.find_by_username(params[:username])
     if @profile_user.nil?
       #MVR - treat this as a 404 error
       render :file => "#{RAILS_ROOT}/public/404.html", :layout => false, :status => 404
