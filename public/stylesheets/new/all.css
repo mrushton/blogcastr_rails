@@ -243,6 +243,30 @@ div.user-header, div.blogcast-header, div.post-header, div.comment-header, div.c
 	line-height: 30px;
 	padding-left: 8px;
 	padding-right: 8px;
+	position: relative;
+}
+
+div.settings-header {
+	padding-left: 38px;
+}
+
+div.blogcast-settings {
+	-moz-border-radius-topleft: 6px;
+	-webkit-border-top-left-radius: 6px;
+	background-color: #daa72a;
+	background-image: -moz-linear-gradient(#f0c64d, #c88d0b); 
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#f0c64d), to(#c88d0b)); 
+	border-left: 1px solid #a77b1a;
+	border-bottom: 1px solid #a77b1a;
+	border-right: 1px solid #f4d74f;
+	left: 0px;
+	position: absolute;
+	height: 29px;
+	width: 30px;
+}
+
+ul.blogcast-settings-navigation {
+	position: absolute;
 }
 
 ul.icon-stats {

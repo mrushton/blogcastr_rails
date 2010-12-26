@@ -119,7 +119,7 @@
 <%- end -%>
             </div>
           </div>
-          <%= link_to "RSS feed of #{@profile_user.possesive_username} blogcasts", user_blogcasts_path(:user_id => @profile_user.id, :format => "rss"), :id => "rss" %>
+          <%= link_to "RSS feed of #{@profile_username_possesive} blogcasts", user_blogcasts_path(:user_id => @profile_user.id, :format => "rss"), :id => "rss" %>
         </td>
       </tr>
     </table>
