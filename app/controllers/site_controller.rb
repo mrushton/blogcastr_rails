@@ -1,6 +1,11 @@
 class SiteController < ApplicationController
   def index
     @user = current_user
+    #MVR - redirect to home if logged in
+    if !@user.nil? && @user.instance_of?(BlogcastrUser)
+      redirect_to home_path
+      return
+    end
     #MVR - only select users that have avatars
     @discover_users = BlogcastrUser.find(:all, :joins => "inner join settings on users.id = settings.user_id", :conditions => "settings.avatar_file_name IS NOT NULL", :order => "random()", :limit => "18")
     @featured_blogcasts = Blogcast.find(:all, :conditions => "is_featured = 't'", :order => "random()", :limit => 2)
