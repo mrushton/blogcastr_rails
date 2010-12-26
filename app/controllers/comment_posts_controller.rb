@@ -39,18 +39,12 @@ class CommentPostsController < ApplicationController
     end
     @comment_post = CommentPost.create(:user_id => @user.id, :blogcast_id => @blogcast.id, :from => params[:from], :comment_id => @comment.id)
     @comment_user = @comment.user
-    begin
+    #begin
       thrift_user = Thrift::User.new
       thrift_user.account = @user.class.to_s 
-      if @user.instance_of?(BlogcastrUser)
-        thrift_user.username = @user.username
-        thrift_user.url = profile_path :username => @user.username
-        thrift_user.avatar_url = @user.setting.avatar.url :medium
-      else
-        thrift_user.username = @user.get_username
-        thrift_user.url = @user.get_url
-        thrift_user.avatar_url = @user.get_avatar_url :small
-      end
+      thrift_user.username = @user.username
+      thrift_user.url = profile_path :username => @user.username
+      thrift_user.avatar_url = @user.setting.avatar.url :medium
       thrift_comment_post = Thrift::CommentPost.new
       thrift_comment_post.id = @comment_post.id
       thrift_comment_post.date = @comment_post.created_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/, ' ')
@@ -68,26 +62,30 @@ class CommentPostsController < ApplicationController
         thrift_comment_user.username = @comment_user.username
         thrift_comment_user.url = profile_path :username => @comment_user.username
         thrift_comment_user.avatar_url = @comment_user.setting.avatar.url :small
-      else
-        thrift_comment_user.username = @comment_user.get_username
-        thrift_comment_user.url = @comment_user.get_url
-        thrift_comment_user.avatar_url = @comment_user.get_avatar_url :small
+      elsif @comment_user.instance_of?(FacebookUser)
+        thrift_comment_user.username = @comment_user.setting.full_name
+        thrift_comment_user.url = @comment_user.facebook_link 
+        thrift_comment_user.avatar_url = @comment_user.setting.avatar.url :small
+      elsif @comment_user.instance_of?(TwitterUser)
+        thrift_comment_user.username = "@" + @comment_user.username
+        thrift_comment_user.url = "http://twitter.com/" + @comment_user.username 
+        thrift_comment_user.avatar_url = @comment_user.setting.avatar.url :small
       end
       #MVR - send comment post to blogcast 
       err = thrift_client.send_comment_post_to_muc_room(@user.username, HOST, "Blogcast."+@blogcast.id.to_s, thrift_user, thrift_comment_post, thrift_comment_user, thrift_comment)
       thrift_client_close
-    rescue
-      @comment_post.errors.add_to_base "Unable to send comment post to blogcast"
-      @comment_post.destroy
-      respond_to do |format|
-        format.js {@error = "Unable to send comment post to blogcast."; render :action => "error"}
-        format.html {flash[:error] = "Unable to send comment post to blogcast"; redirect_to :back}
-        format.xml {render :xml => @comment.errors.to_xml, :status => :unprocessable_entity}
+    #rescue
+    #  @comment_post.errors.add_to_base "Unable to send comment post to blogcast"
+    #  @comment_post.destroy
+    #  respond_to do |format|
+    #    format.js {@error = "Unable to send comment post to blogcast."; render :action => "error"}
+    #    format.html {flash[:error] = "Unable to send comment post to blogcast"; redirect_to :back}
+    #    format.xml {render :xml => @comment.errors.to_xml, :status => :unprocessable_entity}
         #TODO: fix json support
-        format.json {render :json => @comment.errors.to_json, :status => :unprocessable_entity}
-      end
-      return
-    end
+    #    format.json {render :json => @comment.errors.to_json, :status => :unprocessable_entity}
+    #  end
+   #   return
+   # end
     respond_to do |format|
       format.js
       format.html {flash[:notice] = "Text post posted successfully"; redirect_to :back}
