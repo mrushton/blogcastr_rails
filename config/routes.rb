@@ -71,8 +71,6 @@ ActionController::Routing::Routes.draw do |map|
   #map.user_sms_notifications_permalink ":username/sms_notifications", :controller => "sms_user_notifications", :action => "create", :conditions => {:method => :post}
   #map.user_sms_notifications_permalink ":username/sms_notifications", :controller => "sms_user_notifications", :action => "destroy", :conditions => {:method => :delete}
   #MVR - blogcasts
-  #MVR - DO I NEED THIS?
-  #map.create_blogcast "/blogcasts/create", :controller => "blogcasts", :action => "create"
   map.resources :blogcasts, :controller => "blogcasts", :only => [:new, :create, :show, :edit, :update, :destroy] do |blogcasts|
     #MVR - dashboard
     blogcasts.resource :dashboard, :controller => "dashboard", :only => [:show]

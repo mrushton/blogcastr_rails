@@ -14,6 +14,15 @@ function blogcastClick() {
   window.location = jQuery(this).attr("blogcast-permalink");
 }
 
+function blogcastSettingsButtonClick() {
+  jQuery(this).parents("li.blogcast").find("ul.blogcast-settings").toggle();
+  return false;
+}
+
+function stopPropagation() {
+  return false;
+}
+
 function blogcastrPastTimestampInWords(timestamp) {
   var current_client_date = new Date;
   var current_client_timestamp = Math.floor(current_client_date.getTime()/1000);
@@ -92,4 +101,7 @@ jQuery(document).ready(function() {
   //MVR - attach click events
   jQuery('li.user').click(userClick);
   jQuery('li.blogcast').click(blogcastClick);
+  jQuery('div.blogcast-settings-button').click(blogcastSettingsButtonClick);
+  //MVR - this stops propagation of click events for the delete action 
+  jQuery('a.destroy').click(stopPropagation);
 })
