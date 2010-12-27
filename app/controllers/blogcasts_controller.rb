@@ -1,5 +1,5 @@
 class BlogcastsController < ApplicationController
-  before_filter :only => ["new", "create", "edit", "update", "destroy"] do |controller|
+  before_filter :only => [ "new", "create", "edit", "update", "destroy" ] do |controller|
     if controller.params[:authentication_token].nil?
       controller.authenticate
     else 
@@ -112,7 +112,7 @@ class BlogcastsController < ApplicationController
   end
 
   def edit
-    @user = current_user;
+    @user = current_user
     @blogcast = @user.blogcasts.find(params[:id])
     if @blogcast.nil?
       #MVR - treat this as a 404 error
@@ -133,7 +133,7 @@ class BlogcastsController < ApplicationController
     #TODO: check for link title
     blogcast.update_attributes(params[:blogcast])
     if params[:blogcast][:link_title].nil?
-      blogcast.link_title = blogcast.title.downcase.gsub(/[^a-z0-9]/, "_") 
+      blogcast.link_title = blogcast.title.downcase.gsub(/[^a-z0-9]/, "-") 
     end
     blogcast.year = blogcast.starting_at.year
     blogcast.month = blogcast.starting_at.month
@@ -144,7 +144,25 @@ class BlogcastsController < ApplicationController
   end
 
   def destroy
-    #TODO: implement destroy
-    redirect_to home_path
+    #MVR - authentication
+    if params[:authentication_token].nil?
+      @user = current_user
+    else 
+      @user = rest_current_user
+    end
+    @blogcast = @user.blogcasts.find(params[:id])
+    if !@blogcast.destroy
+      respond_to do |format|
+        format.js { @error = "Oops! Unable to delete #{@blogcast.title}."; render :action => "error" }
+        format.xml { render :xml => @blogcast.errors, :status => :unprocessable_entity }
+        format.json { render :json => @blogcast.errors, :status => :unprocessable_entity }
+      end
+      return
+    end
+    respond_to do |format|
+      format.js
+      format.xml { head :ok }
+      format.json { head :ok }
+    end
   end
 end
