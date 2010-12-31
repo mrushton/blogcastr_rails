@@ -105,7 +105,7 @@
   <%- end -%>
 <% end -%>
           </ol>
-          <ol id="comments">
+          <ol id="comments" style="display: none;">
 <% for comment in @comments -%>
             <%= render :partial => "/share/new/comment", :locals => { :comment => comment } -%>
 <% end -%>

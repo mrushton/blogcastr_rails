@@ -329,15 +329,15 @@ ul.icon-stats a {
 }
 
 ul.icon-stats a.posts {
-	background: url('/images/new/pencil.png') no-repeat 0% 50%;
+	background: url("/images/new/pencil.png") no-repeat 0% 50%;
 }
 
 ul.icon-stats a.comments {
-	background: url('/images/new/comment.png') no-repeat 0% 50%;
+	background: url("/images/new/comment.png") no-repeat 0% 50%;
 }
 
 ul.icon-stats a.likes {
-	background: url('/images/new/heart.png') no-repeat 0% 50%;
+	background: url("/images/new/heart.png") no-repeat 0% 50%;
 }
 
 div.user-body, div.blogcast-body, div.post-body, div.comment-body {
