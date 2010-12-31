@@ -1,12 +1,12 @@
 <div id="alert" style="display: none;">
 </div>
-<div id="content-container">
+<div id="content-container" class="custom-background">
   <div id="content">
     <%= render :partial => "/share/new/header", :locals => { :user => @current_user } -%>
-    <table id="content-table" cellspacing="0">
+    <table class="content-table" cellspacing="0">
       <tr>
-        <td id="main">
-          <ul id="profile-navigation">
+        <td class="main">
+          <ul id="main-navigation">
             <li>
               <%= link_to "Go to #{@possesive_username} profile &rArr;", profile_path, :class => "navigation-link" -%>
             </li>
@@ -33,7 +33,7 @@
           </div>
 <% end -%>
         </td>
-        <td id="side">
+        <td class="side">
           <%= render :partial => "/share/new/user_side_info", :locals => { :user => @user, :current_user => @current_user, :num_blogcasts => @num_blogcasts, :num_subscriptions => @num_subscriptions, :num_subscribers => @num_subscribers, :subscription => @subscription } -%>
         </td>
       </tr>

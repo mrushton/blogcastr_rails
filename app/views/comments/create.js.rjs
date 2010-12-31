@@ -1,8 +1,9 @@
-page << "jQuery(\"#comment_text\").removeClass(\"selected\");"
+#MVR - reset the text post form
+page["comment-form"].reset
+page["comment_text"].remove_class_name("selected")
 #MVR - hide loading animation and display check
-page << "jQuery(\"#comment_form div.comment-button-container\").removeClass(\"loading\").addClass(\"success\");"
-#MVR - reset the comment form
-page[:comment_form].reset
+page["comment-submit-button-container"].remove_class_name("loading")
+page["comment-submit-button-container"].add_class_name("success")
 page.delay(1) do
-  page << "jQuery(\"#comment_form div.comment-button-container\").removeClass(\"success\");"
+  page["comment-submit-button-container"].remove_class_name("success")
 end

@@ -1,18 +1,18 @@
 <div id="alert" style="display: none;">
 </div>
-<div id="content-container">
+<div id="content-container" class="custom-background">
   <div id="content">
     <%= render :partial => "/share/new/header", :locals => { :user => @user } -%>
-    <table id="content-table" cellspacing="0">
+    <table class="content-table" cellspacing="0">
       <tr>
-        <td id="main">
+        <td class="main">
           <div class="clearfix">
 <%- if @user.nil? || !@user.instance_of?(BlogcastrUser) -%>
             <div id="subscription-button-container" class="main-button-container">
               <%= link_to "Subscribe", sign_up_path, :id => "subscription-button", :class => "action-button blue-button" %>
             </div>
 <%- elsif @user == @profile_user -%>
-            <ul id="profile-navigation">
+            <ul id="main-navigation">
               <li>
                 <%= link_to "Go to home &rArr;", home_path, :class => "navigation-link" %>
               </li>
@@ -71,7 +71,7 @@
 <%- end -%>
           </ol>
         </td>
-        <td id="side">
+        <td class="side">
           <h2>
             <%= @profile_user.username -%>
           </h2>
@@ -119,7 +119,6 @@
 <%- end -%>
             </div>
           </div>
-          <%= link_to "RSS feed of #{@profile_username_possesive} blogcasts", user_blogcasts_path(:user_id => @profile_user.id, :format => "rss"), :id => "rss" %>
         </td>
       </tr>
     </table>

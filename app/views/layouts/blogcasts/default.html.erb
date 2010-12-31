@@ -6,7 +6,7 @@
     <link rel="shortcut icon" href="/images/new/favicon.ico">
     <%= stylesheet_link_tag "new/all", :media => "screen" %>
     <%= stylesheet_link_tag "new/blogcast", :media => "screen" %>
-    <%= render :partial => "/share/new/customize_appearance", :locals => { :theme => @theme, :setting => @setting } -%>
+    <%= render :partial => "/share/new/custom_background", :locals => { :theme => @theme, :setting => @setting } -%>
     <%= javascript_include_tag :defaults, "jquery.js", "new/application.js", "new/blogcast.js", :media => "all" %>
     <% javascript_tag do %>
       jQuery.noConflict();

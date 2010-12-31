@@ -13,17 +13,6 @@ div.main-button-container a:hover {
 	background-image: url("/images/new/subscribe.png"), -webkit-gradient(linear, left top, left bottom, from(#6f9bc8), color-stop(50%, #4a7db4), color-stop(50%, #4071ab), to(#325b99));
 }
 
-#profile-navigation {
-	float: right;
-	font-size: 0.75em;
-	font-style: italic;
-	line-height: 14px;
-	list-style: none;
-	margin: 0px;
-	padding: none;
-	text-align: right;
-}
-
 #profile-avatar {
 	float: left;
 }

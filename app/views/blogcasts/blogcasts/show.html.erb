@@ -1,17 +1,17 @@
 <div id="alert" style="display: none;">
 </div>
-<div id="content-container">
+<div id="content-container" class="custom-background">
   <div id="content">
     <%= render :partial => "/share/new/header", :locals => { :user => @user } -%>
-    <table id="content-table" cellspacing="0">
+    <table class="content-table" cellspacing="0">
       <tr>
-        <td id="main">
+        <td class="main">
 <%- if @user.nil? || !@user.instance_of?(BlogcastrUser) -%>
           <div id="like-button-container" class="main-button-container">
             <%= link_to "Like", sign_up_path, :id => "like-button", :class => "action-button blue-button" %>
           </div>
 <%- elsif @user == @blogcast_user -%>
-          <ul id="blogcast-navigation">
+          <ul id="main-navigation">
             <li>
               <%= link_to "Go to dashboard &rArr;", blogcast_dashboard_path(:blogcast_id => @blogcast.id), :class => "navigation-link" %>
             </li>
@@ -70,12 +70,12 @@
                 <div class="comment-info">
                   <%= link_to "@" + @user.username, "http://twitter.com/" + @user.username, :class => "username" -%>
   <%- end -%>
-                  <% remote_form_for :comment, :url => blogcast_comments_path(:blogcast_id => @blogcast.id), :html => { :id => "comment_form", :method => "post"}, :before => "if (jQuery(\"#comment_text\").val() == 'Enter text here...') return false; jQuery(this).find(\"div.comment-button-container\").addClass(\"loading\")" do |f| -%>
+                  <% remote_form_for :comment, :url => blogcast_comments_path(:blogcast_id => @blogcast.id), :html => { :id => "comment-form", :method => "post"}, :before => "if (jQuery(\"#comment_text\").val() == 'Enter text here...') return false; jQuery(\"#comment-submit-button-container\").addClass(\"loading\")" do |form| -%>
                     <input id="jid" type="hidden" value="" name="jid"/>
-                    <%= f.hidden_field :from %>
-                    <%= f.text_area :text, :class => "comment", :onfocus => "if (this.value == 'Enter text here...') { this.value = ''; jQuery(this).addClass('selected'); }", :onblur => "if (this.value == '') { jQuery(this).removeClass('selected'); this.value = 'Enter text here...'; }" -%>
-                    <div class="comment-button-container">
-                      <%= f.submit "Post", :class => "comment orange-button" %>
+                    <%= form.hidden_field :from %>
+                    <%= form.text_area :text, :class => "comment", :onfocus => "if (this.value == 'Enter text here...') { this.value = ''; jQuery(this).addClass('selected'); }", :onblur => "if (this.value == '') { jQuery(this).removeClass('selected'); this.value = 'Enter text here...'; }" -%>
+                    <div id="comment-submit-button-container" class="comment-submit-button-container">
+                      <%= form.submit "Post", :class => "comment orange-button" %>
                     </div>
                   <%- end -%>
                 </div>
@@ -116,7 +116,7 @@
 <% end -%>
           </ol>
         </td>
-        <td id="side">
+        <td class="side">
           <div id="current-viewers-container">
             <div id="current-viewers">
               <%= @num_viewers -%>

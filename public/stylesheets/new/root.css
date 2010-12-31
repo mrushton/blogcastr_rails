@@ -34,6 +34,57 @@ div.carousel-button.selected {
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#bebebe), to(#f5f5f5)); 
 }
 
+table.content-table {
+	margin-top: 0px;
+}
+
+td.main h2:first-child {
+	margin-top: 0px;
+}
+
+td.side {
+	padding-left: 30px;
+	padding-right: 30px;
+	width: 180px;
+}
+
+td.side h2 {
+	color: #454545;
+	font-size: 1.15em;
+}
+
+td.side ol {
+	margin-top: 12px;
+}
+
+td.side li {
+	margin-top: 8px;
+}
+
+td.side img.medium-avatar {
+	float: left;
+}
+
+td.side div.user-info {
+	float: left;
+	margin-left: 10px;
+	padding-left: 0px;
+	padding-top: 6px;
+	width: 120px;
+}
+
+td.side a.username  {
+	font-size: 0.95em;
+	font-weight: bold;
+}
+
+td.side div.location  {
+	color: #505050;
+	font-family: Georgia,jkhkjhm, serif;
+	font-size: 0.75em;
+	font-style: italic;
+}
+
 #marketing-container {
 	background-image: url("/images/new/marketing-background.png");
 	height: 496px;
@@ -258,7 +309,7 @@ div.carousel-button.selected {
 }
 
 #content-container {
-	background-color: #e9e9e9;
+	background: #e9e9e9 none;
 	padding-top: 44px;
 	padding-bottom: 30px;
 	position: relative;
@@ -268,75 +319,4 @@ div.carousel-button.selected {
 	position: absolute;
 	top: -58px;
 	width: 860px;
-}
-
-#content-table {
-	margin-top: 0px;
-}
-
-#main h2:first-child {
-	margin-top: 0px;
-}
-
-#side {
-	padding-left: 30px;
-	padding-right: 30px;
-	width: 180px;
-}
-
-#side h2 {
-	color: #454545;
-	font-size: 1.15em;
-}
-
-#side ol {
-	margin-top: 12px;
-}
-
-#side li {
-	margin-top: 8px;
-}
-
-#side img.medium-avatar {
-	float: left;
-}
-
-#side div.user-info {
-	float: left;
-	margin-left: 10px;
-	padding-left: 0px;
-	padding-top: 6px;
-	width: 120px;
-}
-
-#side a.username  {
-	font-size: 0.95em;
-	font-weight: bold;
-}
-
-#side div.location  {
-	color: #505050;
-	font-family: Georgia,jkhkjhm, serif;
-	font-size: 0.75em;
-	font-style: italic;
-}
-
-#marketing-footer-container {
-	background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0) 20px); 
-	background-image: -webkit-gradient(linear, left top, left 20, from(rgba(0, 0, 0, 0.1)), to(rgba(0, 0, 0, 0))); 
-	height: 100px;
-	padding-top: 16px;
-}
-
-#marketing-footer {
-	width: 960px;
-	margin: auto;
-}
-
-#footer-navigation li a, #copyright {
-	text-shadow: 0px 1px #e8e8e8;
-}
-
-#facebook-like {
-	margin-left: 6px;
 }

@@ -1,9 +1,9 @@
 <div id="content-container">
   <div id="content">
     <%= render :partial => "/share/new/header", :locals => { :user => @user } -%>
-    <table id="content-table" cellspacing="0">
+    <table class="content-table" cellspacing="0">
       <tr>
-        <td id="main">
+        <td class="main">
           <div id="new-blogcast-button-container" class="main-button-container">
             <%= link_to "New Blogcast", new_blogcast_path, :id => "new-blogcast-button", :class => "action-button blue-button" %>
           </div>
@@ -28,7 +28,7 @@
 <%- end -%>
           </ol>
         </td>
-        <td id="side">
+        <td class="side">
           <h2>
             Me 
           </h2>
@@ -79,6 +79,6 @@
         </td>
       </tr>
     </table>
-    <%= render :partial => "/share/new/content_footer" -%>
   </div>
 </div>
+<%= render :partial => "/share/new/footer" -%>
