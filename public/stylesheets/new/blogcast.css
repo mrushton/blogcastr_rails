@@ -100,6 +100,10 @@ p.comment-sign-in a.navigation-link {
 	width: 100%;
 }
 
+#current-viewers-container {
+	padding-top: 10px;
+}
+
 #current-viewers {
 	font-size: 2.8em;
 	font-weight: bold;

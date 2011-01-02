@@ -225,15 +225,21 @@ function blogcastrPostCallback(stanza) {
     var url = user.find("url:first").text();
     var avatar_url = user.find("avatar_url:first").text();
     //create new comment element
-    var avatar_div = jQuery("<div>").addClass("comment-avatar").addClass("small-rounded-avatar").css("background-image", "url(\"" + avatar_url + "\")"); 
-    var avatar_a = jQuery("<a>").attr("href", url).append(avatar_div); 
-    var username_a = jQuery("<a>").addClass("username").attr("href", url).text(username); 
+    //comment header
     var timestamp_in_words_span = jQuery("<span>").addClass("timestamp-in-words").attr("timestamp", timestamp).text(blogcastrPastTimestampInWords(timestamp));
-    var username_timestamp_container_div = jQuery("<div>").addClass("username-and-timestamp-in-words-container").append(username_a).append(" ").append(timestamp_in_words_span);
+    var comment_header_div = jQuery("<div>").addClass("comment-header").append(timestamp_in_words_span);
+    //comment body
+    var avatar_img = jQuery("<img>").addClass("small-avatar").attr("src", avatar_url);
+    var avatar_a = jQuery("<a>").attr("href", url).append(avatar_img); 
+    var username_a = jQuery("<a>").addClass("username").attr("href", url).text(username); 
+    var username_div = jQuery("<div>").addClass("username").append(username_a); 
     var text_p = jQuery("<p>").addClass("text").text(text);
-    var comment_info_div = jQuery("<div>").addClass("comment-info").append(username_timestamp_container_div).append(text_p);
+    var comment_info_div = jQuery("<div>").addClass("comment-info").append(username_div).append(text_p);
     var clearfix_div = jQuery("<div>").addClass("clearfix").append(avatar_a).append(comment_info_div);
-    var comment_li = jQuery("<li>").addClass("small-comment").attr("id", "Comment:" + id).css("display", "none").css("opacity", "0.0").append(clearfix_div);
+    var comment_body_div = jQuery("<div>").addClass("comment-body").append(clearfix_div);
+    //comment container for animation 
+    var comment_container_div = jQuery("<div>").append(comment_header_div).append(comment_body_div);
+    var comment_li = jQuery("<li>").addClass("comment").attr("id", "Comment:" + id).css("display", "none").css("opacity", "0.0").append(comment_container_div);
     //add comment to document if not present
     if (jQuery("#Comment\\:" + id).length == 0) {
       jQuery("#comments").prepend(comment_li);

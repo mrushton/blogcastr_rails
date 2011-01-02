@@ -29,7 +29,7 @@
             </div>
             <div id="post-container">
               <div id="text-post" class="post">
-                <% remote_form_for :text_post, :url => blogcast_text_posts_path(:blogcast_id => @blogcast.id), :html => { :id => "text-post-form", :method => "post" }, :before => "if (jQuery(\"#text_post_text\").val() == 'Enter text here...') return false; jQuery(\"#text-post-submit-button-container\").addClass(\"loading\")" do |form| -%>
+                <% remote_form_for :text_post, :url => blogcast_text_posts_path(:blogcast_id => @blogcast.id), :html => { :id => "text-post-form", :method => "post" }, :before => "if (jQuery('#text_post_text').val() == 'Enter text here...') return false; jQuery('#text-post-submit-button-container').addClass('loading')" do |form| -%>
                   <%= form.hidden_field :from %>
                   <%= form.text_area :text, :class => "text", :onfocus => "if (this.value == 'Enter text here...') { this.value = ''; jQuery(this).addClass('selected'); }", :onblur => "if (this.value == '') { jQuery(this).removeClass('selected'); this.value = 'Enter text here...'; }" -%>
                   <div id="text-post-submit-button-container" class="post-submit-button-container">
@@ -38,7 +38,7 @@
                 <% end %>
               </div>
               <div id="image-post" class="post" style="display: none;">
-                <% form_for :image_post, :url => blogcast_image_posts_path(:blogcast_id => @blogcast.id), :html => {:multipart => true} do |form| %>
+                <% form_for :image_post, :url => blogcast_image_posts_path(:blogcast_id => @blogcast.id), :html => {:multipart => true, :onsubmit => "if (jQuery('#image_post_text').val() == 'Enter optional caption here...') jQuery('#image_post_text').val('');" } do |form| %>
                   <%= form.hidden_field :from %>
                   <%= form.file_field :image %>
                   <%= form.text_area :text, :class => "text", :onfocus => "if (this.value == 'Enter optional caption here...') { this.value = ''; jQuery(this).addClass('selected'); }", :onblur => "if (this.value == '') { jQuery(this).removeClass('selected'); this.value = 'Enter optional caption here...'; }" -%>
@@ -110,8 +110,6 @@
             <%= render :partial => "/share/new/comment", :locals => { :comment => comment } -%>
 <% end -%>
           </ol>
-        </td>
-        <td class="side">
         </td>
       </tr>
     </table>
