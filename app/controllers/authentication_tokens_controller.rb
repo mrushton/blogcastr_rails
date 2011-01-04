@@ -3,15 +3,15 @@ class AuthenticationTokensController < ApplicationController
     @user = BlogcastrUser.authenticate(params[:username], params[:password])
     if @user.nil?
       respond_to do |format|
-        format.xml {render :xml => "<errors><error>Authentication failed</error></errors>", :status => :forbidden}
-        format.json {render :json => "[[\"Authentication failed\"]]", :status => :forbidden}
+        format.xml { render :xml => "<errors><error>Authentication failed</error></errors>", :status => :forbidden }
+        format.json { render :json => "[[\"Authentication failed\"]]", :status => :forbidden }
       end
       return
     else
       if !@user.email_confirmed?
         respond_to do |format|
-          format.xml {render :xml => "<errors><error>Email not confirmed</error></errors>", :status => :unprocessable_entity}
-          format.json {render :json => "[[\"Email not confirmed\"]]", :status => :unprocessable_entity}
+          format.xml { render :xml => "<errors><error>Email not confirmed</error></errors>", :status => :unprocessable_entity }
+          format.json { render :json => "[[\"Email not confirmed\"]]", :status => :unprocessable_entity }
         end
         return
       else
@@ -23,8 +23,8 @@ class AuthenticationTokensController < ApplicationController
           authentication_token = @user.authentication_token
         end
         respond_to do |format|
-          format.xml {render :xml => "<authentication_token>#{authentication_token}</authentication_token>"}
-          format.json {render :json => "[[\"#{authentication_token}\"]]"}
+          format.xml { render :xml => "<authentication_token>#{authentication_token}</authentication_token>" }
+          format.json { render :json => "[[\"#{authentication_token}\"]]" }
         end
         return
       end

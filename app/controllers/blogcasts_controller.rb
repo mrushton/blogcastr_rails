@@ -12,7 +12,7 @@ class BlogcastsController < ApplicationController
 
   def index
     #MVR - find user by id 
-    @user = BlogcastrUser.find_by_id(params[:user_id])
+    @user = BlogcastrUser.find_by_username(params[:user_id])
     @setting = @user.setting
     if @user.nil?
       respond_to do |format|
@@ -23,8 +23,8 @@ class BlogcastsController < ApplicationController
     end
     respond_to do |format|
       #TODO: limit result set and order by most recent
-      format.xml { render :xml => @user.blogcasts.find(:all, :limit => 10, :order => "id DESC").to_xml(:only => [:id, :title, :description, :starting_at, :updated_at, :name], :include => :tags) }
-      format.json { render :json => @user.blogcasts.find(:all, :limit => 10).to_json(:only => [:id, :title, :description, :starting_at, :updated_at, :name], :include => :tags) }
+      format.xml { render :xml => @user.blogcasts.find(:all, :limit => 10, :order => "id DESC").to_xml(:only => [ :id, :title, :description, :starting_at, :updated_at, :name ], :include => :tags) }
+      format.json { render :json => @user.blogcasts.find(:all, :limit => 10).to_json(:only => [ :id, :title, :description, :starting_at, :updated_at, :name ], :include => :tags) }
       format.rss {
         @blogcasts = @user.blogcasts.find(:all, :limit => 10, :order => "created_at DESC")
         #MVR - possesive names 

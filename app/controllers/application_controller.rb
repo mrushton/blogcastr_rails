@@ -35,11 +35,15 @@ class ApplicationController < ActionController::Base
     @thrift_transport.close if defined?(@thrift_transport)
   end
 
-  #TODO: get to work for xml
   def set_time_zone
-    if signed_in?
-      if !current_user.setting.nil?
-        @time_zone = current_user.setting.time_zone
+    if params[:authentication_token].nil?
+      @current_user = current_user
+    else 
+      @current_user = rest_current_user
+    end
+    if !@current_user.nil?
+      if !@current_user.setting.nil?
+        @time_zone = @current_user.setting.time_zone
         if !@time_zone.nil?
           Time.zone = @time_zone
         end
