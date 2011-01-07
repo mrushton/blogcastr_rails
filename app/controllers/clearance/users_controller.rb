@@ -40,13 +40,11 @@ class Clearance::UsersController < ApplicationController
     else
       @setting.time_zone = "UTC" 
     end
-    invite.remaining = invite.remaining - 1
     begin
       BlogcastrUser.transaction do
         @blogcastr_user.save!
         @setting.user_id = @blogcastr_user.id
         @setting.save!
-        invite.save!
       end
       begin
         #AS DESIGNED: create ejabberd account here since password gets encrypted

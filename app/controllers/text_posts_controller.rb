@@ -55,7 +55,7 @@ class TextPostsController < ApplicationController
       thrift_text_post.medium = @text_post.from
       thrift_text_post.text = @text_post.text
       #MVR - send text post to muc room
-      err = thrift_client.send_text_post_to_muc_room(@user.username, HOST, "Blogcast."+@blogcast.id.to_s, thrift_user, thrift_text_post)
+      err = thrift_client.send_text_post_to_muc_room(@user.username, HOST, "Blogcast." + @blogcast.id.to_s, thrift_user, thrift_text_post)
       thrift_client_close
     rescue
       @text_post.errors.add_to_base "Unable to send text post to muc room"
