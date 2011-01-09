@@ -24,12 +24,17 @@ class SettingsController < ApplicationController
     @setting = @user.setting
     #MVR - make a copy of the setting object
     @account_setting = Marshal.load(Marshal.dump(@setting))
+    if (params[:setting][:web] !~ /^(http:\/\/|https:\/\/)/)
+      web = "http://" + params[:setting][:web]
+    else
+      web = params[:setting][:web]
+    end 
     #MVR - avatar is the only optional argument
     if params[:setting][:avatar].nil?
       #MVR - the paperclip attachment gets set on assignment
-      err = @account_setting.update_attributes(:full_name => params[:setting][:full_name], :motto => params[:setting][:motto], :location => params[:setting][:location], :bio => params[:setting][:bio], :web => params[:setting][:web], :time_zone => params[:setting][:time_zone])
+      err = @account_setting.update_attributes(:full_name => params[:setting][:full_name], :location => params[:setting][:location], :bio => params[:setting][:bio], :web => web, :time_zone => params[:setting][:time_zone])
     else
-      err = @account_setting.update_attributes(:full_name => params[:setting][:full_name], :motto => params[:setting][:motto], :location => params[:setting][:location], :bio => params[:setting][:bio], :web => params[:setting][:web], :time_zone => params[:setting][:time_zone], :avatar => params[:setting][:avatar])
+      err = @account_setting.update_attributes(:full_name => params[:setting][:full_name], :location => params[:setting][:location], :bio => params[:setting][:bio], :web => web, :time_zone => params[:setting][:time_zone], :avatar => params[:setting][:avatar])
     end
     if err 
       flash[:settings_tab] = "account"
