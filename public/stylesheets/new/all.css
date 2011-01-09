@@ -1057,6 +1057,7 @@ td.side h2:first-child {
 	background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0) 20px); 
 	background-image: -webkit-gradient(linear, left top, left 20, from(rgba(0, 0, 0, 0.1)), to(rgba(0, 0, 0, 0))); 
 	height: 100px;
+	min-width: 960px;
 	padding-top: 16px;
 }
 
