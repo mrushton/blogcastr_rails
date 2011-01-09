@@ -3,6 +3,7 @@ require 'net/http'
 class Blogcast < ActiveRecord::Base
   validates_presence_of :title, :starting_at, :year, :month, :day, :link_title
   validate :unique_permalink?
+  validate :valid_link_title?
   belongs_to :user
   has_many :posts, :dependent => :destroy
   has_many :comments, :dependent => :delete_all
@@ -18,6 +19,14 @@ class Blogcast < ActiveRecord::Base
   def unique_permalink?
     if Blogcast.find(:first, :conditions => [ "user_id = ? AND year = ? AND month = ? AND day = ? AND link_title = ?", user_id, year, month, day, link_title ])
       errors.add(:link_title, "is already being used")
+    end
+  end
+
+  #MVR - make sure the link title is valid
+  def valid_link_title?
+    #MVR - periods are valid url characters but break rails routing
+    if (link_title =~ /[^-A-Za-z0-9\$_\+!\*'\(\),]/)
+      errors.add(:link_title, "is not valid")
     end
   end
 
