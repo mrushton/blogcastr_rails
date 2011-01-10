@@ -24,7 +24,7 @@ class SettingsController < ApplicationController
     @setting = @user.setting
     #MVR - make a copy of the setting object
     @account_setting = Marshal.load(Marshal.dump(@setting))
-    if (params[:setting][:web] !~ /^(http:\/\/|https:\/\/)/)
+    if (!params[:setting][:web].blank? && params[:setting][:web] !~ /^(http:\/\/|https:\/\/)/)
       web = "http://" + params[:setting][:web]
     else
       web = params[:setting][:web]
