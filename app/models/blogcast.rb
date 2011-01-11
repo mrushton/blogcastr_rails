@@ -2,7 +2,7 @@ require 'net/http'
 
 class Blogcast < ActiveRecord::Base
   validates_presence_of :title, :starting_at, :year, :month, :day, :link_title
-  validate_length_of :title, :maximum => 35
+  validates_length_of :title, :maximum => 35
   validate :unique_permalink?
   validate :valid_link_title?
   belongs_to :user
