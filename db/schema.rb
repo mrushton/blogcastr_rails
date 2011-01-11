@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100726054707) do
+ActiveRecord::Schema.define(:version => 20110111081650) do
 
   create_table "blogcast_reminders", :force => true do |t|
     t.string   "type",         :null => false
@@ -28,16 +28,16 @@ ActiveRecord::Schema.define(:version => 20100726054707) do
   end
 
   create_table "blogcasts", :force => true do |t|
-    t.integer  "user_id",                    :null => false
-    t.string   "title",                      :null => false
+    t.integer  "user_id",                                  :null => false
+    t.string   "title",       :limit => 30,                :null => false
     t.string   "description"
-    t.integer  "year",                       :null => false
-    t.integer  "day",                        :null => false
-    t.integer  "month",                      :null => false
-    t.string   "link_title",                 :null => false
+    t.integer  "year",                                     :null => false
+    t.integer  "day",                                      :null => false
+    t.integer  "month",                                    :null => false
+    t.string   "link_title",                               :null => false
     t.string   "short_url"
-    t.datetime "starting_at",                :null => false
-    t.integer  "views_count", :default => 0
+    t.datetime "starting_at",                              :null => false
+    t.integer  "views_count",               :default => 0
     t.boolean  "is_featured"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -126,7 +126,6 @@ ActiveRecord::Schema.define(:version => 20100726054707) do
   create_table "settings", :force => true do |t|
     t.integer  "user_id",                                                                           :null => false
     t.string   "full_name"
-    t.string   "motto"
     t.string   "location"
     t.string   "bio"
     t.string   "web"
@@ -206,33 +205,8 @@ ActiveRecord::Schema.define(:version => 20100726054707) do
     t.datetime "updated_at"
   end
 
-  create_table "users", :force => true do |t|
-    t.string   "type",                                                          :null => false
-    t.string   "username",                    :limit => 15
-    t.string   "email"
-    t.string   "encrypted_password",          :limit => 128
-    t.string   "salt",                        :limit => 128
-    t.string   "confirmation_token",          :limit => 128
-    t.string   "remember_token",              :limit => 128
-    t.string   "authentication_token",        :limit => 128
-    t.boolean  "email_confirmed",                            :default => false, :null => false
-    t.boolean  "is_featured"
-    t.integer  "facebook_id"
-    t.string   "facebook_session_key"
-    t.boolean  "has_facebook_publish_stream"
-    t.boolean  "has_facebook_create_event"
-    t.integer  "twitter_id"
-    t.string   "twitter_access_token"
-    t.string   "twitter_token_secret"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "users", ["email"], :name => "index_users_on_email"
-  add_index "users", ["facebook_id"], :name => "index_users_on_facebook_id"
-  add_index "users", ["id", "confirmation_token"], :name => "index_users_on_id_and_confirmation_token"
-  add_index "users", ["remember_token"], :name => "index_users_on_remember_token"
-  add_index "users", ["username"], :name => "index_users_on_username"
+# Could not dump table "users" because of following StandardError
+#   Unknown type '' for column 'facebook_access_token'
 
   create_table "views", :force => true do |t|
     t.integer  "blogcast_id", :null => false
