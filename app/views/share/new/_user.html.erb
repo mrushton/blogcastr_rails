@@ -1,9 +1,9 @@
 <%- setting = user.setting -%>
-<li class="user" user-permalink="<%= profile_path(:username => user.username) -%>">
-  <div class="user-header">
+<li class="item" item-link="<%= profile_path(:username => user.username) -%>">
+  <div class="item-header">
     <span class="username"><%= user.username -%></span>
   </div>
-  <div class="user-body">
+  <div class="item-body">
     <div class="clearfix">
       <%= link_to image_tag(setting.avatar(:small), :class => "small-avatar"), profile_path(:username => user.username) -%>
       <div class="user-info">

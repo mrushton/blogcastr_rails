@@ -49,7 +49,7 @@ function blogcastrPostCallback(stanza) {
     //create new post element
     //post header
     var timestamp_in_words_span = jQuery("<span>").addClass("timestamp-in-words").attr("timestamp", timestamp).text(blogcastrPastTimestampInWords(timestamp));
-    var post_header_div = jQuery("<div>").addClass("post-header").append(timestamp_in_words_span);
+    var post_header_div = jQuery("<div>").addClass("item-header").append(timestamp_in_words_span);
     //post body
     var avatar_img = jQuery("<img>").addClass("small-avatar").attr("src", avatar_url);
     var avatar_a = jQuery("<a>").attr("href", url).append(avatar_img); 
@@ -58,10 +58,10 @@ function blogcastrPostCallback(stanza) {
     var text_p = jQuery("<p>").addClass("text").text(text);
     var post_info_div = jQuery("<div>").addClass("post-info").append(username_div).append(text_p);
     var clearfix_div = jQuery("<div>").addClass("clearfix").append(avatar_a).append(post_info_div);
-    var post_body_div = jQuery("<div>").addClass("post-body").append(clearfix_div);
+    var post_body_div = jQuery("<div>").addClass("item-body").append(clearfix_div);
     //post container for animation 
     var post_container_div = jQuery("<div>").append(post_header_div).append(post_body_div);
-    var post_li = jQuery("<li>").addClass("post").attr("id", "TextPost:" + id).css("display", "none").css("opacity", "0.0").append(post_container_div);
+    var post_li = jQuery("<li>").attr("id", "TextPost:" + id).addClass("item").css("display", "none").css("opacity", "0.0").append(post_container_div);
     //add post to document if not present
     if (jQuery("#TextPost\\:" + id).length == 0) {
       jQuery("#posts").prepend(post_li);
@@ -84,7 +84,7 @@ function blogcastrPostCallback(stanza) {
     //create new post element
     //post header
     var timestamp_in_words_span = jQuery("<span>").addClass("timestamp-in-words").attr("timestamp", timestamp).text(blogcastrPastTimestampInWords(timestamp));
-    var post_header_div = jQuery("<div>").addClass("post-header").append(timestamp_in_words_span);
+    var post_header_div = jQuery("<div>").addClass("item-header").append(timestamp_in_words_span);
     //post body
     var avatar_img = jQuery("<img>").addClass("small-avatar").attr("src", avatar_url);
     var avatar_a = jQuery("<a>").attr("href", url).append(avatar_img); 
@@ -97,9 +97,9 @@ function blogcastrPostCallback(stanza) {
     else
       var post_info_div = jQuery("<div>").addClass("post-info").append(username_div).append(image_img).append(caption_p);
     var clearfix_div = jQuery("<div>").addClass("clearfix").append(avatar_a).append(post_info_div);
-    var post_body_div = jQuery("<div>").addClass("post-body").append(clearfix_div);
+    var post_body_div = jQuery("<div>").addClass("item-body").append(clearfix_div);
     var post_container_div = jQuery("<div>").addClass("spacer").append(post_header_div).append(post_body_div);
-    var post_li = jQuery("<li>").addClass("post").attr("id", "ImagePost:" + id).css("display", "none").css("opacity", "0.0").append(post_container_div);
+    var post_li = jQuery("<li>").attr("id", "ImagePost:" + id).addClass("item").css("display", "none").css("opacity", "0.0").append(post_container_div);
     //add post to document if not present
     if (jQuery("#ImagePost\\:" + id).length == 0) {
       jQuery("#posts").prepend(post_li);
@@ -195,7 +195,7 @@ function blogcastrPostCallback(stanza) {
     //create new post element
     //post header
     var timestamp_in_words_span = jQuery("<span>").addClass("timestamp-in-words").attr("timestamp", timestamp).text(blogcastrPastTimestampInWords(timestamp));
-    var post_header_div = jQuery("<div>").addClass("post-header").append(timestamp_in_words_span);
+    var post_header_div = jQuery("<div>").addClass("item-header").append(timestamp_in_words_span);
     //post body
     var avatar_img = jQuery("<img>").addClass("small-avatar").attr("src", comment_avatar_url);
     var avatar_a = jQuery("<a>").attr("href", comment_url).append(avatar_img); 
@@ -204,10 +204,10 @@ function blogcastrPostCallback(stanza) {
     var text_p = jQuery("<p>").addClass("text").text(text);
     var post_info_div = jQuery("<div>").addClass("post-info").append(username_div).append(text_p);
     var clearfix_div = jQuery("<div>").addClass("clearfix").append(avatar_a).append(post_info_div);
-    var post_body_div = jQuery("<div>").addClass("post-body").append(clearfix_div);
+    var post_body_div = jQuery("<div>").addClass("item-body").append(clearfix_div);
     //post container for animation 
     var post_container_div = jQuery("<div>").append(post_header_div).append(post_body_div);
-    var post_li = jQuery("<li>").addClass("post").attr("id", "CommentPost:" + id).css("display", "none").css("opacity", "0.0").append(post_container_div);
+    var post_li = jQuery("<li>").attr("id", "CommentPost:" + id).addClass("item").css("display", "none").css("opacity", "0.0").append(post_container_div);
     //add post to document if not present
     if (jQuery("#CommentPost\\:" + id).length == 0) {
       jQuery("#posts").prepend(post_li);
@@ -227,7 +227,7 @@ function blogcastrPostCallback(stanza) {
     //create new comment element
     //comment header
     var timestamp_in_words_span = jQuery("<span>").addClass("timestamp-in-words").attr("timestamp", timestamp).text(blogcastrPastTimestampInWords(timestamp));
-    var comment_header_div = jQuery("<div>").addClass("comment-header").append(timestamp_in_words_span);
+    var comment_header_div = jQuery("<div>").addClass("item-header").append(timestamp_in_words_span);
     //comment body
     var avatar_img = jQuery("<img>").addClass("small-avatar").attr("src", avatar_url);
     var avatar_a = jQuery("<a>").attr("href", url).append(avatar_img); 
@@ -236,10 +236,10 @@ function blogcastrPostCallback(stanza) {
     var text_p = jQuery("<p>").addClass("text").text(text);
     var comment_info_div = jQuery("<div>").addClass("comment-info").append(username_div).append(text_p);
     var clearfix_div = jQuery("<div>").addClass("clearfix").append(avatar_a).append(comment_info_div);
-    var comment_body_div = jQuery("<div>").addClass("comment-body").append(clearfix_div);
+    var comment_body_div = jQuery("<div>").addClass("item-body").append(clearfix_div);
     //comment container for animation 
     var comment_container_div = jQuery("<div>").append(comment_header_div).append(comment_body_div);
-    var comment_li = jQuery("<li>").addClass("comment").attr("id", "Comment:" + id).css("display", "none").css("opacity", "0.0").append(comment_container_div);
+    var comment_li = jQuery("<li>").attr("id", "Comment:" + id).addClass("item").css("display", "none").css("opacity", "0.0").append(comment_container_div);
     //add comment to document if not present
     if (jQuery("#Comment\\:" + id).length == 0) {
       jQuery("#comments").prepend(comment_li);

@@ -6,16 +6,14 @@ function blogcastrLog(message) {
     console.log(message);
 }
 
-function userClick() {
-  window.location = jQuery(this).attr("user-permalink");
+function itemClick() {
+  var item_link = jQuery(this).attr("item-link");
+  if (item_link != null)
+    window.location = item_link;
 }
 
-function blogcastClick() {
-  window.location = jQuery(this).attr("blogcast-permalink");
-}
-
-function blogcastSettingsButtonClick() {
-  jQuery(this).parents("li.blogcast").find("ul.blogcast-settings").toggle();
+function itemSettingsButtonClick() {
+  jQuery(this).parents("li.item").find("ul.item-settings").toggle();
   return false;
 }
 
@@ -99,9 +97,8 @@ function preloadImages(image_array) {
 
 jQuery(document).ready(function() {
   //MVR - attach click events
-  jQuery('li.user').click(userClick);
-  jQuery('li.blogcast').click(blogcastClick);
-  jQuery('div.blogcast-settings-button').click(blogcastSettingsButtonClick);
+  jQuery('li.item').click(itemClick);
+  jQuery('div.item-settings-button').click(itemSettingsButtonClick);
   //MVR - this stops propagation of click events for the delete action 
   jQuery('a.destroy').click(stopPropagation);
 })

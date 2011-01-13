@@ -37,9 +37,21 @@ class CommentPostsController < ApplicationController
       end
       return
     end
+    #AS DESIGNED: only need to search on comment id to see if it has already been reposted
+    @comment_post = @comment.post
+    if !@comment_post.nil?
+      respond_to do |format|
+        format.js { @error = "Oops! Comment has already been posted."; render :action => "error" }
+        format.html { flash[:error] = "Oops! Comment has already been posted"; redirect_to :back }
+        #TODO: fix xml and json support
+        #format.xml { render :xml => @comment_post.errors.to_xml, :status => :unprocessable_entity }
+        #format.json { render :json => @comment_post.errors.to_json, :status => :unprocessable_entity }
+      end
+      return
+    end
     @comment_post = CommentPost.create(:user_id => @user.id, :blogcast_id => @blogcast.id, :from => params[:from], :comment_id => @comment.id)
     @comment_user = @comment.user
-    #begin
+    begin
       thrift_user = Thrift::User.new
       thrift_user.account = @user.class.to_s 
       thrift_user.username = @user.username
@@ -74,18 +86,17 @@ class CommentPostsController < ApplicationController
       #MVR - send comment post to blogcast 
       err = thrift_client.send_comment_post_to_muc_room(@user.username, HOST, "Blogcast."+@blogcast.id.to_s, thrift_user, thrift_comment_post, thrift_comment_user, thrift_comment)
       thrift_client_close
-    #rescue
-    #  @comment_post.errors.add_to_base "Unable to send comment post to blogcast"
-    #  @comment_post.destroy
-    #  respond_to do |format|
-    #    format.js {@error = "Unable to send comment post to blogcast."; render :action => "error"}
-    #    format.html {flash[:error] = "Unable to send comment post to blogcast"; redirect_to :back}
-    #    format.xml {render :xml => @comment.errors.to_xml, :status => :unprocessable_entity}
+    rescue
+      @comment_post.errors.add_to_base "Oops! Unable to send comment post to blogcast"
+      respond_to do |format|
+        format.js { @error = "Oops! Unable to send comment post to blogcast."; render :action => "error" }
+        format.html { flash[:error] = "Oops! Unable to send comment post to blogcast"; redirect_to :back }
+        format.xml { render :xml => @comment_post.errors.to_xml, :status => :unprocessable_entity }
         #TODO: fix json support
-    #    format.json {render :json => @comment.errors.to_json, :status => :unprocessable_entity}
-    #  end
-   #   return
-   # end
+        format.json { render :json => @comment_post.errors.to_json, :status => :unprocessable_entity }
+      end
+      return
+    end
     respond_to do |format|
       format.js
       format.html {flash[:notice] = "Text post posted successfully"; redirect_to :back}
