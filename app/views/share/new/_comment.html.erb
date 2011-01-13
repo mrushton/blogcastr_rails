@@ -2,7 +2,7 @@
 <%- blogcast = comment.blogcast -%>
 <li id="Comment:<%= comment.id -%>" class="item">
   <div>
-<%- if current_user == user -%>
+<%- if current_user == blogcast.user -%>
     <div class="item-header settings-button-header">
       <div class="item-settings-button">
       </div>
