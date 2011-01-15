@@ -264,6 +264,13 @@ div.item-settings-button {
 	width: 30px;
 }
 
+div.item-settings-button:hover {
+	background-color: #c88d0b;
+	background-image: url("/images/new/gear-icon.png"); 
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+}
+
 ul.item-settings {
 	-moz-border-radius: 4px;
 	-moz-box-shadow: 0px 0px 4px #444444;

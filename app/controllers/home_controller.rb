@@ -7,9 +7,9 @@ class HomeController < ApplicationController
     #MVR - stats
     @num_blogcasts = @user.blogcasts.count
     @num_subscriptions = @user.subscriptions.count
-    @subscriptions = User.find_by_sql(["SELECT users.* FROM subscriptions, users WHERE subscriptions.user_id = ? AND subscriptions.subscribed_to = users.id LIMIT 30", @user.id])
+    @subscriptions = User.find_by_sql(["SELECT users.* FROM subscriptions, users WHERE subscriptions.user_id = ? AND subscriptions.subscribed_to = users.id LIMIT 6", @user.id])
     @num_subscribers = @user.subscribers.count
-    @subscribers = User.find_by_sql(["SELECT users.* FROM subscriptions, users WHERE subscriptions.subscribed_to = ? AND subscriptions.user_id = users.id LIMIT 30", @user.id])
+    @subscribers = User.find_by_sql(["SELECT users.* FROM subscriptions, users WHERE subscriptions.subscribed_to = ? AND subscriptions.user_id = users.id LIMIT 6", @user.id])
     @num_posts = @user.posts.count
     @num_comments = @user.comments.count 
     @num_likes = @user.likes.count 
