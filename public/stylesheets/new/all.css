@@ -252,14 +252,15 @@ div.item-settings-button {
 	-moz-border-radius-topleft: 6px;
 	-webkit-border-top-left-radius: 6px;
 	background-color: #daa72a;
-	background-image: -moz-linear-gradient(#f0c64d, #c88d0b); 
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#f0c64d), to(#c88d0b)); 
+	background-image: url("/images/new/gear-icon.png"), -moz-linear-gradient(#f0c64d, #c88d0b); 
+	background-image: url("/images/new/gear-icon.png"), -webkit-gradient(linear, left top, left bottom, from(#f0c64d), to(#c88d0b)); 
+	background-position: 50% 50%, top left;
+	background-repeat: no-repeat, repeat;
 	border-left: 1px solid #a77b1a;
-	border-bottom: 1px solid #a77b1a;
 	border-right: 1px solid #f4d74f;
 	left: 0px;
 	position: absolute;
-	height: 29px;
+	height: 30px;
 	width: 30px;
 }
 
@@ -274,7 +275,7 @@ ul.item-settings {
 }
 
 ul.item-settings li a {
-	background-color: #e6e6e6;
+	background-color: #f3f3f3;
 	border-bottom: 1px solid #b2b2b2;
 	border-top: 1px solid #ffffff;
 	color: #404040;

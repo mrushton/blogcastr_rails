@@ -1,6 +1,6 @@
 #new-blogcast-button {
-	background-image: url("/images/new/new-blogcast.png"), -moz-linear-gradient(top, #7aaddc, #538aca 50%, #387eb9 50%, #3166aa); 
-	background-image: url("/images/new/new-blogcast.png"), -webkit-gradient(linear, left top, left bottom, from(#7aaddc), color-stop(50%, #538aca), color-stop(50%, #387eb9), to(#3166aa));
+	background-image: url("/images/new/blogcast-icon.png"), -moz-linear-gradient(top, #7aaddc, #538aca 50%, #387eb9 50%, #3166aa); 
+	background-image: url("/images/new/blogcast-icon.png"), -webkit-gradient(linear, left top, left bottom, from(#7aaddc), color-stop(50%, #538aca), color-stop(50%, #387eb9), to(#3166aa));
 	background-position: 6px 50%, top left;
 	background-repeat: no-repeat, repeat;
 	padding-left: 30px; 
@@ -9,6 +9,6 @@
 
 #new-blogcast-button:hover {
 	background-color: #4a7db4;
-	background-image: url("/images/new/new-blogcast.png"), -moz-linear-gradient(top, #6f9bc8, #4a7db4 50%, #4071ab 50%, #325b99); 
-	background-image: url("/images/new/new-blogcast.png"), -webkit-gradient(linear, left top, left bottom, from(#6f9bc8), color-stop(50%, #4a7db4), color-stop(50%, #4071ab), to(#325b99));
+	background-image: url("/images/new/blogcast-icon.png"), -moz-linear-gradient(top, #6f9bc8, #4a7db4 50%, #4071ab 50%, #325b99); 
+	background-image: url("/images/new/blogcast-icon.png"), -webkit-gradient(linear, left top, left bottom, from(#6f9bc8), color-stop(50%, #4a7db4), color-stop(50%, #4071ab), to(#325b99));
 }
