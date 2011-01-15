@@ -5,7 +5,8 @@ class Users::ProfileController < ApplicationController
 
   def show 
     @user = current_user
-    @profile_user = BlogcastrUser.find_by_username(params[:username])
+    #MVR - case insensitive
+    @profile_user = BlogcastrUser.find(:first, :conditions => ["LOWER(username) = ?", params[:username].downcase])
     if @profile_user.nil?
       #MVR - treat this as a 404 error
       render :file => "#{RAILS_ROOT}/public/404.html", :layout => false, :status => 404
