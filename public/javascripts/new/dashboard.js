@@ -61,12 +61,12 @@ function blogcastrPostCallback(stanza) {
     var post_body_div = jQuery("<div>").addClass("item-body").append(clearfix_div);
     //post container for animation 
     var post_container_div = jQuery("<div>").append(post_header_div).append(post_body_div);
-    var post_li = jQuery("<li>").attr("id", "TextPost:" + id).addClass("item").css("display", "none").css("opacity", "0.0").append(post_container_div);
+    var post_li = jQuery("<li>").attr("id", "Post:" + id).addClass("item").css("display", "none").css("opacity", "0.0").append(post_container_div);
     //add post to document if not present
-    if (jQuery("#TextPost\\:" + id).length == 0) {
+    if (jQuery("#Post\\:" + id).length == 0) {
       jQuery("#posts").prepend(post_li);
-      new Effect.SlideDown("TextPost\:" + id, { duration: 0.6, queue: "end" });
-      new Effect.Appear("TextPost\:" + id, { duration: 0.6, queue: "end" });
+      new Effect.SlideDown("Post\:" + id, { duration: 0.6, queue: "end" });
+      new Effect.Appear("Post\:" + id, { duration: 0.6, queue: "end" });
     }
   }
   else if (type == "imagePost") {
@@ -99,12 +99,12 @@ function blogcastrPostCallback(stanza) {
     var clearfix_div = jQuery("<div>").addClass("clearfix").append(avatar_a).append(post_info_div);
     var post_body_div = jQuery("<div>").addClass("item-body").append(clearfix_div);
     var post_container_div = jQuery("<div>").addClass("spacer").append(post_header_div).append(post_body_div);
-    var post_li = jQuery("<li>").attr("id", "ImagePost:" + id).addClass("item").css("display", "none").css("opacity", "0.0").append(post_container_div);
+    var post_li = jQuery("<li>").attr("id", "Post:" + id).addClass("item").css("display", "none").css("opacity", "0.0").append(post_container_div);
     //add post to document if not present
-    if (jQuery("#ImagePost\\:" + id).length == 0) {
+    if (jQuery("#Post\\:" + id).length == 0) {
       jQuery("#posts").prepend(post_li);
-      new Effect.SlideDown("ImagePost\:" + id, {duration: 0.6, queue: "end"});
-      new Effect.Appear("ImagePost\:" + id, {duration: 0.6, queue: "end"});
+      new Effect.SlideDown("Post\:" + id, {duration: 0.6, queue: "end"});
+      new Effect.Appear("Post\:" + id, {duration: 0.6, queue: "end"});
     }
   }
   else if (type == "audioPost")
@@ -140,9 +140,9 @@ function blogcastrPostCallback(stanza) {
     }
     var up_img = jQuery("<img>").attr("src", up_image);
     //AS DESIGNED: some browsers don't work when adding the onclick attribute
-    var info_h4 = jQuery("<h4>").click(function() { blogcastrCollapsibleEvent(this, "ImagePost:" + id + "-info"); }).append("Info").append(up_img);
+    var info_h4 = jQuery("<h4>").click(function() { blogcastrCollapsibleEvent(this, "Post:" + id + "-info"); }).append("Info").append(up_img);
     var info_p = jQuery("<p>").addClass("info").text("Posted by " + username + " on " + date + " from " + medium);
-    var info_div = jQuery("<div>").attr("id", "ImagePost:" + id + "-info").css("display", "none").append(info_p);
+    var info_div = jQuery("<div>").attr("id", "Post:" + id + "-info").css("display", "none").append(info_p);
     if (typeof(text_p)  == "undefined")
     {
       var effect_div = jQuery("<div>").addClass("effect").append(time_ago_span).append(user_a).append(clear_div).append(player_div).append(info_h4).append(info_div);
@@ -207,12 +207,12 @@ function blogcastrPostCallback(stanza) {
     var post_body_div = jQuery("<div>").addClass("item-body").append(clearfix_div);
     //post container for animation 
     var post_container_div = jQuery("<div>").append(post_header_div).append(post_body_div);
-    var post_li = jQuery("<li>").attr("id", "CommentPost:" + id).addClass("item").css("display", "none").css("opacity", "0.0").append(post_container_div);
+    var post_li = jQuery("<li>").attr("id", "Post:" + id).addClass("item").css("display", "none").css("opacity", "0.0").append(post_container_div);
     //add post to document if not present
-    if (jQuery("#CommentPost\\:" + id).length == 0) {
+    if (jQuery("#Post\\:" + id).length == 0) {
       jQuery("#posts").prepend(post_li);
-      new Effect.SlideDown("CommentPost\:" + id, { duration: 0.6, queue: "end" });
-      new Effect.Appear("CommentPost\:" + id, { duration: 0.6, queue: "end" });
+      new Effect.SlideDown("Post\:" + id, { duration: 0.6, queue: "end" });
+      new Effect.Appear("Post\:" + id, { duration: 0.6, queue: "end" });
     }
   }
   else if (type == "comment") {

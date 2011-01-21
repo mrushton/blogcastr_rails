@@ -23,28 +23,28 @@ class PostsController < ApplicationController
     @post = @user.posts.find(params[:id]) 
     if @post.nil?
       respond_to do |format|
-        format.js {@error = "Unable to delete post. Post does not exist."; render :action => "error"}
-        format.html {flash[:error] = "Unable to find post"; redirect_to :back}
-        format.xml {head :not_found}
-        format.json {head :not_found}
+        format.js { @error = "Oops! Post does not exist."; render :action => "error" }
+        format.html { flash[:error] = "Oops! Post does not exist."; redirect_to :back }
+        format.xml { head :not_found }
+        format.json { head :not_found }
       end
       return
     end
     if !@post.destroy
       respond_to do |format|
-        format.js {@error = "Unable to delete post."; render :action => "error"}
-        format.html {flash[:error] = "Unable to delete post"; redirect_to :back}
-        format.xml {render :xml => @post.errors, :status => :unprocessable_entity}
-        format.json {render :json => @post.errors, :status => :unprocessable_entity}
+        format.js { @error = "Oops! Unable to delete post."; render :action => "error" }
+        format.html { flash[:error] = "Oops! Unable to delete post."; redirect_to :back }
+        format.xml { render :xml => @post.errors, :status => :unprocessable_entity }
+        format.json { render :json => @post.errors, :status => :unprocessable_entity }
       end
       return
     end
-    #TODO: send to ejabberd
+    #AS DESIGNED: do not update blogcast page dynamically
     respond_to do |format|
       format.js
-      format.html {flash[:success] = "Post deleted successfully"; redirect_to :back}
-      format.xml {head :ok}
-      format.json {head :ok}
+      format.html { flash[:success] = "Post deleted successfully"; redirect_to :back }
+      format.xml { head :ok }
+      format.json { head :ok }
     end
   end
 end

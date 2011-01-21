@@ -136,7 +136,7 @@ ActionController::Routing::Routes.draw do |map|
   #MVR - subscribed
   map.resources :subscribed, :controller => "subscribed", :only => [:index]
   #MVR - posts 
-  map.resources :posts, :controller => "posts", :only => [:index]
+  map.resources :posts, :controller => "posts", :only => [:destroy]
   #MVR - comments 
   map.resources :comments, :controller => "comments", :only => [:index]
   #MVR - likes 

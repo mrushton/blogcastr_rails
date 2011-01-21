@@ -1,0 +1,2 @@
+#AS DESIGNED: do the delete via rjs
+page.visual_effect :drop_out, "Post:" + @post.id.to_s, :duration => 1.0 
