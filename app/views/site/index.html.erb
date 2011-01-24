@@ -1,17 +1,6 @@
 <div id="marketing-container">
   <div id="marketing">
-    <div id="marketing-header">
-      <ul id="marketing-navigation">
-        <li>
-          <%= link_to "Sign In", sign_in_path %>
-        </li>
-        <li class="vertical-bar">
-          <%= link_to "Sign Up", sign_up_path %>
-        </li>
-      </ul>
-      <%= link_to image_tag("/images/new/logo.png"), root_path -%>
-      <div id="beta" class="beta">BETA</div>
-    </div>
+    <%= render :partial => "share/new/marketing_header" %>
     <div id="marketing-content" class="clearfix">
       <div id="marketing-info">
         <h2>Broadcast your blog <span id="live">LIVE!</span></h2>

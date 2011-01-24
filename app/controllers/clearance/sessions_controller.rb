@@ -3,7 +3,8 @@ class Clearance::SessionsController < ApplicationController
   filter_parameter_logging :password
 
   def new
-    render :template => 'sessions/new'
+    @title = "Sign In"
+    render :template => 'sessions/new', :layout => 'sign-in'
   end
 
   def create

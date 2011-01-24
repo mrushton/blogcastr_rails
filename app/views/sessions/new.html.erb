@@ -1,88 +1,31 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>Blogcastr sign in</title>
-    <%= javascript_include_tag "jquery.js", :media => "all" %>
-    <%= stylesheet_link_tag "blogcastr.css", :media => "screen" %>
-  </head>
-  <body>
-    <div id="wrapper">
-      <div id="header" class="large">
-        <%- form_tag search_path :controller => "search" do -%>
-          <%= label_tag :query, image_tag("magnifying_glass.png") -%>
-          <%= text_field_tag :query, "Search Blogcastr", :onfocus => "if (this.value == 'Search Blogcastr') this.value = ''; jQuery('#header form').addClass('selected');", :onblur => "if (this.value == '') this.value = 'Search Blogcastr'; jQuery('#header form').removeClass('selected');" -%>
-        <%- end -%>
-        <a href="/"><img src="/images/logo.png" alt="Blogcastr"></img></a>
-        <%= image_tag "/images/beta.png", :class => "beta" %>
-        <div id="navigation">
-          <%= link_to "Sign up", sign_up_path %>
-          <%= link_to "Sign in", sign_in_path, :class => "selected" %>
-        </div>
-      </div>
-      <div id="content" class="one-column narrow">
-        <div id="main">
-          <div class="upper-left-border-squared-corner-blue">
-          </div>
-          <div class="top-border-blue">
-          </div>
-          <div class="upper-right-border-squared-corner-blue">
-          </div>
-          <div class="clear">
-          </div>
-          <div class="background">
-            <div id="title" class="small">
-              <div class="side-border">
-                <div class="upper-left-border-squared-corner-gray">
-                </div>
-                <div class="left-border-gray">
-                </div>
-                <div class="lower-left-border-squared-corner-gray">
-                </div>
-              </div>
-              <h1>Sign in!</h1>
-              <div class="side-border">
-                <div class="upper-right-border-squared-corner-gray">
-                </div>
-                <div class="right-border-gray">
-                </div>
-                <div class="lower-right-border-squared-corner-gray">
-                </div>
-              </div>
-            </div>
-            <% form_tag session_path do %>
+<div id="content-container" class="form">
+  <div id="content">
+    <%= render :partial => "share/new/marketing_header" %>
+    <div id="main" class="form">
+      <h1>Sign In</h2>
+      <% form_tag session_path do %>
 <%- if !flash[:error].nil? -%>
-              <div class="error">
-                <h2><%= flash[:error] -%></h2>
-              </div>            
+        <div class="error">
+          <h2><%= flash[:error] -%></h2>
+        </div>            
 <%- elsif !flash[:info].nil? -%>
-              <div class="info">
-                <h2><%= flash[:info] -%></h2>            
-              </div>            
+        <div class="info">
+          <h2><%= flash[:info] -%></h2>            
+        </div>            
 <%- end -%>
-              <%= label_tag :user_name, "Username or email address", :class => "first" %>
-              <%= text_field_tag :username %>
-              <%= label_tag :password, "Password", :class => "tall" %>
-              <%= password_field_tag :password %>
-              <div class="right-justify">
-                <%= link_to "Forget your password?", new_password_path, :class => "delete" %>
-              </div>
-              <%= submit_tag "Submit", :class => "button" %>
-            <% end %>
-          </div>
-          <div class="lower-left-border-squared-corner-blue">
-          </div>
-          <div class="bottom-border-blue">
-          </div>
-          <div class="lower-right-border-squared-corner-blue">
-          </div>
-          <div class="clear">
-          </div>
+        <div id="sign-in-username-label-container">
+          <%= label_tag :username, "Username or email address", :class => "sign-in" %>
         </div>
-      </div>
-      <div class="clear">
-      </div>
-      <%= render :partial => "/share/footer_small" -%>
+        <%= text_field_tag :username, nil, :class => "sign-in" %>
+        <div id="sign-in-password-label-container">
+          <%= label_tag :password, "Password", :class => "sign-in" -%>
+        </div>
+        <%= password_field_tag :password, nil, :class => "sign-in" %>
+        <div id="sign-in-sign-up-button-container" class="clearfix">
+          <%= submit_tag "Sign In", :class => "sign-in-sign-up-button blue-button" %>
+          <%= link_to "Forgot password? &rArr;", new_password_path, :class => "navigation-link" %>
+        </div>
+      <% end %>
     </div>
-  </body>
-</html>
+  </div>
+</div>
