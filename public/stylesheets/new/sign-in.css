@@ -1,0 +1,36 @@
+#sign-in-username-label-container {
+	margin-top: 8px;
+}
+
+#sign-in-password-label-container{
+	margin-top: 16px;
+}
+
+label.sign-in {
+	color: #323232;
+	font-size: 0.9em;
+	font-weight: bold;
+	margin-top: 10px;
+}
+
+input.sign-in {
+	-moz-border-radius: 5px;
+	-moz-box-shadow: inset 0px 3px 3px -1px #666666; 
+	-webkit-border-radius: 5px;
+	-webkit-box-shadow: inset 0px 3px 3px -1px #666666; 
+	background-color: #f0f0f0;
+	border: none;
+	font-size: 1.3em;
+	font-weight: bold;
+	height: 28px;
+	margin-top: 6px;
+	padding-bottom: 12px;
+	padding-left: 12px;
+	padding-right: 12px;
+	padding-top: 12px;
+	width: 476px;
+}
+
+#main a.navigation-link {
+	font-size: 0.7em;
+}
