@@ -75,11 +75,11 @@ function blogcastrUpdateTimestampInWords() {
 }
 
 //do not check username if it is blank
-function blogcastrCheckUsername() {
+function checkUsername() {
   val = jQuery('#blogcastr_user_username').val();
   if (val == '') {
     //hide background image
-    jQuery('#pick-username-container').removeClass();
+    jQuery('#pick-username-container').removeClass('loading');
     return false;
   } 
   else {

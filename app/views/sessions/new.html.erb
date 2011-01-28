@@ -1,7 +1,7 @@
-<div id="content-container" class="form">
+<div id="content-container" class="sign-in-sign-up-content-container">
   <div id="content">
     <%= render :partial => "share/new/marketing_header" %>
-    <div id="main" class="form">
+    <div id="main">
       <h1>Sign In</h1>
       <% form_tag session_path do %>
 <%- if !flash[:error].nil? -%>
@@ -13,14 +13,10 @@
           <h2><%= flash[:info] -%></h2>            
         </div>            
 <%- end -%>
-        <div id="sign-in-username-label-container">
-          <%= label_tag :username, "Username or email address", :class => "sign-in" %>
-        </div>
-        <%= text_field_tag :username, nil, :class => "sign-in" %>
-        <div id="sign-in-password-label-container">
-          <%= label_tag :password, "Password", :class => "sign-in" -%>
-        </div>
-        <%= password_field_tag :password, nil, :class => "sign-in" %>
+        <%= label_tag :username, "Username or email address", :id => "sign-in-username-label", :class => "sign-in-sign-up-label" %>
+        <%= text_field_tag :username, nil, :class => "sign-in-text-field" %>
+        <%= label_tag :password, "Password", :id => "sign-in-password-label", :class => "sign-in-sign-up-label" -%>
+        <%= password_field_tag :password, nil, :class => "sign-in-text-field" %>
         <div id="sign-in-sign-up-button-container" class="clearfix">
           <%= submit_tag "Sign In", :class => "sign-in-sign-up-button blue-button" %>
           <%= link_to "Forgot password? &rArr;", new_password_path, :class => "navigation-link" %>

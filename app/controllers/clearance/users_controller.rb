@@ -4,7 +4,7 @@ class Clearance::UsersController < ApplicationController
 
   def new
     @blogcastr_user = BlogcastrUser.new(params[:blogcastr_user])
-    render :template => 'users/new', :layout => true
+    render :template => 'users/new', :layout => 'sign-up'
   end
 
   def create

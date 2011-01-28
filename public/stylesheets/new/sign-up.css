@@ -1,0 +1,88 @@
+form {
+	margin-top: 8px;
+}
+
+th {
+	padding-right: 6px;
+	text-align: right;
+	vertical-align: middle;
+	width: 130px;
+}
+
+td.text-field, th.text-field {
+	padding-top: 10px;
+}
+
+input.sign-up-text-field {
+	font-size: 1.0em;
+	font-weight: bold;
+	height: 28px;
+	padding-bottom: 4px;
+	padding-left: 6px;
+	padding-right: 6px;
+	padding-top: 4px;
+	width: 430px;
+}
+
+input.recaptcha-text-field {
+	font-size: 0.75em;
+	font-weight: bold;
+	height: 16px;
+	margin-top: 4px;
+	padding-bottom: 4px;
+	padding-left: 4px;
+	padding-right: 4px;
+	padding-top: 4px;
+	width: 292px;
+}
+
+span.text-field-description {
+	color: #8b8b8b;
+	font-family: Georgia, serif;
+	font-size: 0.7em;
+	font-style: italic;
+}
+
+#main {
+	width: 580px;
+}
+
+#pick-username-container {
+	background-position: 418px 50%; 
+	background-repeat: no-repeat;
+	color: #c0c0c0;
+	font-size: 0.9em;
+	font-weight: bold;
+	height: 28px;
+	line-height: 28px;
+	padding-bottom: 4px;
+	padding-left: 6px;
+	padding-top: 4px;
+	width: 430px;
+}
+
+#pick-username-container input {
+	background-color: transparent;
+	border: none;
+	font-size: 1.0em;
+	font-weight: bold;
+	outline-style: none;
+	padding: 0px;
+}
+
+#recaptcha-container {
+	margin-top: 20px;
+}
+
+#fine-print {
+	color: #565656;
+	font-size: 0.6em;
+	float: right;
+	margin-top: 8px;
+	width: 200px;
+	text-align: right;
+}
+
+#blogcastr_user_submit {
+	margin-left: 6px;
+}

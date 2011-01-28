@@ -10,11 +10,11 @@
           <div id="pick-username-container" onclick="jQuery('#pick-username-container input').focus();">
             http://blogcastr.com/<%= form.text_field :username, :autocomplete => "off", :maxlength => 15, :size => 20 -%>
           </div>
+          <%= observe_field "blogcastr_user_username", :url => valid_user_path, :frequency => 0.5, :with => "blogcastr_user[username]", :before => "jQuery('#pick-username-container').removeClass('valid invalid').addClass('loading');", :condition => "checkUsername()" -%>
           <div id="pick-username-button-container">
             <%= form.submit "Sign Up Today", :class => "orange-button" %>
           </div>
         <% end %>
-<%= observe_field "blogcastr_user_username", :url => valid_user_path, :frequency => 0.5, :with => "blogcastr_user[username]", :before => "jQuery('#pick-username-container').removeClass().addClass('loading');", :condition => "blogcastrCheckUsername()" -%>
       </div>
       <div id="carousel-container">
         <div id="carousel-inner-container">

@@ -47,7 +47,7 @@
       <%= link_to "@" + @user.username, "http://twitter.com/" + @user.username, :class => "username" -%>
     </div>
 <% else -%>
-  <div id="sign-in-or-sign-up-container">
+  <div id="sign-in-and-sign-up-button-container">
     <%= link_to "Sign In", sign_in_path, :id => "sign-in-button", :class => "blue-button" %>
     <%= link_to "Sign Up", sign_up_path, :id => "sign-up-button", :class => "orange-button" %>
   </div>

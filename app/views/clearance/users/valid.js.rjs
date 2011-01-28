@@ -1,5 +1,5 @@
 page << "var val = jQuery('#blogcastr_user_username').val();"
 page << "if (val == \"" + @username + "\")"
 page << "{"
-page << "jQuery('#pick-username-container').removeClass().addClass('valid')"
+page << "jQuery('#pick-username-container').removeClass('loading').addClass('valid')"
 page << "}"

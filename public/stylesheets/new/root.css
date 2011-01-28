@@ -185,7 +185,7 @@ td.side div.location  {
 	-webkit-border-radius: 6px;
 	-webkit-box-shadow: inset 0px 2px 2px #222222;
 	color: #cccccc;
-	background-color: #ffffff;
+	background-color: #fff;
 	background-position: 446px 50%; 
 	background-repeat: no-repeat;
 	font-size: 0.95em;
@@ -199,25 +199,8 @@ td.side div.location  {
 	text-align: left;
 }
 
-#pick-username-container.loading {
-	background-image: url("/images/new/ajax-loader.gif"); 
-}
-
-#pick-username-container.valid {
-	background-image: url("/images/new/tick.png"); 
-}
-
-#pick-username-container.invalid {
-	background-image: url("/images/new/cross.png"); 
-}
-
 #pick-username-container input {
-	background-color: transparent; 
-	border: none;
 	font-size: 1.3em;
-	font-weight: bold;
-	outline-style: none;
-	padding: 0px;
 }
 
 #pick-username-button-container {
