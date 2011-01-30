@@ -102,7 +102,7 @@ div.beta {
 	width: 23px;
 }
 
-a.username, a.navigation-link, div.full-name, li.tab.selected, h1, td.side h2, #header-search input, #pick-username-container input {
+a.username, a.navigation-link, div.full-name, li.tab.selected, h1, td.side h2, #header-search input, #pick-username-container input, #username {
 	color: #1c4b75;
 }
 
@@ -888,6 +888,10 @@ td.side h2:first-child {
 
 #content-container.sign-in-sign-up-content-container {
 	padding: 0px;
+}
+
+#content-container.sign-in-sign-up-content-container #content {
+	padding-bottom: 40px;
 }
 
 #header {
