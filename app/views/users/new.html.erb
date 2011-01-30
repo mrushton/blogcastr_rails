@@ -50,7 +50,13 @@
               <%= form.label :username, nil, :class => "sign-in-sign-up-label" %>
             </th>
             <td class="text-field">
+<%- if @valid_username.nil? -%>
               <div id="pick-username-container" class="sign-up-text-field" onclick="jQuery('#pick-username-container input').focus();">
+<%- elsif @valid_username -%>
+              <div id="pick-username-container" class="sign-up-text-field valid" onclick="jQuery('#pick-username-container input').focus();">
+<%- else -%>
+              <div id="pick-username-container" class="sign-up-text-field invalid" onclick="jQuery('#pick-username-container input').focus();">
+<%- end -%>
                 http://blogcastr.com/<%= form.text_field :username, :autocomplete => "off", :maxlength => 15, :size => 20 -%>
               </div>
               <%= observe_field "blogcastr_user_username", :url => valid_user_path, :frequency => 0.5, :with => "blogcastr_user[username]", :before => "jQuery('#pick-username-container').removeClass('valid invalid').addClass('loading');", :condition => "checkUsername()" -%>

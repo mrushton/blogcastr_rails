@@ -8,6 +8,20 @@ class Clearance::UsersController < ApplicationController
     if !@current_user.nil? 
       @setting = @current_user.setting 
     end
+    #MVR - check if username is valid if given
+    if !@blogcastr_user.username.nil?
+      if (@blogcastr_user.username.length < 4 || @blogcastr_user.username.length > 15 || @blogcastr_user.username !~ /^[\w_]*$/)
+        @valid_username = false
+      else
+        #MVR - case insensitive
+        user = BlogcastrUser.find(:first, :conditions => ["LOWER(username) = ?", @blogcastr_user.username.downcase])
+        if user.nil?
+          @valid_username = true
+        else
+          @valid_username = false
+        end
+      end
+    end
     render :template => 'users/new', :layout => 'sign-up'
   end
 
