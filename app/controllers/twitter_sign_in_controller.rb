@@ -51,12 +51,9 @@ class TwitterSignInController < ApplicationController
       user.twitter_token_secret = oauth_client.access_token.secret
       #TODO: set timezone info
       setting = Setting.new
-      if (defined? verify_credentials.name)
-        setting.full_name = verify_credentials.name
-      end
-      if (defined? verify_credentials.location)
-        setting.location = verify_credentials.location
-      end
+      #AS DESIGNED: set to nil if undefined
+      setting.full_name = verify_credentials.name
+      setting.location = verify_credentials.location
       #MVR - get avatar
       url = URI.parse(verify_credentials.profile_image_url)
       avatar_name = File.basename(url.path)

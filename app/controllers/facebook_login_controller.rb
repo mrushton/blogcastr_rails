@@ -19,8 +19,12 @@ class FacebookLoginController < ApplicationController
       return
     end
     begin
-      #MVR - get access token with code
-      oauth_access_token = self.class.get("/oauth/access_token", :query => { :client_id => FACEBOOK_APP_ID, :redirect_uri => "http://" + HOST + facebook_login_redirect_path, :client_secret => FACEBOOK_APP_SECRET, :code => params[:code] })
+      #MVR - get access token with code, redirect uri depends on protocol
+      if request.ssl?
+        oauth_access_token = self.class.get("/oauth/access_token", :query => { :client_id => FACEBOOK_APP_ID, :redirect_uri => "https://" + HOST + facebook_login_redirect_path, :client_secret => FACEBOOK_APP_SECRET, :code => params[:code] })
+      else
+        oauth_access_token = self.class.get("/oauth/access_token", :query => { :client_id => FACEBOOK_APP_ID, :redirect_uri => "http://" + HOST + facebook_login_redirect_path, :client_secret => FACEBOOK_APP_SECRET, :code => params[:code] })
+      end
       access_token = CGI.parse(oauth_access_token)["access_token"][0]
       #MVR - get user info
       me = self.class.get("/me", :query => { :access_token => access_token })
