@@ -17,7 +17,11 @@
             <td>
 <%- if @current_user.nil? -%>
               <div id="facebook-and-twitter-sign-in-button-container">
+  <%- if Rails.env.production? -%>
                 <%= link_to_function image_tag("new/facebook-login-button.png", :id => "login-with-facebook"), "facebookLoginSecure()" -%>
+  <%- else -%>
+                <%= link_to_function image_tag("new/facebook-login-button.png", :id => "login-with-facebook"), "facebookLogin()" -%>
+  <%- end -%>
                 <%= link_to_function image_tag("new/Sign-in-with-Twitter-darker.png", :id => "sign-in-with-twitter"), "twitterSignIn()" -%>
               </div>
 <%- elsif @current_user.instance_of?(FacebookUser) -%>
