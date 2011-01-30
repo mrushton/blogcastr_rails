@@ -101,13 +101,16 @@ function checkFacebookLogin() {
     facebook_login_window.close();
     //AS DESIGNED: reload page
     window.location.reload();
+    clearInterval(facebook_login_interval);
   }
   else if (ret == "1") {
     facebook_login_window.close();
+    clearInterval(facebook_login_interval);
   }
   else if (ret == "2") {
     facebook_login_window.close();
     alert('Oops! Failed to login with Facebook account.');
+    clearInterval(facebook_login_interval);
   }
 }
 
@@ -135,11 +138,13 @@ function checkTwitterSignIn() {
     twitter_sign_in_window.close();
     //AS DESIGNED: reload page
     window.location.reload();
+    clearInterval(twitter_sign_in_interval);
   }
   else if (ret == "1") {
     //MVR - failure
     twitter_sign_in_window.close();
     alert('Oops! Failed to sign in with Twitter account.');
+    clearInterval(twitter_sign_in_interval);
   }
 }
 

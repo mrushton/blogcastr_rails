@@ -1,9 +1,0 @@
-#MVR - show success
-page["facebook-connect-loading"].hide
-page["facebook-connect-success"].show
-#MVR - replace with facebook connect after three seconds 
-page.delay(3) do
-  page.assign("disconnecting_facebook_account", false)
-  page["facebook-connect-success"].hide
-  page.replace_html "facebook-connect", :partial => "facebook_connect"
-end

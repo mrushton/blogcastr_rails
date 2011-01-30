@@ -24,7 +24,6 @@ class FacebookLoginController < ApplicationController
       access_token = CGI.parse(oauth_access_token)["access_token"][0]
       #MVR - get user info
       me = self.class.get("/me", :query => { :access_token => access_token })
-      link = me["link"]
     rescue
       render :action => "error"
       return
@@ -82,7 +81,7 @@ class FacebookLoginController < ApplicationController
       user.facebook_access_token = access_token
       #MVR - do not run validations
       if !user.save(false)
-        render :action => "failure"
+        render :action => "error"
         return
       end
     end

@@ -1,5 +1,0 @@
-#MVR - show failure 
-page["twitter-oauth-loading"].hide
-page["twitter-oauth-error"].show
-page.assign("disconnecting_twitter_account", false)
-page.alert('Error: Unable to disconnect Twitter account.')
