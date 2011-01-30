@@ -1,1 +1,16 @@
-<p id="twitter-sign-in" twitter-sign-in="1">Twitter sign in failed. This window will close automatically.</p> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Blogcastr - Twitter Sign In Failed</title>
+    <link rel="shortcut icon" href="/images/new/favicon.ico">
+    <%= javascript_include_tag "jquery.js", :media => "all" %>
+    <% javascript_tag do %>
+      jQuery.noConflict();
+      jQuery(window.opener.document.body).find("#twitter-sign-in").text("1");
+    <% end %>
+  </head>
+  <body>
+    <p>Twitter sign in failed. This window will close automatically.</p> 
+  </body>
+</html>

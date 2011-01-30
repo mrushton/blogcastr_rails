@@ -4,7 +4,7 @@ class TwitterSignInController < ApplicationController
     oauth_client = Twitter::OAuth.new(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET, :sign_in => true)
     begin
       if Rails.env.production?
-        oauth_client.set_callback_url("http://blogcastr.com" + twitter_sign_in_callback_path)
+        oauth_client.set_callback_url("https://blogcastr.com" + twitter_sign_in_callback_path)
       else
         oauth_client.set_callback_url("http://sandbox.blogcastr.com" + twitter_sign_in_callback_path)
       end

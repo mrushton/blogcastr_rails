@@ -93,24 +93,21 @@ function checkUsername() {
 }
 
 function checkFacebookLogin() {
-  if (facebook_login_window.closed) {
+  if (facebook_login_window.closed)
     clearInterval(facebook_login_interval);
+  //MVR - check if we are signed in or not
+  var ret = jQuery("#facebook-login").text();
+  if (ret == "0") {
+    facebook_login_window.close();
+    //AS DESIGNED: reload page
+    window.location.reload();
   }
-  else {
-    //MVR - check if we are signed in or not
-    var ret = jQuery(facebook_login_window.document.body).find("#facebook-login").attr("facebook-login");
-    if (ret == "0") {
-      facebook_login_window.close();
-      //AS DESIGNED: reload page
-      window.location.reload();
-    }
-    else if (ret == "1") {
-      facebook_login_window.close();
-    }
-    else if (ret == "2") {
-      facebook_login_window.close();
-      alert('Failed to login with Facebook account.');
-    }
+  else if (ret == "1") {
+    facebook_login_window.close();
+  }
+  else if (ret == "2") {
+    facebook_login_window.close();
+    alert('Oops! Failed to login with Facebook account.');
   }
 }
 
@@ -121,24 +118,28 @@ function facebookLogin() {
   facebook_login_interval = setInterval(checkFacebookLogin, 1000);
 }
 
+function facebookLoginSecure() {
+  //MVR - open window 
+  facebook_login_window = window.open("https://graph.facebook.com/oauth/authorize?client_id=" + facebook_client_id + "&redirect_uri=" + "https://" + hostname + "/facebook_login_redirect&display=popup", "Facebook Login", "location=0, status=0, width=620, height=340");
+  //MVR - check facebook login in window every 1 second 
+  facebook_login_interval = setInterval(checkFacebookLogin, 1000);
+}
+
 function checkTwitterSignIn() {
-  if (twitter_sign_in_window.closed) {
+  if (twitter_sign_in_window.closed)
     clearInterval(twitter_sign_in_interval);
+  //MVR - check if we are signed in or not
+  var ret = jQuery("#twitter-sign-in").text();
+  if (ret == "0") {
+    //MVR - success
+    twitter_sign_in_window.close();
+    //AS DESIGNED: reload page
+    window.location.reload();
   }
-  else {
-    //MVR - check if we are signed in or not
-    var ret = jQuery(twitter_sign_in_window.document.body).find("#twitter-sign-in").attr("twitter-sign-in");
-    if (ret == "0") {
-      //MVR - success
-      twitter_sign_in_window.close();
-      //AS DESIGNED: reload page
-      window.location.reload();
-    }
-    else if (ret == "1") {
-      //MVR - failure
-      twitter_sign_in_window.close();
-      alert('Failed to sign in with Twitter account.');
-    }
+  else if (ret == "1") {
+    //MVR - failure
+    twitter_sign_in_window.close();
+    alert('Oops! Failed to sign in with Twitter account.');
   }
 }
 

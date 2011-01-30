@@ -1,3 +1,7 @@
+<div id="facebook-login">
+</div>
+<div id="twitter-sign-in">
+</div>
 <div id="content-container" class="sign-in-sign-up-content-container">
   <div id="content">
     <%= render :partial => "share/new/marketing_header" %>
@@ -14,7 +18,7 @@
         </div>            
 <%- end -%>
         <div id="facebook-and-twitter-sign-in-button-container">
-          <%= link_to_function image_tag("new/facebook-login-button.png", :id => "login-with-facebook"), "facebookLogin()" -%>
+          <%= link_to_function image_tag("new/facebook-login-button.png", :id => "login-with-facebook"), "facebookLoginSecure()" -%>
           <%= link_to_function image_tag("new/Sign-in-with-Twitter-darker.png", :id => "sign-in-with-twitter"), "twitterSignIn()" -%>
         </div>
         <%= label_tag :username, "Username or email address", :id => "sign-in-username-label", :class => "sign-in-sign-up-label" %>
