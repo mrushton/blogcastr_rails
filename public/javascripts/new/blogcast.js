@@ -1,10 +1,6 @@
 var can_play_audio = false;
 var can_play_mp3 = false;
 var can_play_ogg = false;
-var facebook_login_window;
-var facebook_login_interval;
-var twitter_sign_in_window;
-var twitter_sign_in_interval;
 
 function blogcastrOnLoad()
 {
@@ -351,63 +347,6 @@ Strophe.log = function(log,message)
 function blogcastrPrintStanza(stanza)
 {
 //  var string = (new XMLSerializer()).serializeToString(stanza);
-}
-
-function checkFacebookLogin() {
-  if (facebook_login_window.closed) {
-    clearInterval(facebook_login_interval);
-  }
-  else {
-    //MVR - check if we are signed in or not
-    var ret = jQuery(facebook_login_window.document.body).find("#facebook-login").attr("facebook-login");
-    if (ret == "0") {
-      facebook_login_window.close();
-      //AS DESIGNED: reload page
-      window.location.reload();
-    }
-    else if (ret == "1") {
-      facebook_login_window.close();
-    }
-    else if (ret == "2") {
-      facebook_login_window.close();
-      alert('Failed to login with Facebook account.');
-    }
-  }
-}
-
-function facebookLogin() {
-  //MVR - open window 
-  facebook_login_window = window.open("https://graph.facebook.com/oauth/authorize?client_id=" + facebook_client_id + "&redirect_uri=" + "http://" + hostname + "/facebook_login_redirect&display=popup", "Facebook Login", "location=0, status=0, width=620, height=340");
-  //MVR - check facebook login in window every 1 second 
-  facebook_login_interval = setInterval(checkFacebookLogin, 1000);
-}
-
-function checkTwitterSignIn() {
-  if (twitter_sign_in_window.closed) {
-    clearInterval(twitter_sign_in_interval);
-  }
-  else {
-    //MVR - check if we are signed in or not
-    var ret = jQuery(twitter_sign_in_window.document.body).find("#twitter-sign-in").attr("twitter-sign-in");
-    if (ret == "0") {
-      //MVR - success
-      twitter_sign_in_window.close();
-      //AS DESIGNED: reload page
-      window.location.reload();
-    }
-    else if (ret == "1") {
-      //MVR - failure
-      twitter_sign_in_window.close();
-      alert('Failed to sign in with Twitter account.');
-    }
-  }
-}
-
-function twitterSignIn() {
-  //MVR - open window 
-  twitter_sign_in_window = window.open("/twitter_sign_in_init", "Twitter Sign In", "location=0, status=0, width=800, height=420");
-  //MVR - check twitter sign in window every 1 second 
-  twitter_sign_in_interval = setInterval(checkTwitterSignIn, 1000);
 }
 
 window.addEventListener("load", blogcastrOnLoad, false);

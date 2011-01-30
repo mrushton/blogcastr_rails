@@ -144,8 +144,6 @@ ActionController::Routing::Routes.draw do |map|
   #MVR - Facebook login
   map.facebook_logout "facebook_logout", :controller => "facebook_login", :action => "destroy", :method => "delete"
   map.facebook_login_redirect "facebook_login_redirect", :controller => "facebook_login", :action => "create"
-  #MVR - Facebook connect
-  map.resource :facebook_connect, :controller => "facebook_connect", :only => [:create, :destroy]
   #MVR - Twitter sign in 
   map.twitter_sign_out "twitter_sign_out", :controller => "twitter_sign_in", :action => "destroy", :method => "delete"
   map.twitter_sign_in_init "twitter_sign_in_init", :controller => "twitter_sign_in", :action => "init"

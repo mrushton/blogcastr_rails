@@ -25,3 +25,8 @@ input.sign-in-text-field {
 #main a.navigation-link {
 	font-size: 0.7em;
 }
+
+#facebook-and-twitter-sign-in-button-container {
+	margin-top: 8px;
+}
+

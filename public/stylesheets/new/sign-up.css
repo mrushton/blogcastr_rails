@@ -9,6 +9,10 @@ th {
 	width: 130px;
 }
 
+td.full-name, th.full-name {
+	padding-top: 10px;
+}
+
 td.text-field, th.text-field {
 	padding-top: 10px;
 }
@@ -36,7 +40,7 @@ input.recaptcha-text-field {
 	width: 292px;
 }
 
-span.text-field-description {
+span.text-field-description, div.connect {
 	color: #8b8b8b;
 	font-family: Georgia, serif;
 	font-size: 0.7em;
@@ -45,6 +49,26 @@ span.text-field-description {
 
 #main {
 	width: 580px;
+}
+
+#facebook-and-twitter-sign-in-button-container img {
+	vertical-align: bottom;
+}
+
+#facebook-and-twitter-connect-container {
+	float: left;
+	margin-left: 6px;
+	padding-top: 4px;
+}
+
+#facebook-and-twitter-connect-container a.navigation-link {
+	font-size: 0.75em;
+}
+
+#avatar {
+	-moz-box-shadow: 0px 1px 2px #444444; 
+	-webkit-box-shadow: 0px 1px 2px #444444; 
+	float: left;
 }
 
 #pick-username-container {

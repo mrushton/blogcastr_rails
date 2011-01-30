@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110111081650) do
+ActiveRecord::Schema.define(:version => 20110130005436) do
 
   create_table "blogcast_reminders", :force => true do |t|
     t.string   "type",         :null => false
