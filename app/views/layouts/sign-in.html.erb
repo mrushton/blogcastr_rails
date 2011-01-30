@@ -8,6 +8,8 @@
     <%= javascript_include_tag :defaults, "jquery.js", "new/application.js", :media => "all" %>
     <% javascript_tag do %>
       jQuery.noConflict();
+      var hostname = "<%= HOST %>";
+      var facebook_client_id = "<%= FACEBOOK_APP_ID -%>";
     <% end %>
   </head>
   <body class="sign-in-sign-up-body">

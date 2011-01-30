@@ -7,12 +7,36 @@
         <%= error_messages_for "blogcastr_user", "setting", :header_message => "Oops!", :message => nil -%>
         <input id="utc_offset" type="hidden" name="utc_offset" value="">
         <table>
-<% fields_for :setting do |setting| -%>
           <tr>
             <th>
-              <%= setting.label :full_name, nil, :class => "sign-in-sign-up-label" %>
             </th>
             <td>
+<%- if @current_user.nil? -%>
+              <div id="facebook-and-twitter-sign-in-button-container">
+                <%= link_to_function image_tag("new/facebook-login-button.png", :id => "login-with-facebook"), "facebookLogin()" -%>
+                <%= link_to_function image_tag("new/Sign-in-with-Twitter-darker.png", :id => "sign-in-with-twitter"), "twitterSignIn()" -%>
+              </div>
+<%- elsif @current_user.instance_of?(FacebookUser) -%>
+              <%= link_to "<div id=\"avatar\" class=\"small-rounded-avatar\" style=\"background-image: url('" + @current_user.setting.avatar.url(:small) + "')\"></div>", @current_user.facebook_link %>
+              <div id="facebook-and-twitter-connect-container">
+                <div class="connect">You are connected via Facebook.</div>
+                <%= link_to "Sign out &rArr;", facebook_logout_path, :method => "delete", :class => "navigation-link" %>
+              </div>
+<%- elsif @current_user.instance_of?(TwitterUser) -%>
+              <%= link_to "<div id=\"avatar\" class=\"small-rounded-avatar\" style=\"background-image: url('" + @current_user.setting.avatar.url(:small) + "')\"></div>", "http://twitter.com/" + @current_user.username %>
+              <div id="facebook-and-twitter-connect-container">
+                <div class="connect">You are connected via Twitter.</div>
+                <%= link_to "Sign out &rArr;", twitter_sign_out_path, :method => "delete", :class => "navigation-link" %>
+              </div>
+<%- end -%>
+            </td>
+          </tr>
+<% fields_for :setting do |setting| -%>
+          <tr>
+            <th class="full-name">
+              <%= setting.label :full_name, nil, :class => "sign-in-sign-up-label" %>
+            </th>
+            <td class="full-name">
               <%= setting.text_field :full_name, :autocomplete => "off", :class => "sign-up-text-field" %>
             </td>
           </tr>
@@ -66,6 +90,7 @@
               <%= form.text_field :email, :autocomplete => "off", :class => "sign-up-text-field" %>
             </td>
           </tr>
+<%- if @current_user.nil? -%>
           <tr>
             <td>
             </td>
@@ -80,6 +105,7 @@
               </div>
             </td>
           </tr>
+<%- end -%>
         </table>
         <div id="sign-in-sign-up-button-container" class="clearfix">
           <%= form.submit "Sign Up", :class => "sign-in-sign-up-button orange-button" %>

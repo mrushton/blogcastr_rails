@@ -1,18 +1,31 @@
 class Clearance::UsersController < ApplicationController
-  before_filter :secure_redirect_to_home, :only => [:new, :create], :if => :signed_in_as_blogcastr_user?
+  before_filter :redirect_user, :only => [:new, :create], :if => :signed_in_as_blogcastr_user?
   filter_parameter_logging :password
 
   def new
+    @current_user = current_user
     @blogcastr_user = BlogcastrUser.new(params[:blogcastr_user])
+    if !@current_user.nil? 
+      @setting = @current_user.setting 
+    end
     render :template => 'users/new', :layout => 'sign-up'
   end
 
   def create
+    @current_user = current_user
     @blogcastr_user = BlogcastrUser.new(params[:blogcastr_user])
-    #MVR - create setting
     @setting = Setting.new(params[:setting])
-    #MVR - verify the recaptcha
-    if !verify_recaptcha :private_key => "6Lc7igsAAAAAADE0g3jbIf8YWU6fpYJppSFa3iBt"
+    #AS DESIGNED: only verify the recaptcha if not a Facebook or Twitter user
+    if @current_user.instance_of?(FacebookUser)
+      @blogcastr_user.facebook_id = @current_user.facebook_id
+      @blogcastr_user.facebook_access_token = @current_user.facebook_access_token
+      @blogcastr_user.facebook_link = @current_user.facebook_link
+    elsif @current_user.instance_of?(TwitterUser)
+      @blogcastr_user.twitter_username = @current_user.twitter_username
+      @blogcastr_user.twitter_id = @current_user.twitter_id
+      @blogcastr_user.twitter_access_token = @current_user.twitter_access_token
+      @blogcastr_user.twitter_token_secret = @current_user.twitter_token_secret
+    elsif !verify_recaptcha :private_key => "6Lc7igsAAAAAADE0g3jbIf8YWU6fpYJppSFa3iBt"
       @blogcastr_user.valid?
       #AS DESIGNED - valid? clears all errors so add it here 
       @blogcastr_user.errors.add_to_base("Humanness check failed")
@@ -23,11 +36,11 @@ class Clearance::UsersController < ApplicationController
     #MVR - attempt to determine the time zone
     utc_offset = params[:utc_offset]
     if !utc_offset.nil?
-      #AS DESIGNED - only try to find US time zones
       time_zone = nil
+      #AS DESIGNED - only try to find US time zones
       ActiveSupport::TimeZone.us_zones.each do |zone|
         #MVR - calling zone.utc_offset ignores daylight savings time
-        if zone.tzinfo.current_period.utc_total_offset == utc_offset.to_i*60
+        if zone.tzinfo.current_period.utc_total_offset == utc_offset.to_i * 60
           time_zone = zone
           break
         end
@@ -96,5 +109,11 @@ class Clearance::UsersController < ApplicationController
     else
       render :action => "invalid"
     end
+  end
+
+  private
+
+  def redirect_user
+    redirect_back_or home_path
   end
 end

@@ -7,8 +7,6 @@ class BlogcastsController < ApplicationController
     end
   end
   before_filter :set_time_zone
-  before_filter :set_facebook_session
-  helper_method :facebook_session
 
   def index
     #MVR - find user by id 

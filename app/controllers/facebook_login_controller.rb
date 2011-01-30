@@ -29,8 +29,12 @@ class FacebookLoginController < ApplicationController
       render :action => "error"
       return
     end
-    #MVR - find Facebook user
-    user = User.find_by_facebook_id(me["id"])
+    #MVR - find Blogcastr user first
+    user = BlogcastrUser.find_by_facebook_id(me["id"])
+    if user.nil?
+      #MVR - find Facebook user first
+      user = FacebookUser.find_by_facebook_id(me["id"])
+    end
     if user.nil?
       #MVR - create a new user if they don't exist
       user = FacebookUser.new
@@ -88,6 +92,19 @@ class FacebookLoginController < ApplicationController
   def destroy
     #MVR - clear cookies
     sign_out
-    redirect_back_or sign_in_path
+    redirect_to :back
+  end
+
+  private
+
+  def sign_in(user)
+    if user.instance_of?(BlogcastrUser)
+      super
+    else
+      user.remember_me!
+      #MVR - only sign in Facebook users for 1 day
+      cookies[:remember_token] = { :value => user.remember_token, :expires => 1.day.from_now.utc }
+      current_user = user
+    end
   end
 end

@@ -13,6 +13,10 @@
           <h2><%= flash[:info] -%></h2>            
         </div>            
 <%- end -%>
+        <div id="facebook-and-twitter-sign-in-button-container">
+          <%= link_to_function image_tag("new/facebook-login-button.png", :id => "login-with-facebook"), "facebookLogin()" -%>
+          <%= link_to_function image_tag("new/Sign-in-with-Twitter-darker.png", :id => "sign-in-with-twitter"), "twitterSignIn()" -%>
+        </div>
         <%= label_tag :username, "Username or email address", :id => "sign-in-username-label", :class => "sign-in-sign-up-label" %>
         <%= text_field_tag :username, nil, :class => "sign-in-text-field" %>
         <%= label_tag :password, "Password", :id => "sign-in-password-label", :class => "sign-in-sign-up-label" -%>

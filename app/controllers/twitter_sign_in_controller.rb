@@ -35,12 +35,17 @@ class TwitterSignInController < ApplicationController
       render :action => "error"
       return
     end
-    #MVR - find the Twitter user
-    user = User.find_by_twitter_id(verify_credentials.id)
+    #MVR - find Blogcastr user first
+    user = BlogcastrUser.find_by_twitter_id(verify_credentials.id)
+    if user.nil?
+      #MVR - find Twitter user
+      user = TwitterUser.find_by_twitter_id(verify_credentials.id)
+    end
     if user.nil?
       #MVR - create a new user if they don't exist
       user = TwitterUser.new
       user.username = verify_credentials.screen_name
+      user.twitter_username = verify_credentials.screen_name
       user.twitter_id = verify_credentials.id
       user.twitter_access_token = oauth_client.access_token.token
       user.twitter_token_secret = oauth_client.access_token.secret
@@ -102,7 +107,7 @@ class TwitterSignInController < ApplicationController
   def destroy
     #MVR - clear cookies
     sign_out
-    redirect_back_or sign_in_path
+    redirect_to :back
   end
 
   private
