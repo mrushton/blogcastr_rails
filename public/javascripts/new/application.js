@@ -84,7 +84,7 @@ function checkUsername() {
   val = jQuery('#blogcastr_user_username').val();
   if (val == '') {
     //hide background image
-    jQuery('#pick-username-container').removeClass('loading');
+    jQuery('#pick-username-container').removeClass('loading valid invalid');
     return false;
   } 
   else {
