@@ -102,7 +102,7 @@ div.beta {
 	width: 23px;
 }
 
-a.username, a.navigation-link, div.full-name, li.tab.selected, h1, td.side h2, #header-search input, #pick-username-container input, #username {
+a.username, a.navigation-link, div.full-name, div.job-title, li.tab.selected, h1, td.side h2, #header-search input, #pick-username-container input, #username {
 	color: #1c4b75;
 }
 
@@ -421,7 +421,7 @@ div.user-info div.full-name, div.blogcast-info a.username, div.post-info a.usern
 	font-weight: bold;
 }
 
-div.blogcast-info span.timestamp-in-words, div.blogcast-info p.description, div.post-info p.text, div.post-info p.caption, div.comment-info p.text, div.comment-info span.timestamp-in-words, textarea.comment.selected {
+div.user-info p.bio, div.blogcast-info span.timestamp-in-words, div.blogcast-info p.description, div.post-info p.text, div.post-info p.caption, div.comment-info p.text, div.comment-info span.timestamp-in-words, textarea.comment.selected {
 	color: #565656;
 }
 
@@ -777,6 +777,7 @@ table.content-table {
 	-webkit-border-radius: 4px;
 	-webkit-box-shadow: 0px 1px 3px #444444; 
 	margin-top: 30px;
+	table-layout: fixed;
 }
 
 table.content-table.tabs {

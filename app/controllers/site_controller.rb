@@ -16,6 +16,10 @@ class SiteController < ApplicationController
 
   def about
     @user = current_user
+    @kyle = BlogcastrUser.find_by_username("krushtown")
+    @kyle_setting = @kyle.setting
+    @matt = BlogcastrUser.find_by_username("mrushton")
+    @matt_setting = @matt.setting
     render :layout => "about"
   end
 end

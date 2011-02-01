@@ -1,123 +1,104 @@
-<div id="wrapper">
-  <div id="header" class="large">
-    <%- form_tag search_path :controller => "search" do -%>
-      <%= label_tag :query, image_tag("magnifying_glass.png") -%>
-      <%= text_field_tag :query, "Search Blogcastr", :onfocus => "if (this.value == 'Search Blogcastr') this.value = ''; jQuery('#header form').addClass('selected');", :onblur => "if (this.value == '') this.value = 'Search Blogcastr'; jQuery('#header form').removeClass('selected');" -%>
-    <%- end -%>
-    <%= link_to(image_tag("/images/logo.png", :class => "logo"), "/") %>
-    <%= image_tag "/images/beta.png", :class => "beta" %>
-    <div id="navigation">
-<% if @user.instance_of?(BlogcastrUser) -%>
-      <%= link_to image_tag(@user.setting.avatar.url(:small))+@user.username, profile_path(:username => @user.username), :class => "first user" %>
-      <%= link_to "Home", home_path %>
-      <%= link_to "Settings", settings_path %>
-      <%= link_to "Sign out", sign_out_path, :method => "delete" %>
-<% elsif @user.instance_of?(FacebookUser) -%>
-  <%- avatar_url = @user.get_avatar_url :small -%>
-  <%- if avatar_url.nil? -%>
-    <%- avatar_url = get_facebook_avatar_url @user.facebook_id %>
-    <%- if avatar_url.nil? -%>
-      <%- avatar = "http://static.ak.facebook.com/pics/q_silhouette_logo.gif" %>
-    <%- end -%>
-  <%- end -%>
-  <%- username = @user.get_username -%>
-  <%- if username.nil? -%>
-    <%- username = get_facebook_name @user.facebook_id %>
-  <%- end -%>
-  <%- url = @user.get_url -%>
-  <%- if url.nil? -%>
-    <%- url = get_facebook_url @user.facebook_id %>
-  <%- end -%>
-      <%= link_to image_tag(avatar_url) + username, url, :class => "first user" %>
-      <%= link_to "Sign up", sign_up_path %>
-      <span onclick="FB.Connect.logout(blogcastrFacebookSignOut);">Sign out</span>
-<% elsif @user.instance_of?(TwitterUser) -%>
-      <%= link_to image_tag(@user.get_avatar_url(:small)) + @user.get_username, @user.get_url, :class => "first user" %>
-      <%= link_to "Sign up", sign_up_path %>
-      <span onclick="blogcastrTwitterSignOut();">Sign out</span>
-<% else -%>
-      <%= link_to "Sign up", sign_up_path %>
-      <%= link_to "Sign in", sign_in_path %>
-<% end -%>
-    </div>
-    <div class="clear">
-    </div>
+<div id="content-container">
+  <div id="content">
+    <%= render :partial => "/share/new/header", :locals => { :user => @user } -%>
+    <table class="content-table" cellspacing="0">
+      <tr>
+        <td class="main" width="570">
+          <h1>About Blogcastr</h1>
+          <h2>Why?</h2>
+          <p>While living in New York City, Matt was always doing cool stuff that he wanted to share with his friends. Unfortunately there wasn't an easy way for him to share it in real-time. He explained the problem to his brother Kyle and Blogcastr was born.</p>
+          <h2>What?</h2>
+          <p>Blogcastr is a free, easy-to-use live blogging service for sharing cool stuff as it happens. From attending a sports game or concert to watching your favorite TV show, Blogcastr enables you to share what you are doing as you are doing it. It's a great way to create real-time conversation with friends.</p> 
+          <h2>How?</h2>
+          <p>Using Blogcastr from the web or your mobile phone is super easy. Simply sign-up, create a blogcast and start blogcasting! Post text and images while you recieve comments from your friends.</p> 
+          <h2>Where?</h2> 
+          <p>The Blogcastr bunker is located in Cambridge, MA.</p>
+          <div class="follow">
+            Follow us and stay up to date:
+          </div>
+          <ul class="social-links">
+            <li>
+              <%= link_to image_tag("facebook.png"), "http://www.facebook.com/blogcastr", :class => "social-link" -%>
+            </li>
+            <li>
+              <%= link_to image_tag("twitter.png"), "http://twitter.com/blogcastr", :class => "social-link" -%>
+            </li>
+            <li>
+              <%= link_to image_tag("wordpress.png"), "http://blogcastr.wordpress.com", :class => "social-link" -%></p>
+            </li>
+          </ul>
+        </td>
+        <td class="side" width="390">
+          <h2>The Team</h2>
+          <ol id="team">
+            <li class="item" item-link="<%= profile_path(:username => @kyle.username) -%>">
+              <div class="item-header">
+                <span class="username"><%= @kyle_setting.full_name -%></span>
+              </div>
+              <div class="item-body clearfix">
+                <div class="avatar-and-link-container">
+                  <%= link_to image_tag(@kyle_setting.avatar(:super), :class => "super-avatar"), profile_path(:username => @kyle.username) -%>
+                  <ul class="social-links clearfix">
+                    <li>
+                      <%= link_to image_tag("/images/new/email-small.png"), "mailto:krushton@blogcastr.com", :class => "mailto-link social-link" -%> 
+                    </li>
+                    <li>
+                      <%= link_to image_tag("/images/new/facebook-small.png"), "http://www.facebook.com/krushtown", :class => "social-link" -%> 
+                    </li>
+                    <li>
+                      <%= link_to image_tag("/images/new/twitter-small.png"), "http://twitter.com/krushtown", :class => "social-link" -%> 
+                    </li>
+                    <li>
+                      <%= link_to image_tag("/images/new/tumblr-small.png"), "http://blog.krushtown.com", :class => "social-link" -%> 
+                    </li>
+                  </ul>
+                </div>
+                <div class="user-info">
+                  <div class="job-title">
+                    Co-founder, CEO
+                  </div>
+                  <p class="bio">
+                    Kyle’s role at Blogcastr includes everything not involving a command line. Kyle graduated from Bates College in 2007 with a degree in Economics and minor in Mathematics. He also spent some time abroad studying at the University of Edinburgh and playing association football. His previous professional work spans both finance and consulting. Aside from blogcasting, Kyle also enjoys cycling, travel, tech, and discovering new electronic dance music.
+                  </p>
+                </div>
+              </div>
+            </li>
+            <li class="item" item-link="<%= profile_path(:username => @matt.username) -%>">
+              <div class="item-header">
+                <span class="username"><%= @matt_setting.full_name -%></span>
+              </div>
+              <div class="item-body clearfix">
+                <div class="avatar-and-link-container">
+                  <%= link_to image_tag(@matt_setting.avatar(:super), :class => "super-avatar"), profile_path(:username => @matt.username) -%>
+                  <ul class="social-links clearfix">
+                    <li>
+                      <%= link_to image_tag("/images/new/email-small.png"), "mailto:mrushton@blogcastr.com", :class => "mailto-link social-link" -%> 
+                    </li>
+                    <li>
+                      <%= link_to image_tag("/images/new/facebook-small.png"), "http://www.facebook.com/mrushton", :class => "social-link" -%> 
+                    </li>
+                    <li>
+                      <%= link_to image_tag("/images/new/twitter-small.png"), "http://twitter.com/mrushton7", :class => "social-link" -%> 
+                    </li>
+                    <li>
+                      <%= link_to image_tag("/images/new/wordpress-small.png"), "http://mrushton.wordpress.com", :class => "social-link" -%> 
+                    </li>
+                  </ul>
+                </div>
+                <div class="user-info">
+                  <div class="job-title">
+                    Co-founder, CTO
+                  </div>
+                  <p class="bio">
+                    Matt is responsible for making Blogcastr work! Since graduating from Haverford College in 2004 with a degree in Computer Science, Matt has worked as a software engineer and entrepreneur. He previously co-founded a mobile advertising start-up where he built a location based ad network. When Matt isn’t coding, he is probably listening to “Call on Me” or riding on the Minuteman Bikeway.
+                  </p>
+                </div>
+              </div>
+            </li>
+          </ol>
+        </td>
+      </tr>
+    </table>
   </div>
-  <div id="content" class="one-column wide">
-    <div id="main">
-      <div class="top-border-large-indent-white-squared">
-      </div>
-      <div class="background">
-        <div id="title" class="small">
-          <div class="side-border">
-            <div class="upper-left-border-squared-corner-gray">
-            </div>
-            <div class="left-border-gray">
-            </div>
-            <div class="lower-left-border-squared-corner-gray">
-            </div>
-          </div>
-          <h1 class="image"><%= image_tag "avatar-medium.png", :class => "avatar" -%>About Blogcastr</h1>
-          <div class="side-border">
-            <div class="upper-right-border-squared-corner-gray">
-            </div>
-            <div class="right-border-gray">
-            </div>
-            <div class="lower-right-border-squared-corner-gray">
-            </div>
-          </div>
-        </div>
-        <div id="sign-up">
-          <h3>Broadcast your blog live!</h3> 
-          <%= link_to "Sign up today!", sign_up_path -%>
-        </div>
-        <p class="first">Prior to Blogcastr, live blogs were unnecessarily frustrating to watch. The majority of these so-called “live” blogs weren’t actually live and required refreshing, scrolling, and waiting. It was also nearly impossible to find interesting live blogs since you couldn’t search for current or upcoming events being discussed.</p>
-        <p>More importantly, there was no easy way to create your own live blog and share it with friends or others interested in what you had to say. The services that were available required a complicated set-up, lacked any social element, and usually weren’t designed for live updates and feedback. It was also extremely difficult to look back at specific events since posts were lost in a seemingly endless stream of information spanning dozens of pages.</p>
-        <p>We don’t think live blogging should be this painful.</p>
-        <p>Blogcastr is a free, easy-to-use live blogging service that solves these problems. It enables anyone to blogcast events in real-time, organize blogcasts by event, and receive instant feedback from friends and followers. Blogcastr allows users to describe events they plan on blogcasting which makes it possible to search for upcoming content and receive event reminders via Blogcastr, e-mail, or SMS. Content can be shared using a variety of media including photos, audio, and live video (coming soon).</p>
-        <p>Blogcastr is about sharing events in real-time, finding exciting live content, and connecting with people.</p>
-        <p class="follow">Follow us or give <%= link_to "feedback", "http://getsatisfaction.com/blogcastr", :class => "feedback" -%>! <%= link_to image_tag("facebook.png"), "http://www.facebook.com/blogcastr" -%> <%= link_to image_tag("twitter.png"), "http://twitter.com/blogcastr" -%> <%= link_to image_tag("wordpress.png"), "http://blogcastr.wordpress.com" -%></p>
-        <div class="clear">
-        </div>
-        <h2>The Blogcastr Team</h2>
-        <div class="employee first">
-          <%= image_tag "kyle-rushton.png", :class => "person" -%>
-          <div class="right">
-            <h3>Kyle Rushton, Co-founder and CEO</h3>
-            <p>Kyle was raised in Windham, New Hampshire where he met Matt after a brief introduction. Kyle graduated from Bates College in 2007 with a degree in Economics and a minor in Mathematics. His previous professional work spans both finance and economic consulting. Kyle’s interests include biking, soccer, travel, and Web 2.0.</p>
-            <div class="contact">
-              <%= link_to image_tag("blogcastr-icon.png"), profile_path(:username => "krushtown") -%>
-              <%= link_to image_tag("email-icon.png"), "mailto:krushton@blogcastr.com" -%>
-              <%= link_to image_tag("facebook.png"), "http://www.facebook.com/krushtown" -%>
-              <%= link_to image_tag("twitter.png"), "http://twitter.com/krushtown" -%>
-              <%= link_to image_tag("tumblr.png"), "http://krushtown.tumblr.com" -%>
-            </div>
-          </div>
-          <div class="clear">
-          </div>
-        </div>
-        <div class="employee">
-          <%= image_tag "matt-rushton.png", :class => "person" -%>
-          <div class="right">
-            <h3>Matt Rushton, Co-founder and CTO</h3>
-            <p>Matt graduated from Haverford College in 2004 with a degree in Computer Science and a minor in Economics. Sick of watching lackluster live blogs, he joined forces with Kyle to create Blogcastr. He was previously co-founder and CEO of a mobile advertising start-up where he was responsible for the entire technology stack. Matt's interests include the real-time web, open source software, and the Linux kernel.</p>
-            <div class="contact">
-              <%= link_to image_tag("blogcastr-icon.png"), profile_path(:username => "mrushton") -%>
-              <%= link_to image_tag("email-icon.png"), "mailto:mrushton@blogcastr.com" -%>
-              <%= link_to image_tag("facebook.png"), "http://www.facebook.com/mrushton" -%>
-              <%= link_to image_tag("twitter.png"), "http://twitter.com/mrushton7" -%>
-              <%= link_to image_tag("wordpress.png"), "http://mrushton.wordpress.com" -%>
-            </div>
-          </div>
-          <div class="clear">
-          </div>
-        </div>
-      </div>
-      <div class="bottom-border-large-indent-white-squared last">
-      </div>
-    </div>
-  </div>
-  <div class="clear">
-  </div>
-  <%= render :partial => "/share/footer_small" -%>
 </div>
+<%= render :partial => "/share/new/footer" -%>
