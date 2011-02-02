@@ -3,9 +3,9 @@
 <div id="content-container" class="custom-background">
   <div id="content">
     <%= render :partial => "/share/new/header", :locals => { :user => @current_user } -%>
-    <table class="content-table" cellspacing="0">
-      <tr>
-        <td class="main">
+    <div class="content-table" cellspacing="0">
+      <div class="table-row">
+        <div class="main">
           <ul id="main-navigation">
             <li>
               <%= link_to "Go to #{@blogcast.title} &rArr;", blogcast_permalink_path, :class => "navigation-link" -%>
@@ -38,13 +38,13 @@
   <%- end -%>
           </div>
 <% end -%>
-        </td>
-        <td class="side">
+        </div>
+        <div class="side">
           <%= render :partial => "/share/new/blogcast_side_info", :locals => { :blogcast => @blogcast, :user => @user, :current_user => @current_user, :num_posts => @num_posts, :num_comments => @num_comments, :num_likes => @num_likes, :like => @like } -%>
           <%= render :partial => "/share/new/user_side_info", :locals => { :user => @user, :current_user => @current_user, :num_blogcasts => @num_user_blogcasts, :num_subscriptions => @num_user_subscriptions, :num_subscribers => @num_user_subscribers, :subscription => @subscription } -%>
-        </td>
-      </tr>
-    </table>
+        </div>
+      </div>
+    </div>
     <%= render :partial => "/share/new/content_footer" -%>
   </div>
 </div>

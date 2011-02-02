@@ -56,9 +56,9 @@
 <div id="content-container">
   <div id="content">
     <%= render :partial => "share/new/header", :locals => { :user => @user } %>
-    <table class="content-table" cellspacing="0">
-      <tr>
-        <td class="main">
+    <div class="content-table" cellspacing="0">
+      <div class="table-row">
+        <div class="main">
 <%- if @featured_blogcasts.length > 0 -%>
           <h2>Featured Blogcasts</h2>
           <ol class="blogcasts">
@@ -75,8 +75,8 @@
   <%- end -%>
 <%- end -%>
           </ol>
-        </td>
-        <td class="side">
+        </div>
+        <div class="side">
 <%- if @featured_users.length > 0 -%>
           <h2>Featured Users</h2>
           <ol class="users">
@@ -97,9 +97,9 @@
   <%- end -%>
           </ol>
 <%- end -%>
-        </td>
-      </tr>
-    </table>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 <%= render :partial => "/share/new/footer" -%>

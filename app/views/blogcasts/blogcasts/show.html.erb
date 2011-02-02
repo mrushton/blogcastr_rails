@@ -7,9 +7,9 @@
 <div id="content-container" class="custom-background">
   <div id="content">
     <%= render :partial => "/share/new/header", :locals => { :user => @user } -%>
-    <table class="content-table" cellspacing="0">
-      <tr>
-        <td class="main">
+    <div class="content-table" cellspacing="0">
+      <div class="table-row">
+        <div class="main">
 <%- if @user.nil? || !@user.instance_of?(BlogcastrUser) -%>
           <div id="like-button-container" class="main-button-container">
             <%= link_to "Like", sign_up_path, :id => "like-button", :class => "action-button blue-button" %>
@@ -119,8 +119,8 @@
   <%- end -%>
 <% end -%>
           </ol>
-        </td>
-        <td class="side">
+        </div>
+        <div class="side">
           <div id="current-viewers-container">
             <div id="current-viewers">
               <%= @num_viewers -%>
@@ -160,9 +160,9 @@
             </div>
           </div>
           <%= render :partial => "/share/new/user_side_info", :locals => { :user => @blogcast_user, :current_user => current_user, :num_blogcasts => @num_blogcast_user_blogcasts, :num_subscriptions => @num_blogcast_user_subscriptions, :num_subscribers => @num_blogcast_user_subscribers, :subscription => @subscription } -%>
-        </td>
-      </tr>
-    </table>
+        </div>
+      </div>
+    </div>
     <%= render :partial => "/share/new/content_footer" -%>
   </div>
 </div>

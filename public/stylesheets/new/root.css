@@ -34,38 +34,38 @@ div.carousel-button.selected {
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#bebebe), to(#f5f5f5)); 
 }
 
-table.content-table {
+div.content-table {
 	margin-top: 0px;
 }
 
-td.main h2:first-child {
+div.main h2:first-child {
 	margin-top: 0px;
 }
 
-td.side {
+div.side {
 	padding-left: 30px;
 	padding-right: 30px;
 	width: 180px;
 }
 
-td.side h2 {
+div.side h2 {
 	color: #737373;
 	font-size: 1.15em;
 }
 
-td.side ol {
+div.side ol {
 	margin-top: 12px;
 }
 
-td.side li {
+div.side li {
 	margin-top: 8px;
 }
 
-td.side img.medium-avatar {
+div.side img.medium-avatar {
 	float: left;
 }
 
-td.side div.user-info {
+div.side div.user-info {
 	float: left;
 	margin-left: 10px;
 	padding-left: 0px;
@@ -73,12 +73,12 @@ td.side div.user-info {
 	width: 120px;
 }
 
-td.side a.username  {
+div.side a.username  {
 	font-size: 0.95em;
 	font-weight: bold;
 }
 
-td.side div.location  {
+div.side div.location  {
 	color: #505050;
 	font-family: Georgia,jkhkjhm, serif;
 	font-size: 0.75em;

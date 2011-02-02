@@ -1,9 +1,9 @@
 <div id="content-container">
   <div id="content">
     <%= render :partial => "/share/new/header", :locals => { :user => @user } -%>
-    <table class="content-table" cellspacing="0">
-      <tr>
-        <td class="main" width="570">
+    <div class="content-table">
+      <div class="table-row">
+        <div class="main">
           <h1>About Blogcastr</h1>
           <h2>Why?</h2>
           <p>While living in New York City, Matt was always doing cool stuff that he wanted to share with his friends. Unfortunately there wasn't an easy way for him to share it in real-time. He explained the problem to his brother Kyle and Blogcastr was born.</p>
@@ -27,8 +27,8 @@
               <%= link_to image_tag("wordpress.png"), "http://blogcastr.wordpress.com", :class => "social-link" -%></p>
             </li>
           </ul>
-        </td>
-        <td class="side" width="390">
+        </div>
+        <div class="side">
           <h2>The Team</h2>
           <ol id="team">
             <li class="item" item-link="<%= profile_path(:username => @kyle.username) -%>">
@@ -96,9 +96,9 @@
               </div>
             </li>
           </ol>
-        </td>
-      </tr>
-    </table>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 <%= render :partial => "/share/new/footer" -%>

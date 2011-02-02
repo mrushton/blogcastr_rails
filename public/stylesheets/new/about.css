@@ -1,8 +1,8 @@
-td.main {
-	width: 570px;
+div.main {
+	width: 520px;
 }
 
-td.main p {
+div.main p {
 	color: #565656;	
 	font-size: 0.85em;
 	margin-top: 8px;
@@ -14,6 +14,10 @@ div.follow {
 	margin-top: 20px;
 }
 
+div.main ul.social-links {
+	margin-top: 6px;
+}
+
 a.social-link img {
 	float: left;
 	margin-left: 4px;
@@ -23,11 +27,11 @@ ul.social-links li:first-child img {
 	margin-left: 0px;
 }
 
-td.side {
-	width: 390px;
+div.side {
+	width: 360px;
 }
 
-td.side h2 {
+div.side h2 {
 	color: #737373;
 	font-size: 1.5em;
 }
@@ -38,7 +42,7 @@ div.avatar-and-link-container {
 
 div.user-info {
 	float: left;
-	width: 226px;
+	width: 216px;
 }
 
 div.job-title {

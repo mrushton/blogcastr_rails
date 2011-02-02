@@ -3,9 +3,9 @@
 <div id="content-container" class="custom-background">
   <div id="content">
     <%= render :partial => "/share/new/header", :locals => { :user => @user } -%>
-    <table class="content-table" cellspacing="0">
-      <tr>
-        <td class="main">
+    <div class="content-table" cellspacing="0">
+      <div class="table-row">
+        <div class="main">
           <div class="clearfix">
 <%- if @user.nil? || !@user.instance_of?(BlogcastrUser) -%>
             <div id="subscription-button-container" class="main-button-container">
@@ -25,7 +25,7 @@
   <%- if @subscription.nil? -%>
               <%= render :partial => "/share/new/create_subscription_button", :locals => { :user => @profile_user } -%>
   <%- else -%>
-              <%= render :partial => "/share/new/destroy_subscription_button", :locals => { :subscription => @subscription, :user => @profile_user } -%>
+              <%= render :partial => "/share/new/desdivoy_subscription_button", :locals => { :subscription => @subscription, :user => @profile_user } -%>
   <%- end -%>
             </div>
 <%- end -%>
@@ -70,8 +70,8 @@
   <%- end -%>
 <%- end -%>
           </ol>
-        </td>
-        <td class="side">
+        </div>
+        <div class="side">
           <h2>
             <%= @profile_user.username -%>
           </h2>
@@ -119,9 +119,9 @@
 <%- end -%>
             </div>
           </div>
-        </td>
-      </tr>
-    </table>
+        </div>
+      </div>
+    </div>
     <%= render :partial => "/share/new/content_footer" -%>
   </div>
 </div>
