@@ -104,14 +104,12 @@ ActionController::Routing::Routes.draw do |map|
   map.blogcast_comments_permalink ":username/:year/:month/:day/:title/comments", :controller => "blogcasts/comments", :action => "index", :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
   map.blogcast_likes_permalink ":username/:year/:month/:day/:title/likes", :controller => "blogcasts/likes", :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
   map.blogcast_search_permalink ":username/:year/:month/:day/:title/search", :controller => "search", :action => "blogcasts", :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
-  #TODO: move this stuff first
   #MVR - site 
   map.root :controller => "site"
-  #MVR - site links
   map.about "about", :controller => "site", :action => "about"
   map.faq "faq", :controller => "site", :action => "faq"
-  map.terms_of_service "terms_of_service", :controller => "site", :action => "terms_of_service"
-  map.privacy_policy "privacy_policy", :controller => "site", :action => "privacy_policy"
+  map.terms "terms", :controller => "site", :action => "terms"
+  map.privacy "privacy", :controller => "site", :action => "privacy"
   #MVR - search
   map.search "search", :controller => "search"
   #MVR - authentication token

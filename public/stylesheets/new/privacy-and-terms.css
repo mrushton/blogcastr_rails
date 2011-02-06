@@ -1,0 +1,22 @@
+#main p {
+	margin-top: 8px;
+}
+
+#main h2 {
+	font-size: 1.3em;
+	margin-top: 10px;
+}
+
+#main ol {
+	list-style-type: decimal;
+	margin-left: 40px;
+}
+
+#main ol li {
+	margin-top: 8px;
+}
+
+#main ul {
+	list-style-type: circle;
+	margin-left: 30px;
+}

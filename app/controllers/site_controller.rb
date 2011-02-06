@@ -22,4 +22,16 @@ class SiteController < ApplicationController
     @matt_setting = @matt.setting
     render :layout => "about"
   end
+
+  def privacy
+    @user = current_user
+    @title = "Blogcastr - Privacy Policy"
+    render :layout => "privacy-and-terms"
+  end
+
+  def terms
+    @user = current_user
+    @title = "Blogcastr - Terms of Service"
+    render :layout => "privacy-and-terms"
+  end
 end
