@@ -1,9 +1,9 @@
 <div id="content-container">
   <div id="content">
     <%= render :partial => "/share/new/header", :locals => { :user => @user } -%>
-    <table id="top-table" class="content-table" cellspacing="0">
-      <tr>
-        <td class="main">
+    <div class="content-table" cellspacing="0">
+      <div class="table-row">
+        <div class="main">
           <ul id="main-navigation">
             <li>
               <%= link_to "Go to #{@blogcast.title} &rArr;", blogcast_permalink_path(@user.username, @blogcast.year, @blogcast.month, @blogcast.day, @blogcast.link_title), :class => "navigation-link" %>
@@ -49,8 +49,8 @@
               </div>
             </div>
           </div>
-        </td>
-        <td class="side">
+        </div>
+        <div class="side">
           <div id="current-viewers-container">
             <div id="current-viewers-text">
               <span id="current-viewers"><%= @num_viewers -%></span> current viewers
@@ -80,9 +80,9 @@
 <%- end -%>
             </div>
           </div>
-        </td>
-      </tr>
-    </table>
+        </div>
+      </div>
+    </div>
     <ul class="tabs clearfix">
       <li id="posts-tab" class="tab selected">
         Posts<span id="num-posts" class="tab-counter">(<%= @num_posts -%>)</span>
@@ -91,9 +91,9 @@
         Comments<span id="num-comments" class="tab-counter">(<%= @num_comments -%>)</span>
       </li>
     </ul>
-    <table class="content-table tabs" cellspacing="0">
-      <tr>
-        <td class="main">
+    <div class="content-table tabs" cellspacing="0">
+      <div class="table-row">
+        <div class="main">
           <ol id="posts">
 <% for post in @posts -%>
   <%- if post.instance_of?(TextPost) -%>
@@ -110,9 +110,9 @@
             <%= render :partial => "/share/new/comment", :locals => { :comment => comment } -%>
 <% end -%>
           </ol>
-        </td>
-      </tr>
-    </table>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 <%= render :partial => "/share/new/footer" -%>
