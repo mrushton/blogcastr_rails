@@ -111,7 +111,7 @@ class Clearance::UsersController < ApplicationController
       @username = params[:blogcastr_user][:username]
     end
     #MVR - check if username is valid
-    if (@username.nil? || @username.length < 4 || @username.length > 15 || @username !~ /^[\w_]*$/)
+    if (@username.nil? || @username.length < 4 || @username.length > 15 || @username !~ /^[0-9A-Za-z_]*$/)
       render :action => "invalid"
       return
     end

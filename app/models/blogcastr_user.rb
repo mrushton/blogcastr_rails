@@ -79,12 +79,12 @@ class BlogcastrUser < User
 
   #MVR - username must be between four and fifteen characters and can only contain alphanumeric characters and underscores
   def valid_username?
-    if self.username.length < 4
+    if username.length < 4
         errors.add(:username, "must be at least 4 characters")
     elsif username.length > 15
         errors.add(:username, "must not be greater than 15 characters")
     end
-    if self.username !~ /^[\w_]*$/
+    if username !~ /^[0-9A-Za-z_]*$/
         errors.add(:username, "can only contain alphanumeric characters and underscores")
     end
   end
