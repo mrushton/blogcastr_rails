@@ -48,6 +48,7 @@ span.text-field-description, div.connect {
 }
 
 #main {
+	padding-bottom: 10px;
 	width: 580px;
 }
 
