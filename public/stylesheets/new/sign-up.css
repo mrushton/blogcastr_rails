@@ -47,8 +47,7 @@ span.text-field-description, div.connect {
 	font-style: italic;
 }
 
-#main {
-	padding-bottom: 10px;
+#main.sign-up-main {
 	width: 580px;
 }
 

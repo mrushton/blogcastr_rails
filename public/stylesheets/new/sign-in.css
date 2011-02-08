@@ -18,8 +18,7 @@ input.sign-in-text-field {
 	width: 476px;
 }
 
-#main {
-	padding-bottom: 10px;
+#main.sign-in-main {
 	width: 500px;
 }
 

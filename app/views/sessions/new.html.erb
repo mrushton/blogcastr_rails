@@ -2,10 +2,10 @@
 </div>
 <div id="twitter-sign-in">
 </div>
-<div id="content-container" class="sign-in-sign-up-content-container">
+<div id="content-container" class="sign-in-and-sign-up-content-container">
   <div id="content">
     <%= render :partial => "share/new/marketing_header" %>
-    <div id="main">
+    <div id="main" class="sign-in-main">
       <h1>Sign In</h1>
       <% form_tag session_path do %>
 <%- if !flash[:error].nil? -%>
