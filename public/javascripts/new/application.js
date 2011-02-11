@@ -116,14 +116,14 @@ function checkFacebookLogin() {
 
 function facebookLogin() {
   //MVR - open window 
-  facebook_login_window = window.open("https://graph.facebook.com/oauth/authorize?client_id=" + facebook_client_id + "&redirect_uri=" + "http://" + hostname + "/facebook_login_redirect&display=popup", "Facebook Login", "location=0, status=0, width=620, height=340");
+  facebook_login_window = window.open("https://graph.facebook.com/oauth/authorize?client_id=" + facebook_client_id + "&redirect_uri=" + "http://" + hostname + "/facebook_login_redirect&display=popup", "Blogcastr -Blogcastr -  Facebook Login", "location=0, status=0, width=620, height=340");
   //MVR - check facebook login in window every 1 second 
   facebook_login_interval = setInterval(checkFacebookLogin, 1000);
 }
 
 function facebookLoginSecure() {
   //MVR - open window 
-  facebook_login_window = window.open("https://graph.facebook.com/oauth/authorize?client_id=" + facebook_client_id + "&redirect_uri=" + "https://" + hostname + "/facebook_login_redirect&display=popup", "Facebook Login", "location=0, status=0, width=620, height=340");
+  facebook_login_window = window.open("https://graph.facebook.com/oauth/authorize?client_id=" + facebook_client_id + "&redirect_uri=" + "https://" + hostname + "/facebook_login_redirect&display=popup", "Blogcastr - Facebook Login", "location=0, status=0, width=620, height=340");
   //MVR - check facebook login in window every 1 second 
   facebook_login_interval = setInterval(checkFacebookLogin, 1000);
 }
@@ -136,7 +136,6 @@ function checkTwitterSignIn() {
   if (ret == "0") {
     //MVR - success
     twitter_sign_in_window.close();
-    //AS DESIGNED: reload page
     window.location.reload();
     clearInterval(twitter_sign_in_interval);
   }
@@ -150,7 +149,7 @@ function checkTwitterSignIn() {
 
 function twitterSignIn() {
   //MVR - open window 
-  twitter_sign_in_window = window.open("/twitter_sign_in_init", "Twitter Sign In", "location=0, status=0, width=800, height=420");
+  twitter_sign_in_window = window.open("/twitter_sign_in_init", "Blogcastr - Twitter Sign In", "location=0, status=0, width=800, height=420");
   //MVR - check twitter sign in window every 1 second 
   twitter_sign_in_interval = setInterval(checkTwitterSignIn, 1000);
 }
