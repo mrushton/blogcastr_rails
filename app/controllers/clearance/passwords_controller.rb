@@ -6,7 +6,7 @@ class Clearance::PasswordsController < ApplicationController
   filter_parameter_logging :password, :password_confirmation
 
   def new
-    render :template => 'passwords/new'
+    render :template => 'passwords/new', :layout => 'forgot-password'
   end
 
   def create
@@ -17,14 +17,14 @@ class Clearance::PasswordsController < ApplicationController
       redirect_to new_session_url
     else
       flash.now[:error] = "Oops! Could not find email address." 
-      render :template => 'passwords/new'
+      render :template => 'passwords/new', :layout => 'forgot-password'
     end
   end
 
   def edit
     @user = ::User.find_by_id_and_confirmation_token(
                    params[:user_id], params[:token])
-    render :template => 'passwords/edit'
+    render :template => 'passwords/edit', :layout => 'change-password'
   end
 
   def update
@@ -35,10 +35,10 @@ class Clearance::PasswordsController < ApplicationController
                              params[:user][:password_confirmation])
       @user.confirm_email!
       sign_in(@user)
-      flash[:success] = "Password changed!"
+      flash[:success] = "Password changed"
       redirect_to home_path
     else
-      render :template => 'passwords/edit'
+      render :template => 'passwords/edit', :layout => 'change-password'
     end
   end
 

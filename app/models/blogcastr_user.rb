@@ -77,6 +77,11 @@ class BlogcastrUser < User
 
   protected
 
+  #MVR - override Clearance method because it doesn't handle changing the password to be blank
+  def password_required?
+    encrypted_password.blank? || !password.nil?
+  end
+
   #MVR - username must be between four and fifteen characters and can only contain alphanumeric characters and underscores
   def valid_username?
     if username.length < 4
@@ -91,7 +96,6 @@ class BlogcastrUser < User
 
   #MVR - password must be at least 6 characters
   def valid_password?
-    #MVR - only validate password on create
     if self.password.length < 6
         errors.add(:password, "must be at least 6 characters")
     end
@@ -99,8 +103,9 @@ class BlogcastrUser < User
 
   #MVR - make sure authentication token is unique if set
   def unique_authentication_token?
-    if !self.authentication_token.nil?
-      if BlogcastrUser.find_by_authentication_token(authentication_token)
+    if !authentication_token.blank?
+      #MVR - only check other users
+      if BlogcastrUser.find_by_authentication_token(authentication_token, :conditions => ["id != ?", id])
         errors.add(:authentication_token, "is already being used")
       end
     end

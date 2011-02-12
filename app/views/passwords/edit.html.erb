@@ -1,86 +1,21 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>Blogcastr update password</title>
-    <%= stylesheet_link_tag "blogcastr.css", :media => "screen" %>
-  </head>
-  <body>
-    <div id="wrapper">
-      <div id="header">
-        <%- form_tag search_path :controller => "search" do -%>
-          <%= label_tag :query, image_tag("magnifying_glass.png") -%>
-          <%= text_field_tag :query, "Search Blogcastr", :onfocus => "if (this.value == 'Search Blogcastr') this.value = ''; jQuery('#header form').addClass('selected');", :onblur => "if (this.value == '') this.value = 'Search Blogcastr'; jQuery('#header form').removeClass('selected');" -%>
-        <%- end -%>
-        <a href="/"><img src="/images/logo.png" alt="Blogcastr" border=0></img></a>
-        <div id="navigation">
-          <%= link_to "Sign up", sign_up_path %>
-          <%= link_to "Sign in", sign_in_path %>
+<div id="content-container" class="sign-in-and-sign-up-content-container">
+  <div id="content">
+    <%= render :partial => "share/new/marketing_header" %>
+    <div id="main" class="sign-in-main">
+      <h1>Change Password</h1>
+      <% form_for(:user, :url => user_password_path(@user, :token => @user.confirmation_token), :html => { :method => :put }) do |form| %>
+        <%= form.error_messages :id => "error-message", :class => "flash-message", :header_message => "Oops!", :message => nil %>
+        <%= form.label :password, "Password", :id => "change-password-password-label", :class => "sign-in-sign-up-label" %>
+        <%= form.password_field :password, :class => "sign-in-text-field" %>
+        <div class="text-field-description">
+          At least six characters
         </div>
-      </div>
-      <div id="content" class="one-column narrow">
-        <div id="main">
-          <div class="upper-left-border-squared-corner-blue">
-          </div>
-          <div class="top-border-blue">
-          </div>
-          <div class="upper-right-border-squared-corner-blue">
-          </div>
-          <div class="clear">
-          </div>
-          <div class="background">
-            <div id="title">
-              <div class="side-border">
-                <div class="upper-left-border-squared-corner-gray">
-                </div>
-                <div class="left-border-gray">
-                </div>
-                <div class="lower-left-border-squared-corner-gray">
-                </div>
-              </div>
-              <h1>Update your password</h1>
-              <div class="side-border">
-                <div class="upper-right-border-squared-corner-gray">
-                </div>
-                <div class="right-border-gray">
-                </div>
-                <div class="lower-right-border-squared-corner-gray">
-                </div>
-              </div>
-            </div>
-            <% form_for(:user, :url => user_password_path(@user, :token => @user.confirmation_token), :html => { :method => :put }) do |form| %>
-              <%= form.error_messages :header_message => "Oops!", :message => nil %>
-              <%= form.label :password, "Choose password", :class => "first" %>
-              <%= form.password_field :password %>
-              <p>At least six characters.</p>
-              <%= form.label :password_confirmation, "Confirm password" %>
-              <%= form.password_field :password_confirmation %>
-              <p>Don't forget it!</p>
-              <%= form.submit "Save password", :class => "button" %>
-            <% end %>
-          </div>
-          <div class="lower-left-border-squared-corner-blue">
-          </div>
-          <div class="bottom-border-blue">
-          </div>
-          <div class="lower-right-border-squared-corner-blue">
-          </div>
-          <div class="clear">
-          </div>
+        <%= form.label :password_confirmation, "Confirm password", :class => "sign-in-sign-up-label" %>
+        <%= form.password_field :password_confirmation, :class => "sign-in-text-field" %>
+        <div id="sign-in-sign-up-button-container" class="clearfix">
+          <%= form.submit "Submit", :class => "sign-in-sign-up-button blue-button" %>
         </div>
-      </div>
-      <div class="clear">
-      </div>
-      <div id="footer">
-        <span>&copy; 2010 Blogcastr</span>
-        <%= link_to "About", about_path -%>
-        <a href="http://blogcastr.wordpress.com">Blog</a>
-        <a href="http://www.facebook.com/blogcastr">Facebook</a>
-        <%= link_to "FAQ", faq_path -%>
-        <%= link_to "Privacy Policy", privacy_policy_path -%>
-        <%= link_to "Terms of Service", terms_of_service_path -%>
-        <a href="http://twitter.com/blogcastr">Twitter</a>
-      </div>
+      <% end %>
     </div>
-  </body>
-</html>
+  </div>
+</div>
