@@ -156,7 +156,7 @@ a.navigation-link {
 }
 
 label.sign-in-sign-up-label {
-	color: #323232;
+	color: #333;
 	display: block;
 	font-size: 0.85em;
 	font-weight: bold;
@@ -822,6 +822,31 @@ div.main h1, #main h1 {
 	line-height: 40px;
 }
 
+div.fieldWithErrors label {
+	color: #dd3c10;
+}
+
+div.flash-message {
+	padding: 10px;
+	border: 1px solid;
+}
+
+div.flash-message h2 {
+	color: #333;
+	font-size: 1.0em;
+}
+
+div.flash-message ul {
+	list-style: disc;
+	margin-left: 32px;
+}
+
+div.flash-message ul li {
+	color: #333;
+	font-size: 0.7em;
+	margin-top: 4px;
+}
+
 div.side {
 	-moz-border-radius-bottomright: 4px;
 	-moz-border-radius-topright: 4px;
@@ -905,6 +930,10 @@ div.side h2:first-child {
 
 #content-container.sign-in-and-sign-up-content-container #content {
 	padding-bottom: 40px;
+}
+
+#content-container.sign-in-and-sign-up-content-container form {
+	margin-top: 8px;
 }
 
 #header {
@@ -1243,4 +1272,14 @@ div.side h2:first-child {
 
 #footer-navigation li a, #copyright {
 	text-shadow: 0px 1px #e8e8e8;
+}
+
+#error-message {
+	background-color: #ffebe8;
+	border-color: #dd3c10;
+}
+
+#info-message {
+	background-color: #fff0af;
+	border-color: #f8d219;
 }

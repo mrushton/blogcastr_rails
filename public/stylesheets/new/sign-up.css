@@ -51,6 +51,10 @@ span.text-field-description, div.connect {
 	width: 580px;
 }
 
+#error-message {
+	margin-bottom: 8px;
+}
+
 #facebook-and-twitter-sign-in-button-container img {
 	vertical-align: bottom;
 }
@@ -92,6 +96,11 @@ span.text-field-description, div.connect {
 	font-weight: bold;
 	outline-style: none;
 	padding: 0px;
+}
+
+
+#pick-username-container div.fieldWithErrors {
+	display: inline;
 }
 
 #recaptcha-container {

@@ -44,7 +44,7 @@ class Clearance::UsersController < ApplicationController
       #AS DESIGNED - valid? clears all errors so add it here 
       @blogcastr_user.errors.add_to_base("Humanness check failed")
       @setting.valid?
-      render :template => 'users/new'
+      render :template => 'users/new', :layout => 'sign-up' 
       return
     end
     #MVR - attempt to determine the time zone
@@ -82,12 +82,12 @@ class Clearance::UsersController < ApplicationController
         @blogcastr_user.errors.add_to_base "Unable to create ejabberd account"
         @setting.destroy
         @blogcastr_user.destroy
-        render :template => 'users/new'
+        render :template => 'users/new', :layout => 'sign-up'
         return
       end
     rescue
       @setting.valid?
-      render :template => 'users/new'
+      render :template => 'users/new', :layout => 'sign-up'
       return
     end
     if Rails.env.production?

@@ -8,9 +8,15 @@
     <div id="main" class="sign-up-main">
       <h1>Sign Up</h1>
       <% form_for :blogcastr_user, :url => users_path do |form| %>
-        <%= error_messages_for "blogcastr_user", "setting", :header_message => "Oops!", :message => nil -%>
         <input id="utc_offset" type="hidden" name="utc_offset" value="">
         <table>
+          <tr>
+            <th>
+            </th>
+            <td>
+              <%= error_messages_for "blogcastr_user", "setting", :id => "error-message", :class => "flash-message", :header_message => "Oops!", :message => nil -%>
+            </td>
+          </tr>
           <tr>
             <th>
             </th>

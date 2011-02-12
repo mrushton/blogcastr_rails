@@ -9,12 +9,12 @@
       <h1>Sign In</h1>
       <% form_tag session_path do %>
 <%- if !flash[:error].nil? -%>
-        <div class="error">
+        <div id="error-message" class="flash-message">
           <h2><%= flash[:error] -%></h2>
         </div>            
 <%- elsif !flash[:info].nil? -%>
-        <div class="info">
-          <h2><%= flash[:info] -%></h2>            
+        <div id="info-message" class="flash-message">
+          <h2><%= flash[:info] -%></h2>
         </div>            
 <%- end -%>
         <div id="facebook-and-twitter-sign-in-button-container">
