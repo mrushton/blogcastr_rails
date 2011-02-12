@@ -25,7 +25,7 @@
   <%- if @subscription.nil? -%>
               <%= render :partial => "/share/new/create_subscription_button", :locals => { :user => @profile_user } -%>
   <%- else -%>
-              <%= render :partial => "/share/new/desdivoy_subscription_button", :locals => { :subscription => @subscription, :user => @profile_user } -%>
+              <%= render :partial => "/share/new/destroy_subscription_button", :locals => { :subscription => @subscription, :user => @profile_user } -%>
   <%- end -%>
             </div>
 <%- end -%>
