@@ -2,6 +2,11 @@ class Clearance::UsersController < ApplicationController
   before_filter :redirect_user, :only => [:new, :create], :if => :signed_in_as_blogcastr_user?
   filter_parameter_logging :password
 
+  #MVR - This is needed to handle signing out from the Sign Up page
+  def index
+    redirect_to sign_up_path
+  end
+
   def new
     @current_user = current_user
     @blogcastr_user = BlogcastrUser.new(params[:blogcastr_user])
