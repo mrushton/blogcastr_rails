@@ -33,13 +33,13 @@
 <%- elsif @current_user.instance_of?(FacebookUser) -%>
               <%= link_to "<div id=\"avatar\" class=\"small-rounded-avatar\" style=\"background-image: url('" + @current_user.setting.avatar.url(:small) + "')\"></div>", @current_user.facebook_link %>
               <div id="facebook-and-twitter-connect-container">
-                <div class="connect">You are connected via Facebook.</div>
+                <div class="connect">You are connected via Facebook</div>
                 <%= link_to "Sign Out &rArr;", facebook_logout_path, :method => "delete", :class => "navigation-link" %>
               </div>
 <%- elsif @current_user.instance_of?(TwitterUser) -%>
               <%= link_to "<div id=\"avatar\" class=\"small-rounded-avatar\" style=\"background-image: url('" + @current_user.setting.avatar.url(:small) + "')\"></div>", "http://twitter.com/" + @current_user.username %>
               <div id="facebook-and-twitter-connect-container">
-                <div class="connect">You are connected via Twitter.</div>
+                <div class="connect">You are connected via Twitter</div>
                 <%= link_to "Sign Out &rArr;", twitter_sign_out_path, :method => "delete", :class => "navigation-link" %>
               </div>
 <%- end -%>
