@@ -47,17 +47,19 @@ class Users::BlogcastsController < ApplicationController
           @previous_page = @page - 1
         end
         @num_first_blogcast = ((@page - 1) * 10) + 1
-        #if @num_subscribers == 0
-        #  @num_first_subscriber = 0
-        #end
-        @num_last_blogcast = @page * 10 
-        if @num_last_blogcast > @num_paginated_blogcasts
-          @num_last_blogcast = @num_paginated_blogcasts
-        end
-          #MVR - subscription
-          if !@current_user.nil? && @current_user != @user
-            @subscription = @current_user.subscriptions.find(:first, :conditions => { :subscribed_to => @user.id })
+        if @num_first_blogcast > @num_paginated_blogcasts
+          @num_first_blogcast = 0
+          @num_last_blogcast = 0
+        else
+          @num_last_blogcast = @page * 10 
+          if @num_last_blogcast > @num_paginated_blogcasts
+            @num_last_blogcast = @num_paginated_blogcasts
           end
+        end
+        #MVR - subscription
+        if !@current_user.nil? && @current_user != @user
+          @subscription = @current_user.subscriptions.find(:first, :conditions => { :subscribed_to => @user.id })
+        end
         if @setting.use_background_image == false
           @theme = @setting.theme
         end

@@ -48,10 +48,12 @@ class Blogcasts::CommentsController < ApplicationController
     @num_first_comment = ((@page - 1) * 10) + 1
     if @num_first_comment > @num_paginated_comments
       @num_first_comment = 0
-    end
-    @num_last_comment = @page * 10 
-    if @num_last_comment > @num_paginated_comments
-      @num_last_comment = @num_paginated_comments
+      @num_last_comment = 0
+    else
+      @num_last_comment = @page * 10 
+      if @num_last_comment > @num_paginated_comments
+        @num_last_comment = @num_paginated_comments
+      end
     end
     #MVR - get settings
     @setting = @user.setting

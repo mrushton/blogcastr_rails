@@ -48,10 +48,12 @@ class Blogcasts::PostsController < ApplicationController
     @num_first_post = ((@page - 1) * 10) + 1
     if @num_first_post > @num_paginated_posts
       @num_first_post = 0
-    end
-    @num_last_post = @page * 10 
-    if @num_last_post > @num_paginated_posts
-      @num_last_post = @num_paginated_posts
+      @num_last_post = 0
+    else
+      @num_last_post = @page * 10 
+      if @num_last_post > @num_paginated_posts
+        @num_last_post = @num_paginated_posts
+      end
     end
     #MVR - get settings
     @setting = @user.setting

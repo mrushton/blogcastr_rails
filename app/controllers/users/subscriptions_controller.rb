@@ -46,9 +46,14 @@ class Users::SubscriptionsController < ApplicationController
       @previous_page = @page - 1
     end
     @num_first_subscription = ((@page - 1) * 10) + 1
-    @num_last_subscription = @page * 10 
-    if @num_last_subscription > @num_paginated_subscriptions
-      @num_last_subscription = @num_paginated_subscriptions
+    if @num_first_subscription > @num_paginated_subscriptions
+      @num_first_subscription = 0
+      @num_last_subscription = 0
+    else
+      @num_last_subscription = @page * 10 
+      if @num_last_subscription > @num_paginated_subscriptions
+        @num_last_subscription = @num_paginated_subscriptions
+      end
     end
     #MVR - subscription
     if !@current_user.nil? && @current_user != @user

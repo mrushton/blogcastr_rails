@@ -48,10 +48,12 @@ class Blogcasts::LikesController < ApplicationController
     @num_first_like = ((@page - 1) * 10) + 1
     if @num_first_like > @num_paginated_likes
       @num_first_like = 0
-    end
-    @num_last_like = @page * 10 
-    if @num_last_like > @num_paginated_likes
-      @num_last_like = @num_paginated_likes
+      @num_last_like = 0
+    else
+      @num_last_like = @page * 10 
+      if @num_last_like > @num_paginated_likes
+        @num_last_like = @num_paginated_likes
+      end
     end
     #MVR - get settings
     @setting = @user.setting

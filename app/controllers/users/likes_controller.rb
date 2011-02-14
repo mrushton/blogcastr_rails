@@ -29,10 +29,10 @@ class Users::LikesController < ApplicationController
       @id = params[:id].to_i
     end
     if @id.blank?
-      @paginated_likes = Blogcast.paginate_by_sql([ "SELECT blogcasts.* FROM likes, blogcasts WHERE likes.user_id = ? AND likes.blogcast_id = blogcasts.id", @user.id], :page => @page, :per_page => 10)
+      @paginated_likes = Blogcast.paginate_by_sql([ "SELECT blogcasts.* FROM likes, blogcasts WHERE likes.user_id = ? AND likes.blogcast_id = blogcasts.id ORDER by likes.id DESC", @user.id], :page => @page, :per_page => 10)
       @id = Like.maximum(:id, :conditions => [ "user_id = ?", @user.id ])
     else
-      @paginated_likes = Blogcast.paginate_by_sql([ "SELECT blogcasts.* FROM likes, blogcasts WHERE likes.user_id = ? AND likes.blogcast_id = blogcasts.id AND likes.id <= ?", @user.id, @id ], :page => @page, :per_page => 10, :total_entries => @num_likes)
+      @paginated_likes = Blogcast.paginate_by_sql([ "SELECT blogcasts.* FROM likes, blogcasts WHERE likes.user_id = ? AND likes.blogcast_id = blogcasts.id AND likes.id <= ? ORDER BY likes.id DESC", @user.id, @id ], :page => @page, :per_page => 10, :total_entries => @num_likes)
     end
     @num_paginated_likes = Like.count(:conditions => [ "id <= ? AND user_id = ?", @id, @user.id ])
     if @page * 10 < @num_paginated_likes
@@ -42,9 +42,14 @@ class Users::LikesController < ApplicationController
       @previous_page = @page - 1
     end
     @num_first_like = ((@page - 1) * 10) + 1
-    @num_last_like = @page * 10 
-    if @num_last_like > @num_paginated_likes
-      @num_last_like = @num_paginated_likes
+    if @num_first_like > @num_paginated_likes
+      @num_first_like = 0
+      @num_last_like = 0
+    else
+      @num_last_like = @page * 10 
+      if @num_last_like > @num_paginated_likes
+        @num_last_like = @num_paginated_likes
+      end
     end
     #MVR - subscription
     if !@current_user.nil? && @current_user != @user
