@@ -5,7 +5,7 @@
       <div id="marketing-info">
         <h2>Broadcast your blog <span id="live">LIVE!</span></h2>
         <p>Blogcastr is a free, easy-to-use live blogging service for sharing cool stuff as it happens.</p>
-        <% form_for :blogcastr_user, :url => new_user_path, :html => { :id => "pick-username", :method => "get" } do |form| %>
+        <% form_for :blogcastr_user, :url => sign_up_path, :html => { :id => "pick-username", :method => "get" } do |form| %>
           <%= form.label :username, "Pick a username and get started:" %>
           <div id="pick-username-container" onclick="jQuery('#pick-username-container input').focus();">
             http://blogcastr.com/<%= form.text_field :username, :autocomplete => "off", :maxlength => 15, :size => 20 -%>
