@@ -4,7 +4,8 @@ class TwitterSignInController < ApplicationController
     oauth_client = Twitter::OAuth.new(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET, :sign_in => true)
     begin
       if Rails.env.production?
-        oauth_client.set_callback_url("https://blogcastr.com" + twitter_sign_in_callback_path)
+        #TODO: currently an Apache bug exists where environment variables are not getting set and request.ssl? always returns false
+        oauth_client.set_callback_url(twitter_sign_in_callback_url)
       else
         oauth_client.set_callback_url("http://sandbox.blogcastr.com" + twitter_sign_in_callback_path)
       end
