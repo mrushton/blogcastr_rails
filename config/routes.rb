@@ -64,7 +64,7 @@ ActionController::Routing::Routes.draw do |map|
   map.user_subscriptions_permalink ":username/subscriptions", :controller => "users/subscriptions"
   map.user_subscribers_permalink ":username/subscribers", :controller => "users/subscribers"
   map.user_search_permalink ":username/search", :controller => "users/search"
-  map.user_tagged_blogcasts_permalink ":username/blogcasts/tagged", :controller => "users/blogcasts", :action => "tagged"
+  map.user_tagged_blogcasts_permalink ":username/tagged/:tag", :controller => "users/blogcasts", :action => "tagged"
   #MVR - DO I NEED THESE?
   #map.user_email_notifications_permalink ":username/email_notifications", :controller => "email_user_notifications", :action => "create", :conditions => {:method => :post}
   #map.user_email_notifications_permalink ":username/email_notifications", :controller => "email_user_notifications", :action => "destroy", :conditions => {:method => :delete}
