@@ -99,10 +99,10 @@ class Users::BlogcastsController < ApplicationController
       @id = params[:id].to_i
     end
     if @id.blank?
-      @paginated_blogcasts = Blogcast.paginate_by_sql(["SELECT blogcasts.* FROM tags, blogcast_tags, blogcasts WHERE tags.user_id = ? AND tags.name = ? AND tags.id = blogcast_tags.tag_id AND blogcast_tags.blogcast_id = blogcasts.id ORDER BY DESC", @user.id, @tag_name], :page => @page, :per_page => 10)
+      @paginated_blogcasts = Blogcast.paginate_by_sql(["SELECT blogcasts.* FROM tags, blogcast_tags, blogcasts WHERE tags.user_id = ? AND tags.name = ? AND tags.id = blogcast_tags.tag_id AND blogcast_tags.blogcast_id = blogcasts.id ORDER BY id DESC", @user.id, @tag_name], :page => @page, :per_page => 10)
       @id = Blogcast.maximum(:id, :conditions => [ "user_id = ?", @user.id ])
     else
-      @paginated_blogcasts = Blogcast.paginate_by_sql(["SELECT blogcasts.* FROM tags, blogcast_tags, blogcasts WHERE tags.user_id = ? AND tags.name = ? AND tags.id = blogcast_tags.tag_id AND blogcast_tags.blogcast_id = blogcasts.id AND id <= ? ORDER BY DESC", @user.id, @tag_name, @id], :page => @page, :per_page => 10, :total_entries => @num_blogcasts)
+      @paginated_blogcasts = Blogcast.paginate_by_sql(["SELECT blogcasts.* FROM tags, blogcast_tags, blogcasts WHERE tags.user_id = ? AND tags.name = ? AND tags.id = blogcast_tags.tag_id AND blogcast_tags.blogcast_id = blogcasts.id AND id <= ? ORDER BY id DESC", @user.id, @tag_name, @id], :page => @page, :per_page => 10, :total_entries => @num_blogcasts)
     end
     @num_paginated_blogcasts = Blogcast.count(:conditions => [ "tags.user_id = ? AND tags.name = ?", @user.id, @tag_name ], :joins => [ "LEFT JOIN blogcast_tags ON blogcast_tags.blogcast_id = blogcasts.id", "LEFT JOIN tags ON tags.id = blogcast_tags.tag_id" ])
     if @page * 10 < @num_paginated_blogcasts
