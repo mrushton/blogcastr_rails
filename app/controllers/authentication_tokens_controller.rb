@@ -23,8 +23,8 @@ class AuthenticationTokensController < ApplicationController
           authentication_token = @user.authentication_token
         end
         respond_to do |format|
-          format.xml { render :xml => "<authentication_token>#{authentication_token}</authentication_token>" }
-          format.json { render :json => "[[\"#{authentication_token}\"]]" }
+          format.xml { render :xml => @user.to_xml(:only => [ :id, :username, :authentication_token, :created_at, :updated_at ], :include => { :setting => { :only => [ :full_name, :location, :web, :bio ] } }) }
+          format.json { render :json => @user.to_json(:only => [ :id, :username, :authentication_token, :created_at, :updated_at ], :include => { :setting => { :only => [ :full_name, :location, :web, :bio ] } }) }
         end
         return
       end
