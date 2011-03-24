@@ -26,9 +26,19 @@ class AuthenticationTokensController < ApplicationController
           format.xml {
             #MVR - pass proc to add the avatar url
             avatar_url_proc = Proc.new { |options| options[:builder].tag!("avatar-url", options[:user].setting.avatar(:small)) }
-            render :xml => @user.to_xml(:only => [ :id, :username, :authentication_token, :created_at, :updated_at ], :include => { :setting => { :only => [ :full_name, :location, :web, :bio ], :procs => [ avatar_url_proc ], :user => @user } })
+            stats_proc = Proc.new { |options|
+              options[:builder].stats { |stat|
+                stat.blogcasts options[:user].blogcasts.count
+                stat.subscriptions options[:user].subscriptions.count
+                stat.subscribers options[:user].subscribers.count
+                stat.posts options[:user].posts.count
+                stat.comments options[:user].comments.count
+                stat.likes options[:user].likes.count
+              }
+            }
+            render :xml => @user.to_xml(:only => [ :id, :username, :authentication_token, :created_at, :updated_at ], :include => { :setting => { :only => [ :full_name, :location, :web, :bio ], :procs => [ avatar_url_proc ], :user => @user } }, :procs => [ stats_proc ], :user => @user)
           }
-          #TODO: json output does not include the avatar url because json support is not as robust so stuck with setting id and avatar file name
+          #TODO: json output does not include the avatar url or stats because json support is not as robust
           format.json { render :json => @user.to_json(:only => [ :id, :username, :authentication_token, :created_at, :updated_at ], :include => { :setting => { :only => [ :id, :avatar_file_name, :full_name, :location, :web, :bio ] } }) }
         end
         return
