@@ -38,8 +38,7 @@ class CommentPostsController < ApplicationController
       return
     end
     #AS DESIGNED: only need to search on comment id to see if it has already been reposted
-    @comment_post = @comment.post
-    if !@comment_post.nil?
+    if !@comment.post.nil?
       respond_to do |format|
         format.js { @error = "Oops! Comment has already been posted."; render :action => "error" }
         format.html { flash[:error] = "Oops! Comment has already been posted"; redirect_to :back }
@@ -53,35 +52,36 @@ class CommentPostsController < ApplicationController
     @comment_user = @comment.user
     begin
       thrift_user = Thrift::User.new
-      thrift_user.account = @user.class.to_s 
+      thrift_user.id = @user.id
+      #MVR - only Blogcast users can make posts
+      thrift_user.type = "BlogcastrUser" 
       thrift_user.username = @user.username
       thrift_user.url = profile_path :username => @user.username
       thrift_user.avatar_url = @user.setting.avatar.url :medium
       thrift_comment_post = Thrift::CommentPost.new
       thrift_comment_post.id = @comment_post.id
-      thrift_comment_post.date = @comment_post.created_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/, ' ')
-      thrift_comment_post.timestamp = @comment_post.created_at.to_i
-      thrift_comment_post.medium = @comment_post.from
+      thrift_comment_post.created_at = @comment_post.created_at.xmlschema
+      thrift_comment_post.from = @comment_post.from
       thrift_comment = Thrift::Comment.new
       thrift_comment.id = @comment.id
-      thrift_comment.date = @comment.created_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/, ' ')
-      thrift_comment.timestamp = @comment.created_at.to_i
-      thrift_comment.medium = @comment.from
+      thrift_comment.created_at = @comment.created_at.xmlschema
+      thrift_comment.from = @comment.from
       thrift_comment.text = @comment.text
       thrift_comment_user = Thrift::User.new
-      thrift_comment_user.account = @comment_user.class.to_s 
+      thrift_comment_user.id = @comment_user.id
+      thrift_comment_user.type = @comment_user.class.to_s 
       if @comment_user.instance_of?(BlogcastrUser)
         thrift_comment_user.username = @comment_user.username
         thrift_comment_user.url = profile_path :username => @comment_user.username
-        thrift_comment_user.avatar_url = @comment_user.setting.avatar.url :small
+        thrift_comment_user.avatar_url = @comment_user.setting.avatar.url :original
       elsif @comment_user.instance_of?(FacebookUser)
         thrift_comment_user.username = @comment_user.setting.full_name
         thrift_comment_user.url = @comment_user.facebook_link 
-        thrift_comment_user.avatar_url = @comment_user.setting.avatar.url :small
+        thrift_comment_user.avatar_url = @comment_user.setting.avatar.url :original
       elsif @comment_user.instance_of?(TwitterUser)
         thrift_comment_user.username = "@" + @comment_user.username
         thrift_comment_user.url = "http://twitter.com/" + @comment_user.username 
-        thrift_comment_user.avatar_url = @comment_user.setting.avatar.url :small
+        thrift_comment_user.avatar_url = @comment_user.setting.avatar.url :original
       end
       #MVR - send comment post to blogcast 
       err = thrift_client.send_comment_post_to_muc_room(@user.username, HOST, "Blogcast."+@blogcast.id.to_s, thrift_user, thrift_comment_post, thrift_comment_user, thrift_comment)

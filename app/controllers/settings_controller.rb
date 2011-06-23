@@ -1,5 +1,15 @@
 class SettingsController < ApplicationController
-  before_filter :authenticate
+  #MVR - needed to work around CSRF for REST api
+  #TODO: add CSRF before filter for standard authentication only, other option is to modify Rails to bypass CSRF for certain user agents
+  skip_before_filter :verify_authenticity_token
+  before_filter do |controller|
+    #AS DESIGNED: check format because params array is not yet created
+    if controller.request.format.html? || controller.request.format.js?
+      controller.authenticate
+    else 
+      controller.rest_authenticate
+    end
+  end
 
   def edit
     @user = current_user
@@ -11,11 +21,29 @@ class SettingsController < ApplicationController
   end
 
   def update
-    @user = current_user
+    if params[:authentication_token].nil?
+      @user = current_user
+    else 
+      @user = rest_current_user
+    end
     #MVR - setting object exists
-    Setting.update(@user.setting.id, params[:setting])
-    #TODO: this isn't used by the web interface so add xml/json support
-    render :template => 'settings/edit'
+    @setting = @user.setting
+    if !@setting.update_attributes(params[:setting])
+      respond_to do |format|
+        format.xml { render :xml => @setting.errors, :status => :unprocessable_entity }
+        format.json { render :json => @setting.errors, :status => :unprocessable_entity }
+      end
+      return
+    end
+    respond_to do |format|
+      format.xml {
+        #MVR - pass proc to add the avatar url
+        avatar_url_proc = Proc.new { |options| options[:builder].tag!("avatar-url", options[:setting].avatar(:small)) }
+        render :xml => @setting.to_xml(:only => [ :full_name, :location, :web, :bio ], :procs => [ avatar_url_proc ], :setting => @setting)
+      }
+      #TODO: json output does not include the avatar url because json support is not as robust
+      format.json { render :json => @setting.to_json(:only => [ :id, :avatar_file_name, :full_name, :location, :web, :bio ]) }
+    end
   end
 
   def account

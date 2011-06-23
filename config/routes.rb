@@ -75,7 +75,7 @@ ActionController::Routing::Routes.draw do |map|
     #MVR - dashboard
     blogcasts.resource :dashboard, :controller => "dashboard", :only => [:show]
     #MVR - posts
-    blogcasts.resources :posts, :controller => "posts", :only => [:destroy]
+    blogcasts.resources :posts, :controller => "posts", :only => [:destroy, :index]
     #MVR - text posts
     blogcasts.resources :text_posts, :controller => "text_posts", :only => [:create]
     #MVR - image posts
@@ -89,7 +89,7 @@ ActionController::Routing::Routes.draw do |map|
     #MVR - reposts
     blogcasts.resources :reposts, :controller => "reposts", :only => [:create, :destroy]
     #MVR - comments
-    blogcasts.resources :comments, :controller => "comments", :only => [:create]
+    blogcasts.resources :comments, :controller => "comments", :only => [:create, :index]
     #MVR - likes 
     blogcasts.resources :likes, :controller => "likes", :only => [:create, :destroy]
     #MVR - email reminders 

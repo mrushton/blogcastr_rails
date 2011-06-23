@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110130005436) do
+ActiveRecord::Schema.define(:version => 20110514225724) do
 
   create_table "blogcast_reminders", :force => true do |t|
     t.string   "type",         :null => false
@@ -93,6 +93,8 @@ ActiveRecord::Schema.define(:version => 20110130005436) do
     t.integer  "parent_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "image_width"
+    t.integer  "image_height"
   end
 
   create_table "sent_blogcast_reminders", :force => true do |t|

@@ -1,4 +1,8 @@
 class BlogcastsController < ApplicationController
+  #MVR - needed to work around CSRF for REST api
+  #TODO: add CSRF before filter for standard authentication only, other option is to modify Rails to bypass CSRF for certain user agents
+  skip_before_filter :verify_authenticity_token
+  before_filter :set_time_zone
   before_filter :only => [ "new", "create", "edit", "update", "destroy" ] do |controller|
     if controller.params[:authentication_token].nil?
       controller.authenticate
@@ -6,12 +10,10 @@ class BlogcastsController < ApplicationController
       controller.rest_authenticate
     end
   end
-  before_filter :set_time_zone
 
   def index
     #MVR - find user by id 
-    @user = BlogcastrUser.find_by_username(params[:user_id])
-    @setting = @user.setting
+    @user = BlogcastrUser.find(params[:user_id])
     if @user.nil?
       respond_to do |format|
         format.xml { render :xml => "<errors><error>Couldn't find BlogcastrUser with ID=\"#{params[:user_id]}\"</error></errors>", :status => :unprocessable_entity }
@@ -19,16 +21,59 @@ class BlogcastsController < ApplicationController
       end
       return
     end
+    if params[:count].nil?
+      count = 10
+    else
+      count = params[:count].to_i
+      if count > 100
+        count = 100
+      end
+    end
+    if !params[:max_id].nil?
+      max_id = params[:max_id].to_i
+    end
+    if (max_id.nil?)  
+      @blogcasts = @user.blogcasts.find(:all, :limit => count, :order => "id DESC")
+    else
+      @blogcasts = @user.blogcasts.find(:all, :conditions => [ "id <= ?", max_id ], :limit => count, :order => "id DESC")
+    end
+    #TODO: work around for making thrift calls from view
+    @thrift_client = thrift_client
     respond_to do |format|
-      #TODO: limit result set and order by most recent
-      format.xml { render :xml => @user.blogcasts.find(:all, :limit => 10, :order => "id DESC").to_xml(:only => [ :id, :title, :description, :starting_at, :updated_at, :name ], :include => :tags) }
-      format.json { render :json => @user.blogcasts.find(:all, :limit => 10).to_json(:only => [ :id, :title, :description, :starting_at, :updated_at, :name ], :include => :tags) }
+      format.xml { }
+      format.json {
+          #TODO: fix json support 
+          render :json => @blogcasts.to_json(:only => [ :id, :title, :description, :starting_at, :updated_at, :name ], :include => :tags)
+      }
       format.rss {
-        @blogcasts = @user.blogcasts.find(:all, :limit => 10, :order => "created_at DESC")
+        @setting = @user.setting
         #MVR - possesive names 
         @possesive_username = @user.username + (@user.username =~ /.*s$/ ? "'":"'s")
         @possesive_full_name = @setting.full_name + (@setting.full_name =~ /.*s$/ ? "'":"'s")
         render :layout => false
+      }
+    end
+  end
+
+  def show
+    #MVR - find blogcast by id 
+    begin
+      @blogcast = Blogcast.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      respond_to do |format|
+        format.xml { render :xml => "<errors><error>Couldn't find Blogcast with ID=\"#{params[:id]}\"</error></errors>", :status => :unprocessable_entity }
+        format.json { render :json => "[[\"Couldn't find Blogcast with ID=\"#{params[:id]}\"\"]]", :status => :unprocessable_entity }
+      end
+      return
+    end
+    @user = @blogcast.user
+    #TODO: work around for making thrift calls from view
+    @thrift_client = thrift_client
+    respond_to do |format|
+      format.xml { }
+      format.json {
+          #TODO: fix json support 
+          render :json => @blogcast.to_json(:only => [ :id, :title, :description, :starting_at, :updated_at, :name ], :include => :tags)
       }
     end
   end

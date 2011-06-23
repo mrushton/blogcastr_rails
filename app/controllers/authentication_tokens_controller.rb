@@ -25,7 +25,7 @@ class AuthenticationTokensController < ApplicationController
         respond_to do |format|
           format.xml {
             #MVR - pass proc to add the avatar url
-            avatar_url_proc = Proc.new { |options| options[:builder].tag!("avatar-url", options[:user].setting.avatar(:small)) }
+            avatar_url_proc = Proc.new { |options| options[:builder].tag!("avatar-url", options[:user].setting.avatar(:original)) }
             stats_proc = Proc.new { |options|
               options[:builder].stats { |stat|
                 stat.blogcasts options[:user].blogcasts.count
