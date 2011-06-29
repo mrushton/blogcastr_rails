@@ -121,19 +121,18 @@ function blogcastrPostCallback(stanza)
       new Effect.Appear("TextPost\:" + id + "-spacer", {duration: 0.5, queue: "end"});
     }
   }
-  else if (type == "imagePost")
+  else if (type == "ImagePost")
   {
     //parse image post
     var id = body.find("id:first").text();
-    var timestamp = body.find("timestamp:first").text();
-    var date = body.find("date:first").text();
+    var timestamp = body.find("created-at:first").text();
     var text = body.find("text:first").text();
     var medium = body.find("medium:first").text();
     var user = jQuery(body).find("user:first");
     var username = user.find("username:first").text();
     var url = user.find("url:first").text();
-    var avatar_url = user.find("avatar_url:first").text();
-    var image_url = body.find("image_url:first").text();
+    var avatar_url = user.find("avatar_url:first").text().replace("original", "small");
+    var image_url = body.find("image_url:first").text().replace("original", "small");
     //create new post element
     var avatar_img = jQuery("<img>").addClass("avatar").attr("src", avatar_url);
     var avatar_a = jQuery("<a>").attr("href", url).append(avatar_img); 

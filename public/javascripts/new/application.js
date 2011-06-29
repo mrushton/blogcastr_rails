@@ -26,12 +26,28 @@ function stopPropagation() {
   return false;
 }
 
+//MVR - routine found at http://wiki.cdyne.com/wiki/index.php?title=Converting_XML_Timestamp_to_Javascript_Date
+//expected format: 2006-08-29T01:18:15.001Z
+function TimeStampToDate(xmlDate)
+{
+    var dt = new Date();
+    var dtS = xmlDate.slice(xmlDate.indexOf('T')+1, xmlDate.indexOf('.'))
+    var TimeArray = dtS.split(":");
+    dt.setUTCHours(TimeArray[0],TimeArray[1],TimeArray[2]);
+    dtS = xmlDate.slice(0, xmlDate.indexOf('T'))
+    TimeArray = dtS.split("-");
+    dt.setUTCFullYear(TimeArray[0],TimeArray[1],TimeArray[2]);
+    return dt;
+}
+
 function blogcastrPastTimestampInWords(timestamp) {
+  var timestamp_date = Date.parse(timestamp);
+  var timestamp_seconds = timestamp_date.getTime() / 1000;
   var current_client_date = new Date;
   var current_client_timestamp = Math.floor(current_client_date.getTime()/1000);
   var elapsed_time = current_client_timestamp - client_timestamp;
   var current_server_timestamp = server_timestamp + elapsed_time;
-  var timestamp_elapsed_time = current_server_timestamp - timestamp;
+  var timestamp_elapsed_time = current_server_timestamp - timestamp_seconds;
   //current server timestamp is inherently a little slow
   if (timestamp_elapsed_time < 0)
     timestamp_elapsed_time = 0;
@@ -68,6 +84,7 @@ function blogcastrPastTimestampInWords(timestamp) {
 }
 
 function blogcastrUpdateTimestampInWords() {
+return;
   jQuery("span.timestamp-in-words")
     .each(function () {
       var timestamp = jQuery(this).attr("timestamp");

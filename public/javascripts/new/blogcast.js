@@ -84,17 +84,16 @@ function blogcastrPostCallback(stanza) {
   //TODO: alternative could be to use a json convertor like http://www.thomasfrank.se/xml_to_json.html
   var body = jQuery(stanza).find("body:first");
   var type = body.find("type:first").text();
-  if (type == "textPost") {
+  if (type == "TextPost") {
     //parse text post
     var id = body.find("id:first").text();
-    var timestamp = body.find("timestamp:first").text();
-    var date = body.find("date:first").text();
+    var timestamp = body.find("created-at:first").text();
     var text = body.find("text:first").text();
     var medium = body.find("medium:first").text();
     var user = jQuery(body).find("user:first");
     var username = user.find("username:first").text();
     var url = user.find("url:first").text();
-    var avatar_url = user.find("avatar_url:first").text();
+    var avatar_url = user.find("avatar-url:first").text().replace("original", "small"); 
     //create new post element
     //post header
     var timestamp_in_words_span = jQuery("<span>").addClass("timestamp-in-words").attr("timestamp", timestamp).text(blogcastrPastTimestampInWords(timestamp));
@@ -118,18 +117,17 @@ function blogcastrPostCallback(stanza) {
       new Effect.Appear("Post\:" + id, { duration: 0.6, queue: "end" });
     }
   }
-  else if (type == "imagePost") {
+  else if (type == "ImagePost") {
     //parse image post
     var id = body.find("id:first").text();
-    var timestamp = body.find("timestamp:first").text();
-    var date = body.find("date:first").text();
+    var timestamp = body.find("created-at:first").text();
     var text = body.find("text:first").text();
     var medium = body.find("medium:first").text();
     var user = jQuery(body).find("user:first");
     var username = user.find("username:first").text();
     var url = user.find("url:first").text();
-    var avatar_url = user.find("avatar_url:first").text();
-    var image_url = body.find("image_url:first").text();
+    var avatar_url = user.find("avatar-url:first").text().replace("original", "small");
+    var image_url = body.find("image-url:first").text().replace("original", "default");
     //create new post element
     //post header
     var timestamp_in_words_span = jQuery("<span>").addClass("timestamp-in-words").attr("timestamp", timestamp).text(blogcastrPastTimestampInWords(timestamp));
@@ -218,7 +216,7 @@ function blogcastrPostCallback(stanza) {
     var ogg_url = body.find("ogg_url:first").text();
 
   }
-  else if (type == "commentPost")
+  else if (type == "CommentPost")
   {
     //parse text post
     var id = body.find("id:first").text();
@@ -264,15 +262,15 @@ function blogcastrPostCallback(stanza) {
       new Effect.Appear("Post\:" + id, { duration: 0.6, queue: "end" });
     }
   }
-  else if (type == "comment") {
-    //parse comment
+  else if (type == "Comment") {
+   //parse comment
     var id = body.find("id:first").text();
-    var timestamp = body.find("timestamp:first").text();
+    var timestamp = body.find("created-at:first").text();
     var text = body.find("text:first").text();
     var user = jQuery(body).find("user:first");
     var username = user.find("username:first").text();
     var url = user.find("url:first").text();
-    var avatar_url = user.find("avatar_url:first").text();
+    var avatar_url = user.find("avatar-url:first").text().replace("original", "small");
     //create new comment element
     var avatar_div = jQuery("<div>").addClass("comment-avatar").addClass("small-rounded-avatar").css("background-image", "url(\"" + avatar_url + "\")"); 
     var avatar_a = jQuery("<a>").attr("href", url).append(avatar_div); 
