@@ -18,7 +18,7 @@ xml.posts do
       if (post.type == "TextPost")
         xml.text(post.text) 
       elsif (post.type == "ImagePost")
-        xml.tag!("image-url", post.image.url(:default))
+        xml.tag!("image-url", post.image.url(:original))
         if !post.text.blank?
           xml.text(post.text)
         end

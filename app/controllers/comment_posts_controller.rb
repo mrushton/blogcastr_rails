@@ -1,4 +1,7 @@
 class CommentPostsController < ApplicationController
+  #MVR - needed to work around CSRF for REST api
+  #TODO: add CSRF before filter for standard authentication only, other option is to modify Rails to bypass CSRF for certain user agents
+  skip_before_filter :verify_authenticity_token
   before_filter do |controller|
     if controller.params[:authentication_token].nil?
       controller.authenticate
@@ -48,6 +51,7 @@ class CommentPostsController < ApplicationController
       end
       return
     end
+    #TODO: param format seems non-standard (i.e. should be comment_post[from])
     @comment_post = CommentPost.create(:user_id => @user.id, :blogcast_id => @blogcast.id, :from => params[:from], :comment_id => @comment.id)
     @comment_user = @comment.user
     begin
@@ -100,8 +104,8 @@ class CommentPostsController < ApplicationController
     respond_to do |format|
       format.js
       format.html {flash[:notice] = "Text post posted successfully"; redirect_to :back}
-      format.xml {render :xml => @text_post.to_xml, :status => :created, :location => @text_post}
-      format.json {render :json => @text_post.to_json, :status => :created, :location => @text_post}
+      format.xml {render :xml => @comment_post}
+      format.json {render :json => @comment_post}
     end
   end
 end
