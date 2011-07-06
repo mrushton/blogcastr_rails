@@ -47,7 +47,6 @@ class ApplicationController < ActionController::Base
         if !@time_zone.nil?
           Time.zone = @time_zone
         end
-    Time.zone = "Pacific Time (US & Canada)"
       end
     end
   end
