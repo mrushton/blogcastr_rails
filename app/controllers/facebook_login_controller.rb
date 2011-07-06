@@ -49,10 +49,9 @@ class FacebookLoginController < ApplicationController
       setting.full_name = me["name"] 
       #MVR - get avatar
       url = URI.parse("http://graph.facebook.com/" + me["id"] + "/picture?type=square")
-      avatar_name = File.basename(url.path)
-      avatar = nil
       begin
         redirect_follower = RedirectFollower.new("http://graph.facebook.com/" + me["id"] + "/picture?type=square", 2).resolve
+        avatar_name = File.basename(redirect_follower.url)
         avatar = ActionController::UploadedTempfile.new(avatar_name)
         avatar.binmode
         avatar.write(redirect_follower.body)
