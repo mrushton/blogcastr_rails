@@ -124,6 +124,15 @@ class BlogcastsController < ApplicationController
         @blogcast.blogcast_tags.push(blogcast_tag)
       end
     end
+    begin
+      #MVR - create bitly link
+      json = Net::HTTP.get(URI.parse("http://api.bit.ly/v3/shorten?login=" + BITLY_LOGIN + "&apiKey=" + BITLY_API_KEY + "&uri=" + "http://" + HOST + "/" + @user.username + "/" + @blogcast.year.to_s + "/" + @blogcast.month.to_s + "/" + @blogcast.day.to_s + "/" + @blogcast.link_title))
+      response = ActiveSupport::JSON::decode(json)
+      if response["status_code"] == 200
+        @blogcast.short_url = response["data"]["url"]
+      end
+    rescue
+    end
     if !@blogcast.save
       respond_to do |format|
         format.html {@title = "New Blogcast"; render :template => "blogcasts/new", :layout => "default"}
@@ -166,24 +175,62 @@ class BlogcastsController < ApplicationController
   end
 
   def update
-    user = current_user
-    blogcast = user.blogcasts.find(params[:id])
-    if blogcast.nil?
-	#TODO: set the flash
-	redirect_to :back
+    #MVR - authentication
+    if params[:authentication_token].nil?
+      @user = current_user
+    else 
+      @user = rest_current_user
     end
-    #AS DESIGNED: do an extra query but it's not performance critical
-    #TODO: check for link title
-    blogcast.update_attributes(params[:blogcast])
-    if params[:blogcast][:link_title].nil?
-      blogcast.link_title = blogcast.title.downcase.gsub(/[^a-z0-9]/, "-") 
+    @blogcast = @user.blogcasts.find(params[:id])
+    #TODO: error handling
+    #MVR - save some info to determine if we need to update the short url
+    @link_title = @blogcast.link_title
+    @starting_at = @blogcast.starting_at
+    #AS DESIGNED: only update the link title if set explicitly 
+    @blogcast.attributes = params[:blogcast]
+    @blogcast.year = @blogcast.starting_at.year
+    @blogcast.month = @blogcast.starting_at.month
+    @blogcast.day = @blogcast.starting_at.day
+    #MVR - tags must be in database for acts_as_solr
+    if !params[:tags].nil?
+      #MVR - delete all tags
+      @blogcast.blogcast_tags.delete_all
+      tags = params[:tags].split(/,/).map { |tag| tag.gsub(/^\s*/, "") }
+      for tag in tags
+        #MVR - add tag if not present
+        #AS DESIGNED: no error checking just proceed
+        user_tag = @user.tags.find_or_create_by_name(tag)
+        blogcast_tag = BlogcastTag.new
+        blogcast_tag.tag_id = user_tag.id 
+        @blogcast.blogcast_tags.push(blogcast_tag)
+      end
     end
-    blogcast.year = blogcast.starting_at.year
-    blogcast.month = blogcast.starting_at.month
-    blogcast.day = blogcast.starting_at.day
-    blogcast.save
-    #TODO: handle errors
-    redirect_to home_path
+    begin
+      #MVR - create bitly link if the permalink has changed
+      if (@starting_at != @blogcast.starting_at || @link_title != @blogcast.link_title)
+        json = Net::HTTP.get(URI.parse("http://api.bit.ly/v3/shorten?login=" + BITLY_LOGIN + "&apiKey=" + BITLY_API_KEY + "&uri=" + "http://" + HOST + "/" + @user.username + "/" + @blogcast.year.to_s + "/" + @blogcast.month.to_s + "/" + @blogcast.day.to_s + "/" + @blogcast.link_title))
+        response = ActiveSupport::JSON::decode(json)
+        if response["status_code"] == 200
+          @blogcast.short_url = response["data"]["url"]
+        end
+      end
+    rescue
+    end
+    if !@blogcast.save
+      respond_to do |format|
+        format.html {}
+        format.xml {render :xml => @blogcast.errors, :status => :unprocessable_entity}
+        #TODO: fix json support
+        format.json {render :json => @blogcast.errors, :status => :unprocessable_entity}
+      end
+      return
+    end
+    respond_to do |format|
+      format.js
+      format.html { redirect_to home_path }
+      format.xml { render :xml => @blogcast }
+      format.json { render :json => @blogcast }
+    end
   end
 
   def destroy
