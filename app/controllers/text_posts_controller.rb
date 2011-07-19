@@ -29,6 +29,7 @@ class TextPostsController < ApplicationController
         format.html {flash[:error] = "Invalid blogcast id"; redirect_to :back}
         format.xml {render :xml => @text_post.errors.to_xml, :status => :unprocessable_entity}
         format.json {render :json => @text_post.errors.to_json, :status => :unprocessable_entity}
+      end
       return
     end
     @text_post.blogcast_id = @blogcast.id
