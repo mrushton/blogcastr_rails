@@ -1,4 +1,117 @@
 class Users::SubscriptionsController < ApplicationController
+  #MVR - needed to work around CSRF for REST api
+  #TODO: add CSRF before filter for standard authentication only, other option is to modify Rails to bypass CSRF for certain user agents
+  skip_before_filter :verify_authenticity_token
+  before_filter do |controller|
+    if controller.params[:authentication_token].nil?
+      controller.authenticate
+    else 
+      controller.rest_authenticate
+    end
+  end
+
+  def create
+    if params[:authentication_token].nil?
+      @current_user = current_user
+    else 
+      @current_user = rest_current_user
+    end
+    begin
+      @subscription_user = User.find(params[:user_id])
+    rescue ActiveRecord::RecordNotFound
+      respond_to do |format|
+        format.js {
+          @error = "User #{params[:user_id]} does not exist."
+          render :action => "error"
+        }
+        format.xml { render :xml => "<errors><error>User #{params[:user_id]} does not exist</error></errors>", :status => :unprocessable_entity } end
+      return
+    end
+    #MVR - can not subscribe to yourself
+    if @current_user == @subscription_user
+      respond_to do |format|
+        format.js {
+          @error = "Unable to subscribe to yourself."
+          render :action => "error"
+        }
+        format.xml { render :xml => "<errors><error>Unable to subscribe to yourself</error></errors>", :status => :unprocessable_entity }
+      end
+      return
+    end
+    #MVR - do not allow the same subscription multiple times
+    @subscription = Subscription.find(:first, :conditions => { :user_id => @current_user.id, :subscribed_to => @subscription_user.id })
+    if !@subscription.nil? 
+      respond_to do |format|
+        format.js {
+          @error = "You are already subscribed to #{@subscription_user.username}."
+          render :action => "error"
+        }
+        format.xml { render :xml => "<errors><error>You are already subscribed to #{@subscription_user.username}</error></errors>", :status => :unprocessable_entity }
+      end
+      return
+    end
+    #MVR - create subscription 
+    @subscription = Subscription.new
+    @subscription.user_id = @current_user.id
+    @subscription.subscribed_to = @subscription_user
+    if !@subscription.save
+      respond_to do |format|
+        format.js {
+          @error = "Failed to save subscription."
+          render :action => "error"
+        }
+        format.xml { render :xml => @subscription.errors, :status => :unprocessable_entity }
+      end
+      return
+    end
+    respond_to do |format|
+      format.js { }
+      format.xml {
+        head :ok
+      }
+    end
+  end
+
+  def destroy 
+    if params[:authentication_token].nil?
+      @current_user = current_user
+    else 
+      @current_user = rest_current_user
+    end
+    begin
+      @subscription_user = User.find(params[:user_id])
+    rescue ActiveRecord::RecordNotFound
+      respond_to do |format|
+        format.js {
+          @error = "User #{params[:user_id]} does not exist."
+          render :action => "error"
+        }
+        format.xml { render :xml => "<errors><error>User #{params[:user_id]} does not exist</error></errors>", :status => :unprocessable_entity }
+      end
+      return
+    end
+    #MVR - find the subscription object
+    @subscription = @current_user.subscriptions.find(:first, :conditions => [ "subscribed_to = ?", @subscription_user.id ])
+    if @subscription.nil?
+      respond_to do |format|
+        format.js {
+          @error = "You are not subscribed to #{@subscription_user.username}."
+          render :action => "error"
+        }
+        format.xml { render :xml => "<errors><error>You are not subscribed to #{@subscription_user.username}</error></errors>", :status => :unprocessable_entity }
+      end
+      return
+    end
+    #MVR - no meaningful return value
+    @subscription.destroy
+    respond_to do |format|
+      format.js { }
+      format.xml {
+        head :ok
+      }
+    end
+  end
+
   def index
 
     @current_user = current_user
@@ -101,4 +214,5 @@ class Users::SubscriptionsController < ApplicationController
         format.json {render :json => @user.subscribers.to_json(:only => [:id, :name], :include => :user)}
     end
   end
+
 end

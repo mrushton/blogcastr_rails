@@ -35,7 +35,7 @@ ActionController::Routing::Routes.draw do |map|
   #MVR - include all Clearance routes first since the Clearance engine avoids doing so with a hack
   map.resources :passwords, :controller => "clearance/passwords", :only => [:new, :create]
   map.resource :session, :controller => "clearance/sessions", :only => [:new, :create, :destroy]
-  map.resources :users, :controller => "clearance/users" do |users|
+  map.resources :users, :controller => "clearance/users", :except => [:show]  do |users|
     users.resource :password, :controller => "clearance/passwords", :only => [:create, :edit, :update]
     users.resource :confirmation, :controller => "clearance/confirmations", :only => [:new, :create]
   end
@@ -45,18 +45,19 @@ ActionController::Routing::Routes.draw do |map|
   map.sign_out "sign_out", :controller => "clearance/sessions", :action => "destroy", :method => :delete
   map.goodbye "goodbye", :controller => "clearance/users", :action => "destroy"
   #MVR - users
-  map.resources :users, :only => [] do |users|
+  map.resources :users, :controller => "users", :only => [:show] do |users|
     #MVR - user blogcasts
     users.resources "blogcasts", :only => [:index, :show]
     #MVR - user comments 
     users.resources "comments", :controller => "users/comments", :only => [:index]
     #MVR - users likes
     users.resources "likes", :controller => "users/likes", :only => [:index]
-    #MVR - user subscriptions 
-    users.resources "subscriptions", :controller => "users/subscriptions", :only => [:index]
     #MVR - user subscribers 
     users.resources "subscribers", :controller => "users/subscribers", :only => [:index]
   end
+  #MVR - work around so subscription id is not necessary
+  map.user_subscriptions "users/:user_id/subscriptions.:format", :controller => "users/subscriptions", :action => "create", :conditions => { :method => :post }, :format => nil
+  map.user_subscriptions "users/:user_id/subscriptions.:format", :controller => "users/subscriptions", :action => "destroy", :conditions => { :method => :delete }, :format => nil
   map.user_blogcasts_permalink ":username/blogcasts", :controller => "users/blogcasts"
   map.user_likes_permalink ":username/likes", :controller => "users/likes"
   map.user_comments_permalink ":username/comments", :controller => "users/comments"
@@ -131,8 +132,6 @@ ActionController::Routing::Routes.draw do |map|
   map.password_settings "settings/password", :controller => "settings", :action => "password", :conditions => {:method => :post}
   #MVR - subscriptions
   map.resources :subscriptions, :controller => "subscriptions", :only => [:index, :create, :destroy]
-  #MVR - subscribed
-  map.resources :subscribed, :controller => "subscribed", :only => [:index]
   #MVR - posts 
   map.resources :posts, :controller => "posts", :only => [:destroy]
   #MVR - comments 

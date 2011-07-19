@@ -19,8 +19,9 @@ class TextPostsController < ApplicationController
     end
     @text_post = TextPost.new(params[:text_post])
     #MVR - find blogcast
-    @blogcast = @user.blogcasts.find(params[:blogcast_id]) 
-    if @blogcast.nil?
+    begin
+      @blogcast = @user.blogcasts.find(params[:blogcast_id]) 
+    rescue RecordNotFound
       @text_post.valid?
       @text_post.errors.add_to_base "Invalid blogcast id"
       respond_to do |format|
@@ -28,7 +29,6 @@ class TextPostsController < ApplicationController
         format.html {flash[:error] = "Invalid blogcast id"; redirect_to :back}
         format.xml {render :xml => @text_post.errors.to_xml, :status => :unprocessable_entity}
         format.json {render :json => @text_post.errors.to_json, :status => :unprocessable_entity}
-      end
       return
     end
     @text_post.blogcast_id = @blogcast.id
