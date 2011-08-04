@@ -7,6 +7,9 @@ xml.user do
   if !@setting.location.blank?
     xml.location(@setting.location)
   end
+  if !@setting.web.blank?
+    xml.web(@setting.web)
+  end
   if !@setting.bio.blank?
     xml.bio(@setting.bio)
   end

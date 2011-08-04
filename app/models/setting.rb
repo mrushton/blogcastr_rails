@@ -4,7 +4,8 @@ class Setting < ActiveRecord::Base
   belongs_to :mobile_phone_carrier
   #MVR - store in either s3 or locally on file
   if Rails.env.production?
-    has_attached_file :avatar, :styles => { :super => "120x120#", :large => "69x69#", :medium => "50x50#", :small => "40x40#", :thumb => "24x24#" }, :storage => :s3, :s3_credentials => "#{RAILS_ROOT}/config/s3.yml", :path => ":attachment/:id/:style/:basename.:extension", :processors => [ :auto_orient, :thumbnail ]
+    #TODO: move default url to cloud
+    has_attached_file :avatar, :default_url => "http://blogcastr.com/:attachment/:style/missing.png", :styles => { :super => "120x120#", :large => "69x69#", :medium => "50x50#", :small => "40x40#", :thumb => "24x24#" }, :storage => :s3, :s3_credentials => "#{RAILS_ROOT}/config/s3.yml", :path => ":attachment/:id/:style/:basename.:extension", :processors => [ :auto_orient, :thumbnail ]
     has_attached_file :background_image, :storage => :s3, :s3_credentials => "#{RAILS_ROOT}/config/s3.yml", :path => ":attachment/:id/:style/:basename.:extension"
   else
     has_attached_file :avatar, :styles => { :super => "120x120#", :large => "69x69#", :medium => "50x50#", :small => "40x40#", :thumb => "24x24#" }, :processors => [ :auto_orient, :thumbnail ]
