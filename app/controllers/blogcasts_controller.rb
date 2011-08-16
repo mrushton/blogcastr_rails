@@ -67,6 +67,7 @@ class BlogcastsController < ApplicationController
       return
     end
     @user = @blogcast.user
+    @image_post = @blogcast.posts.find(:first, :conditions => "type = 'ImagePost'", :order => "id DESC")
     #TODO: work around for making thrift calls from view
     @thrift_client = thrift_client
     respond_to do |format|

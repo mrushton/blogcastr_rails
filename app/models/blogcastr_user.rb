@@ -84,7 +84,7 @@ class BlogcastrUser < User
 
   #MVR - username must be between four and fifteen characters and can only contain alphanumeric characters and underscores
   def valid_username?
-    if username.length < 4
+    if username.nil? || username.length < 4
         errors.add(:username, "must be at least 4 characters")
     elsif username.length > 15
         errors.add(:username, "must not be greater than 15 characters")
@@ -96,7 +96,7 @@ class BlogcastrUser < User
 
   #MVR - password must be at least 6 characters
   def valid_password?
-    if self.password.length < 6
+    if self.password.nil? || self.password.length < 6
         errors.add(:password, "must be at least 6 characters")
     end
   end

@@ -1,4 +1,7 @@
 class Clearance::UsersController < ApplicationController
+  #MVR - needed to work around CSRF for REST api
+  #TODO: add CSRF before filter for standard authentication only, other option is to modify Rails to bypass CSRF for certain user agents
+  skip_before_filter :verify_authenticity_token, :only => [:create]
   before_filter :redirect_user, :only => [:new, :create], :if => :signed_in_as_blogcastr_user?
   filter_parameter_logging :password
 
@@ -31,10 +34,11 @@ class Clearance::UsersController < ApplicationController
   end
 
   def create
+    #AS DESIGNED: no need to get current user for REST api
     @current_user = current_user
     @blogcastr_user = BlogcastrUser.new(params[:blogcastr_user])
     @setting = Setting.new(params[:setting])
-    #AS DESIGNED: only verify the recaptcha if not a Facebook or Twitter user
+    #AS DESIGNED: only verify the recaptcha if not a Facebook/Twitter user or using the REST api 
     if @current_user.instance_of?(FacebookUser)
       @blogcastr_user.facebook_id = @current_user.facebook_id
       @blogcastr_user.facebook_access_token = @current_user.facebook_access_token
@@ -44,7 +48,7 @@ class Clearance::UsersController < ApplicationController
       @blogcastr_user.twitter_id = @current_user.twitter_id
       @blogcastr_user.twitter_access_token = @current_user.twitter_access_token
       @blogcastr_user.twitter_token_secret = @current_user.twitter_token_secret
-    elsif !verify_recaptcha :private_key => "6Lc7igsAAAAAADE0g3jbIf8YWU6fpYJppSFa3iBt"
+    elsif request.format.html? and !verify_recaptcha :private_key => "6Lc7igsAAAAAADE0g3jbIf8YWU6fpYJppSFa3iBt"
       @blogcastr_user.valid?
       #AS DESIGNED - valid? clears all errors so add it here 
       @blogcastr_user.errors.add_to_base("Humanness check failed")
@@ -72,6 +76,8 @@ class Clearance::UsersController < ApplicationController
     else
       @setting.time_zone = "UTC" 
     end
+    #MVR - create authentication token for everyone
+    @blogcastr_user.generate_authentication_token(params[:password])
     begin
       BlogcastrUser.transaction do
         @blogcastr_user.save!
@@ -87,24 +93,32 @@ class Clearance::UsersController < ApplicationController
         @blogcastr_user.errors.add_to_base "Unable to create ejabberd account"
         @setting.destroy
         @blogcastr_user.destroy
-        render :template => 'users/new', :layout => 'sign-up'
+        respond_to do |format|
+          format.html { render :template => 'users/new', :layout => 'sign-up' }
+          format.xml { render :action => 'errors', :status => :unprocessable_entity }
+        end
         return
       end
     rescue
       @setting.valid?
-      render :template => 'users/new', :layout => 'sign-up'
+      respond_to do |format|
+        format.html { render :template => 'users/new', :layout => 'sign-up' }
+        format.xml { render :action => 'errors', :status => :unprocessable_entity }
+      end
       return
     end
     if Rails.env.production?
-      ClearanceMailer.deliver_confirmation @blogcastr_user
-      #TODO: do we want a separate confirmation page?
-      flash[:info] = "Welcome! A confirmation message has been sent to your email address."
-      redirect_to sign_in_url
+      ClearanceMailer.deliver_confirmation @user
     else
       #AS DESIGNED: don't bother with email confirmation for sandbox
       @blogcastr_user.confirm_email!
-      sign_in @blogcastr_user
-      redirect_to home_path
+    end 
+    respond_to do |format|
+      format.html {
+        sign_in @blogcastr_user
+        redirect_to home_path
+      }
+      format.xml { render :template => 'share/new/user', :locals => { :user => @blogcastr_user, :setting => @setting, :show_authentication_token => true } }
     end
   end
 

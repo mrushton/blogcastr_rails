@@ -24,8 +24,7 @@ class AuthenticationTokensController < ApplicationController
     end
     @setting = @user.setting
     respond_to do |format|
-      format.xml { }
-      #TODO: json support
+      format.xml { render :template => 'share/new/user', :locals => { :user => @user, :setting => @setting, :show_authentication_token => true } }
     end
   end
 end

@@ -18,6 +18,12 @@ xml.blogcasts do
           xml.tag(tag.name)
         end
       end
+      image_post = blogcast.posts.find(:first, :conditions => "type = 'ImagePost'", :order => "id DESC")
+      if !image_post.nil?
+        xml.tag!("image-url", image_post.image.url(:original))
+        xml.tag!("image-width", image_post.image_width)
+        xml.tag!("image-height", image_post.image_height)
+      end
       xml.stats do
         #TODO: these rooms are created using an uppercase B but this needs to be lowercase
         current_viewers = @thrift_client.get_num_muc_room_occupants("blogcast." + blogcast.id.to_s)

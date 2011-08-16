@@ -13,15 +13,9 @@ class Clearance::SessionsController < ApplicationController
       flash[:error] = "Oops! Invalid username/email address or password."
       redirect_to sign_in_path
     else
-      #MVR - redeliver email if not confirmed 
-      if @user.email_confirmed?
-        sign_in(@user)
-        redirect_back_or home_path
-      else
-        ClearanceMailer.deliver_confirmation(@user)
-        flash[:info] = "A confirmation email has been resent. You must confirm your account before signing in." 
-        redirect_back_or sign_in_path
-      end
+      #MVR - no longer require email confirmation
+      sign_in(@user)
+      redirect_back_or home_path
     end
   end
 
