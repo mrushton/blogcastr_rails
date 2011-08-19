@@ -242,6 +242,14 @@ class BlogcastsController < ApplicationController
       @user = rest_current_user
     end
     @blogcast = @user.blogcasts.find(params[:id])
+    if @blogcast.nil?
+      respond_to do |format|
+        format.js { @error = "Oops! Blogcast does not exist."; render :action => "error" }
+        format.xml { head :not_found }
+        format.json { head :not_found }
+      end
+      return
+    end
     if !@blogcast.destroy
       respond_to do |format|
         format.js { @error = "Oops! Unable to delete #{@blogcast.title}."; render :action => "error" }
