@@ -219,18 +219,18 @@ class BlogcastsController < ApplicationController
     end
     if !@blogcast.save
       respond_to do |format|
-        format.html {}
-        format.xml {render :xml => @blogcast.errors, :status => :unprocessable_entity}
-        #TODO: fix json support
-        format.json {render :json => @blogcast.errors, :status => :unprocessable_entity}
+        format.html { }
+        format.xml { render :xml => @blogcast.errors, :status => :unprocessable_entity }
       end
       return
     end
+    @image_post = @blogcast.posts.find(:first, :conditions => "type = 'ImagePost'", :order => "id DESC")
+    #TODO: work around for making thrift calls from view
+    @thrift_client = thrift_client
     respond_to do |format|
       format.js
       format.html { redirect_to home_path }
-      format.xml { render :xml => @blogcast }
-      format.json { render :json => @blogcast }
+      format.xml { render :action => "show" }
     end
   end
 
@@ -244,7 +244,10 @@ class BlogcastsController < ApplicationController
     @blogcast = @user.blogcasts.find(params[:id])
     if @blogcast.nil?
       respond_to do |format|
-        format.js { @error = "Oops! Blogcast does not exist."; render :action => "error" }
+        format.js {
+          @error = "Oops! Blogcast does not exist."
+          render :action => "error"
+        }
         format.xml { head :not_found }
         format.json { head :not_found }
       end
