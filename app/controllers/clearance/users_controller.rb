@@ -108,7 +108,7 @@ class Clearance::UsersController < ApplicationController
       return
     end
     if Rails.env.production?
-      ClearanceMailer.deliver_confirmation @user
+      ClearanceMailer.deliver_confirmation @blogcastr_user
     else
       #AS DESIGNED: don't bother with email confirmation for sandbox
       @blogcastr_user.confirm_email!
