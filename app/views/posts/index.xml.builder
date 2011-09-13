@@ -18,7 +18,8 @@ xml.posts do
       if (post.type == "TextPost")
         xml.text(post.text) 
       elsif (post.type == "ImagePost")
-        xml.tag!("image-url", post.image.url(:original))
+        #MVR - pass false to prevent updated timestamp from being included in the url 
+        xml.tag!("image-url", post.image.url(:original, false))
         if !post.text.blank?
           xml.text(post.text)
         end

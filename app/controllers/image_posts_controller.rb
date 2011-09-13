@@ -76,7 +76,8 @@ class ImagePostsController < ApplicationController
       thrift_image_post.id = @image_post.id
       thrift_image_post.created_at = @image_post.created_at.xmlschema
       thrift_image_post.from = @image_post.from
-      thrift_image_post.image_url = @image_post.image.url(:original)
+      #MVR - pass false to prevent updated timestamp from being included in the url 
+      thrift_image_post.image_url = @image_post.image.url(:original, false)
       thrift_image_post.image_width = @image_post.image_width
       thrift_image_post.image_height = @image_post.image_height
       if !@image_post.text.blank?
