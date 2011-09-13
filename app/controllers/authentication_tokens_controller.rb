@@ -8,13 +8,6 @@ class AuthenticationTokensController < ApplicationController
       end
       return
     end
-    if !@user.email_confirmed?
-      respond_to do |format|
-        format.xml { render :xml => "<errors><error>Email not confirmed</error></errors>", :status => :unprocessable_entity }
-        format.json { render :json => "[[\"Email not confirmed\"]]", :status => :unprocessable_entity }
-      end
-      return
-    end
     #AS DESIGNED: do not generate a new token per request
     if @user.authentication_token.nil?
       authentication_token = @user.generate_authentication_token(params[:password])
