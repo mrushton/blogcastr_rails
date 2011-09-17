@@ -220,14 +220,13 @@ function blogcastrPostCallback(stanza) {
   {
     //parse text post
     var id = body.find("id:first").text();
-    var timestamp = body.find("timestamp:first").text();
+    var timestamp = body.find("created-at:first").text();
     var date = body.find("date:first").text();
     var text = body.find("text:first").text();
     var medium = body.find("medium:first").text();
     var user = jQuery(body).find("user:first");
     var username = user.find("username:first").text();
     var url = user.find("url:first").text();
-    var avatar_url = user.find("avatar_url:first").text();
     var comment = jQuery(body).find("comment:first");
     var comment_id = comment.find("id:first").text();
     var comment_timestamp = comment.find("timestamp:first").text();
@@ -238,7 +237,7 @@ function blogcastrPostCallback(stanza) {
     var comment_username = comment_user.find("username:first").text();
     var comment_account = comment_user.find("account:first").text();
     var comment_url = comment_user.find("url:first").text();
-    var comment_avatar_url = comment_user.find("avatar_url:first").text();
+    var comment_avatar_url = comment_user.find("avatar-url:first").text().replace("original", "small");
     //create new post element
     //post header
     var timestamp_in_words_span = jQuery("<span>").addClass("timestamp-in-words").attr("timestamp", timestamp).text(blogcastrPastTimestampInWords(timestamp));
