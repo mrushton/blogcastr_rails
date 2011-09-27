@@ -2,6 +2,10 @@ div.main {
 	width: 520px;
 }
 
+div.main h2:first-child {
+	margin-top: 10px;
+}
+
 div.main p {
 	color: #565656;	
 	font-size: 0.85em;

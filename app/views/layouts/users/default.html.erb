@@ -7,7 +7,7 @@
     <%= stylesheet_link_tag "new/all", :media => "screen" %>
     <%= stylesheet_link_tag "new/profile", :media => "screen" %>
     <%= render :partial => "/share/new/custom_background", :locals => { :theme => @theme, :setting => @setting } -%>
-    <%= javascript_include_tag :defaults, "jquery.js", "new/application.js", :media => "all" %>
+    <%= javascript_include_tag :defaults, "jquery.js", "jquery.backgroundPosition.js", "jquery.cookie.js", "new/application.js", :media => "all" %>
     <% javascript_tag do %>
       jQuery.noConflict();
     <% end %>

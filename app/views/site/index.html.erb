@@ -1,4 +1,9 @@
+<%- if show_top_bar -%>
+<%= render :partial => "/share/new/top_bar" -%>
+<div id="marketing-container" class="top-bar">
+<%- else -%>
 <div id="marketing-container">
+<%- end -%>
   <div id="marketing">
     <%= render :partial => "share/new/marketing_header" %>
     <div id="marketing-content" class="clearfix">

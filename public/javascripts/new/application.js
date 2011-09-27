@@ -185,4 +185,29 @@ jQuery(document).ready(function() {
   jQuery('div.item-settings-button').click(itemSettingsButtonClick);
   //MVR - this stops propagation of click events for the delete action 
   jQuery('a.destroy').click(stopPropagation);
+  //MVR - handle resizing of window
+  jQuery(window).resize(function() {
+   // var margin_top = jQuery('#content-container').margin().top;	
+   // var padding_top = jQuery('#content-container').padding().top;
+   // var padding_bottom = jQuery('#content-container').padding().bottom;
+   // var height = jQuery(window).height() - margin_top - padding_top - padding_bottom;
+   // jQuery('#content-container.custom-background').minSize({height: height});
+  });
+  jQuery(window).resize();
+  //MVR - handle scrolling for fixed top bar
+  jQuery(window).scroll(function() {
+    var scroll_left = jQuery(window).scrollLeft();
+    jQuery("#top-bar-content").css('left', -scroll_left + 'px');
+  });
+  //MVR - animations to hide top bar 
+  jQuery('#top-bar-close-container').click(function() {
+    jQuery('#top-bar-container').animate({top: '-=30'}, 500, function() {
+      //MVR - hide the top bar to get rid of the shadow
+      this.hide();
+    });
+    //MVR - what is below the top bar has different ids
+    jQuery('.top-bar').animate({marginTop: '-=30'}, 500);
+    jQuery('body').animate({backgroundPosition: '0px 0px'}, 500);
+    jQuery.cookie('new_iphone_app', '1', {path: '/'});
+  });
 })

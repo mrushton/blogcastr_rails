@@ -1,6 +1,11 @@
 <div id="alert" style="display: none;">
 </div>
+<%- if show_top_bar -%>
+<%= render :partial => "/share/new/top_bar" -%>
+<div id="content-container" class="custom-background top-bar">
+<%- else -%>
 <div id="content-container" class="custom-background">
+<%- end -%>
   <div id="content">
     <%= render :partial => "/share/new/header", :locals => { :user => @user } -%>
     <div class="content-table" cellspacing="0">

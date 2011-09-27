@@ -139,4 +139,13 @@ module ApplicationHelper
       end
     end
   end
+
+  def show_top_bar
+    #MVR - this defines the cookie for showing the current top bar
+    if cookies[:new_iphone_app].blank?
+     return true; 
+    else
+      return false; 
+    end
+  end
 end

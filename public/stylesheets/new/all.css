@@ -84,7 +84,11 @@ ol, ul {
 	line-height: 30px;
 }
 
-body.sign-in-and-sign-up-body {
+.top-bar {
+	margin-top: 30px;
+}
+
+body.sign-in-sign-up-body {
 	background-image: none;
 	background-color: #e9e9e9;
 }
@@ -903,11 +907,78 @@ div.side h2:first-child {
 	text-align: center;
 	top: 0px;
 	width: 100%;
-	z-index: 1;
+	z-index: 1001;
 }
 
 #twitter-sign-in, #facebook-login {
 	display: none;
+}
+
+#top-bar-container {
+	-moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.6); 
+	-webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.6); 
+	background-image: url("/images/new/top-bar.png"); 
+	height: 30px;
+	left: 0px;
+	position: fixed;
+	top: 0px;
+	width: 100%;
+	z-index: 1000;
+}
+
+#top-bar {
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+	width: 960px;
+}
+
+#top-bar-content {
+	height: 30px;
+	line-height: 30px;
+	position: relative;
+	text-align: center;
+}
+
+#mini-iphone {
+	background-image: url("/images/new/mini-iphone.png"); 
+	display: inline-block;
+	height: 17px;
+	width: 10px;
+	vertical-align: text-bottom;
+}
+
+#top-bar-content a {
+	color: #ffffff;
+	font-size: 0.8em;
+	font-weight: bold;
+	margin-left: 2px;
+}
+
+#top-bar-content a:hover {
+	color: #ffd02b; 
+	text-decoration: none;
+}
+
+#top-bar-content span.highlight {
+	text-decoration: underline;
+}
+
+#top-bar-close-container {
+	cursor: pointer;
+	float: right;
+	height: 30px;
+	line-height: 30px;
+}
+
+#top-bar-close-image {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+#top-bar-close {
+	color: #ffffff;
+	font-size: 0.65em;	
 }
 
 #content-container {
@@ -920,19 +991,19 @@ div.side h2:first-child {
 }
 
 #content-container.custom-background {
-	background: inherit;
+	background: transparent;
 	padding-bottom: 12px;
 }
 
-#content-container.sign-in-and-sign-up-content-container {
+#content-container.sign-in-sign-up-content-container {
 	padding: 0px;
 }
 
-#content-container.sign-in-and-sign-up-content-container #content {
+#content-container.sign-in-sign-up-content-container #content {
 	padding-bottom: 40px;
 }
 
-#content-container.sign-in-and-sign-up-content-container form {
+#content-container.sign-in-sign-up-content-container form {
 	margin-top: 8px;
 }
 

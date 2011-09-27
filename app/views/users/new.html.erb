@@ -2,7 +2,12 @@
 </div>
 <div id="twitter-sign-in">
 </div>
-<div id="content-container" class="sign-in-and-sign-up-content-container">
+<%- if show_top_bar -%>
+<%= render :partial => "/share/new/top_bar" -%>
+<div id="content-container" class="sign-in-sign-up-content-container top-bar">
+<%- else -%>
+<div id="content-container" class="sign-in-sign-up-content-container">
+<%- end -%>
   <div id="content">
     <%= render :partial => "share/new/marketing_header" %>
     <div id="main" class="sign-up-main">

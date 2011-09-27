@@ -1,18 +1,25 @@
+<%- if show_top_bar -%>
+<%= render :partial => "/share/new/top_bar" -%>
+<div id="content-container" class="top-bar">
+<%- else -%>
 <div id="content-container">
+<%- end -%>
   <div id="content">
     <%= render :partial => "/share/new/header", :locals => { :user => @user } -%>
     <div class="content-table">
       <div class="table-row">
         <div class="main">
           <h1>About Blogcastr</h1>
-          <h2>Why?</h2>
-          <p>While living in New York City, Matt was always doing cool stuff that he wanted to share with his friends. Unfortunately there wasn't an easy way for him to share it in real-time. He explained the problem to his brother Kyle and Blogcastr was born.</p>
-          <h2>What?</h2>
-          <p>Blogcastr is a free, easy-to-use live blogging service for sharing cool stuff as it happens. From attending a sports game or concert to watching your favorite TV show, Blogcastr enables you to share what you are doing as you are doing it. It's a great way to create real-time conversation with friends.</p> 
-          <h2>How?</h2>
-          <p>Using Blogcastr from the web or your mobile phone is super easy. Simply sign-up, create a blogcast and start blogcasting! Post text and images while you recieve comments from your friends.</p> 
-          <h2>Where?</h2> 
-          <p>The Blogcastr bunker is located in Cambridge, MA.</p>
+          <div>
+            <h2>Why?</h2>
+            <p>While living in New York City, Matt was always doing cool stuff that he wanted to share with his friends. Unfortunately there wasn't an easy way for him to share it in real-time. He explained the problem to his brother Kyle and Blogcastr was born.</p>
+            <h2>What?</h2>
+            <p>Blogcastr is a free, easy-to-use live blogging service for sharing cool stuff as it happens. From attending a sports game or concert to watching your favorite TV show, Blogcastr enables you to share what you are doing as you are doing it. It's a great way to create real-time conversation with friends.</p> 
+            <h2>How?</h2>
+            <p>Using Blogcastr from the web or your mobile phone is super easy. Simply sign-up, create a blogcast and start blogcasting! Post text and images while you recieve comments from your friends.</p> 
+            <h2>Where?</h2> 
+            <p>The Blogcastr bunker is located in Cambridge, MA.</p>
+          </div>
           <div class="follow">
             Follow us and stay up to date:
           </div>

@@ -5,6 +5,10 @@
     <title><%= @title %></title>
     <link rel="shortcut icon" href="/images/new/favicon.ico">
     <%= stylesheet_link_tag "new/all", "new/privacy-and-terms", :media => "screen" %>
+    <%= javascript_include_tag :defaults, "jquery.js", "new/application.js", "jquery.backgroundPosition.js", "jquery.cookie.js", :media => "all" %>
+    <% javascript_tag do %>
+      jQuery.noConflict();
+    <% end %>
   </head>
   <body>
     <%= yield :layout %>

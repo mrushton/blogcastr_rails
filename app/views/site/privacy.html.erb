@@ -1,4 +1,9 @@
+<%- if show_top_bar -%>
+<%= render :partial => "/share/new/top_bar" -%>
+<div id="content-container" class="top-bar">
+<%- else -%>
 <div id="content-container">
+<%- end -%>
   <div id="content">
     <%= render :partial => "/share/new/header", :locals => { :user => @user } -%>
     <div id="main">
