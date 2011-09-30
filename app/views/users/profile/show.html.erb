@@ -49,7 +49,7 @@
               </div>
 <%- elsif !@profile_user.setting.web.blank? -%>
               <div id="location-and-web">
-                <%= @profile_user.setting.web -%> 
+                <%= link_to(@profile_user.setting.web, @profile_user.setting.web, :rel => "nofollow") -%> 
               </div>
 <%- end -%> 
 <%- if !@profile_user.setting.bio.blank? -%>
