@@ -200,7 +200,7 @@ jQuery(document).ready(function() {
     jQuery("#top-bar-content").css('left', -scroll_left + 'px');
   });
   //MVR - animations to hide top bar 
-  jQuery('#top-bar-close-container').click(function() {
+  jQuery('#top-bar-close').click(function() {
     jQuery('#top-bar-container').animate({top: '-=30'}, 500, function() {
       //MVR - hide the top bar to get rid of the shadow
       this.hide();

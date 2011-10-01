@@ -965,20 +965,19 @@ div.side h2:first-child {
 }
 
 #top-bar-close-container {
-	cursor: pointer;
 	float: right;
 	height: 30px;
 	line-height: 30px;
 }
 
-#top-bar-close-image {
-	display: inline-block;
-	vertical-align: middle;
-}
-
 #top-bar-close {
-	color: #ffffff;
+	background-image: url("/images/new/close-x.png");
+	background-position: 0% 50%;
+	background-repeat: no-repeat;
+	color: #909090;
+	cursor: pointer;
 	font-size: 0.65em;	
+	padding-left: 14px;
 }
 
 #content-container {
