@@ -17,7 +17,7 @@
       <div class="username-and-timestamp-in-words-container">
         <%= link_to "@" + user.username, "http://twitter.com/" + user.username, :class => "username" -%>
 <%- end -%>
-        <span class="timestamp-in-words" timestamp="<%= comment.created_at.to_i.to_s -%>"><%= timestamp_in_words_helper comment.created_at -%></span>
+        <span class="timestamp-in-words" data-date="<%= comment.created_at.xmlschema -%>"><%= timestamp_in_words_helper comment.created_at -%></span>
       </div>
       <p class="text">
         <%= comment.text %>

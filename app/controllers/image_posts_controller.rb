@@ -65,6 +65,17 @@ class ImagePostsController < ApplicationController
       end
       return
     end
+    #MVR - create short url
+    #TODO: probably should put this in after_create but need to work out the behavior of updating 
+    bitly = Bitly.new(BITLY_LOGIN, BITLY_API_KEY)
+    begin
+      @image_post.short_url = bitly.shorten("http://" + HOST + "/" + @user.username + "/" + @blogcast.year.to_s + "/" + @blogcast.month.to_s + "/" + @blogcast.day.to_s + "/" + @blogcast.link_title + "/posts/" + @image_post.id.to_s)
+    rescue BitlyError => e
+      logger.error(e.message)
+    else
+      logger.error("Shorten image post url failed")
+    end
+    @image_post.save
     begin
       thrift_user = Thrift::User.new
       thrift_user.id = @user.id
@@ -76,6 +87,8 @@ class ImagePostsController < ApplicationController
       thrift_image_post.id = @image_post.id
       thrift_image_post.created_at = @image_post.created_at.xmlschema
       thrift_image_post.from = @image_post.from
+      thrift_image_post.url = blogcast_post_permalink_url(:username => @user.username, :year => @blogcast.year, :month => @blogcast.month, :day => @blogcast.day, :title => @blogcast.link_title, :post_id => @image_post.id) 
+      thrift_image_post.short_url = @image_post.short_url
       #MVR - pass false to prevent updated timestamp from being included in the url 
       thrift_image_post.image_url = @image_post.image.url(:original, false)
       thrift_image_post.image_width = @image_post.image_width

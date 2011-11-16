@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110514225724) do
+ActiveRecord::Schema.define(:version => 20111015172647) do
 
   create_table "blogcast_reminders", :force => true do |t|
     t.string   "type",         :null => false
@@ -95,6 +95,7 @@ ActiveRecord::Schema.define(:version => 20110514225724) do
     t.datetime "updated_at"
     t.integer  "image_width"
     t.integer  "image_height"
+    t.string   "short_url"
   end
 
   create_table "sent_blogcast_reminders", :force => true do |t|

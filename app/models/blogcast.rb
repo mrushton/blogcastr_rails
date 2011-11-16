@@ -22,16 +22,4 @@ class Blogcast < ActiveRecord::Base
       errors.add(:link_title, "is not valid")
     end
   end
-
-  def shorten_url
-    begin
-      json = Net::HTTP.get(URI.parse("http://api.bit.ly/v3/shorten?login=" + BITLY_LOGIN + "&apiKey=" + BITLY_API_KEY + "&uri=" + "http://" + HOST + "/" + user.username + "/" + year.to_s + "/" + month.to_s + "/" + day.to_s + "/" + link_title))
-      response = ActiveSupport::JSON::decode(json)
-      if response["status_code"] == 200
-        update_attribute :short_url, response["data"]["url"]
-      end
-    rescue
-      return
-    end
-  end
 end

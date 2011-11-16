@@ -43,6 +43,17 @@ class TextPostsController < ApplicationController
       end
       return
     end
+    #MVR - create short url
+    #TODO: probably should put this in after_create but need to work out the behavior of updating 
+    bitly = Bitly.new(BITLY_LOGIN, BITLY_API_KEY)
+    begin
+      @text_post.short_url = bitly.shorten("http://" + HOST + "/" + @user.username + "/" + @blogcast.year.to_s + "/" + @blogcast.month.to_s + "/" + @blogcast.day.to_s + "/" + @blogcast.link_title + "/posts/" + @text_post.id.to_s)
+    rescue BitlyError => e
+      logger.error(e.message)
+    else
+      logger.error("Shorten text post url failed")
+    end
+    @text_post.save
     begin
       thrift_user = Thrift::User.new
       thrift_user.id = @user.id
@@ -55,6 +66,8 @@ class TextPostsController < ApplicationController
       thrift_text_post.created_at = @text_post.created_at.xmlschema
       thrift_text_post.from = @text_post.from
       thrift_text_post.text = @text_post.text
+      thrift_text_post.url = blogcast_post_permalink_url(:username => @user.username, :year => @blogcast.year, :month => @blogcast.month, :day => @blogcast.day, :title => @blogcast.link_title, :post_id => @text_post.id) 
+      thrift_text_post.short_url = @text_post.short_url
       #MVR - send text post to muc room
       err = thrift_client.send_text_post_to_muc_room(@user.username, HOST, "Blogcast." + @blogcast.id.to_s, thrift_user, thrift_text_post)
       thrift_client_close

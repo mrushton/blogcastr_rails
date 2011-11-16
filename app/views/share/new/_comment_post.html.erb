@@ -1,6 +1,24 @@
-<%- user = comment_post.comment.user -%>
-<li id="Post:<%= comment_post.id -%>" class="item">
+<%- comment = comment_post.comment -%>
+<%- user = comment.user -%>
+<%- blogcast = comment_post.blogcast -%>
+<%- blogcast_user = blogcast.user -%>
+<%- if user.instance_of?(BlogcastrUser) -%>
+  <%- username = user.username -%>
+  <%- user_url = profile_path(:username => username) -%>
+<%- elsif user.instance_of?(FacebookUser) -%>
+  <%- username = user.setting.full_name -%>
+  <%- user_url = user.facebook_link -%>
+<%- elsif user.instance_of?(TwitterUser) -%>
+  <%- username = user.username -%>
+  <%- user_url = "http://twitter.com/" + username -%>
+<%- end -%>
+<li class="item">
   <div>
+<%- html_options = { :class => "item", :"data-id" => comment_post.id, :"data-type" => comment_post.type, :"data-username" => username, :"data-user-url" => user_url, :"data-avatar-url" => user.setting.avatar(:small), :"data-text" => comment.text, :"data-date" => comment_post.created_at.xmlschema } -%>
+<%- if !comment_post.short_url.blank? -%>
+  <%- html_options[:"data-short-url"] = comment_post.short_url -%>
+<%- end -%>
+    <%= link_to "", blogcast_post_permalink_path(:username => blogcast_user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title, :post_id => comment_post.id), html_options -%>
 <%- if current_user == comment_post.user -%>
     <div class="item-header settings-button-header">
       <div class="item-settings-button">
@@ -8,13 +26,13 @@
 <%- else -%>
     <div class="item-header">
 <%- end -%>
-      <span class="timestamp-in-words" timestamp="<%= comment_post.created_at.to_i.to_s -%>" ><%= timestamp_in_words_helper comment_post.created_at -%></span>
+      <span class="timestamp-in-words" data-date="<%= comment_post.created_at.xmlschema -%>" ><%= timestamp_in_words_helper comment_post.created_at -%></span>
     </div>
     <div class="item-body">
 <%- if current_user == comment_post.user -%>
       <ul class="item-settings" style="display: none;">
         <li>
-          <%= link_to_remote "Delete", :html => { :class => "destroy" }, :url => post_path(:id => comment_post.id), :method => "delete", :confirm => "Sure you want to delete Post #{comment_post.id}? This can't be undone.", :failure => "alert('Oops! We couldn\\'t delete Post #{comment_post.id}.');" %>
+          <%= link_to_remote "Delete", :html => { :class => "destroy" }, :url => post_path(:id => comment_post.id), :method => "delete", :confirm => "Are you sure you want to delete this post?", :failure => "alert('Oops! We couldn\\'t delete the post.');" %>
         </li>
       </ul>
 <%- end -%>

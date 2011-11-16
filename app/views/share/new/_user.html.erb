@@ -1,5 +1,6 @@
 <%- setting = user.setting -%>
 <li class="item" item-link="<%= profile_path(:username => user.username) -%>">
+  <%= link_to "", profile_path(:username => user.username), :class => "item" -%>
   <div class="item-header">
     <span class="username"><%= user.username -%></span>
   </div>

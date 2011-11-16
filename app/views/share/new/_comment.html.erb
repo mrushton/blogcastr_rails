@@ -9,7 +9,7 @@
 <%- else -%>
     <div class="item-header">
 <%- end -%>
-      <span class="timestamp-in-words" timestamp="<%= comment.created_at.to_i.to_s -%>" ><%= timestamp_in_words_helper comment.created_at -%></span>
+      <span class="timestamp-in-words" data-date="<%= comment.created_at.xmlschema -%>" ><%= timestamp_in_words_helper comment.created_at -%></span>
     </div>
     <div class="item-body">
 <%- if current_user == blogcast.user -%>

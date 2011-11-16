@@ -34,7 +34,7 @@ module ApplicationHelper
     else
       minutes = ((elapsed_time - (hours * 1.hour)) / 1.minute).floor
       if minutes == 0
-        time_ago = "less than 1 minute ago";
+        time_ago = "just now";
       elsif (minutes == 1)
         time_ago = "1 minute ago";
       else
@@ -65,7 +65,7 @@ module ApplicationHelper
     else
       minutes = ((time_difference - (hours * 1.hour)) / 1.minute).floor
       if minutes == 0
-        time_from_now = "less than 1 minute from now";
+        time_from_now = "just now";
       elsif (minutes == 1)
         time_from_now = "1 minute from now";
       else

@@ -53,6 +53,17 @@ class CommentPostsController < ApplicationController
     end
     #TODO: param format seems non-standard (i.e. should be comment_post[from])
     @comment_post = CommentPost.create(:user_id => @user.id, :blogcast_id => @blogcast.id, :from => params[:from], :comment_id => @comment.id)
+    #MVR - create short url
+    #TODO: probably should put this in after_create but need to work out the behavior of updating 
+    bitly = Bitly.new(BITLY_LOGIN, BITLY_API_KEY)
+    begin
+      @comment_post.short_url = bitly.shorten("http://" + HOST + "/" + @user.username + "/" + @blogcast.year.to_s + "/" + @blogcast.month.to_s + "/" + @blogcast.day.to_s + "/" + @blogcast.link_title + "/posts/" + @comment_post.id.to_s)
+    rescue BitlyError => e
+      logger.error(e.message)
+    else
+      logger.error("Shorten comment post url failed")
+    end
+    @comment_post.save
     @comment_user = @comment.user
     begin
       thrift_user = Thrift::User.new
@@ -71,6 +82,8 @@ class CommentPostsController < ApplicationController
       thrift_comment.created_at = @comment.created_at.xmlschema
       thrift_comment.from = @comment.from
       thrift_comment.text = @comment.text
+      thrift_comment_post.url = blogcast_post_permalink_url(:username => @user.username, :year => @blogcast.year, :month => @blogcast.month, :day => @blogcast.day, :title => @blogcast.link_title, :post_id => @comment_post.id) 
+      thrift_comment_post.short_url = @comment_post.short_url
       thrift_comment_user = Thrift::User.new
       thrift_comment_user.id = @comment_user.id
       thrift_comment_user.type = @comment_user.class.to_s 

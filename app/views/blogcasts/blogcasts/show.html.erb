@@ -1,8 +1,23 @@
-<div id="alert" style="display: none;">
-</div>
 <div id="facebook-login">
 </div>
 <div id="twitter-sign-in">
+</div>
+<div id="overlay-container" style="display: none;">
+  <div id="overlay-table">
+    <div id="overlay-table-cell">
+      <div id="overlay">
+        <span id="overlay-close">close</span>
+        <div id="overlay-post-info">
+        </div>
+        <div id="overlay-post-container">
+          <div id="overlay-post-content">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="alert" style="display: none;">
 </div>
 <%- if show_top_bar -%>
 <%= render :partial => "/share/new/top_bar" -%>
@@ -37,17 +52,17 @@
   <%- end -%>
           </div>
 <%- end -%>
-          <h1><%= @blogcast.title -%></h1>
-<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+          <h1><%=h @blogcast.title -%></h1>
           <div id="blogcast-info">
             <div id="blogcast-user-and-date-and-share">
               <%= link_to @blogcast_user.username, profile_path(:username => @blogcast_user.username), :class => "username" -%> &bull; <%= @blogcast.starting_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/, ' ') -%> &bull;
-              <fb:like layout="button_count"></fb:like>
-              <a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal">Tweet</a>
+              <fb:like layout="button_count" send="true"></fb:like>
+              <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+              <a href="http://twitter.com/share" class="twitter-share-button" data-url="<%= @blogcast.short_url -%>" data-text="Check out &quot;<%=h @blogcast.title -%>&quot; by <%= @blogcast_user.username -%> via @Blogcastr" data-counturl="<%= blogcast_permalink_url -%>">Tweet</a>
             </div>
 <%- if !@blogcast.description.blank? -%>
             <div id="blogcast-description">
-              <%= @blogcast.description -%>
+              <%=h @blogcast.description -%>
             </div>
 <%- end -%>
 <%- if @tags.length > 0 -%>
@@ -135,7 +150,7 @@
               current viewers
             </div>
           </div>
-          <h2><%= @blogcast.title -%></h2>
+          <h2><%=h @blogcast.title -%></h2>
           <div class="arrow"></div>
           <div class="side-info-container">
             <div class="side-info-inner-container light">

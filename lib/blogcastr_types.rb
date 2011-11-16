@@ -58,13 +58,17 @@ module Thrift
       CREATED_AT = 2
       FROM = 3
       TEXT = 4
+      URL = 5
+      SHORT_URL = 6
 
-      ::Thrift::Struct.field_accessor self, :id, :created_at, :from, :text
+      ::Thrift::Struct.field_accessor self, :id, :created_at, :from, :text, :url, :short_url
       FIELDS = {
         ID => {:type => ::Thrift::Types::I32, :name => 'id'},
         CREATED_AT => {:type => ::Thrift::Types::STRING, :name => 'created_at'},
         FROM => {:type => ::Thrift::Types::STRING, :name => 'from'},
-        TEXT => {:type => ::Thrift::Types::STRING, :name => 'text'}
+        TEXT => {:type => ::Thrift::Types::STRING, :name => 'text'},
+        URL => {:type => ::Thrift::Types::STRING, :name => 'url'},
+        SHORT_URL => {:type => ::Thrift::Types::STRING, :name => 'short_url'}
       }
 
       def struct_fields; FIELDS; end
@@ -83,8 +87,10 @@ module Thrift
       IMAGE_WIDTH = 5
       IMAGE_HEIGHT = 6
       TEXT = 7
+      URL = 8
+      SHORT_URL = 9
 
-      ::Thrift::Struct.field_accessor self, :id, :created_at, :from, :image_url, :image_width, :image_height, :text
+      ::Thrift::Struct.field_accessor self, :id, :created_at, :from, :image_url, :image_width, :image_height, :text, :url, :short_url
       FIELDS = {
         ID => {:type => ::Thrift::Types::I32, :name => 'id'},
         CREATED_AT => {:type => ::Thrift::Types::STRING, :name => 'created_at'},
@@ -92,7 +98,9 @@ module Thrift
         IMAGE_URL => {:type => ::Thrift::Types::STRING, :name => 'image_url'},
         IMAGE_WIDTH => {:type => ::Thrift::Types::I32, :name => 'image_width'},
         IMAGE_HEIGHT => {:type => ::Thrift::Types::I32, :name => 'image_height'},
-        TEXT => {:type => ::Thrift::Types::STRING, :name => 'text'}
+        TEXT => {:type => ::Thrift::Types::STRING, :name => 'text'},
+        URL => {:type => ::Thrift::Types::STRING, :name => 'url'},
+        SHORT_URL => {:type => ::Thrift::Types::STRING, :name => 'short_url'}
       }
 
       def struct_fields; FIELDS; end
@@ -151,12 +159,16 @@ module Thrift
       ID = 1
       CREATED_AT = 2
       FROM = 3
+      URL = 4
+      SHORT_URL = 5
 
-      ::Thrift::Struct.field_accessor self, :id, :created_at, :from
+      ::Thrift::Struct.field_accessor self, :id, :created_at, :from, :url, :short_url
       FIELDS = {
         ID => {:type => ::Thrift::Types::I32, :name => 'id'},
         CREATED_AT => {:type => ::Thrift::Types::STRING, :name => 'created_at'},
-        FROM => {:type => ::Thrift::Types::STRING, :name => 'from'}
+        FROM => {:type => ::Thrift::Types::STRING, :name => 'from'},
+        URL => {:type => ::Thrift::Types::STRING, :name => 'url'},
+        SHORT_URL => {:type => ::Thrift::Types::STRING, :name => 'short_url'}
       }
 
       def struct_fields; FIELDS; end

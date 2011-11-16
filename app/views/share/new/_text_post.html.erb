@@ -1,6 +1,12 @@
 <%- user = text_post.user -%>
-<li id="Post:<%= text_post.id -%>" class="item">
+<%- blogcast = text_post.blogcast -%>
+<li class="item">
   <div>
+<%- html_options = { :class => "item", :"data-id" => text_post.id, :"data-type" => text_post.type, :"data-short-url" => text_post.short_url, :"data-username" => user.username, :"data-user-url" => profile_path(:username => user.username), :"data-avatar-url" => user.setting.avatar(:small), :"data-text" => text_post.text, :"data-date" => text_post.created_at.xmlschema } -%>
+<%- if !text_post.short_url.blank? -%>
+  <%- html_options[:"data-short-url"] = text_post.short_url -%>
+<%- end -%>
+    <%= link_to "", blogcast_post_permalink_path(:username => user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title, :post_id => text_post.id), html_options -%>
 <%- if current_user == user -%>
     <div class="item-header settings-button-header">
       <div class="item-settings-button">
@@ -8,13 +14,13 @@
 <%- else -%>
     <div class="item-header">
 <%- end -%>
-      <span class="timestamp-in-words" timestamp="<%= text_post.created_at.to_i.to_s -%>" ><%= timestamp_in_words_helper text_post.created_at -%></span>
+      <span class="timestamp-in-words" data-date="<%= text_post.created_at.xmlschema -%>" ><%= timestamp_in_words_helper text_post.created_at -%></span>
     </div>
     <div class="item-body">
 <%- if current_user == user -%>
       <ul class="item-settings" style="display: none;">
         <li>
-          <%= link_to_remote "Delete", :html => { :class => "destroy" }, :url => post_path(:id => text_post.id), :method => "delete", :confirm => "Sure you want to delete Post #{text_post.id}? This can't be undone.", :failure => "alert('Oops! We couldn\\'t delete Post #{text_post.id}.');" %>
+          <%= link_to_remote "Delete", :html => { :class => "destroy" }, :url => post_path(:id => text_post.id), :method => "delete", :confirm => "Are you sure you want to delete the post?", :failure => "alert('Oops! We couldn\\'t delete the post.');" %>
         </li>
       </ul>
 <%- end -%>

@@ -15,6 +15,10 @@ function itemClick() {
   var item_link = jQuery(this).attr("item-link");
   if (item_link != null)
     window.location = item_link;
+  var history = window.History;
+
+//alert(window.location + '/posts/12345');
+//  history.pushState(null, null, window.location + "/posts/12345");
 }
 
 function itemSettingsButtonClick() {
@@ -24,20 +28,6 @@ function itemSettingsButtonClick() {
 
 function stopPropagation() {
   return false;
-}
-
-//MVR - routine found at http://wiki.cdyne.com/wiki/index.php?title=Converting_XML_Timestamp_to_Javascript_Date
-//expected format: 2006-08-29T01:18:15.001Z
-function TimeStampToDate(xmlDate)
-{
-    var dt = new Date();
-    var dtS = xmlDate.slice(xmlDate.indexOf('T')+1, xmlDate.indexOf('.'))
-    var TimeArray = dtS.split(":");
-    dt.setUTCHours(TimeArray[0],TimeArray[1],TimeArray[2]);
-    dtS = xmlDate.slice(0, xmlDate.indexOf('T'))
-    TimeArray = dtS.split("-");
-    dt.setUTCFullYear(TimeArray[0],TimeArray[1],TimeArray[2]);
-    return dt;
 }
 
 function blogcastrPastTimestampInWords(timestamp) {
@@ -72,7 +62,7 @@ function blogcastrPastTimestampInWords(timestamp) {
   else {
     var minutes = Math.floor((timestamp_elapsed_time-hours*3600)/60);
     if (minutes == 0) {
-      return "less than 1 minute ago";
+      return "just now";
     }
     else if (minutes == 1) {
       return "1 minute ago";
@@ -84,10 +74,9 @@ function blogcastrPastTimestampInWords(timestamp) {
 }
 
 function blogcastrUpdateTimestampInWords() {
-return;
   jQuery("span.timestamp-in-words")
     .each(function () {
-      var timestamp = jQuery(this).attr("timestamp");
+      var timestamp = jQuery(this).attr("data-date");
       var timestamp_in_words = blogcastrPastTimestampInWords(timestamp);
       //TODO - check before setting or not?
       var prev_timestamp_in_words = jQuery(this).text();
@@ -181,7 +170,6 @@ function preloadImages(image_array) {
 
 jQuery(document).ready(function() {
   //MVR - attach click events
-  jQuery('li.item').click(itemClick);
   jQuery('div.item-settings-button').click(itemSettingsButtonClick);
   //MVR - this stops propagation of click events for the delete action 
   jQuery('a.destroy').click(stopPropagation);

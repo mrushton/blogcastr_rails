@@ -101,6 +101,7 @@ ActionController::Routing::Routes.draw do |map|
     blogcasts.update_current_viewers "update_current_viewers", :controller => "viewers", :action => "update_current_viewers"
   end
   map.blogcast_permalink ":username/:year/:month/:day/:title", :controller => "blogcasts/blogcasts", :action => "show", :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
+  map.blogcast_post_permalink ":username/:year/:month/:day/:title/posts/:post_id", :controller => "blogcasts/posts", :action => "show", :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
   map.blogcast_posts_permalink ":username/:year/:month/:day/:title/posts", :controller => "blogcasts/posts", :action => "index", :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
   map.blogcast_comments_permalink ":username/:year/:month/:day/:title/comments", :controller => "blogcasts/comments", :action => "index", :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
   map.blogcast_likes_permalink ":username/:year/:month/:day/:title/likes", :controller => "blogcasts/likes", :requirements => {:year => /20\d\d/, :month => /1?\d/, :day => /[1-3]?\d/}
