@@ -83,4 +83,39 @@ class Blogcasts::PostsController < ApplicationController
     render :layout => "blogcasts/default"
     return
   end
+
+  def show
+    @current_user = current_user
+    @blogcast_user = BlogcastrUser.find_by_username(params[:username])
+    if @blogcast_user.nil?
+      respond_to do |format|
+        format.html { render :file => "public/404.html", :layout => false, :status => 404 }
+      end
+      return
+    end
+    @blogcast = @blogcast_user.blogcasts.find(:first, :conditions => { :year => params[:year].to_i, :month => params[:month].to_i, :day => params[:day].to_i, :link_title => params[:title] })
+    if @blogcast.nil?
+      respond_to do |format|
+        format.html { render :file => "public/404.html", :layout => false, :status => 404 }
+      end
+      return
+    end
+    begin
+      @post = @blogcast.posts.find(params[:post_id])
+    rescue
+      respond_to do |format|
+        format.html { render :file => "public/404.html", :layout => false, :status => 404 }
+      end
+    end
+    if (@post.instance_of?(CommentPost))
+      @user = @post.comment.user
+    else
+      @user = @post.user
+    end
+    @setting = @blogcast_user.setting
+    #MVR - theme 
+    if !@setting.use_background_image
+      @theme = @setting.theme
+    end
+  end
 end

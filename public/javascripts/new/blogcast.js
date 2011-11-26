@@ -38,14 +38,15 @@ Overlay = {
       var image_post_img = jQuery("<img>").attr("id", "overlay-image").attr("src", Overlay.defaultImageUrl);
       overlay_post_content_elem.append(image_post_img);
       if (Overlay.text) {
-         var image_post_p = jQuery("<p>").attr("id", "overlay-image-caption").text(Overlay.text);
+         var image_post_p = jQuery("<p>").attr("id", "overlay-image-text").text(Overlay.text);
       	 overlay_post_content_elem.append(image_post_p);
       }
       //MVR - load the large image
-      Overlay.imageJqXHR = jQuery.get(Overlay.largeImageUrl, function() {
+      var large_image = new Image();
+      large_image.src = Overlay.largeImageUrl;
+      large_image.onload = function() {
         jQuery("#overlay-image").attr("src", Overlay.largeImageUrl);
-        Overlay.imageJqXHR = null;
-      });
+      };
     } else if (Overlay.type == "CommentPost") {
          var comment_arrow = jQuery("<div>").attr("id", "overlay-comment-arrow");
       	 overlay_post_content_elem.append(comment_arrow);
@@ -60,10 +61,6 @@ Overlay = {
   },
   hide: function() {
     Overlay.isVisible = false;
-    if (Overlay.imageJqXHR) {
-      Overlay.imageJqXHR.abort();
-      Overlay.imageJqXHR = null;
-    }
     jQuery("body").css("overflow", "visible");
     jQuery("#overlay-container").hide();
   },
@@ -87,6 +84,11 @@ Overlay = {
         image_width = Overlay.defaultImageWidth;
         image_height = Overlay.defaultImageHeight;
       }
+      //MVR - stretch it if too small
+      if (image_width < 300.0) {
+        image_height = image_height * 300.0 / image_width;     
+        image_width = 300.0;
+      }
       //MVR - and don't let it get larger than the large image either
       if (image_width > 1000.0) {
         image_height = image_height * 1000.0 / image_width;
@@ -97,6 +99,7 @@ Overlay = {
         image_height = 700.0;
       }
       jQuery("#overlay-post-content").width(image_width);
+      //MVR - setting image height prevents the overlay from resizing when image loads
       jQuery("#overlay-image").width(image_width);
       jQuery("#overlay-image").height(image_height);
     }

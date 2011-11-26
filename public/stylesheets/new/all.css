@@ -106,8 +106,12 @@ div.beta {
 	width: 23px;
 }
 
-a.username, a.navigation-link, div.full-name, div.job-title, li.tab.selected, h1, div.side h2, #header-search input, #pick-username-container input, #username {
+a.username, a.navigation-link, a.blogcast, div.full-name, div.job-title, li.tab.selected, h1, div.side h2, #header-search input, #pick-username-container input, #username {
 	color: #1c4b75;
+}
+
+iframe.twitter-share-button {
+	vertical-align: text-bottom;
 }
 
 img.super-avatar, div.super-rounded-avatar {
@@ -240,7 +244,7 @@ a.item {
 	z-index: 1;
 }
 
-a.small-avatar img, a.username {
+a img.small-avatar, a.username {
 	position: relative;
 	z-index: 2;
 }
@@ -298,10 +302,11 @@ div.item-settings-button {
 	background-repeat: no-repeat, repeat;
 	border-left: 1px solid #a77b1a;
 	border-right: 1px solid #f4d74f;
+	height: 30px;
 	left: 0px;
 	position: absolute;
-	height: 30px;
 	width: 30px;
+	z-index: 2;
 }
 
 div.item-settings-button:hover {
@@ -988,7 +993,7 @@ div.side h2:first-child {
 #overlay-post-content {
 	margin-left: auto;
 	margin-right: auto;
-	min-width: 200px;
+	min-width: 300px;
 	width: 640px;
 }
 
@@ -1028,9 +1033,10 @@ div.side h2:first-child {
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 12px;
+	width: 100%;
 }
 
-#overlay-image-caption {
+#overlay-image-text {
 	-moz-border-radius: 6px;
 	-webkit-border-radius: 6px;
 	background-color: #cecece;
@@ -1054,9 +1060,9 @@ div.side h2:first-child {
 
 #overlay-comment {
 	-moz-border-radius: 12px;
-	-moz-box-shadow: 0px 2px 3px #888; 
+	-moz-box-shadow: 0px 2px 2px #888; 
 	-webkit-border-radius: 12px;
-	-webkit-box-shadow: 0px 2px 3px #888; 
+	-webkit-box-shadow: 0px 2px 2px #888; 
 	background-image: -moz-linear-gradient(#fbfbfb, #e6e6e6); 
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#fbfbfb), to(#e6e6e6)); 
 	border-color: #fff;
@@ -1481,9 +1487,9 @@ div.side h2:first-child {
 
 #content-footer {
 	-moz-border-radius: 6px;
-	-moz-box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.4), inset 0px -1px #fff; 
+	-moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.6), inset 0px -1px #fff; 
 	-webkit-border-radius: 6px;
-	-webkit-box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.4), inset 0px -1px #fff; 
+	-webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.6), inset 0px -1px #fff; 
 	background-color: #eeeeee;
 	background-image: -moz-linear-gradient(#fffefb, #dbdbdb); 
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#fffefb), to(#dbdbdb)); 

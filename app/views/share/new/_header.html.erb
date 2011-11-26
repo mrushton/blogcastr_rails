@@ -28,11 +28,11 @@
       </li>
     </ul>
     <div id="welcome">
-      <%= link_to "<div id=\"welcome-avatar\" class=\"small-rounded-avatar\" style=\"background-image: url('" + @user.setting.avatar.url(:small) + "')\"></div>", @user.facebook_link %>
+      <%= link_to "<div id=\"welcome-avatar\" class=\"small-rounded-avatar\" style=\"background-image: url('" + user.setting.avatar.url(:small) + "')\"></div>", user.facebook_link %>
       <div>Welcome,</div>
-      <%= link_to @user.setting.full_name, @user.facebook_link, :class => "username" -%>
+      <%= link_to user.setting.full_name, user.facebook_link, :class => "username" -%>
     </div>
-<% elsif @user.instance_of?(TwitterUser) -%>
+<% elsif user.instance_of?(TwitterUser) -%>
     <ul id="header-navigation">
       <li>
         <%= link_to "Sign up", sign_up_path %>
@@ -42,9 +42,9 @@
       </li>
     </ul>
     <div id="welcome">
-      <%= link_to "<div id=\"welcome-avatar\" class=\"small-rounded-avatar\" style=\"background-image: url('" + @user.setting.avatar.url(:small) + "')\"></div>", "http://twitter.com/" + @user.username %>
+      <%= link_to "<div id=\"welcome-avatar\" class=\"small-rounded-avatar\" style=\"background-image: url('" + user.setting.avatar.url(:small) + "')\"></div>", "http://twitter.com/" + user.username %>
       <div>Welcome,</div>
-      <%= link_to "@" + @user.username, "http://twitter.com/" + @user.username, :class => "username" -%>
+      <%= link_to "@" + user.username, "http://twitter.com/" + user.username, :class => "username" -%>
     </div>
 <% else -%>
   <div id="sign-in-and-sign-up-button-container">

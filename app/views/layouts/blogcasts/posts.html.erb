@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<%- if @post.instance_of?(TextPost) -%> 
+  <%- post_type = "Text Post" -%>
+<%- elsif @post.instance_of?(ImagePost) -%> 
+  <%- post_type = "Image Post" -%>
+<%- elsif @post.instance_of?(CommentPost) -%>
+  <%- post_type = "Comment Post" -%>
+<%- end -%>
+    <meta property="og:title" content="<%= @blogcast.title + " - " + post_type -%>"/>
+    <meta property="og:type" content="article"/>
+<%- if @post.instance_of?(ImagePost) -%>
+  <%- if Rails.env.production? -%> 
+    <%- image_url = @post.image.url(:large) -%>
+  <%- else -%>
+    <%- image_url = "http://sandbox.blogcastr.com#{@post.image.url(:large)}" -%>
+  <%- end -%>
+    <meta property="og:image" content="<%= image_url -%>"/>
+<%- end -%>
+<%- if @post.instance_of?(CommentPost) -%>
+    <meta property="og:description" content="<%= @post.comment.text -%>"/>
+<%- else -%>
+  <%- if !@post.text.blank? -%>
+    <meta property="og:description" content="<%= @post.text -%>"/>
+  <%- end -%>
+<%- end -%>
+    <meta property="og:site_name" content="Blogcastr"/>
+    <title><%= @blogcast.title + " - " + post_type -%></title>
+    <link rel="shortcut icon" href="/images/new/favicon.ico">
+    <%= stylesheet_link_tag "new/all", :media => "screen" %>
+    <%= stylesheet_link_tag "new/post", :media => "screen" %>
+    <%= render :partial => "/share/new/custom_background", :locals => { :theme => @theme, :setting => @setting } -%>
+    <%= javascript_include_tag :defaults, "jquery.js", "jquery.backgroundPosition.js", "jquery.cookie.js", "new/application.js", "new/post.js", :media => "all" %>
+    <% javascript_tag do %>
+      jQuery.noConflict();
+      var authenticity_token = "<%= form_authenticity_token -%>";
+      var hostname = "<%= HOST %>";
+      var blogcast_id = <%= @blogcast.id %>;
+      var blogcast_title = "<%= @blogcast.title -%>";
+      var blogcast_user_username = "<%= @blogcast.user.username -%>";
+      var blogcast_permalink = "<%= blogcast_permalink_path -%>";
+<% if @user.instance_of?(BlogcastrUser) -%>
+      var username = "<%= @user.username %>";
+<% else -%>
+      var username;
+<% end -%>
+      var server_timestamp = <%= Time.now.to_i %>;
+      var facebook_client_id = "<%= FACEBOOK_APP_ID -%>";
+    <% end %>
+<% if @user.instance_of?(BlogcastrUser) -%>
+  <%- if Rails.env.production? -%> 
+    <script type="text/javascript" src="https://blogcastr.com/ejabberd/password.js"></script>
+  <%- else -%>
+    <script type="text/javascript" src="/ejabberd/password.js"></script>
+  <%- end -%>
+<% end -%>
+  </head>
+  <body>
+    <%= yield :layout %>
+    <div id="fb-root"></div>
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({appId: '261363731690', status: true, cookie: true, xfbml: true});
+      };
+      (function() {
+        var e = document.createElement('script');
+        e.async = true;
+        e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
+        document.getElementById('fb-root').appendChild(e);
+      }());
+    </script>
+    <script type="text/javascript">
+      var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+      document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+      try {
+        var pageTracker = _gat._getTracker("UA-11177931-1");
+        pageTracker._trackPageview();
+      } catch(err) {}
+    </script>
+  </body>
+</html>

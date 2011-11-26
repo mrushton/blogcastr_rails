@@ -4,7 +4,7 @@
   <div>
 <%- html_options = { :class => "item", :"data-id" => image_post.id, :"data-type" => image_post.type, :"data-username" => user.username, :"data-user-url" => profile_path(:username => user.username), :"data-avatar-url" => user.setting.avatar(:small), :"data-date" => image_post.created_at.xmlschema, :"data-image-url" => image_post.image.url(:large), :"data-image-width" => image_post.image_width, :"data-image-height" => image_post.image_height } -%> 
 <%- if !image_post.text.blank? -%>
-  <%- html_options[:"data-post-text"] = image_post.text -%>
+  <%- html_options[:"data-text"] = image_post.text -%>
 <%- end -%>
 <%- if !image_post.short_url.blank? -%>
   <%- html_options[:"data-short-url"] = image_post.short_url -%>

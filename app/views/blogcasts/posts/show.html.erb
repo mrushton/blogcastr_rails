@@ -1,0 +1,62 @@
+<%- if show_top_bar -%>
+<%= render :partial => "/share/new/top_bar" -%>
+<div id="content-container" class="custom-background top-bar">
+<%- else -%>
+<div id="content-container" class="custom-background">
+<%- end -%>
+  <div id="content">
+    <%= render :partial => "/share/new/header", :locals => { :user => @current_user } -%>
+    <div id="overlay">
+      <div id="overlay-post-info">
+        <div id="blogcast-user-and-date-and-share">
+          <%= link_to @blogcast.title, blogcast_permalink_path, :class => "blogcast" -%> &bull; <%= @post.created_at.strftime("%b %d, %Y %I:%M %p %Z").gsub(/ 0/, ' ') -%> &bull;
+          <fb:like layout="button_count" send="true"></fb:like>
+          <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+          <a href="http://twitter.com/share" class="twitter-share-button" data-url="<%= @post.short_url -%>" data-text="Check out &quot;<%=h @blogcast.title -%>&quot; by <%= @user.username -%> via @Blogcastr" data-counturl="<%= blogcast_permalink_url -%>">Tweet</a>
+        </div>
+      </div>
+      <div id="overlay-post-container">
+        <%= overlay_post_content_div -%>
+          <div class="clearfix">
+<%- if @user.instance_of?(BlogcastrUser) -%>
+  <%- username = @user.username -%>
+  <%- link = profile_path(:username => @user.username) -%>
+<%- elsif @user.instance_of?(FacebookUser) -%>
+  <%- username = @user.setting.full_name -%>
+  <%- link = @user.facebook_link -%>
+<%- elsif @user.instance_of?(TwitterUser) -%>
+  <%- username = @user.username -%>
+  <%- link = "http://twitter.com/" + @user.username -%>
+<%- end -%>
+            <a href="<%= link -%>">
+              <div id="overlay-post-avatar" class="small-rounded-avatar" style="background-image: url('<%= @user.setting.avatar.url(:small) -%>')">
+              </div>
+            </a>
+            <div id="overlay-username-container">
+              <%= link_to username, link, :class => "username" -%> 
+            </div>
+          </div>
+<%- if @post.instance_of?(TextPost) -%>
+          <p id="overlay-text">
+            <%= @post.text -%> 
+          </p>
+<%- elsif @post.instance_of?(CommentPost) -%>
+          <div id="overlay-comment-arrow">
+          </div>
+          <p id="overlay-comment">
+            <%= @post.comment.text -%> 
+          </p>
+<%- elsif @post.instance_of?(ImagePost) -%>
+          <%= image_tag @post.image.url(:large), :id => "overlay-image" -%>
+  <%- if !@post.text.blank? -%>
+          <p id="overlay-image-text">
+            <%= @post.text -%> 
+          </p>
+  <%- end -%>
+<%- end -%>
+        </div>
+      </div>
+    </div>
+    <%= render :partial => "/share/new/content_footer" -%>
+  </div>
+</div>
