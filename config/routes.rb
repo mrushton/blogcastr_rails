@@ -142,10 +142,18 @@ ActionController::Routing::Routes.draw do |map|
   #MVR - Facebook login
   map.facebook_logout "facebook_logout", :controller => "facebook_login", :action => "destroy", :method => "delete"
   map.facebook_login_redirect "facebook_login_redirect", :controller => "facebook_login", :action => "create"
+  #MVR - for Facebook connect 
+  map.facebook_connect "facebook_connect.:format", :controller => "facebook_login", :action => "connect"
+  map.facebook_extend "facebook_extend.:format", :controller => "facebook_login", :action => "extend"
+  map.facebook_invalidate "facebook_invalidate.:format", :controller => "facebook_login", :action => "invalidate", :method => "delete"
+  map.facebook_disconnect "facebook_disconnect.:format", :controller => "facebook_login", :action => "disconnect", :method => "delete"
   #MVR - Twitter sign in 
   map.twitter_sign_out "twitter_sign_out", :controller => "twitter_sign_in", :action => "destroy", :method => "delete"
   map.twitter_sign_in_init "twitter_sign_in_init", :controller => "twitter_sign_in", :action => "init"
   map.twitter_sign_in_callback "twitter_sign_in_callback", :controller => "twitter_sign_in", :action => "create"
+  #MVR - for xauth
+  map.twitter_connect "twitter_connect.:format", :controller => "twitter_sign_in", :action => "connect"
+  map.twitter_disconnect "twitter_disconnect.:format", :controller => "twitter_sign_in", :action => "disconnect", :method => "delete"
   #MVR - mobile phone
   map.resource :mobile_phone, :controller => "mobile_phone", :only => [:create, :destroy]
   map.confirm_mobile_phone "mobile_phone/confirm", :controller => "mobile_phone", :action => "confirm"

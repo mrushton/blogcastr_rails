@@ -4,8 +4,8 @@ xml.posts do
       xml.id(post.id)
       xml.type(post.type)
       #MVR - we know this is always a BlogcastrUser
+      user = post.user
       xml.user do
-        user = post.user
         xml.id(user.id)
         xml.type(user.type)
         xml.username(user.username)
@@ -52,6 +52,11 @@ xml.posts do
         end
       end
       xml.from(post.from)
+      blogcast = post.blogcast
+      xml.url(blogcast_post_permalink_url(:username => user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title, :post_id => post.id)) 
+      if !post.short_url.blank?
+        xml.tag!("short-url", post.short_url)
+      end
       xml.tag!("created-at", post.created_at.xmlschema)
       xml.tag!("updated-at", post.updated_at.xmlschema)
     end

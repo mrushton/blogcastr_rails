@@ -1,4 +1,11 @@
 class TwitterSignInController < ApplicationController
+  #TODO: add CSRF before filter for standard authentication only, other option is to modify Rails to bypass CSRF for certain user agents
+  skip_before_filter :verify_authenticity_token
+  before_filter :only => [ "connect", "disconnect" ] do |controller|
+    #AS DESIGNED: this only works with the REST api 
+    controller.rest_authenticate
+  end
+
   def init
     #MVR - get a request token from Twitter and redirect
     oauth_client = Twitter::OAuth.new(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET, :sign_in => true)
@@ -106,6 +113,72 @@ class TwitterSignInController < ApplicationController
     #MVR - clear cookies
     sign_out
     redirect_to :back
+  end
+
+  def connect
+    @current_user = rest_current_user
+    access_token = params[:blogcastr_user][:twitter_access_token]
+    token_secret = params[:blogcastr_user][:twitter_token_secret]
+    if (access_token.blank? || token_secret.blank?)
+      respond_to do |format|
+        format.xml { head :unprocessable_entity }
+      end
+      return
+    end
+    oauth_client = Twitter::OAuth.new(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET)
+    oauth_client.authorize_from_access(access_token, token_secret)
+    #MVR - get Twitter username and id
+    client = Twitter::Base.new(oauth_client)
+    #MVR - verify credentials returns info about the authenticated user 
+    begin
+      verify_credentials = client.verify_credentials
+    rescue
+      respond_to do |format|
+        format.xml { head :internal_server_error }
+      end
+      return
+    end
+    #MVR - make sure Twitter account is not taken by someone else
+    twitter_username = verify_credentials.screen_name
+    #AS DESIGNED: currently you can use Twitter to sign in so you can only connect one account
+    user = BlogcastrUser.find_by_twitter_username(twitter_username, :conditions => ["id != ?", @current_user.id])
+    if !user.nil?
+      @current_user.errors.add_to_base("Twitter account is connected to another Blogcastr account")
+      respond_to do |format|
+        format.xml { render :action => 'errors', :status => :unprocessable_entity }
+      end
+      return
+    end
+    @current_user.twitter_access_token = access_token
+    @current_user.twitter_token_secret = token_secret
+    @current_user.twitter_username =twitter_username 
+    @current_user.twitter_id = verify_credentials.id 
+    if @current_user.save
+      respond_to do |format|
+        format.xml { head :ok }
+      end
+    else
+      respond_to do |format|
+        format.xml { render :action => 'errors', :status => :unprocessable_entity }
+      end
+    end
+  end
+
+  def disconnect
+    @current_user = rest_current_user
+    @current_user.twitter_access_token = nil 
+    @current_user.twitter_token_secret = nil 
+    @current_user.twitter_username = nil 
+    @current_user.twitter_id = nil 
+    if @current_user.save
+      respond_to do |format|
+        format.xml { head :ok }
+      end
+    else
+      respond_to do |format|
+        format.xml { render :action => 'errors', :status => :unprocessable_entity }
+      end
+    end
   end
 
   private

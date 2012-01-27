@@ -30,6 +30,10 @@ xml.blogcast do
     xml.likes(@blogcast.likes.count)
     xml.views(@blogcast.views.count)
   end
+  xml.url(blogcast_permalink_url(:username => @user.username, :year => @blogcast.year, :month => @blogcast.month, :day => @blogcast.day, :title => @blogcast.link_title)) 
+  if !@blogcast.short_url.blank?
+    xml.tag!("short-url", @blogcast.short_url)
+  end
   xml.tag!("starting-at", @blogcast.starting_at.xmlschema)
   xml.tag!("created-at", @blogcast.created_at.xmlschema)
   xml.tag!("updated-at", @blogcast.updated_at.xmlschema)

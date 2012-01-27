@@ -4,9 +4,9 @@ xml.blogcasts do
       xml.id(blogcast.id)
       xml.title(blogcast.title)
       xml.description(blogcast.description)
+      #MVR - we know this is always a BlogcastrUser
+      user = blogcast.user
       xml.user do
-        #MVR - we know this is always a BlogcastrUser
-        user = blogcast.user
         xml.id(user.id)
         xml.type("BlogcastrUser")
         xml.username(user.username)
@@ -33,6 +33,10 @@ xml.blogcasts do
         xml.comments(blogcast.comments.count)
         xml.likes(blogcast.likes.count)
         xml.views(blogcast.views.count)
+      end
+      xml.url(blogcast_permalink_url(:username => user.username, :year => blogcast.year, :month => blogcast.month, :day => blogcast.day, :title => blogcast.link_title)) 
+      if !blogcast.short_url.blank?
+        xml.tag!("short-url", blogcast.short_url)
       end
       xml.tag!("starting-at", blogcast.starting_at.xmlschema)
       xml.tag!("created-at", blogcast.created_at.xmlschema)

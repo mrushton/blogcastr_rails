@@ -105,11 +105,35 @@ class ImagePostsController < ApplicationController
       respond_to do |format|
         format.js { @error = "Unable to send image post to muc room"; render :action => "error" }
         format.html { flash[:error] = "Unable to send text post to muc room"; redirect_to :back }
-        format.xml { render :xml => @text_post.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @image_post.errors, :status => :unprocessable_entity }
         #TODO: fix json support
-        format.json { render :json => @text_post.errors, :status => :unprocessable_entity }
+        format.json { render :json => @image_post.errors, :status => :unprocessable_entity }
       end
       return
+    end
+    #MVR - tweet
+    if (params['tweet'] == "1")
+      if !@user.twitter_access_token.blank? && !@user.twitter_token_secret.blank?
+        oauth_client = Twitter::OAuth.new(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET)
+        oauth_client.authorize_from_access(@user.twitter_access_token, @user.twitter_token_secret)
+        client = Twitter::Base.new(oauth_client)
+        if @image_post.text.blank?
+          tweet = "Check out my photo from \"#{@blogcast.title}\" via @Blogcastr #{@image_post.short_url}"
+        else
+          if @image_post.text.length > 119 
+            tweet = "#{@image_post.text[0..116]}... #{@image_post.short_url}"
+          else
+            tweet = "#{@image_post.text} #{@image_post.short_url}"
+          end
+        end
+        begin
+          client.update(tweet)
+        rescue
+          logger.error("Failed to make image post tweet for #{@user.username}")
+        end
+      else
+        logger.error("#{@user.username} not connected to Twitter, can not make image post tweet")
+      end
     end
     respond_to do |format|
       format.js

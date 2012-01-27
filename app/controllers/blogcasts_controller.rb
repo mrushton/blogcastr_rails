@@ -157,6 +157,22 @@ class BlogcastsController < ApplicationController
       end
       return
     end
+    #MVR - tweet
+    if (params['tweet'] == "1")
+      if !@user.twitter_access_token.blank? && !@user.twitter_token_secret.blank?
+        oauth_client = Twitter::OAuth.new(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET)
+        oauth_client.authorize_from_access(@user.twitter_access_token, @user.twitter_token_secret)
+        client = Twitter::Base.new(oauth_client)
+        tweet = "Check out \"#{@blogcast.title}\" via @Blogcastr #{@blogcast.short_url}"
+        begin
+          client.update(tweet)
+        rescue
+          logger.error("Failed to make text post tweet for #{@user.username}")
+        end
+      else
+        logger.error("#{@user.username} not connected to Twitter, can not make text post tweet")
+      end
+    end
     respond_to do |format|
       format.html {redirect_to blogcast_dashboard_path(:blogcast_id => @blogcast.id)}
       format.xml {render :xml => @blogcast}

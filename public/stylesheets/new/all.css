@@ -324,6 +324,7 @@ ul.item-settings {
 	left: 0px;
 	position: absolute;
 	top: 0px;
+	z-index: 3;
 }
 
 ul.item-settings li a {

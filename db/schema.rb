@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111015172647) do
+ActiveRecord::Schema.define(:version => 20120115201802) do
 
   create_table "blogcast_reminders", :force => true do |t|
     t.string   "type",         :null => false
@@ -29,8 +29,8 @@ ActiveRecord::Schema.define(:version => 20111015172647) do
 
   create_table "blogcasts", :force => true do |t|
     t.integer  "user_id",                                  :null => false
-    t.string   "title",       :limit => 30,                :null => false
-    t.string   "description"
+    t.string   "title",       :limit => 35,                :null => false
+    t.text     "description"
     t.integer  "year",                                     :null => false
     t.integer  "day",                                      :null => false
     t.integer  "month",                                    :null => false
@@ -47,7 +47,7 @@ ActiveRecord::Schema.define(:version => 20111015172647) do
     t.integer  "user_id",     :null => false
     t.integer  "blogcast_id", :null => false
     t.string   "from",        :null => false
-    t.string   "text",        :null => false
+    t.text     "text",        :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -79,7 +79,7 @@ ActiveRecord::Schema.define(:version => 20111015172647) do
     t.integer  "user_id",                      :null => false
     t.integer  "blogcast_id",                  :null => false
     t.string   "from",                         :null => false
-    t.string   "text"
+    t.text     "text"
     t.string   "image_file_name"
     t.string   "image_content_type"
     t.integer  "image_file_size"
@@ -130,7 +130,7 @@ ActiveRecord::Schema.define(:version => 20111015172647) do
     t.integer  "user_id",                                                                           :null => false
     t.string   "full_name"
     t.string   "location"
-    t.string   "bio"
+    t.text     "bio"
     t.string   "web"
     t.string   "time_zone"
     t.string   "avatar_file_name"
@@ -208,8 +208,37 @@ ActiveRecord::Schema.define(:version => 20111015172647) do
     t.datetime "updated_at"
   end
 
-# Could not dump table "users" because of following StandardError
-#   Unknown type '' for column 'facebook_access_token'
+  create_table "users", :force => true do |t|
+    t.string   "type",                                                          :null => false
+    t.string   "username",                    :limit => 15
+    t.string   "email"
+    t.string   "encrypted_password",          :limit => 128
+    t.string   "salt",                        :limit => 128
+    t.string   "confirmation_token",          :limit => 128
+    t.string   "remember_token",              :limit => 128
+    t.string   "authentication_token",        :limit => 128
+    t.boolean  "email_confirmed",                            :default => false, :null => false
+    t.boolean  "is_featured"
+    t.integer  "invite_id"
+    t.integer  "facebook_id"
+    t.string   "facebook_access_token"
+    t.boolean  "has_facebook_publish_stream"
+    t.string   "facebook_link"
+    t.integer  "twitter_id"
+    t.string   "twitter_access_token"
+    t.string   "twitter_token_secret"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "twitter_username",            :limit => 20
+    t.string   "facebook_full_name"
+    t.datetime "facebook_expires_at"
+  end
+
+  add_index "users", ["email"], :name => "index_users_on_email"
+  add_index "users", ["facebook_id"], :name => "index_users_on_facebook_id"
+  add_index "users", ["id", "confirmation_token"], :name => "index_users_on_id_and_confirmation_token"
+  add_index "users", ["remember_token"], :name => "index_users_on_remember_token"
+  add_index "users", ["username"], :name => "index_users_on_username"
 
   create_table "views", :force => true do |t|
     t.integer  "blogcast_id", :null => false

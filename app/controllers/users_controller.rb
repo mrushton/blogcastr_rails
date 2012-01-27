@@ -16,7 +16,6 @@ class UsersController < ApplicationController
     rescue ActiveRecord::RecordNotFound
       respond_to do |format|
         format.xml { render :xml => "<errors><error>User #{params[:id]} does not exist</error></errors>", :status => :unprocessable_entity }
-        format.json { render :json => "[[\"User #{params[:id]} does not exist]]", :status => :unprocessable_entity }
       end
       return
     end
@@ -25,9 +24,7 @@ class UsersController < ApplicationController
       @subscription = @current_user.subscriptions.find(:first, :conditions => { :subscribed_to => @user.id })
     end
     respond_to do |format|
-      format.xml { }
-      #TODO: fix json support 
-      format.json { render :json => @user.to_json() }
+      format.xml { render :template => 'share/new/user', :locals => { :current_user => @current_user, :user => @user, :setting => @setting, :subscription => @subscription } }
     end
   end
 end

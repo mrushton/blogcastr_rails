@@ -4,7 +4,6 @@ class AuthenticationTokensController < ApplicationController
     if @user.nil?
       respond_to do |format|
         format.xml { render :xml => "<errors><error>Authentication failed</error></errors>", :status => :forbidden }
-        format.json { render :json => "[[\"Authentication failed\"]]", :status => :forbidden }
       end
       return
     end
@@ -17,7 +16,7 @@ class AuthenticationTokensController < ApplicationController
     end
     @setting = @user.setting
     respond_to do |format|
-      format.xml { render :template => 'share/new/user', :locals => { :user => @user, :setting => @setting, :show_authentication_token => true } }
+      format.xml { render :template => 'share/new/user', :locals => { :current_user => @user, :user => @user, :setting => @setting } }
     end
   end
 end

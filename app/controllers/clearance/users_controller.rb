@@ -118,7 +118,7 @@ class Clearance::UsersController < ApplicationController
         sign_in @blogcastr_user
         redirect_to home_path
       }
-      format.xml { render :template => 'share/new/user', :locals => { :user => @blogcastr_user, :setting => @setting, :show_authentication_token => true } }
+      format.xml { render :template => 'share/new/user', :locals => { :current_user => @blogcastr_user, :user => @blogcastr_user, :setting => @setting } }
     end
   end
 
