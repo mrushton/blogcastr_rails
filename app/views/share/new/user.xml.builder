@@ -30,7 +30,7 @@ xml.user do
     xml.tag!("facebook-id", user.facebook_id)
     xml.tag!("facebook-full-name", user.facebook_full_name)
     xml.tag!("facebook-link", user.facebook_link)
-    if user == current_user
+    if user == current_user && !user.facebook_access_token.blank? && !user.facebook_expires_at.blank?
       xml.tag!("facebook-access-token", user.facebook_access_token)
       xml.tag!("facebook-expires-at", user.facebook_expires_at.xmlschema)
       xml.tag!("has-facebook-publish-stream", user.has_facebook_publish_stream)
