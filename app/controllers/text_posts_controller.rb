@@ -93,7 +93,7 @@ class TextPostsController < ApplicationController
         if @user.facebook_expires_at > Time.now
           begin
             #MVR - post to news feed
-            query = { :access_token => @user.facebook_access_token, :message => @text_post.text, :link => text_post_url }
+            query = { :access_token => @user.facebook_access_token, :message => "#{@text_post.text} #{@text_post.short_url}" }
             self.class.post("/me/feed", :query => query)
           rescue
             logger.error("#{@user.username} Facebook share blogcast failed")
