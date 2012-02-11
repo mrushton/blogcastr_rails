@@ -30,20 +30,20 @@ xml.posts do
           comment = post.comment
           xml.id(comment.id)
           xml.user do
-            user = comment.user
+            comment_user = comment.user
             xml.id(user.id)
             xml.type(user.type)
-            if user.instance_of?(BlogcastrUser)
-              xml.username(user.username)
-              xml.url(profile_url(:username => user.username))
-            elsif user.instance_of?(FacebookUser)
-              xml.username(user.setting.full_name)
-              xml.url(user.facebook_link)
-            elsif user.instance_of?(TwitterUser)
-              xml.username(user.username)
-              xml.url("http://twitter.com/" + user.username)
+            if comment_user.instance_of?(BlogcastrUser)
+              xml.username(comment_user.username)
+              xml.url(profile_url(:username => comment_user.username))
+            elsif comment_user.instance_of?(FacebookUser)
+              xml.username(comment_user.setting.full_name)
+              xml.url(comment_user.facebook_link)
+            elsif comment_user.instance_of?(TwitterUser)
+              xml.username(comment_user.username)
+              xml.url("http://twitter.com/" + comment_user.username)
             end
-            xml.tag!("avatar-url", user.setting.avatar.url(:original))
+            xml.tag!("avatar-url", comment_user.setting.avatar.url(:original))
           end
           xml.text(comment.text)
           xml.from(comment.from)

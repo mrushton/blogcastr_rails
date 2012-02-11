@@ -1,4 +1,6 @@
 class TextPostsController < ApplicationController
+  include HTTParty
+
   #MVR - needed to work around CSRF for REST api
   #TODO: add CSRF before filter for standard authentication only, other option is to modify Rails to bypass CSRF for certain user agents
   skip_before_filter :verify_authenticity_token
@@ -10,6 +12,7 @@ class TextPostsController < ApplicationController
       controller.rest_authenticate
     end
   end
+  base_uri "https://graph.facebook.com"
 
   def create
     if params[:authentication_token].nil?
@@ -44,10 +47,11 @@ class TextPostsController < ApplicationController
       return
     end
     #MVR - create short url
+    text_post_url = "http://" + HOST + "/" + @user.username + "/" + @blogcast.year.to_s + "/" + @blogcast.month.to_s + "/" + @blogcast.day.to_s + "/" + @blogcast.link_title + "/posts/" + @text_post.id.to_s
     #TODO: probably should put this in after_create but need to work out the behavior of updating 
     bitly = Bitly.new(BITLY_LOGIN, BITLY_API_KEY)
     begin
-      @text_post.short_url = bitly.shorten("http://" + HOST + "/" + @user.username + "/" + @blogcast.year.to_s + "/" + @blogcast.month.to_s + "/" + @blogcast.day.to_s + "/" + @blogcast.link_title + "/posts/" + @text_post.id.to_s)
+      @text_post.short_url = bitly.shorten(text_post_url)
     rescue BitlyError => e
       logger.error(e.message)
     else
@@ -82,6 +86,24 @@ class TextPostsController < ApplicationController
         format.json {render :json => @text_post.errors, :status => :unprocessable_entity}
       end
       return
+    end
+    #MVR - Facebook share
+    if (params['facebook_share'] == "1")
+      if @user.facebook_access_token && @user.facebook_expires_at
+        if @user.facebook_expires_at > Time.now
+          begin
+            #MVR - post to news feed
+            query = { :access_token => @user.facebook_access_token, :message => @text_post.text, :link => text_post_url }
+            self.class.post("/me/feed", :query => query)
+          rescue
+            logger.error("#{@user.username} Facebook share blogcast failed")
+          end
+        else
+          logger.error("#{@user.username} Facebook token expired, can not share blogcast")
+        end
+      else
+        logger.error("#{@user.username} not connected to Facebook, can not share blogcast")
+      end
     end
     #MVR - tweet
     if (params['tweet'] == "1")

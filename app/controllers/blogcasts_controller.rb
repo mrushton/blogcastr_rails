@@ -1,4 +1,6 @@
 class BlogcastsController < ApplicationController
+  include HTTParty
+
   #MVR - needed to work around CSRF for REST api
   #TODO: add CSRF before filter for standard authentication only, other option is to modify Rails to bypass CSRF for certain user agents
   skip_before_filter :verify_authenticity_token
@@ -10,6 +12,7 @@ class BlogcastsController < ApplicationController
       controller.rest_authenticate
     end
   end
+  base_uri "https://graph.facebook.com"
 
   def index
     #MVR - find user by id 
@@ -125,9 +128,10 @@ class BlogcastsController < ApplicationController
         @blogcast.blogcast_tags.push(blogcast_tag)
       end
     end
+    blogcast_url = "http://" + HOST + "/" + @user.username + "/" + @blogcast.year.to_s + "/" + @blogcast.month.to_s + "/" + @blogcast.day.to_s + "/" + @blogcast.link_title
     begin
       #MVR - create bitly link
-      json = Net::HTTP.get(URI.parse("http://api.bit.ly/v3/shorten?login=" + BITLY_LOGIN + "&apiKey=" + BITLY_API_KEY + "&uri=" + "http://" + HOST + "/" + @user.username + "/" + @blogcast.year.to_s + "/" + @blogcast.month.to_s + "/" + @blogcast.day.to_s + "/" + @blogcast.link_title))
+      json = Net::HTTP.get(URI.parse("http://api.bit.ly/v3/shorten?login=" + BITLY_LOGIN + "&apiKey=" + BITLY_API_KEY + "&uri=" + blogcast_url))
       response = ActiveSupport::JSON::decode(json)
       if response["status_code"] == 200
         @blogcast.short_url = response["data"]["url"]
@@ -157,20 +161,41 @@ class BlogcastsController < ApplicationController
       end
       return
     end
+    #MVR - Facebook share
+    if (params['facebook_share'] == "1")
+      if @user.facebook_access_token && @user.facebook_expires_at
+        if @user.facebook_expires_at > Time.now
+          begin
+            #MVR - post to news feed
+            query = { :access_token => @user.facebook_access_token, :message => "Check out my blogcast:", :link => blogcast_url, :name => @blogcast.title }
+            if @blogcast.description
+              query[:description] = @blogcast.description
+            end
+            self.class.post("/me/feed", :query => query)
+          rescue
+            logger.error("#{@user.username} Facebook share blogcast failed")
+          end
+        else
+          logger.error("#{@user.username} Facebook token expired, can not share blogcast")
+        end
+      else
+        logger.error("#{@user.username} not connected to Facebook, can not share blogcast")
+      end
+    end
     #MVR - tweet
     if (params['tweet'] == "1")
       if !@user.twitter_access_token.blank? && !@user.twitter_token_secret.blank?
         oauth_client = Twitter::OAuth.new(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET)
         oauth_client.authorize_from_access(@user.twitter_access_token, @user.twitter_token_secret)
         client = Twitter::Base.new(oauth_client)
-        tweet = "Check out \"#{@blogcast.title}\" via @Blogcastr #{@blogcast.short_url}"
+        tweet = "Check out \"#{@blogcast.title}\" via @blogcastr #{@blogcast.short_url}"
         begin
           client.update(tweet)
         rescue
-          logger.error("Failed to make text post tweet for #{@user.username}")
+          logger.error("Failed to make blogcast tweet for #{@user.username}")
         end
       else
-        logger.error("#{@user.username} not connected to Twitter, can not make text post tweet")
+        logger.error("#{@user.username} not connected to Twitter, can not share blogcast")
       end
     end
     respond_to do |format|

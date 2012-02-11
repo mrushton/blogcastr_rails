@@ -1,4 +1,6 @@
 class ImagePostsController < ApplicationController
+  include HTTParty
+
   #MVR - needed to work around CSRF for REST api
   #TODO: add CSRF before filter for standard authentication only, other option is to modify Rails to bypass CSRF for certain user agents
   skip_before_filter :verify_authenticity_token
@@ -10,6 +12,7 @@ class ImagePostsController < ApplicationController
       controller.rest_authenticate
     end
   end
+  base_uri "https://graph.facebook.com"
 
   def create
     if params[:authentication_token].nil?
@@ -72,10 +75,9 @@ class ImagePostsController < ApplicationController
       @image_post.short_url = bitly.shorten("http://" + HOST + "/" + @user.username + "/" + @blogcast.year.to_s + "/" + @blogcast.month.to_s + "/" + @blogcast.day.to_s + "/" + @blogcast.link_title + "/posts/" + @image_post.id.to_s)
     rescue BitlyError => e
       logger.error(e.message)
-    else
-      logger.error("Shorten image post url failed")
     end
     @image_post.save
+    image_post_url = "http://" + HOST + "/" + @user.username + "/" + @blogcast.year.to_s + "/" + @blogcast.month.to_s + "/" + @blogcast.day.to_s + "/" + @blogcast.link_title + "/posts/" + @image_post.id.to_s
     begin
       thrift_user = Thrift::User.new
       thrift_user.id = @user.id
@@ -87,7 +89,7 @@ class ImagePostsController < ApplicationController
       thrift_image_post.id = @image_post.id
       thrift_image_post.created_at = @image_post.created_at.xmlschema
       thrift_image_post.from = @image_post.from
-      thrift_image_post.url = blogcast_post_permalink_url(:username => @user.username, :year => @blogcast.year, :month => @blogcast.month, :day => @blogcast.day, :title => @blogcast.link_title, :post_id => @image_post.id) 
+      thrift_image_post.url = image_post_url 
       thrift_image_post.short_url = @image_post.short_url
       #MVR - pass false to prevent updated timestamp from being included in the url 
       thrift_image_post.image_url = @image_post.image.url(:original, false)
@@ -110,6 +112,27 @@ class ImagePostsController < ApplicationController
         format.json { render :json => @image_post.errors, :status => :unprocessable_entity }
       end
       return
+    end
+    #MVR - Facebook share
+    if (params['facebook_share'] == "1")
+      if @user.facebook_access_token && @user.facebook_expires_at
+        if @user.facebook_expires_at > Time.now
+          begin
+            #MVR - post to news feed
+            query = { :access_token => @user.facebook_access_token, :link => image_post_url, :picture => @image_post.image.url(:default, false) }
+            if @image_post.text
+              query[:message] = @image_post.text
+            end 
+            self.class.post("/me/feed", :query => query)
+          rescue
+            logger.error("#{@user.username} Facebook share image post failed")
+          end
+        else
+          logger.error("#{@user.username} Facebook token expired, can not share image post")
+        end
+      else
+        logger.error("#{@user.username} not connected to Facebook, can not share image post")
+      end
     end
     #MVR - tweet
     if (params['tweet'] == "1")
