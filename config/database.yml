@@ -13,7 +13,6 @@ test:
 
 production:
   adapter: postgresql
-  host: postgresql.blogcastr.com
   database: production
   username: rails 
   password: OErc9lzb 
