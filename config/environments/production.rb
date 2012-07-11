@@ -41,7 +41,7 @@ config.action_mailer.default_url_options = {:host => "blogcastr.com"}
 #MVR - define the host we are running on 
 HOST = "blogcastr.com"
 #MVR - thrift
-THRIFT_HOST = "ejabberd.blogcastr.com"
+THRIFT_HOST = "127.0.0.1"
 THRIFT_PORT = 9090 
 #MVR - memcached 
 MEMCACHED_HOST = "memcached.blogcastr.com"
