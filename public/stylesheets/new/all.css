@@ -39,6 +39,7 @@ ol, ul {
 	background-color: #538aca;
 	background-image: -moz-linear-gradient(top, #7aaddc, #538aca 50%, #387eb9 50%, #3166aa); 
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#7aaddc), color-stop(50%, #538aca), color-stop(50%, #387eb9), to(#3166aa));
+	background-image: linear-gradient(top, #7aaddc, #538aca 50%, #387eb9 50%, #3166aa); 
 	border-bottom: 1px solid #2b476f;
 	border-top: 1px solid #6fd0f3;
 	color: #fff;
@@ -51,6 +52,7 @@ ol, ul {
 	background-color: #4a7db4;
 	background-image: -moz-linear-gradient(top, #6f9bc8, #4a7db4 50%, #4071ab 50%, #325b99); 
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#6f9bc8), color-stop(50%, #4a7db4), color-stop(50%, #4071ab), to(#325b99));
+	background-image: linear-gradient(top, #6f9bc8, #4a7db4 50%, #4071ab 50%, #325b99); 
 	cursor: pointer;
 	text-decoration: none;
 }
@@ -59,6 +61,7 @@ ol, ul {
 	background-color: #ebc15d;
 	background-image: -moz-linear-gradient(top, #f5da95, #ebc15d 50%, #e1b14d 50%, #d9992d); 
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#f5da95), color-stop(50%, #ebc15d), color-stop(50%, #e1b14d), to(#d9992d)); 
+	background-image: linear-gradient(top, #f5da95, #ebc15d 50%, #e1b14d 50%, #d9992d); 
 	border-bottom: 1px solid #a66e0f;
 	border-top: 1px solid #fbd5d2;
 	color: #fff;
@@ -71,6 +74,7 @@ ol, ul {
 	background-color: #e5ae3b;
 	background-image: -moz-linear-gradient(top, #f1d478, #e5ae3a 50%, #de9a2f 50%, #ce7f18); 
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#f1d470), color-stop(50%, #e5ae3a), color-stop(50%, #de9a2f), to(#ce7f18)); 
+	background-image: linear-gradient(top, #f1d478, #e5ae3a 50%, #de9a2f 50%, #ce7f18); 
 	cursor: pointer;
 	text-decoration: none;
 }
@@ -78,6 +82,7 @@ ol, ul {
 .action-button {
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
+	border-radius: 3px;
 	display: block;
 	font-size: 0.8em;
 	height: 30px;
@@ -122,6 +127,7 @@ img.super-avatar, div.super-rounded-avatar {
 div.super-rounded-avatar {
 	-moz-border-radius: 6px;
 	-webkit-border-radius: 6px;
+	border-radius: 6px;
 }
 
 img.large-avatar, div.large-rounded-avatar {
@@ -132,6 +138,7 @@ img.large-avatar, div.large-rounded-avatar {
 div.large-rounded-avatar {
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
+	border-radius: 4px;
 }
 
 img.medium-avatar, div.medium-rounded-avatar {
@@ -142,6 +149,7 @@ img.medium-avatar, div.medium-rounded-avatar {
 div.medium-rounded-avatar {
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
+	border-radius: 3px;
 }
 
 img.small-avatar, div.small-rounded-avatar {
@@ -152,6 +160,7 @@ img.small-avatar, div.small-rounded-avatar {
 div.small-rounded-avatar {
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
+	border-radius: 3px;
 }
 
 img.thumb-avatar {
@@ -177,6 +186,8 @@ input.sign-in-text-field, input.sign-up-text-field, div.sign-up-text-field, inpu
 	-webkit-box-shadow: inset 0px 3px 3px -1px #666666; 
 	background-color: #f0f0f0;
 	border: none;
+	border-radius: 5px;
+	box-shadow: inset 0px 3px 3px -1px #666666; 
 }
 
 h1.subtitled {
@@ -222,6 +233,8 @@ li.item {
 	-moz-box-shadow: 0px 2px 3px -1px #444444;
 	-webkit-border-radius: 6px;
 	-webkit-box-shadow: 0px 2px 3px -1px #444444;
+	border-radius: 6px;
+	box-shadow: 0px 2px 3px -1px #444444;
 	margin-top: 12px;
 	position: relative;
 }
@@ -278,6 +291,8 @@ div.item-header {
 	background-color: #222222;
 	background-image: -moz-linear-gradient(#333333, #131313); 
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#333333), to(#131313)); 
+	border-top-left-radius: 6px;
+	border-top-right-radius: 6px;
 	color: #fff;
 	font-size: 0.9em;
 	font-weight: bold;
@@ -302,6 +317,7 @@ div.item-settings-button {
 	background-repeat: no-repeat, repeat;
 	border-left: 1px solid #a77b1a;
 	border-right: 1px solid #f4d74f;
+	border-top-left-radius: 6px;
 	height: 30px;
 	left: 0px;
 	position: absolute;
@@ -321,6 +337,8 @@ ul.item-settings {
 	-moz-box-shadow: 0px 0px 4px #444444;
 	-webkit-border-radius: 4px;
 	-webkit-box-shadow: 0px 0px 4px #444444;
+	border-radius: 4px;
+	box-shadow: 0px 0px 4px #444444;
 	left: 0px;
 	position: absolute;
 	top: 0px;
@@ -350,6 +368,8 @@ ul.item-settings li:first-child a {
 	-webkit-border-top-left-radius: 6px;
 	-webkit-border-top-right-radius: 6px;
 	border-top: none;
+	border-top-left-radius: 6px;
+	border-top-right-radius: 6px;
 }
 
 ul.item-settings li:last-child a {
@@ -358,6 +378,8 @@ ul.item-settings li:last-child a {
 	-webkit-border-bottom-left-radius: 6px;
 	-webkit-border-bottom-right-radius: 6px;
 	border-bottom: none;
+	border-bottom-left-radius: 6px;
+	border-bottom-right-radius: 6px;
 }
 
 ul.icon-stats {
@@ -400,6 +422,8 @@ div.item-body {
 	-webkit-border-bottom-left-radius: 6px;
 	-webkit-border-bottom-right-radius: 6px;
 	background-color: #f3f3f3;
+	border-bottom-left-radius: 6px;
+	border-bottom-right-radius: 6px;
 	padding: 8px;
 	position: relative;
 }
@@ -421,6 +445,7 @@ div.avatar-header-container h1 {
 div.comment-avatar {
 	-moz-box-shadow: 0px 1px 2px #444444; 
 	-webkit-box-shadow: 0px 1px 2px #444444; 
+	box-shadow: 0px 1px 2px #444444; 
 	margin-bottom: 3px;
 }
 
@@ -513,6 +538,7 @@ a.tag {
 	-moz-border-radius: 2px;
 	-webkit-border-radius: 2px;
 	background-color: #d0d0d0; 
+	border-radius: 2px;
 	color: #505050;
 	font-weight: bold;
 	font-size: 0.6em;
@@ -542,6 +568,8 @@ textarea.comment {
 	-webkit-box-shadow: inset 0px 1px 2px #888888; 
 	background-color: #f3f3f3;
 	border: none;
+	border-radius: 6px;
+	box-shadow: inset 0px 1px 2px #888888; 
 	color: #d2d2d2;
 	display: block;
 	font-family: Helvetica, sans-serif;
@@ -583,6 +611,7 @@ input.comment {
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
 	border-left: none;
+	border-radius: 4px;
 	border-right: none;
 	cursor: pointer;
 	float: left;
@@ -601,6 +630,7 @@ input.sign-in-sign-up-button {
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 	border-left: none;
+	border-radius: 5px;
 	border-right: none;
 	cursor: pointer;
 	float: right;
@@ -618,6 +648,8 @@ div.main-button-container, div.button-container {
 	background-color: #e5e5e5;
 	background-image: -moz-linear-gradient(#edece7, #ededed); 
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#edece7), to(#ededed)); 
+	border-radius: 4px;
+	box-shadow: inset 0px 1px 2px -1px #000000; 
 	padding: 5px;	
 }
 
@@ -635,6 +667,7 @@ div.side-info-container {
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 	background-color: #242424;
+	border-radius: 5px;
 	padding: 4px;
 }
 
@@ -654,6 +687,8 @@ div.side-info-inner-container.light {
 	background-color: #f0f0f0;
 	background-image: -moz-linear-gradient(#fff, #e2e2e2); 
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#e2e2e2));
+	border-radius: 4px;
+	box-shadow: inset 0px 2px 5px -1px #000000; 
 	padding: 9px;
 }
 
@@ -679,7 +714,9 @@ span.stat-counter {
         background-image: -moz-linear-gradient(#2a5a9a, #224f86 10px, #0c3762); 
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#2a5a9a), color-stop(50%, #224f86), to(#0c3762)); 
 	border-left: 1px solid #01366c;
+	border-radius: 4px;
 	border-right: 1px solid #01366c;
+	box-shadow: inset 0px 1px 1px -1px #fff; 
 	border-top: 1px solid #003556;
 	color: white;
 	display: inline-block;
@@ -698,6 +735,8 @@ div.side-info-inner-container.dark {
 	-webkit-box-shadow: inset 0px 1px 2px #000000, 0px 1px 0px #3c3c3c; 
 	background-color: #1b1b1b;
 	background-image: url('/images/new/side-info-dark-background.png');
+	border-radius: 4px;
+	box-shadow: inset 0px 1px 2px #000000, 0px 1px 0px #3c3c3c; 
 	color: #fff;
 	line-height: 12px;
 	padding-bottom: 6px;
@@ -759,6 +798,9 @@ li.tab {
 	background-color: #ededed;
 	background-image: -moz-linear-gradient(bottom, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.0) 5px); 
 	background-image: -webkit-gradient(linear, left bottom, left 25, from(rgba(0, 0, 0, 0.15)), to(rgba(0, 0, 0, 0.0)));
+	border-top-left-radius: 6px;
+	border-top-right-radius: 6px;
+	box-shadow: 0px 1px 3px #444444; 
 	cursor: pointer;
 	font-size: 1.05em;
 	font-weight: bold;
@@ -801,6 +843,8 @@ div.content-table {
 	-moz-box-shadow: 0px 1px 3px #444444; 
 	-webkit-border-radius: 4px;
 	-webkit-box-shadow: 0px 1px 3px #444444; 
+	border-radius: 4px;
+	box-shadow: 0px 1px 3px #444444; 
 	display: table;
 	margin-top: 30px;
 	table-layout: fixed;
@@ -821,6 +865,8 @@ div.main {
 	-webkit-border-bottom-left-radius: 4px;
 	-webkit-border-top-left-radius: 4px;
 	background-color: #fff;
+	border-bottom-left-radius: 4px;
+	border-top-left-radius: 4px;
 	display: table-cell;
 	padding: 20px;
 	width: 680px;
@@ -832,6 +878,8 @@ div.content-table.tabs div.main {
 	-moz-border-radius-topright: 4px;
 	-webkit-border-bottom-right-radius: 4px;
 	-webkit-border-top-right-radius: 4px;
+	border-bottom-right-radius: 4px;
+	border-top-right-radius: 4px;
 	margin-top: 0px;
 }
 
@@ -880,6 +928,8 @@ div.side {
 	background-color: rgba(228, 228, 228, 0.5); 
 	background-image: -moz-linear-gradient(left, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.0) 9px); 
 	background-image: -webkit-gradient(linear, left center, 9 center, from(rgba(0, 0, 0, 0.3)), to(rgba(0, 0, 0, 0.0))); 
+	border-bottom-right-radius: 4px;
+	border-top-right-radius: 4px;
 	display: table-cell;
 	padding: 20px;
 	vertical-align: top;
@@ -902,6 +952,8 @@ div.side h2:first-child {
 	-webkit-border-radius: 4px;
 	-webkit-box-shadow: 0px 1px 3px #444444; 
 	background-color: #fff;
+	border-radius: 4px;
+	box-shadow: 0px 1px 3px #444444; 
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 40px;
@@ -945,6 +997,8 @@ div.side h2:first-child {
 	-webkit-border-radius: 10px;
 	-webkit-box-shadow: 0px 0px 8px #000; 
 	background-color: #fff;
+	border-radius: 10px;
+	box-shadow: 0px 0px 8px #000; 
 	margin-left: auto;
 	margin-right: auto;
 	padding-bottom: 10px;
@@ -984,6 +1038,8 @@ div.side h2:first-child {
 	-webkit-border-radius: 10px;
 	-webkit-box-shadow: inset 0px 2px 2px -1px #666666; 
 	background-color: #e5e5e5;
+	border-radius: 10px;
+	box-shadow: inset 0px 2px 2px -1px #666666; 
 	margin-top: 13px;
 	padding-bottom: 30px;
 	padding-left: 40px;
@@ -1019,6 +1075,8 @@ div.side h2:first-child {
 	background-image: url("/images/new/overlay-text-background.png");
 	background-repeat: no-repeat;
 	background-position: bottom; 
+	border-radius: 6px;
+	box-shadow: 0px 3px 4px #888; 
 	color: #888;
 	font-size: 0.85em;
 	line-height: 22px;
@@ -1042,6 +1100,7 @@ div.side h2:first-child {
 	-webkit-border-radius: 6px;
 	background-color: #cecece;
 	border: 1px solid #bababa;
+	border-radius: 6px;
 	color: #3a3a3a;
 	display: inline-block;
 	font-family: Georgia, serif;
@@ -1067,8 +1126,10 @@ div.side h2:first-child {
 	background-image: -moz-linear-gradient(#fbfbfb, #e6e6e6); 
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#fbfbfb), to(#e6e6e6)); 
 	border-color: #fff;
+	border-radius: 12px;
 	border-style: solid;
 	border-width: 5px;
+	box-shadow: 0px 2px 2px #888; 
 	color: #666;
 	font-size: 0.85em;
 	line-height: 22px;
@@ -1102,6 +1163,7 @@ div.side h2:first-child {
 	-moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.6); 
 	-webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.6); 
 	background-image: url("/images/new/top-bar.png"); 
+	box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.6); 
 	height: 30px;
 	left: 0px;
 	position: fixed;
@@ -1201,6 +1263,8 @@ div.side h2:first-child {
 	background-color: #eeeeee;
 	background-image: -moz-linear-gradient(#fffefb, #dbdbdb); 
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#fffefb), to(#dbdbdb)); 
+	border-radius: 10px;
+	box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.6), inset 0px -1px #fff; 
 	position: relative;
 	height: 52px;
 	margin-left: 80px;
@@ -1225,6 +1289,8 @@ div.side h2:first-child {
 	-webkit-box-shadow: inset 0px 2px 3px -1px #000000; 
 	background: #fff url("/images/new/search.png") no-repeat 10px 11px;
 	border: none;
+	border-radius: 5px;
+	box-shadow: inset 0px 2px 3px -1px #000000; 
 	font-size: 1.3em;
 	font-weight: bold;
 	height: 28px;
@@ -1242,6 +1308,8 @@ div.side h2:first-child {
 	background-color: #c4c4c4;
 	background-image: -moz-linear-gradient(#9f9f9f, #e8e8e8); 
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#9f9f9f), to(#e8e8e8)); 
+	border-radius: 6px;
+	box-shadow: inset 0px 1px 3px #000000, 0px 1px #fff; 
 	float: right;
 	margin: 0px;
 	padding: 6px;
@@ -1250,6 +1318,7 @@ div.side h2:first-child {
 #sign-in-button, #sign-up-button {
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
+	border-radius: 3px;
 	float: left;
 	font-size: 1.0em;
 	height: 38px;
@@ -1273,8 +1342,11 @@ div.side h2:first-child {
 	background-image: -moz-linear-gradient(#e1e1e1, #b3b3b3); 
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#e1e1e1), to(#b3b3b3)); 
 	border-bottom: 1px solid #949494;
+	border-bottom-left-radius: 6px;
 	border-left: 1px solid #949494;
 	border-right: 1px solid #a7a7a7;
+	border-top-left-radius: 6px;
+	box-shadow: 0px 1px #fff; 
 	color: #444444;
 	float: right;
 	font-size: 0.7em;
@@ -1290,6 +1362,7 @@ div.side h2:first-child {
 #welcome-avatar {
 	-moz-box-shadow: inset 0px 2px 4px -1px #000000, 0px 1px #dedede; 
 	-webkit-box-shadow: inset 0px 2px 4px -1px #000000, 0px 1px #dedede; 
+	box-shadow: inset 0px 2px 4px -1px #000000, 0px 1px #dedede; 
 	left: 6px;
 	position: absolute;
 	top: 6px;
@@ -1305,6 +1378,9 @@ div.side h2:first-child {
 	background-color: #c4c4c4;
 	background-image: -moz-linear-gradient(#9f9f9f, #e8e8e8); 
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#9f9f9f), to(#e8e8e8)); 
+	border-bottom-right-radius: 6px;
+	border-top-right-radius: 6px;
+	box-shadow: inset 0px 1px 3px #000000, 0px 1px #fff; 
 	float: right;
 	margin: 0px;
 	padding: 6px;
@@ -1318,6 +1394,7 @@ div.side h2:first-child {
 	background-color: #ececec;
 	background-image: -moz-linear-gradient(top, #fff, #ececec 20px, #e6e6e6 21px, #d4d4d4); 
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#fff), color-stop(50%, #ececec), color-stop(50%, #e6e6e6), to(#d4d4d4)); 
+	background-image: linear-gradient(top, #fff, #ececec 20px, #e6e6e6 21px, #d4d4d4); 
 	border-bottom: 1px solid #b9b9b9;
 	border-left: 1px solid #fff;
 	border-right: 1px solid #cacaca;
@@ -1337,7 +1414,9 @@ div.side h2:first-child {
 	-moz-border-radius-topleft: 4px;
 	-webkit-border-bottom-left-radius: 4px;
 	-webkit-border-top-left-radius: 4px;
+	border-bottom-left-radius: 4px;
 	border-left: none;
+	border-top-left-radius: 4px;
 }
 
 #header-navigation li:last-child a {
@@ -1345,12 +1424,15 @@ div.side h2:first-child {
 	-moz-border-radius-topright: 4px;
 	-webkit-border-bottom-right-radius: 4px;
 	-webkit-border-top-right-radius: 4px;
+	border-bottom-right-radius: 4px;
 	border-right: none;
+	border-top-right-radius: 4px;
 }
 
 #header-navigation li a:hover {
 	background-image: -moz-linear-gradient(top, #fff, #ececec 20px, #dddddd 21px, #d0d0d0); 
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#fff), color-stop(50%, #ececec), color-stop(50%, #dddddd), to(#d0d0d0));
+	background-image: linear-gradient(top, #fff, #ececec 20px, #dddddd 21px, #d0d0d0); 
 }
 
 #marketing-header {
@@ -1432,6 +1514,7 @@ div.side h2:first-child {
 #side-profile-avatar {
 	-moz-box-shadow: inset 0px 3px 5px 0px #000000, 0px 1px #fff; 
 	-webkit-box-shadow: inset 0px 3px 5px 0px #000000, 0px 1px #fff; 
+	box-shadow: inset 0px 3px 5px 0px #000000, 0px 1px #fff; 
 	float: left;
 }
 
@@ -1456,6 +1539,8 @@ div.side h2:first-child {
 	-webkit-border-radius: 4px;
 	-webkit-box-shadow: inset 0px 1px 2px #444444, 0px 1px #ffffff; 
 	background-color: rgba(0, 0, 0, 0.2); 
+	border-radius: 4px;
+	box-shadow: inset 0px 1px 2px #444444, 0px 1px #ffffff; 
 	text-align: center;
 	padding-bottom: 6px;
 	padding-top: 6px;
@@ -1476,6 +1561,7 @@ div.side h2:first-child {
 #footer-container {
 	background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0) 20px); 
 	background-image: -webkit-gradient(linear, left top, left 20, from(rgba(0, 0, 0, 0.1)), to(rgba(0, 0, 0, 0))); 
+	background-image: linear-gradient(top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0) 20px); 
 	height: 100px;
 	min-width: 960px;
 	padding-top: 16px;
@@ -1494,6 +1580,8 @@ div.side h2:first-child {
 	background-color: #eeeeee;
 	background-image: -moz-linear-gradient(#fffefb, #dbdbdb); 
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#fffefb), to(#dbdbdb)); 
+	border-radius: 6px;
+	box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.6), inset 0px -1px #fff; 
 	height: 40px;
 	line-height: 40px;
 	margin-top: 30px;
